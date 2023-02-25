@@ -1,0 +1,12 @@
+project:
+  name: 'FindMyFun'
+  owner: ISPPG8
+  teamId: G8
+  identities:
+    pivotal: 'https://www.pivotaltracker.com/n/projects/2632596'
+  members:
+    member1:
+      name: 'Antonio Roberto'
+      surname: 'Serrano Mena'
+      githubUsername: antsermen
+      pivotalUsername: robertoserrano
