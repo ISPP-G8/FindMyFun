@@ -10,3 +10,8 @@ project:
       surname: 'Serrano Mena'
       githubUsername: antsermen
       pivotalUsername: robertoserrano
+    member2:
+      name: 'Álvaro'
+      surname: 'Gómez Nieto'
+      githubUsername: alvgomnie
+      pivotalUsername: alvarok999
