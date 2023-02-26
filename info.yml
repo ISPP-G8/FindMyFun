@@ -15,3 +15,8 @@ project:
       surname: 'Gómez Nieto'
       githubUsername: alvgomnie
       pivotalUsername: alvarok999
+    member3:
+      name: 'José Manuel'
+      surname: 'Martín Luque'
+      githubUsername: RingoML
+      pivotalUsername: RingoML
