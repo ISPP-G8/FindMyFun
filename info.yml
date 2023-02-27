@@ -55,3 +55,8 @@ project:
       surname: 'Santos Pérez'
       githubUsername: pabsanper
       pivotalUsername: pabsanper
+    member11:
+      name: 'Miguel'
+      surname: 'Gaviro Martínez'
+      githubUsername: miggavmar
+      pivotalUsername: miguelgaviro
