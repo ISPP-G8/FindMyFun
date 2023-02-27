@@ -25,3 +25,8 @@ project:
       surname: 'Enríquez Díaz'
       githubUsername: DaEnri
       pivotalUsername: DaEnri
+    member5:
+      name: 'Andrés'
+      surname: 'Vargas Bayón'
+      githubUsername: andvarbay
+      pivotalUsername: andvarbay
