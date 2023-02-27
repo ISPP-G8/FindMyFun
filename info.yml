@@ -50,3 +50,8 @@ project:
       surname: 'Martín Vergara'
       githubUsername: jesmarver
       pivotalUsername: jesusperike
+    member10:
+      name: 'Pablo'
+      surname: 'Santos Pérez'
+      githubUsername: pabsanper
+      pivotalUsername: pabsanper
