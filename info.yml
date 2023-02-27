@@ -30,3 +30,8 @@ project:
       surname: 'Vargas Bayón'
       githubUsername: andvarbay
       pivotalUsername: andvarbay
+    member6:
+      name: 'Juan Manuel'
+      surname: 'Talero Frías'
+      githubUsername: juatalfri
+      pivotalUsername: juatalfri
