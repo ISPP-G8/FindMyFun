@@ -20,3 +20,8 @@ project:
       surname: 'Martín Luque'
       githubUsername: RingoML
       pivotalUsername: RingoML
+    member4:
+      name: 'Daniel'
+      surname: 'Enríquez Díaz'
+      githubUsername: DaEnri
+      pivotalUsername: DaEnri
