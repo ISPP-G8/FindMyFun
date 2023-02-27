@@ -1,0 +1,24 @@
+## Tag definitions
+- **Management**: Anything related to the team (personal skills change, workspace fix...).
+- **Bug**: Anything that can be considered a "bug" (little problems with code).
+- **Documentation**: Anything related to documents (creation, modification, updates...).
+- **Enhacement**: New feature (it has to be used only when adding new feature/s to the application).
+- **Test**: Used to upload test cases for a complete feature.
+- **Change**: Used to upload any change within a feature (this means changes to one feature that is already done, it can´t be used to upload new features).
+- **Duplicate**: Used when the issue already exists (closed or not).
+- **Help wanted**: Used when any of the team members needs help.
+- **Invalid**: Used when the issue isn´t valid (wrong creation, misspellings...).
+- **Question**: Used to ask anything relevant about the project or something related to the team.
+- **Wontfix**: Used when an issue isn´t going to be made (for example with unnecessary issues).
+## Definición de etiquetas:
+- **Management**: Se utiliza para lo que esté relacionado con el equipo de trabajo (cambios en las habilidades personales, arreglos del workspace personal...).
+- **Bug**: Se utiliza para indicar que algo no funciona correctamente (conocidos como "bugs" de código).
+- **Documentation**: Se utiliza para lo que esté relacionado con la documentación (creación, modificación, actualizaciones... de documentos).
+- **Enhacement**: Se utiliza para la creación de nueva funcionalidad para la aplicación (solo debe ser usada cuando se añadan una o varias funcionalidades nuevas).
+- **Test**: Se utiliza para subir la cobertura de pruebas de una funcionalidad completada.
+- **Change**: Se utiliza para subir algún cambio de una funcionalidad (es decir, solo cambios a una funcionalidad que ya esté completa, no para añadir funcionalidad nueva).
+- **Duplicate**: Se utiliza para indicar que la incidencia ya existe (esté cerrada o no).
+- **Help wanted**: Se utiliza cuando un miembro del equipo necesita ayuda.
+- **Invalid**: Se utiliza para indicar que la incidencia no es válida (creación errónea, errores de ortografía...).
+- **Question**: Se utiliza para solicitar información relevante acerca del equipo o el proyecto.
+- **Wontfix**: Se utiliza cuando una incidencia no va a ser resuelta (por ejemplo para incidencias innecesarias).
