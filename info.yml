@@ -75,3 +75,9 @@ project:
       surname: 'Castro Albertos'
       githubUsername: juacasalb
       pivotalUsername: juacasalb
+    member15:
+      name: 'David'
+      surname: 'Sabugueiro Troya'
+      githubUsername: davsabtro
+      pivotalUsername: davidsatro
+
