@@ -60,3 +60,8 @@ project:
       surname: 'Gaviro Martínez'
       githubUsername: miggavmar
       pivotalUsername: miguelgaviro
+    member12:
+      name: 'Francisco Andrés'
+      surname: 'Caro Albarrán'
+      githubUsername: fracaralb
+      pivotalUsername: francaro
