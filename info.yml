@@ -65,3 +65,8 @@ project:
       surname: 'Caro Albarrán'
       githubUsername: fracaralb
       pivotalUsername: francaro
+    member13:
+      name: 'Santiago'
+      surname: 'Zuleta de Reales Toro'
+      githubUsername: santizdr
+      pivotalUsername: santizdr
