@@ -1,0 +1,83 @@
+project:
+  name: 'FindMyFun'
+  owner: ISPPG8
+  teamId: G8
+  identities:
+    pivotal: 'https://www.pivotaltracker.com/n/projects/2632596'
+  members:
+    member1:
+      name: 'Antonio Roberto'
+      surname: 'Serrano Mena'
+      githubUsername: antsermen
+      pivotalUsername: robertoserrano
+    member2:
+      name: 'Álvaro'
+      surname: 'Gómez Nieto'
+      githubUsername: alvgomnie
+      pivotalUsername: alvarok999
+    member3:
+      name: 'José Manuel'
+      surname: 'Martín Luque'
+      githubUsername: RingoML
+      pivotalUsername: RingoML
+    member4:
+      name: 'Daniel'
+      surname: 'Enríquez Díaz'
+      githubUsername: DaEnri
+      pivotalUsername: DaEnri
+    member5:
+      name: 'Andrés'
+      surname: 'Vargas Bayón'
+      githubUsername: andvarbay
+      pivotalUsername: andvarbay
+    member6:
+      name: 'Juan Manuel'
+      surname: 'Talero Frías'
+      githubUsername: juatalfri
+      pivotalUsername: juatalfri
+    member7:
+      name: 'Alberto'
+      surname: 'Gallego Huerta'
+      githubUsername: albgalhue
+      pivotalUsername: albgalhue
+    member8:
+      name: 'José Ramón'
+      surname: 'Arias Expósito'
+      githubUsername: josariexp
+      pivotalUsername: josariexp
+    member9:
+      name: 'Jesús'
+      surname: 'Martín Vergara'
+      githubUsername: jesmarver
+      pivotalUsername: jesusperike
+    member10:
+      name: 'Pablo'
+      surname: 'Santos Pérez'
+      githubUsername: pabsanper
+      pivotalUsername: pabsanper
+    member11:
+      name: 'Miguel'
+      surname: 'Gaviro Martínez'
+      githubUsername: miggavmar
+      pivotalUsername: miguelgaviro
+    member12:
+      name: 'Francisco Andrés'
+      surname: 'Caro Albarrán'
+      githubUsername: fracaralb
+      pivotalUsername: francaro
+    member13:
+      name: 'Santiago'
+      surname: 'Zuleta de Reales Toro'
+      githubUsername: santizdr
+      pivotalUsername: santizdr
+    member14:
+      name: 'Juan'
+      surname: 'Castro Albertos'
+      githubUsername: juacasalb
+      pivotalUsername: juacasalb
+    member15:
+      name: 'David'
+      surname: 'Sabugueiro Troya'
+      githubUsername: davsabtro
+      pivotalUsername: davidsatro
+
