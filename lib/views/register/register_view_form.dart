@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../services/services.dart';
 import '../../widgets/widgets.dart';
 
 class RegisterViewForm extends StatelessWidget {
@@ -30,21 +32,25 @@ class _RegisterFormContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(children: [
-      CustomTextForm(hintText: 'Nombre'),
-      CustomTextForm(hintText: 'Apellidos'),
-      CustomTextForm(hintText: 'Mail'),
-      CustomTextForm(hintText: 'Nombre de usuario'),
-      CustomTextForm(
+    return  Column(children: [
+      const CustomTextForm(hintText: 'Nombre'),
+      const CustomTextForm(hintText: 'Apellidos'),
+      const CustomTextForm(hintText: 'Mail'),
+      const CustomTextForm(hintText: 'Nombre de usuario'),
+      const CustomTextForm(
         hintText: 'Contraseña',
         obscure: true,
       ),
-      CustomTextForm(
+      const CustomTextForm(
         hintText: 'Repetir contraseña',
         obscure: true,
       ),
-      CustomTextForm(hintText: 'Localización'),
-      SubmitButton(text: 'CONTINUAR')
+      const CustomTextForm(hintText: 'Localización'),
+      SubmitButton(text: 'CONTINUAR', onTap: () {
+        final pageViewService = Provider.of<PageViewService>(context, listen: false);
+        pageViewService.registerPageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+        
+      },)
     ]);
   }
 }

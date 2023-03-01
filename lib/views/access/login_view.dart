@@ -1,4 +1,4 @@
-import 'package:findmyfun/services/login_page_view_service.dart';
+import 'package:findmyfun/services/page_view_service.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';

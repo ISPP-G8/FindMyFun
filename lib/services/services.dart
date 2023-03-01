@@ -1,2 +1,2 @@
-export 'package:findmyfun/services/login_page_view_service.dart';
+export 'package:findmyfun/services/page_view_service.dart';
 
