@@ -11,7 +11,7 @@ class RegisterViewForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
+    return SingleChildScrollView(
       child: Column(
         children: [
           LoginTitle(text: 'REGISTRO'),
@@ -32,7 +32,7 @@ class _RegisterFormContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Column(children: [
+    return Column(children: [
       const CustomTextForm(hintText: 'Nombre'),
       const CustomTextForm(hintText: 'Apellidos'),
       const CustomTextForm(hintText: 'Mail'),
@@ -46,11 +46,16 @@ class _RegisterFormContainer extends StatelessWidget {
         obscure: true,
       ),
       const CustomTextForm(hintText: 'Localización'),
-      SubmitButton(text: 'CONTINUAR', onTap: () {
-        final pageViewService = Provider.of<PageViewService>(context, listen: false);
-        pageViewService.registerPageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-        
-      },)
+      SubmitButton(
+        text: 'CONTINUAR',
+        onTap: () {
+          final pageViewService =
+              Provider.of<PageViewService>(context, listen: false);
+          pageViewService.registerPageController.animateToPage(1,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut);
+        },
+      )
     ]);
   }
 }
