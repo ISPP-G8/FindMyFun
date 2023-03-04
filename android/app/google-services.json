@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "397644378970",
+    "project_id": "findmyfun-c0acc",
+    "storage_bucket": "findmyfun-c0acc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:397644378970:android:9630b64222801a972ef963",
+        "android_client_info": {
+          "package_name": "com.isppg8.findmyfun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "397644378970-32tur8ldqbstkhc8bl5di4ain6103ep0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPB4b27ioy2to5KQNf7WrKd5oU7bc7w2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "397644378970-32tur8ldqbstkhc8bl5di4ain6103ep0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "397644378970-anlguseefb64g7rkbgib3nje76ttbfcf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.findmyfun"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
