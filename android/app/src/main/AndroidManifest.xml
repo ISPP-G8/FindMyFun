@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.findmyfun">
+    package="com.isppg8.findmyfun">
    <application
         android:label="findmyfun"
         android:name="${applicationName}"
