@@ -1,8 +1,10 @@
 import 'package:findmyfun/services/page_view_service.dart';
 import 'package:findmyfun/themes/themes.dart';
-import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../widgets/preferences_container.dart';
+import '../../widgets/submit_button.dart';
 
 class PreferencesView extends StatelessWidget {
   const PreferencesView({Key? key}) : super(key: key);
@@ -34,7 +36,7 @@ class PreferencesView extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              LoginContainer(
+              PreferencesContainer(
                 child: PreferencesColumn(),
               )
             ]
@@ -52,6 +54,8 @@ class PreferencesColumn extends StatefulWidget {
 
 class _PreferencesColumnState extends State<PreferencesColumn> {
 
+  List prefSelec = [0, 2, 7, 8, 13]; //Lista de ejemplo de las preferencias seleccionadas
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -60,11 +64,10 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
           height: 10,
         ), 
         SizedBox(
-          height: 400,
+          height: 600,
           child: CustomScrollView(
             slivers: <Widget>[
-              SliverFixedExtentList(
-                itemExtent: 100.0,
+              SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
                     return Container(
@@ -78,12 +81,30 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                               width: 325,
                               child: 
                             	  ElevatedButton(
+                                  style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25.0)
+                                    )),
+                                    backgroundColor: MaterialStateProperty.all(
+                                      prefSelec.contains(index) ? Colors.green : Colors.white //Si la preferencia se encuentra en la lista se pone en verde
+                                    ),
+                                  ),
                                   onPressed: () {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('ein?? $index'))
-                                    );
+                                    setState(() {
+                                      if(prefSelec.contains(index)){ //Si una preferencia seleccionada se presiona, es eliminada de la lista
+                                        prefSelec.remove(index);
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text('Preferencia ${index+1} se ha eliminado de tus preferencias'))
+                                         );
+                                      } else { //Si una preferencia sin seleccionar se presiona, es añadida a la lista
+                                        prefSelec.add(index);
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text('Preferencia ${index+1} se ha añadido a tus preferencias'))
+                                        );
+                                      }
+                                    });
                                   },
-                                  child: Text('ein?? ${index+1}')
+                                  child: Text('Preferencia ${index+1}', style: const TextStyle(color: Colors.black)) //Nombre de la preferencia
                                 ),
                             ),
                         ),
@@ -98,9 +119,8 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
         const SizedBox(
           height: 10,
         ),
+        const SubmitButton(text: 'CONTINUAR') //Botón para volver al perfil y confirmar los cambios
       ],
     );
   }
 }
-
-
