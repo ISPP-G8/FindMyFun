@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:findmyfun/services/page_view_service.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -32,12 +30,12 @@ class PreferencesView extends StatelessWidget {
           ),
           backgroundColor: ProjectColors.primary,
           body: Column(
-            children: const [
+            children:  const [
               SizedBox(
                 height: 20,
               ),
               LoginContainer(
-                child: _PreferencesColumn(),
+                child: PreferencesColumn(),
               )
             ]
           )),
@@ -45,31 +43,64 @@ class PreferencesView extends StatelessWidget {
   }
 }
 
-class _PreferencesColumn extends StatelessWidget {
-  const _PreferencesColumn({
-    super.key,
-  });
+class PreferencesColumn extends StatefulWidget {
+  const PreferencesColumn({super.key});
+
+  @override
+  _PreferencesColumnState createState() => _PreferencesColumnState();
+}
+
+class _PreferencesColumnState extends State<PreferencesColumn> {
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
-        SizedBox(
+      children: [
+        const SizedBox(
           height: 10,
-        ),
+        ), 
         SizedBox(
-          height: 100,
-          width: 325,
-          child: 
-                ElevatedButton(
-                  onPressed: null, 
-                  child: Text('Videojuegos')),
+          height: 400,
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverFixedExtentList(
+                itemExtent: 100.0,
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      child:
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: 
+                            SizedBox(
+                              height: 100,
+                              width: 325,
+                              child: 
+                            	  ElevatedButton(
+                                  onPressed: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('ein?? $index'))
+                                    );
+                                  },
+                                  child: Text('ein?? ${index+1}')
+                                ),
+                            ),
+                        ),
+                    );
+                  },
+                  childCount: 15,
+                ),
+              ),
+            ],
+          ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
       ],
     );
   }
-  
 }
+
+
