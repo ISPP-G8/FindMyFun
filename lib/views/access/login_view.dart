@@ -22,6 +22,7 @@ class LoginView extends StatelessWidget {
 
           //   },
           // ),
+
           appBar: AppBar(
             leading: GestureDetector(
                 onTap: () => pageViewController.animateToPage(0,
