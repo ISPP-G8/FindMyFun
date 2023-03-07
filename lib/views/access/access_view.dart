@@ -42,6 +42,12 @@ class AccessView extends StatelessWidget {
               // const SizedBox(
               //   height: 100,
               // )
+              CustomButton(
+                text: 'Tus preferencias',
+                onTap: () => pageControllerService.pageController.animateToPage(
+                    2,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut)),
           ],
         ),
       ),

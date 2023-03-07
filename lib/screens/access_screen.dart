@@ -1,3 +1,4 @@
+import 'package:findmyfun/screens/screens.dart';
 import 'package:findmyfun/services/page_view_service.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class AccessScreen extends StatelessWidget {
           child: PageView(
               controller: pageControllerService.pageController,
               physics: const NeverScrollableScrollPhysics(),
-              children: const [AccessView(), LoginView()]),
+              children: const [AccessView(), LoginView(), PreferencesView()]),
         ));
   }
 }

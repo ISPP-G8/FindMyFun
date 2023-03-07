@@ -10,5 +10,15 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'access': (_) => const AccessScreen(),
   };
 
+<<<<<<< HEAD
   return routes;
+=======
+    'login':(_) => const LoginView(),
+    'register':(_) => const RegisterScreen(),
+    'access':(_) => const AccessScreen(),
+    'preferences':(_) => const PreferencesView(),
+   };
+
+   return routes;
+>>>>>>> origin/Vista-de-preferencias-frontend
 }
