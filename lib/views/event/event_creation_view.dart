@@ -1,6 +1,7 @@
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:multiselect/multiselect.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/page_view_service.dart';
@@ -68,9 +69,7 @@ class _FormsColumn extends StatelessWidget {
           hintText: 'Fecha',
           type: TextInputType.datetime,
         ),
-        const CustomTextForm(
-          hintText: 'Categorías',
-        ),
+        const CategoryDropdown(),
         const CustomCheckbox(
           checkboxText: '¿Evento privado?',
         ),
