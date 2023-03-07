@@ -10,8 +10,8 @@ class EventsService extends ChangeNotifier {
   
   Future<void> updateEvent(Event event) async {
     final url = Uri.https(_baseUrl, 'Events/${event.id}.json');
-    var eventCreator = event.creator;
-    var getCreator = '';
+    String eventCreator = event.creator;
+    String getCreator = '';
     try {
       final get = await http.get(url);
       final jsonResponse = json.decode(get.body);
@@ -19,7 +19,7 @@ class EventsService extends ChangeNotifier {
     } catch (e) {
       print('Error creating event: $e');
     }
-    if(getCreator==eventCreator) {
+    if(eventCreator==getCreator) {
       try {
         final put = await http.put(url, body: jsonEncode(event.toJson()));
       } catch (e) {
