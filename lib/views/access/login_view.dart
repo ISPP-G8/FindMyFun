@@ -39,21 +39,23 @@ class LoginView extends StatelessWidget {
                 textAlign: TextAlign.center, style: Styles.appBar),
           ),
           backgroundColor: ProjectColors.primary,
-          body: Column(
-            children: [
-              //  LoginTitle(text: 'INICIO DE SESIÓN'),
-              const ImageLogo(),
-              const SizedBox(
-                height: 100,
-              ),
-
-              const LoginContainer(
-                child: _FormsColumn(),
-              ),
-              TextButton(
-                  onPressed: () => Navigator.pushNamed(context, 'register'),
-                  child: const Text('¿No tienes cuenta?'))
-            ],
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                //  LoginTitle(text: 'INICIO DE SESIÓN'),
+                const ImageLogo(),
+                const SizedBox(
+                  height: 100,
+                ),
+          
+                const LoginContainer(
+                  child: _FormsColumn(),
+                ),
+                TextButton(
+                    onPressed: () => Navigator.pushNamed(context, 'register'),
+                    child: const Text('¿No tienes cuenta?'))
+              ],
+            ),
           )),
     );
   }

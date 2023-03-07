@@ -16,16 +16,16 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
   int _selectedPage = 0;
   @override
   Widget build(BuildContext context) {
-    final pageController = Provider.of<PageViewService>(context);
-    int selectedItem = pageController.navigationBarPage;
-
     return Container(
       margin: const EdgeInsets.only(bottom: 10, right: 10, left: 10),
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
       child: BottomNavigationBar(
           onTap: (i) {
-            selectedItem = i;
+            final pageController =
+                Provider.of<PageViewService>(context, listen: false);
+            pageController.mainPageController.jumpToPage(i);
+
             _selectedPage = i;
 
             setState(() {});

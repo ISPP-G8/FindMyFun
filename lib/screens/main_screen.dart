@@ -1,9 +1,11 @@
+import 'package:findmyfun/screens/screens.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../services/services.dart';
+import '../views/views.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -11,7 +13,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageControllerService = Provider.of<PageViewService>(context);
-
+    
     return Scaffold(
         backgroundColor: ProjectColors.primary,
         bottomNavigationBar: const CustomNavigationBar(),
@@ -37,7 +39,13 @@ class MainScreen extends StatelessWidget {
           child: PageView(
               controller: pageControllerService.mainPageController,
               physics: const NeverScrollableScrollPhysics(),
-              children: const []),
+              children:  const [
+                // TODO: Vista de inicio
+                // TODO: Vista de busqueda
+                // TODO: Vista de añadir evento
+                // TODO: Vista de notificaciones
+                SettingsView()
+              ]),
         ));
   }
 }
