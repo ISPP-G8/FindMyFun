@@ -3,8 +3,8 @@ import 'package:findmyfun/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../widgets/preferences_container.dart';
-import '../../widgets/submit_button.dart';
+import '../../../widgets/preferences_container.dart';
+import '../../../widgets/submit_button.dart';
 
 class PreferencesView extends StatelessWidget {
   const PreferencesView({Key? key}) : super(key: key);

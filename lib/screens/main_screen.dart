@@ -42,7 +42,7 @@ class MainScreen extends StatelessWidget {
               children:  const [
                 // TODO: Vista de inicio
                 // TODO: Vista de busqueda
-                // TODO: Vista de añadir evento
+                EventListView(),
                 // TODO: Vista de notificaciones
                 SettingsView()
               ]),

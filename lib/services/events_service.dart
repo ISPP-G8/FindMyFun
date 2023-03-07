@@ -6,11 +6,11 @@ import '../models/event.dart';
 
 class EventsService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
-  List<dynamic> _events = [];
+  List<Event> _events = [];
 
-  List<dynamic> get events => _events;
+  List<Event> get events => _events;
 
-  void set setEvents(List<dynamic> inputEvents) {
+  void set setEvents(List<Event> inputEvents) {
     _events = inputEvents;
     notifyListeners();
   }
@@ -51,7 +51,7 @@ class EventsService extends ChangeNotifier {
 
       data.forEach((key, value) {
         final event = Event.fromRawJson(jsonEncode(value));
-        _events.add(event);
+        events.add(event);
       });
 
     } catch (e) {
