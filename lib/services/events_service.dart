@@ -6,6 +6,14 @@ import '../models/event.dart';
 
 class EventsService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
+  List<dynamic> _events = [];
+
+  List<dynamic> get events => _events;
+
+  void set setEvents(List<dynamic> inputEvents) {
+    _events = inputEvents;
+    notifyListeners();
+  }
 
   Future<void> deleteEvent(String eventId) async {
     final url = Uri.https(_baseUrl, 'Events/$eventId.json');
@@ -27,4 +35,28 @@ class EventsService extends ChangeNotifier {
       print('Error creating event: $e');
     }
   }
+
+  //READ EVENT
+  Future<void> getEvents() async {
+    final url = Uri.https(_baseUrl, 'Events.json');
+     try {
+
+      final resp = await http.get(url);
+
+      if (resp.statusCode != 200) {
+        return;
+      }
+
+      Map<String, dynamic> data = jsonDecode(resp.body);
+
+      data.forEach((key, value) {
+        final event = Event.fromRawJson(jsonEncode(value));
+        _events.add(event);
+      });
+
+    } catch (e) {
+      print('Error getting events: $e');
+    }
+  }
+
 }
