@@ -17,9 +17,9 @@ class PreferencesView extends StatelessWidget {
       child: Scaffold(
           appBar: AppBar(
             leading: GestureDetector(
-                onTap: () => pageViewController.animateToPage(0,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut),
+            onTap: () => pageViewController.animateToPage(2,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut),
                 child: const Icon(
                   Icons.chevron_left,
                   size: 45,
