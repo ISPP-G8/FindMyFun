@@ -3,6 +3,14 @@ import 'package:flutter/material.dart';
 class PageViewService extends ChangeNotifier {
   PageController _loginPageController = PageController();
   PageController _registerPageController = PageController();
+  PageController _mainPageController = PageController();
+
+  PageController get mainPageController => _mainPageController;
+
+  set mainPageController(PageController val) {
+    _mainPageController = val;
+    notifyListeners();
+  }
 
   int _navigationBarPage = 0;
 

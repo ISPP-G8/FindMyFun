@@ -95,7 +95,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             ),
             SubmitButton(
                 text: 'CONTINUAR',
-                onTap: () {
+                onTap: () async {
                   if (_formKey.currentState!.validate()) {
                     // TODO: Iniciar sesión y mandar al home page
 
@@ -111,6 +111,8 @@ class _FormsColumnState extends State<_FormsColumn> {
                                 child: CircularProgressIndicator()),
                           ]),
                     );
+                    await Future.delayed(Duration(seconds: 1));
+                    Navigator.pushReplacementNamed(context, 'main');
                   } else {
                     CustomSnackbars.showCustomSnackbar(
                       context,
