@@ -83,23 +83,25 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                             	  ElevatedButton(
                                   style: ButtonStyle(
                                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25.0)
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      side: BorderSide(
+                                        color: prefSelec.contains(index) ? Colors.black : Colors.white, //Si la preferencia se encuentra en la lista se señala con un borde negro
+                                        width: 4,
+                                      )
                                     )),
-                                    backgroundColor: MaterialStateProperty.all(
-                                      prefSelec.contains(index) ? Colors.green : Colors.white //Si la preferencia se encuentra en la lista se pone en verde
-                                    ),
+                                    backgroundColor: MaterialStateProperty.all(Colors.white)
                                   ),
                                   onPressed: () {
                                     setState(() {
                                       if(prefSelec.contains(index)){ //Si una preferencia seleccionada se presiona, es eliminada de la lista
                                         prefSelec.remove(index);
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text('Preferencia ${index+1} se ha eliminado de tus preferencias'))
+                                          SnackBar(content: Text('Se ha seleccionado la preferencia ${index+1}'))
                                          );
                                       } else { //Si una preferencia sin seleccionar se presiona, es añadida a la lista
                                         prefSelec.add(index);
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text('Preferencia ${index+1} se ha añadido a tus preferencias'))
+                                          SnackBar(content: Text('Se ha deseleccionado la preferencia ${index+1}'))
                                         );
                                       }
                                     });
@@ -110,7 +112,7 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                         ),
                     );
                   },
-                  childCount: 15,
+                  childCount: 15, //Número de preferencias
                 ),
               ),
             ],
