@@ -22,7 +22,10 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => PageViewService(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => EventsService(),
+        ),
       ],
       child: const MyApp(),
     );

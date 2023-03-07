@@ -1,5 +1,6 @@
 import 'package:findmyfun/screens/screens.dart';
 import 'package:flutter/material.dart';
+import '../views/views.dart';
 
 Map<String, Widget Function(BuildContext)> exportRoutes() {
   Map<String, Widget Function(BuildContext)> routes = {
@@ -8,6 +9,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'access': (_) => const AccessScreen(),
     'profile': (_) => const ProfileDetailsView(),
     'preferences':(_) => const PreferencesView(),
+    'main': (_) => const MainScreen(),
   };
 
   return routes;
