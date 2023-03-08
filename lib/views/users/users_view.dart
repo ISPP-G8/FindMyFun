@@ -1,16 +1,36 @@
 import 'dart:ui';
 
-import 'package:findmyfun/services/page_view_service.dart';
+import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
+import 'package:findmyfun/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UsersListViewScreen extends StatelessWidget {
-  const UsersListViewScreen({Key? key}) : super(key: key);
+class UsersListViewScreen extends StatefulWidget {
+  const UsersListViewScreen({super.key});
+
+  @override
+  State<UsersListViewScreen> createState() => _UsersListViewScreenState();
+}
+
+class _UsersListViewScreenState extends State<UsersListViewScreen> {
+  @override
+  void initState() {
+    final usersService = Provider.of<UsersService>(context, listen: false);
+    Future.delayed(Duration.zero, () async {
+      await usersService.getUsers();
+      final users = usersService.users;
+      print('lista de usuarios:');
+      print(users);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final usersService = Provider.of<UsersService>(context, listen: false);
+    final users = usersService.users;
     final pageViewController =
         Provider.of<PageViewService>(context).pageController;
     return SafeArea(
@@ -31,12 +51,14 @@ class UsersListViewScreen extends StatelessWidget {
                 textAlign: TextAlign.center, style: Styles.appBar),
           ),
           backgroundColor: ProjectColors.primary,
-          body: Column(children: const [
+          body: Column(children: [
             SizedBox(
               height: 20,
             ),
             UsersContainer(
-              child: _UsersColumn(),
+              child: _UsersColumn(
+                users: usersService.users,
+              ),
             )
           ])),
     );
@@ -44,9 +66,8 @@ class UsersListViewScreen extends StatelessWidget {
 }
 
 class _UsersColumn extends StatelessWidget {
-  const _UsersColumn({
-    super.key,
-  });
+  final List<User> users;
+  const _UsersColumn({super.key, required this.users});
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +80,11 @@ class _UsersColumn extends StatelessWidget {
             height: 500,
             width: 325,
             child: ListView.separated(
-              itemCount: 30,
+              itemCount: users.length,
               itemBuilder: (context, index) {
-                return const ListTile(
-                  title: Text('Name Surname'),
+                final user = users[index];
+                return ListTile(
+                  title: Text(user.name),
                   subtitle: Text('username \nmail@mail.com'),
                 );
               },
