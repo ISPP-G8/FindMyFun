@@ -8,12 +8,16 @@ class UsersService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
   List<dynamic> _users = [];
 
+  User? currentUser;
+
   List<dynamic> get users => _users;
 
   void set setUsers(List<dynamic> inputUsers) {
     _users = inputUsers;
     notifyListeners();
   }
+
+  
 
   //READ EVENT
   Future<void> getUsers() async {

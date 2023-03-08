@@ -4,6 +4,7 @@ import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/ui/custom_snackbars.dart';
 import 'package:findmyfun/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +48,7 @@ class LoginView extends StatelessWidget {
                 const SizedBox(
                   height: 100,
                 ),
-          
+
                 const LoginContainer(
                   child: _FormsColumn(),
                 ),
@@ -72,10 +73,11 @@ class _FormsColumn extends StatefulWidget {
 
 class _FormsColumnState extends State<_FormsColumn> {
   final _formKey = GlobalKey<FormState>();
-  final _userController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final usersService = Provider.of<UsersService>(context);
     return Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: _formKey,
@@ -85,8 +87,8 @@ class _FormsColumnState extends State<_FormsColumn> {
               height: 10,
             ),
             CustomTextForm(
-              hintText: 'Usuario',
-              controller: _userController,
+              hintText: 'Email',
+              controller: _emailController,
               validator: (value) => Validators.validateNotEmpty(value),
             ),
             CustomTextForm(
@@ -103,16 +105,34 @@ class _FormsColumnState extends State<_FormsColumn> {
 
                     showDialog(
                       context: context,
-                      builder: (context) => Column(
+                      builder: (context) => const Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             SizedBox(
                                 height: 50,
                                 width: 50,
                                 child: CircularProgressIndicator()),
                           ]),
                     );
+
+                    try {
+                      UserCredential credential = await AuthService()
+                        .signInWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text);
+                      
+                    } on FirebaseAuthException catch(e) {
+
+                      print('Error al iniciar sesion $e');
+                      Navigator.pop(context);
+                      return;
+                    }
+
+                    
+
+                    // await usersService.getUsers();
+
                     await Future.delayed(Duration(seconds: 1));
                     Navigator.pushReplacementNamed(context, 'main');
                   } else {

@@ -24,7 +24,7 @@ class User {
   String username;
   String city;
   String email;
-  List<Preferences> preferences;
+  List<Preferences?> preferences;
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 

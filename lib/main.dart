@@ -26,6 +26,9 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => EventsService(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => UsersService(),
+        ),
       ],
       child: const MyApp(),
     );
@@ -40,7 +43,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: exportRoutes(),
-      initialRoute: 'access',
+      initialRoute: 'middle',
     );
   }
 }
