@@ -18,19 +18,14 @@ class _UsersListViewScreenState extends State<UsersListViewScreen> {
   @override
   void initState() {
     final usersService = Provider.of<UsersService>(context, listen: false);
-    Future.delayed(Duration.zero, () async {
-      await usersService.getUsers();
-      final users = usersService.users;
-      print('lista de usuarios:');
-      print(users);
-    });
+    Future.delayed(Duration.zero, () async => await usersService.getUsers());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final usersService = Provider.of<UsersService>(context, listen: false);
-    final users = usersService.users;
+    final usersService = Provider.of<UsersService>(context);
+    // final users = usersService.users;
     final pageViewController =
         Provider.of<PageViewService>(context).pageController;
     return SafeArea(

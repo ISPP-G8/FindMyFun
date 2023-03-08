@@ -10,7 +10,7 @@ class UsersService extends ChangeNotifier {
 
   List<User> get users => _users;
 
-  void set users(List<User> inputUsers) {
+  set users(List<User> inputUsers) {
     _users = inputUsers;
     notifyListeners();
   }
