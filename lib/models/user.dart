@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-enum Preferences { futbul, cerveza, tenis, ajedrez, videojuegos, musica }
+enum Preferences { futbol, cerveza, tenis, ajedrez, videojuegos, musica }
 
 class User {
   User({

@@ -10,7 +10,7 @@ class EventsService extends ChangeNotifier {
 
   List<Event> get events => _events;
 
-  void set setEvents(List<Event> inputEvents) {
+  set events(List<Event> inputEvents) {
     _events = inputEvents;
     notifyListeners();
   }
@@ -37,26 +37,28 @@ class EventsService extends ChangeNotifier {
   }
 
   //READ EVENT
-  Future<void> getEvents() async {
+  Future<bool> getEvents() async {
     final url = Uri.https(_baseUrl, 'Events.json');
-     try {
-
+    try {
       final resp = await http.get(url);
 
       if (resp.statusCode != 200) {
-        return;
+        return false;
       }
-
+      List<Event> eventsAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
 
       data.forEach((key, value) {
         final event = Event.fromRawJson(jsonEncode(value));
-        events.add(event);
-      });
 
+        eventsAux.add(event);
+      });
+      events = eventsAux;
+
+      return true;
     } catch (e) {
       print('Error getting events: $e');
+      return false;
     }
   }
-
 }

@@ -45,7 +45,12 @@ class Event {
         image: json["image"],
         name: json["name"],
         startDate: DateTime.parse(json["startDate"]),
-        tags: List<Preferences>.from(json["tags"].map((x) => x)),
+        tags: List<Preferences>.from(json["tags"].map((x) {
+          List<String> preferences =
+              Preferences.values.map((e) => e.toString()).toList();
+          int index = preferences.indexOf('Preferences.$x');
+          return Preferences.values.elementAt(index);
+        })),
       );
 
   Map<String, dynamic> toJson() => {
