@@ -47,10 +47,10 @@ class _EventContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(25)),
+          color: Colors.white, borderRadius: BorderRadius.circular(15)),
       child: Column(
         children: [
           Row(
@@ -61,20 +61,21 @@ class _EventContainer extends StatelessWidget {
                     event.name,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text(event.startDate.toString()),
+                  Text(event.startDate.toString().substring(0, 16)),
+                  const SizedBox(height: 8, width: 200),
+                  Row(children: [
+                    Icon(Icons.location_pin),
+                    Text(" " + event.address + ", " + event.city)
+                  ]),
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(event.address),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text('5/8 asistentes'),
+                  Text(event.attendants + "/8 participantes")
                 ],
               ),
               Spacer(),
               Container(
-                  width: 150, height: 150, child: Image.network(event.image))
+                  width: 120, height: 120, child: Image.network(event.image))
             ],
           )
         ],

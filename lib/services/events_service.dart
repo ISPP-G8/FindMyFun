@@ -53,8 +53,7 @@ class EventsService extends ChangeNotifier {
 
         eventsAux.add(event);
       });
-      events = eventsAux;
-
+      events.addAll(eventsAux);
       return true;
     } catch (e) {
       print('Error getting events: $e');

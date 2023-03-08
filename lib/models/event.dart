@@ -16,12 +16,14 @@ class Event {
     required this.description,
     required this.image,
     required this.name,
+    required this.attendants,
     required this.startDate,
     required this.tags,
   });
 
   String id;
   String address;
+  String attendants;
   String city;
   String country;
   String creator;
@@ -38,6 +40,7 @@ class Event {
   factory Event.fromJson(Map<String, dynamic> json) => Event(
         id: json["id"],
         address: json["address"],
+        attendants: json["attendants"],
         city: json["city"],
         country: json["country"],
         creator: json["creator"],
@@ -56,6 +59,7 @@ class Event {
   Map<String, dynamic> toJson() => {
         "id": id,
         "address": address,
+        "attendants": attendants,
         "city": city,
         "country": country,
         "creator": creator,
