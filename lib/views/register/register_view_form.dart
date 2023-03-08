@@ -87,6 +87,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
           
           validator: (value) {
             if(_passwordConfirmController.text != _passwordController.text) return 'Las contraseñas no coinciden.';
+            return null;
           },
         ),
         CustomTextForm(

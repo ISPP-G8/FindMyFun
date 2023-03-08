@@ -18,6 +18,8 @@ class _MiddleScreenState extends State<MiddleScreen> {
   Widget build(BuildContext context) {
     user = AuthService().currentUser;
 
+    // TODO: asignar usuario en usuariosService
+
     return StreamBuilder(
       stream: AuthService().authStateChanges,
       builder: (BuildContext context, AsyncSnapshot snapshot) {

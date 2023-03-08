@@ -12,10 +12,14 @@ class UsersService extends ChangeNotifier {
 
   List<dynamic> get users => _users;
 
-  void set setUsers(List<dynamic> inputUsers) {
+  void set users(List<dynamic> inputUsers) {
     _users = inputUsers;
     notifyListeners();
   }
+
+  // TODO: Hacer el getItem pasando el uid del AuthService()
+
+  // TODO: Hacer el updateItem pasando el uid del AuthService()
 
   
 
