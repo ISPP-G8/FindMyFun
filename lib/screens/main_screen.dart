@@ -29,9 +29,9 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
         backgroundColor: ProjectColors.primary,
         bottomNavigationBar: const CustomNavigationBar(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {},
+        // ),
         appBar: AppBar(
           backgroundColor: ProjectColors.primary,
           elevation: 0,
