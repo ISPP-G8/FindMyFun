@@ -1,3 +1,4 @@
+import 'package:findmyfun/views/event/event_creation_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,16 +33,24 @@ class AccessView extends StatelessWidget {
                 onTap: () => pageControllerService.pageController.animateToPage(
                     1,
                     duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut)),
+                    curve: Curves.easeInOut),
+            ),
             CustomButton(
                 text: 'Acceder como usuario',
                 onTap: () => pageControllerService.pageController.animateToPage(
                     1,
                     duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut)),
-              // const SizedBox(
-              //   height: 100,
-              // )
+                    curve: Curves.easeInOut),
+            ),
+            CustomButton(
+                text: 'Crear evento',
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EventCreationView(),
+                    ),
+                ),
+            ),
           ],
         ),
       ),
