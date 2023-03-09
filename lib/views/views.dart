@@ -4,6 +4,7 @@
 
 
 export 'package:findmyfun/views/home/events/event_list_view.dart';
+export 'package:findmyfun/views/home/events/event_find_view.dart';
 
 export 'package:findmyfun/views/settings/settings_view.dart';
 
