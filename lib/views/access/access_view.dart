@@ -39,7 +39,7 @@ class AccessView extends StatelessWidget {
                   curve: Curves.easeInOut),
             ),
             CustomButton(
-              text: 'Crear evento',
+              text: 'Detalles de evento',
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(

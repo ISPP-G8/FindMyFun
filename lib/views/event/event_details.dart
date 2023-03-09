@@ -1,30 +1,28 @@
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../services/page_view_service.dart';
 
 class EventDetailsView extends StatelessWidget {
   const EventDetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final pageViewController =
-        Provider.of<PageViewService>(context).pageController;
-
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(200.0),
+          preferredSize: const Size.fromHeight(50.0),
           child: AppBar(
-            flexibleSpace: Flexible(
-              child: Text(
-                'TITULO DEL EVENTOOOOOO OOOOOOOOOOO OOOOOOOO',
-                textAlign: TextAlign.center,
-                style: Styles.appBar,
-                maxLines: 3,
+            flexibleSpace: Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.symmetric(horizontal: 50),
+              child: FittedBox(
+                child: Text(
+                  'CONCIERTO DE LOS MORANCOS',
+                  textAlign: TextAlign.center,
+                  style: Styles.appBar,
+                  maxLines: 3,
+                ),
               ),
             ),
             leading: GestureDetector(
@@ -51,9 +49,7 @@ class EventDetailsView extends StatelessWidget {
 }
 
 class _FormsColumn extends StatelessWidget {
-  const _FormsColumn({
-    super.key,
-  });
+  const _FormsColumn();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +59,7 @@ class _FormsColumn extends StatelessWidget {
           height: 10,
         ),
         Container(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: Image.asset(
             'assets/no-image-available.png',
             fit: BoxFit.cover,
@@ -73,33 +69,17 @@ class _FormsColumn extends StatelessWidget {
           hintText: 'Nombre del evento',
         ),
         const CustomTextForm(
-          hintText: 'Lugar',
+          hintText: 'Fecha y hora',
+          type: TextInputType.datetime,
         ),
         const CustomTextForm(
           hintText: 'Descripción',
           maxLines: 5,
           type: TextInputType.multiline,
         ),
-        const CustomTextForm(
-          hintText: 'Fecha',
-          type: TextInputType.datetime,
+        const EventCreator(
+          creatorUsername: 'Creador',
         ),
-        SubmitButton(
-            text: 'CONTINUAR',
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: CircularProgressIndicator()),
-                    ]),
-              );
-            })
       ],
     );
   }

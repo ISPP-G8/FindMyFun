@@ -11,7 +11,7 @@ class CustomTextForm extends StatelessWidget {
     required this.hintText,
     this.obscure = false,
     this.padding,
-    this.maxLines,
+    this.maxLines = 1,
     this.type = TextInputType.text,
   });
 
@@ -21,7 +21,9 @@ class CustomTextForm extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       padding: padding,
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(15)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
       child: TextFormField(
         keyboardType: type,
         obscureText: obscure,
