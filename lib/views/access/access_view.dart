@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../services/services.dart';
 import '../../widgets/widgets.dart';
+import '../event/event_details.dart';
 
 class AccessView extends StatelessWidget {
   const AccessView({super.key});
@@ -16,8 +17,6 @@ class AccessView extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: size.height),
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-
           children: [
             const SizedBox(
               height: 100,
@@ -28,20 +27,26 @@ class AccessView extends StatelessWidget {
               height: 100,
             ),
             CustomButton(
-                text: 'Acceder como empresa',
-                onTap: () => pageControllerService.pageController.animateToPage(
-                    1,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut)),
+              text: 'Acceder como empresa',
+              onTap: () => pageControllerService.pageController.animateToPage(1,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut),
+            ),
             CustomButton(
-                text: 'Acceder como usuario',
-                onTap: () => pageControllerService.pageController.animateToPage(
-                    1,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut)),
-              // const SizedBox(
-              //   height: 100,
-              // )
+              text: 'Acceder como usuario',
+              onTap: () => pageControllerService.pageController.animateToPage(1,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut),
+            ),
+            CustomButton(
+              text: 'Crear evento',
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EventDetailsView(),
+                ),
+              ),
+            ),
           ],
         ),
       ),
