@@ -18,7 +18,7 @@ class Event {
     required this.image,
     required this.name,
     required this.startDate,
-    required this.tags,
+    //required this.tags,
   });
 
   String id;
@@ -30,7 +30,7 @@ class Event {
   String image;
   String name;
   DateTime startDate;
-  List<Preferences> tags;
+  //List<Preferences> tags;
 
   factory Event.fromRawJson(String str) => Event.fromJson(json.decode(str));
 
@@ -46,12 +46,12 @@ class Event {
         image: json["image"],
         name: json["name"],
         startDate: DateTime.parse(json["startDate"]),
-        tags: List<Preferences>.from(json["tags"].map((x) {
+        /*tags: List<Preferences>.from(json["tags"].map((x) {
           List<String> preferences =
               Preferences.values.map((e) => e.toString()).toList();
           int index = preferences.indexOf('Preferences.$x');
           return Preferences.values.elementAt(index);
-        })),
+        })),*/
       );
 
   Map<String, dynamic> toJson() => {
@@ -64,6 +64,6 @@ class Event {
         "image": image,
         "name": name,
         "startDate": startDate.toIso8601String(),
-        "tags": List<Preferences>.from(tags.map((x) => x)),
+        //"tags": List<Preferences>.from(tags.map((x) => x)),
       };
 }
