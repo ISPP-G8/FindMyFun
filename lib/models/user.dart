@@ -2,10 +2,9 @@
 //
 //     final user = userFromJson(jsonString);
 
+import 'package:findmyfun/models/preferences.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
-
-enum Preferences { futbul, cerveza, tenis, ajedrez, videojuegos, musica }
 
 class User {
   User({
