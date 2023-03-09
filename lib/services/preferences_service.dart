@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:findmyfun/models/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/user.dart';
@@ -14,12 +15,12 @@ class PreferencesService extends ChangeNotifier {
   List<dynamic> get preferences => _preferences;
   List<dynamic> get preferencesByUserId => _preferencesByUserId;
 
-  void set preferences(List<dynamic> inputPreferences) {
+  set preferences(List<dynamic> inputPreferences) {
     _preferences = inputPreferences;
     notifyListeners();
   }
 
-  void set preferencesByUserId(List<dynamic> inputPreferences) {
+  set preferencesByUserId(List<dynamic> inputPreferences) {
     _preferencesByUserId = inputPreferences;
     notifyListeners();
   }
@@ -35,10 +36,10 @@ class PreferencesService extends ChangeNotifier {
       }
 
       Map<String, dynamic> data = jsonDecode(resp.body);
-
+      
       data.forEach((key, value) {
-        final user = User.fromRawJson(jsonEncode(value));
-        _preferences.add(user);
+        final preference = Preferences.fromRawJson(jsonEncode(value));
+        preferences.add(preference.name);
       });
     } catch (e) {
       print('Error getting preferences: $e');
@@ -57,8 +58,8 @@ class PreferencesService extends ChangeNotifier {
       Map<String, dynamic> data = jsonDecode(resp.body);
 
       data.forEach((key, value) {
-        final user = User.fromRawJson(jsonEncode(value));
-        _preferences.add(user);
+        final preference = Preferences.fromRawJson(jsonEncode(value));
+        _preferences.add(preference);
       });
     } catch (e) {
       print('Error getting preferences: $e');
