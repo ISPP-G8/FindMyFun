@@ -2,6 +2,7 @@
 //
 //     final events = eventsFromJson(jsonString);
 
+import 'package:findmyfun/models/preferences.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
 import './user.dart';
