@@ -6,13 +6,13 @@ import '../models/user.dart';
 
 class UsersService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
-  List<dynamic> _users = [];
+  List<User> _users = [];
 
   User? currentUser;
 
-  List<dynamic> get users => _users;
+  List<User> get users => _users;
 
-  void set users(List<dynamic> inputUsers) {
+  void set users(List<User> inputUsers) {
     _users = inputUsers;
     notifyListeners();
   }
