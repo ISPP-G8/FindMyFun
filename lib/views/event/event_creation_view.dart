@@ -61,12 +61,18 @@ class _FormsColumn extends StatelessWidget {
           hintText: 'Lugar',
         ),
         const CustomTextForm(
+          hintText: 'Ciudad',
+        ),
+        const CustomTextForm(
+          hintText: 'País',
+        ),
+        const CustomTextForm(
           hintText: 'Descripción',
           maxLines: 5,
           type: TextInputType.multiline,
         ),
-        const CustomTextForm(
-          hintText: 'Fecha',
+        CustomTextForm(
+          hintText: DateTime.now().toString(),
           type: TextInputType.datetime,
         ),
         const CategoryDropdown(),
