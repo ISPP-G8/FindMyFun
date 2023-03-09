@@ -1,4 +1,5 @@
 import 'package:findmyfun/models/models.dart';
+import 'package:findmyfun/services/users_service.dart';
 import 'package:findmyfun/themes/colors.dart';
 import 'package:findmyfun/themes/styles.dart';
 import 'package:findmyfun/widgets/custom_button.dart';
@@ -14,14 +15,17 @@ class ProfileDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: prefer_const_constructors
 
+    final profileViewService = Provider.of<UsersService>(context);
+    var user = profileViewService.getUserDetail('123456');
 
     final pageViewController =
         Provider.of<PageViewService>(context).pageController;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {}),
       backgroundColor: ProjectColors.primary,
       appBar: AppBar(
         leading: GestureDetector(
-            onTap: () =>Navigator.pop(context),
+            onTap: () => Navigator.pop(context),
             child: const Icon(
               Icons.chevron_left,
               size: 45,
@@ -34,8 +38,7 @@ class ProfileDetailsView extends StatelessWidget {
       ),
       body: Center(
         child: Container(
-          //margin: const EdgeInsets.symmetric(horizontal: 30),
-          height: 1000,
+          height: 800,
           width: 400,
           decoration: BoxDecoration(
             color: const Color(0xff828a92),
@@ -50,12 +53,13 @@ class ProfileDetailsView extends StatelessWidget {
                   size: 200,
                   color: Color.fromARGB(255, 67, 32, 32),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 for (var i = 0; i < 6; i++)
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
                     child: TextField(
+                      readOnly: true,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
@@ -63,16 +67,14 @@ class ProfileDetailsView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5),
                           borderSide: BorderSide.none,
                         ),
-                        
                       ),
                     ),
                   ),
                 CustomButton(
-                  text: 'Preferencias',
-                  onTap: () => pageViewController.animateToPage(3,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut)
-                ),
+                    text: user.toString(),
+                    onTap: () => pageViewController.animateToPage(1,
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOut)),
                 const SizedBox(height: 5),
                 const SubmitButton(text: 'CONTINUAR')
               ],
