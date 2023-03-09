@@ -1,4 +1,5 @@
 import 'dart:convert';
+//import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +22,22 @@ class UsersService extends ChangeNotifier {
 
   // TODO: Hacer el updateItem pasando el uid del AuthService()
 
-  
+  Future<void> getUserDetail(String userId) async {
+    final url = Uri.https(_baseUrl, '/Users/$userId.json');
+      try {
+          final resp =  await http.get(url);
+          if(resp.statusCode != 200){
+            return;
+          }
+          print(jsonDecode(resp.body));
+          
+
+
+      } catch(e){
+        print('Error al acceder a los datos del usuario $e');
+      }
+  }
+
 
   //READ EVENT
   Future<void> getUsers() async {

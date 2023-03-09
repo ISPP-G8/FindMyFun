@@ -18,11 +18,7 @@ class LoginView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           // Lo dejo comentado por si se quiere usar en el futuro para probar funcionalidades
-          // floatingActionButton: FloatingActionButton(
-          //   onPressed: () {
-
-          //   },
-          // ),
+          
 
           appBar: AppBar(
             leading: GestureDetector(
@@ -105,7 +101,7 @@ class _FormsColumnState extends State<_FormsColumn> {
 
                     showDialog(
                       context: context,
-                      builder: (context) => const Column(
+                      builder: (context) =>  Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
