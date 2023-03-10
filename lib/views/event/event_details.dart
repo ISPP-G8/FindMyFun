@@ -1,13 +1,19 @@
+import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:findmyfun/screens/access_screen.dart';
+
+import '../../models/event.dart';
+import '../../models/user.dart';
 
 class EventDetailsView extends StatelessWidget {
   const EventDetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -19,7 +25,7 @@ class EventDetailsView extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 50),
               child: FittedBox(
                 child: Text(
-                  'CONCIERTO DE LOS MORANCOS',
+                  selectedEvent.name,
                   textAlign: TextAlign.center,
                   style: Styles.appBar,
                   maxLines: 3,
@@ -54,6 +60,8 @@ class _FormsColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
+    // User eventCreator = UsersService().getUserWithUid(selectedEvent.users[0]);
     return Column(
       children: [
         const SizedBox(
@@ -61,27 +69,28 @@ class _FormsColumn extends StatelessWidget {
         ),
         Container(
           padding: const EdgeInsets.all(10.0),
-          child: Image.asset(
-            'assets/no-image-available.png',
+          child: Image.network(
+            selectedEvent.image,
             fit: BoxFit.cover,
           ),
         ),
-        const CustomTextForm(
-          hintText: 'Lugar',
+        CustomTextForm(
+          hintText: selectedEvent.address,
           enabled: false,
         ),
-        const CustomTextForm(
-          hintText: 'Fecha y hora',
+        CustomTextForm(
+          hintText: selectedEvent.startDate.toString(),
           enabled: false,
         ),
-        const CustomTextForm(
-          hintText: 'Descripción',
+        CustomTextForm(
+          hintText: selectedEvent.description,
           enabled: false,
           maxLines: 5,
           type: TextInputType.multiline,
         ),
         const EventCreator(
-          creatorUsername: 'Creador',
+          creatorUsername:
+              'eventCreator', //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         ),
         const SubmitButton(
           text: 'Unirse',
