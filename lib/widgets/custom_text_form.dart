@@ -6,6 +6,8 @@ class CustomTextForm extends StatelessWidget {
   final EdgeInsets? padding;
   final int? maxLines;
   final TextInputType? type;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
   const CustomTextForm({
     super.key,
     required this.hintText,
@@ -13,6 +15,8 @@ class CustomTextForm extends StatelessWidget {
     this.padding,
     this.maxLines,
     this.type = TextInputType.text,
+    this.controller,
+    this.validator,
   });
 
   @override
@@ -26,6 +30,8 @@ class CustomTextForm extends StatelessWidget {
         keyboardType: type,
         obscureText: obscure,
         maxLines: maxLines,
+        controller: controller,
+        validator: validator,
         textAlign: TextAlign.center,
         decoration: InputDecoration(
           hintText: hintText,
