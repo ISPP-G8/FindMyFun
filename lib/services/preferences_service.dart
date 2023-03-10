@@ -36,13 +36,13 @@ class PreferencesService extends ChangeNotifier {
       }
 
       Map<String, dynamic> data = jsonDecode(resp.body);
-      
+      print(data);
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
-        preferences.add(preference.name);
+        preferences.add(preference);
       });
     } catch (e) {
-      print('Error getting preferences: $e');
+      print('Error getting all preferences: $e');
     }
   }
 
@@ -50,7 +50,6 @@ class PreferencesService extends ChangeNotifier {
     final url = Uri.https(_baseUrl, 'Users/{$userId}/preferences.json');
     try {
       final resp = await http.get(url);
-
       if (resp.statusCode != 200) {
         return;
       }
@@ -63,6 +62,25 @@ class PreferencesService extends ChangeNotifier {
       });
     } catch (e) {
       print('Error getting preferences: $e');
+    }
+  }
+
+  Future<void> savePreferences(
+      String userId, List<dynamic> preferencesToAdd) async {
+    try {
+      final urlUser = Uri.https(_baseUrl, 'Users/$userId/preferences.json');
+      final resp = await http.delete(urlUser);
+
+      for (Preferences preference in preferencesToAdd) {
+        print(preference.id);
+        final urlAdd = Uri.https(
+            _baseUrl, 'Users/$userId/preferences/${preference.id}.json');
+
+        final respAdd =
+            await http.put(urlAdd, body: jsonEncode(preference.toJson()));
+      }
+    } catch (e) {
+      print('Error creating event: $e');
     }
   }
 }
