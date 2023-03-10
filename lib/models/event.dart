@@ -2,8 +2,6 @@
 //
 //     final event = eventFromJson(jsonString);
 
-import 'package:findmyfun/models/models.dart';
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Event {

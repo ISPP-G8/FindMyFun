@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../services/services.dart';
 import '../../widgets/widgets.dart';
 import '../event/event_details.dart';
+import '../home/events/event_list_view.dart';
 
 class AccessView extends StatelessWidget {
   const AccessView({super.key});
@@ -39,11 +40,11 @@ class AccessView extends StatelessWidget {
                   curve: Curves.easeInOut),
             ),
             CustomButton(
-              text: 'Detalles de evento',
+              text: 'Lista de evento',
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const EventDetailsView(),
+                  builder: (context) => const EventListView(),
                 ),
               ),
             ),

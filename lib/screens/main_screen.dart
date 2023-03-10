@@ -1,4 +1,3 @@
-import 'package:findmyfun/screens/screens.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
