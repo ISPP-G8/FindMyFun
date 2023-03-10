@@ -22,7 +22,7 @@ class EventsService extends ChangeNotifier {
 
       print(resp.body);
     } catch (e) {
-      print('Error al eliminar el evento: $e');
+      print('Error while deleting the event: $e');
     }
   }
 

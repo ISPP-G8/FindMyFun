@@ -38,6 +38,7 @@ class _RegisterFormContainer extends StatefulWidget {
 }
 
 class _RegisterFormContainerState extends State<_RegisterFormContainer> {
+  final _imageController = TextEditingController();
   final _emailController = TextEditingController();
   final _nameController = TextEditingController();
   final _surnameController = TextEditingController();
@@ -51,9 +52,14 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     return Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       key: _formKey,
       child: Column(children: [
+        CustomTextForm(
+          hintText: 'https://tuimagen.ejemplo',
+          controller: _imageController,
+          validator: (value) => Validators.validateNotEmpty(value),
+        ),
         CustomTextForm(
           hintText: 'Nombre',
           controller: _nameController,
@@ -84,9 +90,9 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
           hintText: 'Repetir contraseña',
           obscure: true,
           controller: _passwordConfirmController,
-          
           validator: (value) {
-            if(_passwordConfirmController.text != _passwordController.text) return 'Las contraseñas no coinciden.';
+            if (_passwordConfirmController.text != _passwordController.text)
+              return 'Las contraseñas no coinciden.';
             return null;
           },
         ),
@@ -107,6 +113,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                       password: _passwordController.text);
               userService.currentUser = user.User(
                   id: credential.user!.uid,
+                  image: _imageController.text,
                   name: _nameController.text,
                   surname: _surnameController.text,
                   username: _usernameController.text,

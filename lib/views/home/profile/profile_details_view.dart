@@ -2,10 +2,8 @@ import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/users_service.dart';
 import 'package:findmyfun/themes/colors.dart';
 import 'package:findmyfun/themes/styles.dart';
-import 'package:findmyfun/widgets/custom_button.dart';
-import 'package:findmyfun/widgets/submit_button.dart';
+import 'package:findmyfun/widgets/custom_text_form.dart';
 import 'package:flutter/material.dart';
-import 'package:findmyfun/services/page_view_service.dart';
 import 'package:provider/provider.dart';
 
 class ProfileDetailsView extends StatelessWidget {
@@ -13,13 +11,45 @@ class ProfileDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_const_constructors
-
     final profileViewService = Provider.of<UsersService>(context);
-    var user = profileViewService.getUserDetail('123456');
 
-    final pageViewController =
-        Provider.of<PageViewService>(context).pageController;
+    User userSelected;
+    profileViewService
+        .getUserWithUid('OjLDdgjOedeILmbwik90hW7YUlq1')
+        .then((value) {
+      print(value);
+    });
+
+    // User userSelected;
+    // Future<User> _userSelected(String userId) async {
+    //   User userSelected;
+    //   var snapshot =
+    //       await profileViewService.getUserWithUid(userId).then((value) {
+    //     userSelected = value;
+    //     return userSelected;
+    //   });
+    // }
+
+    // void userSelectedFunc() async {
+    //   final userSelected = await _userSelected('OjLDdgjOedeILmbwik90hW7YUlq1');
+    // }
+
+    // User userSelected = User(
+    //     id: "1",
+    //     image:
+    //         "https://www.google.com/url?sa=i&url=https%3A%2F%2Fes.dreamstime.com%2Ffoto-de-archivo-persona-feliz-en-el-campo-image42388021&psig=AOvVaw1MSO-DFzC-u5H17VRNg93G&ust=1678554113861000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCNDS8r7r0f0CFQAAAAAdAAAAABAQ",
+    //     name: "a",
+    //     surname: "a",
+    //     username: "a",
+    //     city: "a",
+    //     email: "a",
+    //     preferences: []);
+    // profileViewService
+    //     .getUserWithUid('OjLDdgjOedeILmbwik90hW7YUlq1')
+    //     .then((value) {
+    //   userSelected = value;
+    // });
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: () {}),
       backgroundColor: ProjectColors.primary,
@@ -48,35 +78,30 @@ class ProfileDetailsView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.account_circle, // icono de foto de perfil
-                  size: 200,
-                  color: Color.fromARGB(255, 67, 32, 32),
+                Container(
+                  padding: const EdgeInsets.all(10.0),
+                  //child: Image.network(userSelected.image, fit: BoxFit.cover),
                 ),
-                const SizedBox(height: 20),
-                for (var i = 0; i < 6; i++)
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                    child: TextField(
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                  ),
-                CustomButton(
-                    text: user.toString(),
-                    onTap: () => pageViewController.animateToPage(1,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeInOut)),
-                const SizedBox(height: 5),
-                const SubmitButton(text: 'CONTINUAR')
+                // CustomTextForm(
+                //   hintText: userSelected.username,
+                //   enabled: false,
+                // ),
+                // CustomTextForm(
+                //   hintText: userSelected.name,
+                //   enabled: false,
+                // ),
+                // CustomTextForm(
+                //   hintText: userSelected.surname,
+                //   enabled: false,
+                // ),
+                // CustomTextForm(
+                //   hintText: userSelected.city,
+                //   enabled: false,
+                // ),
+                // CustomTextForm(
+                //   hintText: userSelected.email,
+                //   enabled: false,
+                // ),
               ],
             ),
           ),
