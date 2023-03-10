@@ -4,16 +4,15 @@ import 'package:findmyfun/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../services/events_service.dart';
 import '../../../widgets/preferences_container.dart';
 import '../../../widgets/submit_button.dart';
 
 class PreferencesView extends StatelessWidget {
-  const PreferencesView({Key? key}) : super(key: key);
+  const PreferencesView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final pageViewController =
-        Provider.of<PageViewService>(context).pageController;
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -44,7 +43,6 @@ class PreferencesView extends StatelessWidget {
 
 class PreferencesColumn extends StatefulWidget {
   const PreferencesColumn({super.key});
-
   @override
   _PreferencesColumnState createState() => _PreferencesColumnState();
 }
@@ -54,6 +52,7 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
   Widget build(BuildContext context) {
     final preferencesService = Provider.of<PreferencesService>(context);
     final preferences = preferencesService.preferences;
+    final preferencesNames = preferences.map((e) => e.name).toList();
     final preferencesByUserId = preferencesService.preferencesByUserId;
     return Column(
       children: [
@@ -61,18 +60,19 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
           height: 10,
         ),
         SizedBox(
-          height: 600,
+          height: 480,
           child: CustomScrollView(
             slivers: <Widget>[
               SliverList(
                 delegate: SliverChildBuilderDelegate(
+                  childCount: preferences.length, //Número de preferencias
                   (BuildContext context, int index) {
                     return Container(
                       alignment: Alignment.center,
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 10.0),
                         child: SizedBox(
-                          height: 100,
+                          height: 80,
                           width: 325,
                           child: ElevatedButton(
                               style: ButtonStyle(
@@ -82,8 +82,8 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                                           borderRadius:
                                               BorderRadius.circular(25.0),
                                           side: BorderSide(
-                                            color: preferencesByUserId
-                                                    .contains(index)
+                                            color: preferencesByUserId.contains(
+                                                    preferences[index])
                                                 ? Colors.black
                                                 : Colors
                                                     .white, //Si la preferencia se encuentra en la lista se señala con un borde negro
@@ -93,24 +93,26 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                                       MaterialStateProperty.all(Colors.white)),
                               onPressed: () {
                                 setState(() {
-                                  if (preferencesByUserId.contains(index)) {
+                                  if (preferencesByUserId
+                                      .contains(preferences[index])) {
                                     //Si una preferencia seleccionada se presiona, es eliminada de la lista
-                                    preferencesByUserId.remove(index);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text(
-                                                'Se ha seleccionado la preferencia ${index + 1}')));
-                                  } else {
-                                    //Si una preferencia sin seleccionar se presiona, es añadida a la lista
-                                    preferencesByUserId.add(index);
+                                    preferencesByUserId
+                                        .remove(preferences[index]);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(
                                                 'Se ha deseleccionado la preferencia ${index + 1}')));
+                                  } else {
+                                    //Si una preferencia sin seleccionar se presiona, es añadida a la lista
+                                    preferencesByUserId.add(preferences[index]);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Se ha seleccionado la preferencia ${index + 1}')));
                                   }
                                 });
                               },
-                              child: Text('Preferencia ${index + 1}',
+                              child: Text('${preferencesNames[index]}',
                                   style: const TextStyle(
                                       color: Colors
                                           .black)) //Nombre de la preferencia
@@ -119,7 +121,6 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                       ),
                     );
                   },
-                  childCount: 15, //Número de preferencias
                 ),
               ),
             ],
@@ -128,6 +129,9 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
         const SizedBox(
           height: 10,
         ),
+        FloatingActionButton(onPressed: () {
+          preferencesService.savePreferences("37486", preferencesByUserId);
+        }),
         const SubmitButton(
             text:
                 'CONTINUAR') //Botón para volver al perfil y confirmar los cambios
