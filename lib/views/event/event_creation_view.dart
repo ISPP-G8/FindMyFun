@@ -1,20 +1,12 @@
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:multiselect/multiselect.dart';
-import 'package:provider/provider.dart';
-
-import '../../services/page_view_service.dart';
-import '../../services/services.dart';
 
 class EventCreationView extends StatelessWidget {
   const EventCreationView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final pageViewController =
-        Provider.of<PageViewService>(context).pageController;
-
     return SafeArea(
       child: Scaffold(
           resizeToAvoidBottomInset: true,
@@ -42,9 +34,7 @@ class EventCreationView extends StatelessWidget {
 }
 
 class _FormsColumn extends StatelessWidget {
-  const _FormsColumn({
-    super.key,
-  });
+  const _FormsColumn();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +43,6 @@ class _FormsColumn extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        EventPhotoPicker(),
         const CustomTextForm(
           hintText: 'Nombre del evento',
         ),
@@ -71,14 +60,14 @@ class _FormsColumn extends StatelessWidget {
           maxLines: 5,
           type: TextInputType.multiline,
         ),
-        CustomTextForm(
-          hintText: DateTime.now().toString(),
+        const CustomTextForm(
+          hintText: 'Link de la imagen',
+        ),
+        const CustomTextForm(
+          hintText: 'Fecha y hora',
           type: TextInputType.datetime,
         ),
         const CategoryDropdown(),
-        const CustomCheckbox(
-          checkboxText: '¿Evento privado?',
-        ),
         SubmitButton(
             text: 'CONTINUAR',
             onTap: () {

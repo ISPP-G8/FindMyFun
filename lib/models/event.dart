@@ -6,35 +6,35 @@ import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Event {
-    Event({
-        required this.id,
-        required this.address,
-        required this.city,
-        required this.country,
-        required this.creator,
-        required this.description,
-        required this.image,
-        required this.name,
-        required this.startDate,
-        required this.tags,
-    });
+  Event({
+    required this.id,
+    required this.address,
+    required this.city,
+    required this.country,
+    required this.creator,
+    required this.description,
+    required this.image,
+    required this.name,
+    required this.startDate,
+    required this.tags,
+  });
 
-    String id;
-    String address;
-    String city;
-    String country;
-    String creator;
-    String description;
-    String image;
-    String name;
-    DateTime startDate;
-    List<String> tags;
+  String id;
+  String address;
+  String city;
+  String country;
+  String creator;
+  String description;
+  String image;
+  String name;
+  DateTime startDate;
+  List<String> tags;
 
-    factory Event.fromRawJson(String str) => Event.fromJson(json.decode(str));
+  factory Event.fromRawJson(String str) => Event.fromJson(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+  String toRawJson() => json.encode(toJson());
 
-    factory Event.fromJson(Map<String, dynamic> json) => Event(
+  factory Event.fromJson(Map<String, dynamic> json) => Event(
         id: json["id"],
         address: json["address"],
         city: json["city"],
@@ -45,9 +45,9 @@ class Event {
         name: json["name"],
         startDate: DateTime.parse(json["startDate"]),
         tags: List<String>.from(json["tags"].map((x) => x)),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "address": address,
         "city": city,
@@ -58,5 +58,5 @@ class Event {
         "name": name,
         "startDate": startDate.toIso8601String(),
         "tags": List<dynamic>.from(tags.map((x) => x)),
-    };
+      };
 }
