@@ -1,9 +1,9 @@
+import 'package:findmyfun/screens/access_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 
 class EventCreator extends StatefulWidget {
   final String creatorUsername;
-
   const EventCreator({super.key, required this.creatorUsername});
 
   @override
@@ -29,9 +29,12 @@ class _EventCreator extends State<EventCreator> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          const CustomButton(
+          CustomButton(
             text: 'Visitar perfil',
             width: 100,
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const AccessScreen()),
+            ),
           ),
         ],
       ),
