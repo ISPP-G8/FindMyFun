@@ -25,7 +25,7 @@ class PreferencesService extends ChangeNotifier {
     notifyListeners();
   }
 
-  //READ EVENT
+  //READ PREFERENCES
   Future<void> getPreferences() async {
     final url = Uri.https(_baseUrl, 'Preferences.json');
     try {
