@@ -8,5 +8,4 @@ export 'package:findmyfun/widgets/login_title.dart';
 export 'package:findmyfun/widgets/submit_button.dart';
 export 'package:findmyfun/widgets/event_creator.dart';
 export 'package:findmyfun/widgets/custom_checkbox.dart';
-export 'package:findmyfun/widgets/event_photo_picker.dart';
 export 'package:findmyfun/widgets/category_dropdown.dart';

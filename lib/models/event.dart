@@ -20,8 +20,6 @@ class Event {
     required this.users,
   });
 
-  });
-
   String address;
   String city;
   String country;

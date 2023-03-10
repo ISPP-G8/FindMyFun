@@ -48,6 +48,7 @@ class AccessView extends StatelessWidget {
                   builder: (context) => const EventListView(),
                 ),
               ),
+            ),
             CustomButton(
                 text: 'Crear evento',
                 onTap: () => Navigator.push(
