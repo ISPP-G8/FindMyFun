@@ -24,16 +24,16 @@ class _MiddleScreenState extends State<MiddleScreen> {
       stream: AuthService().authStateChanges,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (user == null || !snapshot.hasData) {
-          return AccessScreen();
+          return const AccessScreen();
         }
 
         try {
           user = AuthService().currentUser;
           print(user?.email);
 
-          return MainScreen();
+          return const MainScreen();
         } catch (e) {
-          return AccessScreen();
+          return const AccessScreen();
         }
       },
     );

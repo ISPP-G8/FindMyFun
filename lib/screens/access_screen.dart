@@ -12,7 +12,6 @@ class AccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageControllerService = Provider.of<PageViewService>(context);
-    final size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: ProjectColors.primary,
         body: Container(

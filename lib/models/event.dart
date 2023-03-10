@@ -9,7 +9,6 @@ class Event {
     required this.address,
     required this.city,
     required this.country,
-    required this.creator,
     required this.description,
     required this.finished,
     required this.id,
@@ -23,7 +22,6 @@ class Event {
   String address;
   String city;
   String country;
-  String creator;
   String description;
   bool finished;
   String id;
@@ -41,7 +39,6 @@ class Event {
         address: json["address"],
         city: json["city"],
         country: json["country"],
-        creator: json["creator"],
         description: json["description"],
         finished: json["finished"],
         id: json["id"],
@@ -57,11 +54,9 @@ class Event {
       );
 
   Map<String, dynamic> toJson() => {
-
         "address": address,
         "city": city,
         "country": country,
-        "creator": creator,
         "description": description,
         "finished": finished,
         "id": id,
@@ -74,6 +69,5 @@ class Event {
 
   @override
   String toString() =>
-      'address: $address, city: $city, country: $country, creator: $creator, description: $description, finished: $finished, id: $id, image: $image, name: $name, startDate: $startDate, tags: $tags, users: $users';
-
+      'address: $address, city: $city, country: $country, description: $description, finished: $finished, id: $id, image: $image, name: $name, startDate: $startDate, tags: $tags, users: $users';
 }

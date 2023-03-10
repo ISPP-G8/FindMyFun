@@ -15,7 +15,7 @@ class _CategoryDropdown extends State<CategoryDropdown> {
     'Option3',
     'Option4',
     'Option5'
-  ];
+  ]; //TODO añadir llamada al getCategorias aquí
   List<String> selectedCategories = [];
 
   @override
