@@ -10,6 +10,7 @@ class CustomTextForm extends StatelessWidget {
   final bool enabled;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+
   const CustomTextForm({
     super.key,
     required this.hintText,

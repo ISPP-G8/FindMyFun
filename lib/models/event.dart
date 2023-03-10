@@ -20,6 +20,8 @@ class Event {
     required this.users,
   });
 
+  });
+
   String address;
   String city;
   String country;
@@ -57,6 +59,7 @@ class Event {
       );
 
   Map<String, dynamic> toJson() => {
+
         "address": address,
         "city": city,
         "country": country,
@@ -74,4 +77,5 @@ class Event {
   @override
   String toString() =>
       'address: $address, city: $city, country: $country, creator: $creator, description: $description, finished: $finished, id: $id, image: $image, name: $name, startDate: $startDate, tags: $tags, users: $users';
+
 }
