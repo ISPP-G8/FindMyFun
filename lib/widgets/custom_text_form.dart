@@ -6,6 +6,7 @@ class CustomTextForm extends StatelessWidget {
   final EdgeInsets? padding;
   final int? maxLines;
   final TextInputType? type;
+  final bool enabled;
   const CustomTextForm({
     super.key,
     required this.hintText,
@@ -13,6 +14,7 @@ class CustomTextForm extends StatelessWidget {
     this.padding,
     this.maxLines = 1,
     this.type = TextInputType.text,
+    this.enabled = true,
   });
 
   @override
@@ -28,6 +30,7 @@ class CustomTextForm extends StatelessWidget {
         keyboardType: type,
         obscureText: obscure,
         maxLines: maxLines,
+        enabled: enabled,
         textAlign: TextAlign.center,
         decoration: InputDecoration(
           hintText: hintText,

@@ -1,6 +1,7 @@
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:findmyfun/screens/access_screen.dart';
 
 class EventDetailsView extends StatelessWidget {
   const EventDetailsView({super.key});
@@ -66,19 +67,35 @@ class _FormsColumn extends StatelessWidget {
           ),
         ),
         const CustomTextForm(
-          hintText: 'Nombre del evento',
+          hintText: 'Lugar',
+          enabled: false,
         ),
         const CustomTextForm(
           hintText: 'Fecha y hora',
-          type: TextInputType.datetime,
+          enabled: false,
         ),
         const CustomTextForm(
           hintText: 'Descripción',
+          enabled: false,
           maxLines: 5,
           type: TextInputType.multiline,
         ),
         const EventCreator(
           creatorUsername: 'Creador',
+        ),
+        const SubmitButton(
+          text: 'Unirse',
+          // onTap: () => Navigator.of(context).push(
+          //   MaterialPageRoute(builder: (context) => const AccessScreen()),
+          // ),
+          // onTap: () => ,
+        ),
+        const SubmitButton(
+          text: 'Chat',
+          // onTap: () => Navigator.of(context).push(
+          //   MaterialPageRoute(builder: (context) => const AccessScreen()),
+          // ),
+          // onTap: => (),
         ),
       ],
     );
