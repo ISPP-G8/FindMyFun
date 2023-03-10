@@ -132,11 +132,14 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
         FloatingActionButton(onPressed: () {
           // When merge, change first option by current user id
           preferencesService.savePreferences("BZoK1wRN0Ze4DAcgFgs4fFpsI9o2", preferencesByUserId);
-        }),
-        const SubmitButton(
+          Navigator.pop(context, "main");
+        }, child: const Icon(Icons.save),
+        ),
+        /*SubmitButton(
             text:
-                'CONTINUAR'
-            ) //Botón para volver al perfil y confirmar los cambios
+                'CONTINUAR',
+            onTap: () async => Navigator.pop(context, "main"),
+            )*/
       ],
     );
   }
