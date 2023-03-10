@@ -3,6 +3,7 @@ import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:findmyfun/screens/access_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/event.dart';
 import '../../models/user.dart';
@@ -61,7 +62,21 @@ class _FormsColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
-    // User eventCreator = UsersService().getUserWithUid(selectedEvent.users[0]);
+    final eventService = Provider.of<EventsService>(context, listen: false);
+    final userService = Provider.of<UsersService>(context, listen: false);
+
+    User eventCreator = User(
+        id: "1",
+        name: "a",
+        surname: "a",
+        username: "a",
+        city: "a",
+        email: "a",
+        preferences: []);
+    userService.getUserWithUid(selectedEvent.users.first).then((value) {
+      eventCreator = value;
+    });
+    //User eventCreator = UsersService().getUserWithUid(selectedEvent.users[0]);
     return Column(
       children: [
         const SizedBox(
@@ -88,16 +103,12 @@ class _FormsColumn extends StatelessWidget {
           maxLines: 5,
           type: TextInputType.multiline,
         ),
-        const EventCreator(
-          creatorUsername:
-              'eventCreator', //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        EventCreator(
+          creatorUsername: eventCreator.username,
         ),
-        const SubmitButton(
+        SubmitButton(
           text: 'Unirse',
-          // onTap: () => Navigator.of(context).push(
-          //   MaterialPageRoute(builder: (context) => const AccessScreen()),
-          // ),
-          // onTap: () => ,
+          onTap: () => eventService.addUserToEvent(selectedEvent),
         ),
         const SubmitButton(
           text: 'Chat',
