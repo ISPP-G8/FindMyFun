@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:findmyfun/services/auth_service.dart';
@@ -23,9 +24,9 @@ class EventsService extends ChangeNotifier {
     try {
       final resp = await http.delete(url);
 
-      print(resp.body);
+      debugPrint(resp.body);
     } catch (e) {
-      print('Error al eliminar el evento: $e');
+      debugPrint('Error al eliminar el evento: $e');
     }
   }
 
@@ -35,7 +36,7 @@ class EventsService extends ChangeNotifier {
     try {
       final resp = await http.put(url, body: jsonEncode(event.toJson()));
     } catch (e) {
-      print('Error creating event: $e');
+      debugPrint('Error creating event: $e');
     }
   }
 
@@ -62,45 +63,39 @@ class EventsService extends ChangeNotifier {
 
       return true;
     } catch (e) {
-      print('Error getting events: $e');
+      debugPrint('Error getting events: $e');
       return false;
     }
   }
 
   //FIND EVENTS
-  Future<bool> findEvents() async {
+  Future<List<Event>> findEvents() async {
     final url = Uri.https(_baseUrl, 'Events.json');
     final UsersService usersService = UsersService();
-    
-    // TODO: Always null cause user is not created yet
-    User? currentUser = usersService.currentUser;
+    final AuthService authService = AuthService();
 
-    if (currentUser == null) {
-      debugPrint('Error currentUser is $currentUser');
-      return false;
-    }
+    User currentUser = await usersService.getUserWithUid(authService.currentUser!.uid);
+    List<String> preferences = currentUser.preferences.map((p) => p.toString().split('.').last).toList();
 
     try {
       final resp = await http.get(url);
-
       if (resp.statusCode != 200) {
-        return false;
+        throw Exception('Error in response');
       }
       List<Event> eventsAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
 
       data.forEach((key, value) {
         final event = Event.fromRawJson(jsonEncode(value));
-        if (currentUser.preferences.toSet().intersection(event.tags.toSet()).isNotEmpty/* && currentUser.city == event.city*/) {
+        if (preferences.toSet().intersection(event.tags.toSet()).isNotEmpty && !event.hasFinished/* && currentUser.city == event.city*/) {
           eventsAux.add(event);
         }
       });
       events = eventsAux;
-
-      return true;
+      return eventsAux;
+      
     } catch (e) {
-      debugPrint('Error getting events: $e');
-      return false;
+      throw Exception('Error getting events: $e');
     }
   }
 

@@ -36,7 +36,7 @@ class User {
         username: json["username"],
         city: json["city"],
         email: json["email"],
-        preferences: List<Preferences>.from(json["preferences"].map((x) => x)),
+        preferences: List<Preferences>.from(json["preferences"].values.map((x) => Preferences.values.firstWhere((e) => e.toString().split(".").last == x['name']))),
       );
 
   Map<String, dynamic> toJson() => {

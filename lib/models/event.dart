@@ -31,6 +31,10 @@ class Event {
   List<String?> tags;
   List<String> users;
 
+  bool get hasFinished => DateTime.now().isAfter(startDate);
+
+  String get creator => users.first;
+
   factory Event.fromRawJson(String str) => Event.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
