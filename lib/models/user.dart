@@ -2,7 +2,6 @@
 //
 //     final user = userFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 enum Preferences { futbol, cerveza, tenis, ajedrez, videojuegos, musica }

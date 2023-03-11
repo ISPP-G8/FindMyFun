@@ -51,7 +51,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     return Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       key: _formKey,
       child: Column(children: [
         CustomTextForm(
@@ -84,9 +84,9 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
           hintText: 'Repetir contraseña',
           obscure: true,
           controller: _passwordConfirmController,
-          
           validator: (value) {
-            if(_passwordConfirmController.text != _passwordController.text) return 'Las contraseñas no coinciden.';
+            if (_passwordConfirmController.text != _passwordController.text)
+              return 'Las contraseñas no coinciden.';
             return null;
           },
         ),
