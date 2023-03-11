@@ -36,7 +36,7 @@ class User {
         username: json["username"],
         city: json["city"],
         email: json["email"],
-        preferences: List<Preferences>.from(json["preferences"].map((x) => x)),
+        preferences: Map.from(json["preferences"]).map((k, v) => MapEntry<String, Preferences>(k, Preferences.fromJson(v))).values.toList(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,6 +46,6 @@ class User {
         "username": username,
         "city": city,
         "email": email,
-        "preferences": List<Preferences>.from(preferences.map((x) => x)),
+        "preferences": Map.from(preferences.fold({}, (r, p) => r..[p?.id] = p)).map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
       };
 }

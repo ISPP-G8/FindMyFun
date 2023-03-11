@@ -50,6 +50,38 @@ class PreferencesService extends ChangeNotifier {
     }
   }
 
+  // TODO: De momento no se usa, la dejo por si hace falta
+  Future<Preferences> getPreferenceByName(String name) async {
+    final url = Uri.https(_baseUrl, 'Preferences.json');
+    try {
+      final resp = await http.get(url);
+
+      if (resp.statusCode != 200) {
+        throw Exception('Error in response');
+      }
+
+      Map<String, dynamic> data = jsonDecode(resp.body);
+      Preferences? preferenceAux;
+      data.forEach((key, value) {
+        final preference = Preferences.fromRawJson(jsonEncode(value));
+        
+        if (preference.name == name) {
+          preferenceAux = preference;
+        }
+
+      });
+
+      if (preferenceAux == null) {
+          throw Exception('No existe preferencia');
+      }
+
+      return preferenceAux!;
+
+    } catch (e) {
+      throw Exception('Error in response');
+    }
+  }
+
   Future<void> getPreferencesByUserId() async {
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final url = Uri.https(_baseUrl, 'Users/{$activeUserId}/preferences.json');
