@@ -16,6 +16,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const AppState());
+  
   test('One user joins an event', () {
     // Creation of the event´s creator
     final creatorUser = User(
@@ -54,6 +55,7 @@ Future<void> main() async {
         city: "test1",
         email: "test1@test1.com",
         preferences: []);
+    
     void testLogAndAddUser() async {
       await AuthService()
           .signInWithEmailAndPassword(email: testUser.email, password: 'asd');
