@@ -65,17 +65,17 @@ class _FormsColumn extends StatelessWidget {
     final eventService = Provider.of<EventsService>(context, listen: false);
     final userService = Provider.of<UsersService>(context, listen: false);
 
-    User eventCreator = User(
-        id: "1",
-        name: "a",
-        surname: "a",
-        username: "a",
-        city: "a",
-        email: "a",
-        preferences: []);
-    userService.getUserWithUid(selectedEvent.users.first).then((value) {
-      eventCreator = value;
-    });
+    // User eventCreator = User(
+    //     id: "1",
+    //     name: "a",
+    //     surname: "a",
+    //     username: "a",
+    //     city: "a",
+    //     email: "a",
+    //     preferences: []);
+    // userService.getUserWithUid(selectedEvent.users.first).then((value) {
+    //   eventCreator = value;
+    // });
     //User eventCreator = UsersService().getUserWithUid(selectedEvent.users[0]);
     return Column(
       children: [
@@ -104,7 +104,7 @@ class _FormsColumn extends StatelessWidget {
           type: TextInputType.multiline,
         ),
         EventCreator(
-          creatorUsername: eventCreator.username,
+          creatorUsername: 'pepe',
         ),
         SubmitButton(
           text: 'Unirse',
