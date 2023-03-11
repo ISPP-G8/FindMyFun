@@ -6,6 +6,7 @@ import 'package:findmyfun/themes/styles.dart';
 import 'package:findmyfun/widgets/custom_text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileDetailsView extends StatelessWidget {
   const ProfileDetailsView({super.key});
@@ -13,45 +14,10 @@ class ProfileDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
-
-    /*User userSelected;
-    userService
-        .getUserWithUid()
-        .then((value) {
-      print(value);*/
-
-    // User userSelected;
-    // Future<User> _userSelected(String userId) async {
-    //   User userSelected;
-    //   var snapshot =
-    //       await profileViewService.getUserWithUid(userId).then((value) {
-    //     userSelected = value;
-    //     return userSelected;
-    //   });
-    // }
-
-    // void userSelectedFunc() async {
-    //   final userSelected = await _userSelected('OjLDdgjOedeILmbwik90hW7YUlq1');
-    // }
-
-    // User userSelected = User(
-    //     id: "1",
-    //     image:
-    //         "https://www.google.com/url?sa=i&url=https%3A%2F%2Fes.dreamstime.com%2Ffoto-de-archivo-persona-feliz-en-el-campo-image42388021&psig=AOvVaw1MSO-DFzC-u5H17VRNg93G&ust=1678554113861000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCNDS8r7r0f0CFQAAAAAdAAAAABAQ",
-    //     name: "a",
-    //     surname: "a",
-    //     username: "a",
-    //     city: "a",
-    //     email: "a",
-    //     preferences: []);
-    // profileViewService
-    //     .getUserWithUid('OjLDdgjOedeILmbwik90hW7YUlq1')
-    //     .then((value) {
-    //   userSelected = value;
-    // });
+    final currentUser = userService.currentUser!;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {}),
+      // floatingActionButton: FloatingActionButton(onPressed: () {}),
       backgroundColor: ProjectColors.primary,
       appBar: AppBar(
         leading: GestureDetector(
@@ -79,34 +45,73 @@ class ProfileDetailsView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(10.0),
-                  //child: Image.network(userSelected.image, fit: BoxFit.cover),
+                    padding: const EdgeInsets.all(10.0),
+                    // child: Image.network(currentUser.image!, fit: BoxFit.cover),
+                    child: userImage(currentUser)),
+                CustomTextForm(
+                  hintText: currentUser.username,
+                  enabled: false,
                 ),
-                // CustomTextForm(
-                //   hintText: userSelected.username,
-                //   enabled: false,
-                // ),
-                // CustomTextForm(
-                //   hintText: userSelected.name,
-                //   enabled: false,
-                // ),
-                // CustomTextForm(
-                //   hintText: userSelected.surname,
-                //   enabled: false,
-                // ),
-                // CustomTextForm(
-                //   hintText: userSelected.city,
-                //   enabled: false,
-                // ),
-                // CustomTextForm(
-                //   hintText: userSelected.email,
-                //   enabled: false,
-                // ),
+                CustomTextForm(
+                  hintText: currentUser.name,
+                  enabled: false,
+                ),
+                CustomTextForm(
+                  hintText: currentUser.surname,
+                  enabled: false,
+                ),
+                CustomTextForm(
+                  hintText: currentUser.city,
+                  enabled: false,
+                ),
+                CustomTextForm(
+                  hintText: currentUser.email,
+                  enabled: false,
+                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+Widget userImage(User user) {
+  // En chrome puede que de error y se muestre el icono pero en móvil va bien
+
+  if (user.image == null || user.image!.isEmpty) {
+    return const Icon(
+      Icons.account_circle,
+      size: 150,
+    );
+  }
+
+  try {
+    return CircleAvatar(
+        radius: 120,
+        backgroundImage: AssetImage('assets/placeholder.png'),
+        child: ClipOval(
+          child: CachedNetworkImage(
+            fit: BoxFit.cover,
+            height: 300,
+            placeholder: (context, url) =>
+                Image.asset('assets/placeholder.png'),
+            imageUrl: user.image!,
+            errorWidget: (context, url, error) {
+              print('Error al obtener la imagen: $error');
+
+              return const Icon(
+                Icons.account_circle,
+                size: 150,
+              );
+            },
+          ),
+        ));
+  } catch (e) {
+    return const Icon(
+      Icons.account_circle,
+      size: 150,
     );
   }
 }

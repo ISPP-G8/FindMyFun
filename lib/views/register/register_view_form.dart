@@ -112,14 +112,15 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                       email: _emailController.text,
                       password: _passwordController.text);
               userService.currentUser = user.User(
-                  id: credential.user!.uid,
-                  image: _imageController.text,
-                  name: _nameController.text,
-                  surname: _surnameController.text,
-                  username: _usernameController.text,
-                  city: _locationController.text,
-                  email: _emailController.text,
-                  preferences: []);
+                id: credential.user!.uid,
+                image: _imageController.text,
+                name: _nameController.text,
+                surname: _surnameController.text,
+                username: _usernameController.text,
+                city: _locationController.text,
+                email: _emailController.text,
+                // preferences: []
+              );
               print(credential.user?.getIdToken());
               final pageViewService =
                   Provider.of<PageViewService>(context, listen: false);

@@ -118,6 +118,9 @@ class _FormsColumnState extends State<_FormsColumn> {
                           .signInWithEmailAndPassword(
                               email: _emailController.text,
                               password: _passwordController.text);
+
+                      print('User uid: ${credential.user?.uid}');
+
                       Future.delayed(
                         Duration.zero,
                         () async {
@@ -125,6 +128,10 @@ class _FormsColumnState extends State<_FormsColumn> {
                         },
                       );
                     } on FirebaseAuthException catch (e) {
+                      print('Error al iniciar sesion $e');
+                      Navigator.pop(context);
+                      return;
+                    } catch (e) {
                       print('Error al iniciar sesion $e');
                       Navigator.pop(context);
                       return;
