@@ -1,4 +1,5 @@
 import 'package:findmyfun/models/models.dart';
+import 'package:findmyfun/services/auth_service.dart';
 import 'package:findmyfun/services/users_service.dart';
 import 'package:findmyfun/themes/colors.dart';
 import 'package:findmyfun/themes/styles.dart';
@@ -11,14 +12,13 @@ class ProfileDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profileViewService = Provider.of<UsersService>(context);
+    final userService = Provider.of<UsersService>(context);
 
-    User userSelected;
-    profileViewService
-        .getUserWithUid('OjLDdgjOedeILmbwik90hW7YUlq1')
+    /*User userSelected;
+    userService
+        .getUserWithUid()
         .then((value) {
-      print(value);
-    });
+      print(value);*/
 
     // User userSelected;
     // Future<User> _userSelected(String userId) async {

@@ -3,6 +3,7 @@ import 'package:findmyfun/screens/main_screen.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MiddleScreen extends StatefulWidget {
   const MiddleScreen({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class _MiddleScreenState extends State<MiddleScreen> {
   @override
   Widget build(BuildContext context) {
     user = AuthService().currentUser;
+    final userService = Provider.of<UsersService>(context);
 
     // TODO: asignar usuario en usuariosService
 
@@ -30,6 +32,7 @@ class _MiddleScreenState extends State<MiddleScreen> {
         try {
           user = AuthService().currentUser;
           print(user?.email);
+          userService.getUserWithUid();
 
           return MainScreen();
         } catch (e) {

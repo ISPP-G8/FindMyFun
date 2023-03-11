@@ -15,10 +15,11 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageViewController =
         Provider.of<PageViewService>(context).pageController;
+    final userService = Provider.of<UsersService>(context);
+
     return SafeArea(
       child: Scaffold(
           // Lo dejo comentado por si se quiere usar en el futuro para probar funcionalidades
-          
 
           appBar: AppBar(
             leading: GestureDetector(
@@ -101,7 +102,7 @@ class _FormsColumnState extends State<_FormsColumn> {
 
                     showDialog(
                       context: context,
-                      builder: (context) =>  Column(
+                      builder: (context) => Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -114,18 +115,14 @@ class _FormsColumnState extends State<_FormsColumn> {
 
                     try {
                       UserCredential credential = await AuthService()
-                        .signInWithEmailAndPassword(
-                            email: _emailController.text,
-                            password: _passwordController.text);
-                      
-                    } on FirebaseAuthException catch(e) {
-
+                          .signInWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text);
+                    } on FirebaseAuthException catch (e) {
                       print('Error al iniciar sesion $e');
                       Navigator.pop(context);
                       return;
                     }
-
-                    
 
                     // await usersService.getUsers();
 
