@@ -14,6 +14,12 @@ class EventListView extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: ProjectColors.primary,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            await eventsService
+                .deleteEvent('1e0f7170-bf79-11ed-93c8-dbebb302d31b');
+          },
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [

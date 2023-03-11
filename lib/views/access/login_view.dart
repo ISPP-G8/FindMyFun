@@ -105,10 +105,10 @@ class _FormsColumnState extends State<_FormsColumn> {
 
                     showDialog(
                       context: context,
-                      builder: (context) => const Column(
+                      builder: (context) => Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             SizedBox(
                                 height: 50,
                                 width: 50,
@@ -118,18 +118,14 @@ class _FormsColumnState extends State<_FormsColumn> {
 
                     try {
                       UserCredential credential = await AuthService()
-                        .signInWithEmailAndPassword(
-                            email: _emailController.text,
-                            password: _passwordController.text);
-                      
-                    } on FirebaseAuthException catch(e) {
-
+                          .signInWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text);
+                    } on FirebaseAuthException catch (e) {
                       print('Error al iniciar sesion $e');
                       Navigator.pop(context);
                       return;
                     }
-
-                    
 
                     // await usersService.getUsers();
 

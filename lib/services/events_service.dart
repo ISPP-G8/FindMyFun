@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/event.dart';
@@ -17,6 +18,17 @@ class EventsService extends ChangeNotifier {
 
   Future<void> deleteEvent(String eventId) async {
     final url = Uri.https(_baseUrl, 'Events/$eventId.json');
+
+    final currentUserUid = AuthService().currentUser?.uid ?? '';
+
+    if (events.isEmpty) return; // Si no tenemos eventos no hacemos nada
+
+    final currentEvent = events.where((element) => element.id == eventId).first;
+    if (currentUserUid == '' || currentEvent.creator != currentUserUid) {
+      // Si no tenemos usuario logueado y si el usuario no es el creador del evento, no hacemos nada
+      return;
+    }
+
     try {
       final resp = await http.delete(url);
 
