@@ -8,44 +8,45 @@ import 'auth_service.dart';
 
 class PreferencesService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
-  List<dynamic> _preferences = [];
-  List<dynamic> _preferencesByUserId = [];
+  List<Preferences> _preferences = [];
+  List<Preferences> _preferencesByUserId = [];
 
   User? currentUser;
 
-  List<dynamic> get preferences => _preferences;
-  List<dynamic> get preferencesByUserId => _preferencesByUserId;
+  List<Preferences> get preferences => _preferences;
+  List<Preferences> get preferencesByUserId => _preferencesByUserId;
 
-  set preferences(List<dynamic> inputPreferences) {
+  set preferences(List<Preferences> inputPreferences) {
     _preferences = inputPreferences;
     notifyListeners();
   }
 
-  set preferencesByUserId(List<dynamic> inputPreferences) {
+  set preferencesByUserId(List<Preferences> inputPreferences) {
     _preferencesByUserId = inputPreferences;
     notifyListeners();
   }
 
   //READ PREFERENCES
-  Future<void> getPreferences() async {
+  Future<List<Preferences>> getPreferences() async {
     final url = Uri.https(_baseUrl, 'Preferences.json');
     try {
       final resp = await http.get(url);
 
       if (resp.statusCode != 200) {
-        return;
+        throw Exception('Error in response');
       }
 
+      List<Preferences> preferencesAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
       print(data);
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
-        if(!preferences.contains(preference)){
-          preferences.add(preference);
-        }  
+        preferencesAux.add(preference);
       });
+      preferences = preferencesAux;
+      return preferencesAux;
     } catch (e) {
-      print('Error getting all preferences: $e');
+      throw Exception('Error in response');
     }
   }
 
@@ -63,9 +64,9 @@ class PreferencesService extends ChangeNotifier {
       print(data);
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
-        if(!preferences.contains(preference)){
+        if (!preferences.contains(preference)) {
           preferences.add(preference);
-        }  
+        }
       });
     } catch (e) {
       print('Error getting preferences by user id: $e');

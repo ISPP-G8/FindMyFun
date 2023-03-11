@@ -127,7 +127,7 @@ class _FormsColumn extends StatelessWidget {
                     image: _image.text,
                     name: _name.text,
                     startDate: DateTime.parse(_startDateTime.text),
-                    tags: ["football"],
+                    tags: [],
                     users: [id],
                     id: Uuid().v1()));
 

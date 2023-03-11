@@ -31,9 +31,8 @@ class Event {
   String image;
   String name;
   DateTime startDate;
-  List<String?> tags;
+  List<Preferences> tags;
   List<String> users;
-
 
   factory Event.fromRawJson(String str) => Event.fromJson(json.decode(str));
 
@@ -50,7 +49,7 @@ class Event {
         name: json["name"],
         startDate: DateTime.parse(json["startDate"]),
         tags: json['tags'] != null
-            ? List<String>.from(json["tags"].map((x) => x))
+            ? List<Preferences>.from(json["tags"].map((x) => x))
             : [],
         users: json["users"] != null
             ? List<String>.from(json["users"].map((x) => x))
@@ -69,7 +68,6 @@ class Event {
         "startDate": startDate.toIso8601String(),
         "tags": List<String>.from(tags.map((x) => x)),
         "users": List<String>.from(users.map((x) => x)),
-
       };
 
   @override
