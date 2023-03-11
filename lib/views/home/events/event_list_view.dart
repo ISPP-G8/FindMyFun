@@ -1,6 +1,7 @@
 import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
+import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -76,7 +77,12 @@ class _EventContainer extends StatelessWidget {
               Container(
                   width: 150, height: 150, child: Image.network(event.image))
             ],
-          )
+          ),
+          CustomButton(
+            text: 'Detalles',
+            onTap: () =>
+                Navigator.pushNamed(context, 'eventDetails', arguments: event),
+          ),
         ],
       ),
     );

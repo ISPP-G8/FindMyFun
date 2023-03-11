@@ -1,4 +1,3 @@
-import 'package:findmyfun/screens/screens.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -45,12 +44,12 @@ class _MainScreenState extends State<MainScreen> {
           elevation: 0,
           leading: Image.asset('assets/logo.jpeg'),
           centerTitle: true,
-          title: Container(
+          title: SizedBox(
               height: 50, child: Image.asset('assets/logo-banner.jpeg')),
           actions: [
             Container(
               margin: const EdgeInsets.only(right: 10),
-              child: Icon(
+              child: const Icon(
                 Icons.chat_bubble,
                 size: 50,
               ),
