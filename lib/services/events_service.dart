@@ -11,11 +11,18 @@ import 'users_service.dart';
 class EventsService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
   List<Event> _events = [];
+  List<Event> _eventsFound = [];
 
   List<Event> get events => _events;
+  List<Event> get eventsFound => _eventsFound;
 
   set events(List<Event> inputEvents) {
     _events = inputEvents;
+    notifyListeners();
+  }
+
+  set eventsFound(List<Event> inputEvents) {
+    _eventsFound = inputEvents;
     notifyListeners();
   }
 
@@ -91,7 +98,7 @@ class EventsService extends ChangeNotifier {
           eventsAux.add(event);
         }
       });
-      events = eventsAux;
+      eventsFound = eventsAux;
       return eventsAux;
       
     } catch (e) {

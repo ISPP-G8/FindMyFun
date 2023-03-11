@@ -11,7 +11,7 @@ class EventFindView extends StatelessWidget {
   Widget build(BuildContext context) {
     final eventsService = Provider.of<EventsService>(context);
     eventsService.findEvents();
-    List<Event> events = eventsService.events;
+    List<Event> events = eventsService.eventsFound;
     final size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: ProjectColors.primary,
