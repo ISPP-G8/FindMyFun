@@ -1,63 +1,82 @@
 // To parse this JSON data, do
 //
-//     final events = eventsFromJson(jsonString);
+//     final event = eventFromJson(jsonString);
 
+import 'package:findmyfun/models/models.dart';
+import 'package:findmyfun/models/preferences.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
-import './user.dart';
 
 class Event {
   Event({
-    required this.id,
     required this.address,
     required this.city,
     required this.country,
     required this.creator,
     required this.description,
+    required this.finished,
+    required this.id,
     required this.image,
     required this.name,
     required this.startDate,
     required this.tags,
+    required this.users,
   });
 
-  String id;
   String address;
   String city;
   String country;
   String creator;
   String description;
+  bool finished;
+  String id;
   String image;
   String name;
   DateTime startDate;
-  List<Preferences> tags;
+  List<String?> tags;
+  List<String> users;
+
 
   factory Event.fromRawJson(String str) => Event.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
-        id: json["id"],
         address: json["address"],
         city: json["city"],
         country: json["country"],
         creator: json["creator"],
         description: json["description"],
+        finished: json["finished"],
+        id: json["id"],
         image: json["image"],
         name: json["name"],
         startDate: DateTime.parse(json["startDate"]),
-        tags: List<Preferences>.from(json["tags"].map((x) => x)),
+        tags: json['tags'] != null
+            ? List<String>.from(json["tags"].map((x) => x))
+            : [],
+        users: json["users"] != null
+            ? List<String>.from(json["users"].map((x) => x))
+            : [],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "address": address,
         "city": city,
         "country": country,
         "creator": creator,
         "description": description,
+        "finished": finished,
+        "id": id,
         "image": image,
         "name": name,
         "startDate": startDate.toIso8601String(),
-        "tags": List<Preferences>.from(tags.map((x) => x)),
+        "tags": List<String>.from(tags.map((x) => x)),
+        "users": List<String>.from(users.map((x) => x)),
+
       };
+
+  @override
+  String toString() =>
+      'address: $address, city: $city, country: $country, creator: $creator, description: $description, finished: $finished, id: $id, image: $image, name: $name, startDate: $startDate, tags: $tags, users: $users';
 }

@@ -10,6 +10,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'profile': (_) => const ProfileDetailsView(),
     'preferences':(_) => const PreferencesView(),
     'main': (_) => const MainScreen(),
+    'middle': (_) => const MiddleScreen(),
   };
 
   return routes;

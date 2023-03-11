@@ -2,10 +2,9 @@
 //
 //     final user = userFromJson(jsonString);
 
+import 'package:findmyfun/models/preferences.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
-
-enum Preferences { futbul, cerveza, tenis, ajedrez, videojuegos, musica }
 
 class User {
   User({
@@ -24,7 +23,7 @@ class User {
   String username;
   String city;
   String email;
-  List<Preferences> preferences;
+  List<Preferences?> preferences;
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 

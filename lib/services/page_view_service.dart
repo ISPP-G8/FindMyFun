@@ -12,14 +12,14 @@ class PageViewService extends ChangeNotifier {
     notifyListeners();
   }
 
-  int _navigationBarPage = 0;
+  // int _navigationBarPage = 0;
 
-  int get navigationBarPage => _navigationBarPage;
+  // int get navigationBarPage => _navigationBarPage;
 
-  set navigationBarPage(int val) {
-    _navigationBarPage = val;
-    notifyListeners();
-  }
+  // set navigationBarPage(int val) {
+  //   _navigationBarPage = val;
+  //   notifyListeners();
+  // }
 
   PageController get pageController => _loginPageController;
 

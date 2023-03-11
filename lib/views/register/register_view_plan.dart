@@ -30,21 +30,22 @@ class _RegisterFormContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: const [
-      _PlanContainer(
+    return Column(children:  [
+      const _PlanContainer(
         title: 'Soy un usuario',
         subtitle:
             'Crea y únete a eventos creados por empresas u otros usuarios',
         firstPrice: '0€ al mes',
         secondPrice: '3,99€ al mes',
       ),
-      _PlanContainer(
+      const _PlanContainer(
           title: 'Soy una empresa',
           subtitle:
               'Crea eventos como empresa sin ningún límite y registra tu establecimiento como punto de interés',
           firstPrice: '9,99€ al mes',
           secondPrice: ''),
-      SubmitButton(text: 'CONTINUAR')
+      SubmitButton(text: 'CONTINUAR', onTap: () => Navigator.pushReplacementNamed(context, 'main'),)
+      
     ]);
   }
 }
