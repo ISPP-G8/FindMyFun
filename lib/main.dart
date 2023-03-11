@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: exportRoutes(),
-      initialRoute: 'middle',
+      initialRoute: 'access',
     );
   }
 }

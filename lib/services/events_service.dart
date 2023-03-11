@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:findmyfun/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/event.dart';
+import '../models/user.dart';
 
 class EventsService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
@@ -47,18 +49,44 @@ class EventsService extends ChangeNotifier {
       }
       List<Event> eventsAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
+      // print('Data response; $data');
 
       data.forEach((key, value) {
         final event = Event.fromRawJson(jsonEncode(value));
 
         eventsAux.add(event);
       });
+
       events = eventsAux;
 
       return true;
     } catch (e) {
       print('Error getting events: $e');
       return false;
+    }
+  }
+
+  Future<void> addUserToEvent(Event event) async {
+    String eventId = event.id;
+    String activeUserId = AuthService().currentUser?.uid ?? "";
+    if (activeUserId.isEmpty ||
+        eventId.isEmpty ||
+        event.users.contains(activeUserId)) {
+      throw Exception(
+          'Be sure to be logged, make sure that the event exists and check if you aren´t already part of the event');
+    } else {
+      event.users.add(activeUserId);
+      final url = Uri.https(_baseUrl, 'Events/$eventId.json');
+
+      try {
+        final resp = await http.put(url, body: jsonEncode(event.toJson()));
+
+        if (resp.statusCode != 200) {
+          throw Exception('Error while trying to update the event');
+        }
+      } catch (e) {
+        throw Exception('Error while trying to update the event');
+      }
     }
   }
 }
