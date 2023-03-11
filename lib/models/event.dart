@@ -2,6 +2,9 @@
 //
 //     final event = eventFromJson(jsonString);
 
+import 'package:findmyfun/models/models.dart';
+import 'package:findmyfun/models/preferences.dart';
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Event {
@@ -30,6 +33,7 @@ class Event {
   DateTime startDate;
   List<String?> tags;
   List<String> users;
+
 
   factory Event.fromRawJson(String str) => Event.fromJson(json.decode(str));
 
@@ -65,6 +69,7 @@ class Event {
         "startDate": startDate.toIso8601String(),
         "tags": List<String>.from(tags.map((x) => x)),
         "users": List<String>.from(users.map((x) => x)),
+
       };
 
   @override
