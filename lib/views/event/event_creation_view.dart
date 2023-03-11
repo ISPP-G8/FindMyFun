@@ -48,6 +48,7 @@ class _FormsColumn extends StatelessWidget {
   final _country = TextEditingController();
   final _description = TextEditingController();
   final _image = TextEditingController();
+  final _startDateTime = TextEditingController();
 
   _FormsColumn();
 
@@ -94,12 +95,11 @@ class _FormsColumn extends StatelessWidget {
             controller: _image,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
-          DateTimePicker(),
-          // const CustomTextForm(
-          //   hintText: 'Fecha y hora',
-          //   type: TextInputType.datetime,
-          //   //TODO AÑADIR VALIDADOR
-          // ),
+          CustomTextForm(
+            hintText: 'Fecha y hora: aaaa-MM-dd hh:mm',
+            controller: _startDateTime,
+            validator: (value) => Validators.validateNotEmpty(value),
+          ),
           const CategoryDropdown(),
           SubmitButton(
             text: 'CONTINUAR',
@@ -126,7 +126,7 @@ class _FormsColumn extends StatelessWidget {
                     finished: false,
                     image: _image.text,
                     name: _name.text,
-                    startDate: DateTime.now(),
+                    startDate: DateTime.parse(_startDateTime.text),
                     tags: ["football"],
                     users: [id],
                     id: Uuid().v1()));
@@ -145,81 +145,6 @@ class _FormsColumn extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-}
-
-class DateTimePicker extends StatefulWidget {
-  @override
-  _DateTimePicker createState() => _DateTimePicker();
-}
-
-class _DateTimePicker extends State<DateTimePicker> {
-  var _currentSelectedDate;
-  var _currentSelectedTime;
-
-  void callDatePicker() async {
-    var selectedDate = await getDatePickerWidget();
-    setState(() {
-      _currentSelectedDate = selectedDate;
-    });
-  }
-
-  Future<DateTime?> getDatePickerWidget() {
-    return showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2023),
-      lastDate: DateTime(2030),
-      builder: (context, child) {
-        return Theme(data: ThemeData.dark(), child: child!);
-      },
-    );
-  }
-
-  void callTimePicker() async {
-    var selectedTime = await getTimePickerWidget();
-    setState(() {
-      _currentSelectedTime = selectedTime;
-    });
-  }
-
-  Future<TimeOfDay?> getTimePickerWidget() {
-    return showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      builder: (context, child) {
-        return Theme(data: ThemeData.dark(), child: child!);
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    dynamic _displayedSelectedDate = _currentSelectedDate ?? " ";
-    dynamic _displayedSelectedTime = _currentSelectedTime ?? " ";
-    dynamic _displayedCompleteDateTime = _displayedSelectedDate
-            .toString()
-            .split(" ")
-            .first +
-        " " +
-        _displayedSelectedTime.toString().split("(").last.replaceAll(")", "");
-    // _displayedSelectedDate + DateTime.parse(_displayedSelectedTime);
-    return Column(
-      children: [
-        CustomButton(
-          onTap: callDatePicker,
-          text: 'Seleccione la fecha',
-        ),
-        CustomButton(
-          onTap: callTimePicker,
-          text: 'Seleccione la hora',
-        ),
-        CustomTextForm(
-          hintText: "$_displayedCompleteDateTime",
-          enabled: false,
-        )
-      ],
     );
   }
 }
