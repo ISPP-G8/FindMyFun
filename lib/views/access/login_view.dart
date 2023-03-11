@@ -118,6 +118,12 @@ class _FormsColumnState extends State<_FormsColumn> {
                           .signInWithEmailAndPassword(
                               email: _emailController.text,
                               password: _passwordController.text);
+                      Future.delayed(
+                        Duration.zero,
+                        () async {
+                          await usersService.getUserWithUid();
+                        },
+                      );
                     } on FirebaseAuthException catch (e) {
                       print('Error al iniciar sesion $e');
                       Navigator.pop(context);
