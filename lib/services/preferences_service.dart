@@ -4,6 +4,7 @@ import 'package:findmyfun/models/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/user.dart';
+import 'auth_service.dart';
 
 class PreferencesService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
@@ -39,29 +40,35 @@ class PreferencesService extends ChangeNotifier {
       print(data);
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
-        preferences.add(preference);
+        if(!preferences.contains(preference)){
+          preferences.add(preference);
+        }  
       });
     } catch (e) {
       print('Error getting all preferences: $e');
     }
   }
 
-  Future<void> getPreferencesByUserId(userId) async {
-    final url = Uri.https(_baseUrl, 'Users/{$userId}/preferences.json');
+  Future<void> getPreferencesByUserId() async {
+    String activeUserId = AuthService().currentUser?.uid ?? "";
+    final url = Uri.https(_baseUrl, 'Users/{$activeUserId}/preferences.json');
     try {
       final resp = await http.get(url);
+
       if (resp.statusCode != 200) {
         return;
       }
 
       Map<String, dynamic> data = jsonDecode(resp.body);
-
+      print(data);
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
-        _preferences.add(preference);
+        if(!preferences.contains(preference)){
+          preferences.add(preference);
+        }  
       });
     } catch (e) {
-      print('Error getting preferences: $e');
+      print('Error getting preferences by user id: $e');
     }
   }
 

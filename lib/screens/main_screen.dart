@@ -14,13 +14,19 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
+int cont = 0;
+
 class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     final eventsService = Provider.of<EventsService>(context, listen: false);
     Future.delayed(Duration.zero, () async => await eventsService.getEvents());
     final preferencesService = Provider.of<PreferencesService>(context, listen: false);
-    Future.delayed(Duration.zero, () async => await preferencesService.getPreferences());
+    if(cont==0){
+      Future.delayed(Duration.zero, () async => await preferencesService.getPreferences());
+      cont++;
+    }
+    Future.delayed(Duration.zero, () async => await preferencesService.getPreferencesByUserId());
     super.initState();
   }
 
