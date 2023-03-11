@@ -19,6 +19,8 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     final eventsService = Provider.of<EventsService>(context, listen: false);
     Future.delayed(Duration.zero, () async => await eventsService.getEvents());
+    final preferencesService = Provider.of<PreferencesService>(context, listen: false);
+    Future.delayed(Duration.zero, () async => await preferencesService.getPreferences());
     super.initState();
   }
 
