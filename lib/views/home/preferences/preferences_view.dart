@@ -1,3 +1,4 @@
+import 'package:findmyfun/services/auth_service.dart';
 import 'package:findmyfun/services/page_view_service.dart';
 import 'package:findmyfun/services/preferences_service.dart';
 import 'package:findmyfun/themes/themes.dart';
@@ -54,6 +55,7 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
     final preferences = preferencesService.preferences;
     final preferencesNames = preferences.map((e) => e.name).toList();
     final preferencesByUserId = preferencesService.preferencesByUserId;
+    String activeUserId = AuthService().currentUser?.uid ?? "";
     return Column(
       children: [
         const SizedBox(
@@ -131,7 +133,7 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
         ),
         FloatingActionButton(onPressed: () {
           // When merge, change first option by current user id
-          preferencesService.savePreferences("BZoK1wRN0Ze4DAcgFgs4fFpsI9o2", preferencesByUserId);
+          preferencesService.savePreferences(activeUserId, preferencesByUserId);
           Navigator.pop(context, "main");
         }, child: const Icon(Icons.save),
         ),
