@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:findmyfun/models/preferences.dart';
 import 'package:findmyfun/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -82,7 +83,6 @@ class EventsService extends ChangeNotifier {
     final AuthService authService = AuthService();
 
     User currentUser = await usersService.getUserWithUid(authService.currentUser!.uid);
-    List<String> preferences = currentUser.preferences.map((p) => p.toString().split('.').last).toList();
 
     try {
       final resp = await http.get(url);
@@ -94,7 +94,7 @@ class EventsService extends ChangeNotifier {
 
       data.forEach((key, value) {
         final event = Event.fromRawJson(jsonEncode(value));
-        if (preferences.toSet().intersection(event.tags.toSet()).isNotEmpty && !event.hasFinished/* && currentUser.city == event.city*/) {
+        if (currentUser.preferences.toSet().intersection(event.tags.toSet()).isNotEmpty && !event.hasFinished/* && currentUser.city == event.city*/) {
           eventsAux.add(event);
         }
       });
