@@ -48,6 +48,7 @@ class _FormsColumn extends StatelessWidget {
   final _country = TextEditingController();
   final _description = TextEditingController();
   final _image = TextEditingController();
+  final _startDateTime = TextEditingController();
 
   _FormsColumn();
 
@@ -94,10 +95,10 @@ class _FormsColumn extends StatelessWidget {
             controller: _image,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
-          const CustomTextForm(
-            hintText: 'Fecha y hora',
-            type: TextInputType.datetime,
-            //TODO AÑADIR VALIDADOR
+          CustomTextForm(
+            hintText: 'Fecha y hora: aaaa-MM-dd hh:mm',
+            controller: _startDateTime,
+            validator: (value) => Validators.validateNotEmpty(value),
           ),
           const CategoryDropdown(),
           SubmitButton(
@@ -125,8 +126,8 @@ class _FormsColumn extends StatelessWidget {
                     finished: false,
                     image: _image.text,
                     name: _name.text,
-                    startDate: DateTime.now(),
-                    tags: ["football"],
+                    startDate: DateTime.parse(_startDateTime.text),
+                    tags: [],
                     users: [id],
                     id: Uuid().v1()));
 

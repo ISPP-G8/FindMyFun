@@ -2,6 +2,10 @@
 //
 //     final event = eventFromJson(jsonString);
 
+import 'package:findmyfun/models/models.dart';
+import 'package:findmyfun/models/preferences.dart';
+import 'package:findmyfun/services/services.dart';
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Event {
@@ -28,7 +32,7 @@ class Event {
   String image;
   String name;
   DateTime startDate;
-  List<String?> tags;
+  List<Preferences> tags;
   List<String> users;
 
   bool get hasFinished => DateTime.now().isAfter(startDate);
@@ -49,9 +53,7 @@ class Event {
         image: json["image"],
         name: json["name"],
         startDate: DateTime.parse(json["startDate"]),
-        tags: json['tags'] != null
-            ? List<String>.from(json["tags"].map((x) => x))
-            : [],
+        tags: Map.from(json["tags"]).map((k, v) => MapEntry<String, Preferences>(k, Preferences.fromJson(v))).values.toList(),
         users: json["users"] != null
             ? List<String>.from(json["users"].map((x) => x))
             : [],
@@ -67,7 +69,7 @@ class Event {
         "image": image,
         "name": name,
         "startDate": startDate.toIso8601String(),
-        "tags": List<String>.from(tags.map((x) => x)),
+        "tags": Map.from(tags.fold({}, (r, p) => r..[p.id] = p)).map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "users": List<String>.from(users.map((x) => x)),
       };
 

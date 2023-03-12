@@ -2,9 +2,9 @@
 //
 //     final user = userFromJson(jsonString);
 
+import 'package:findmyfun/models/preferences.dart';
+import 'package:meta/meta.dart';
 import 'dart:convert';
-
-enum Preferences { futbol, cerveza, tenis, ajedrez, videojuegos, musica }
 
 class User {
   User({
@@ -36,7 +36,7 @@ class User {
         username: json["username"],
         city: json["city"],
         email: json["email"],
-        preferences: List<Preferences>.from(json["preferences"].values.map((x) => Preferences.values.firstWhere((e) => e.toString().split(".").last == x['name']))),
+        preferences: Map.from(json["preferences"]).map((k, v) => MapEntry<String, Preferences>(k, Preferences.fromJson(v))).values.toList(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,6 +46,6 @@ class User {
         "username": username,
         "city": city,
         "email": email,
-        "preferences": List<Preferences>.from(preferences.map((x) => x)),
+        "preferences": Map.from(preferences.fold({}, (r, p) => r..[p?.id] = p)).map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
       };
 }
