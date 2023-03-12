@@ -9,15 +9,22 @@ import 'auth_service.dart';
 class PreferencesService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
   List<Preferences> _preferences = [];
+  Preferences? _preference;
   List<Preferences> _preferencesByUserId = [];
 
   User? currentUser;
 
   List<Preferences> get preferences => _preferences;
+  Preferences? get preference => _preference;
   List<Preferences> get preferencesByUserId => _preferencesByUserId;
 
   set preferences(List<Preferences> inputPreferences) {
     _preferences = inputPreferences;
+    notifyListeners();
+  }
+
+  set preference(Preferences? inputPreference) {
+    _preference = inputPreference;
     notifyListeners();
   }
 
@@ -64,19 +71,17 @@ class PreferencesService extends ChangeNotifier {
       Preferences? preferenceAux;
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
-        
+
         if (preference.name == name) {
           preferenceAux = preference;
         }
-
       });
 
       if (preferenceAux == null) {
-          throw Exception('No existe preferencia');
+        throw Exception('No existe preferencia');
       }
-
+      preference = preferenceAux;
       return preferenceAux!;
-
     } catch (e) {
       throw Exception('Error in response');
     }

@@ -1,6 +1,7 @@
 import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/services/auth_service.dart';
 import 'package:findmyfun/services/events_service.dart';
+import 'package:findmyfun/services/preferences_service.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,8 @@ class _FormsColumn extends StatelessWidget {
   final _description = TextEditingController();
   final _image = TextEditingController();
   final _startDateTime = TextEditingController();
+  List<Object> _selectedValues = [];
+  // final _tags = const CategoryDropdown(onSelectionChanged: ,);
 
   _FormsColumn();
 
@@ -100,7 +103,12 @@ class _FormsColumn extends StatelessWidget {
             controller: _startDateTime,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
-          const CategoryDropdown(),
+          CategoryDropdown(
+            selectedValues: _selectedValues,
+            onSelectionChanged: (selected) {
+              _selectedValues = selected;
+            },
+          ),
           SubmitButton(
             text: 'CONTINUAR',
             onTap: () async {
@@ -117,8 +125,7 @@ class _FormsColumn extends StatelessWidget {
                             child: CircularProgressIndicator()),
                       ]),
                 );
-
-                await EventsService().saveEvent(new Event(
+                await EventsService().saveEvent(Event(
                     address: _address.text,
                     city: _city.text,
                     country: _country.text,
@@ -127,13 +134,14 @@ class _FormsColumn extends StatelessWidget {
                     image: _image.text,
                     name: _name.text,
                     startDate: DateTime.parse(_startDateTime.text),
-                    tags: [],
+                    tags: await Future.wait(_selectedValues
+                        .map((e) => PreferencesService()
+                            .getPreferenceByName(e.toString()))
+                        .toList()),
                     users: [id],
                     id: Uuid().v1()));
 
-                // await usersService.getUsers();
-
-                await Future.delayed(Duration(seconds: 1));
+                await Future.delayed(const Duration(seconds: 1));
                 Navigator.pushReplacementNamed(context, 'main');
               } else {
                 CustomSnackbars.showCustomSnackbar(

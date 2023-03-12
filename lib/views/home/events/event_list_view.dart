@@ -14,6 +14,7 @@ class EventListView extends StatelessWidget {
     final events = eventsService.events;
     final size = MediaQuery.of(context).size;
     return Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: ProjectColors.primary,
         body: SingleChildScrollView(
           child: Column(

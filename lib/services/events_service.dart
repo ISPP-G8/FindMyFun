@@ -20,8 +20,6 @@ class EventsService extends ChangeNotifier {
     final url = Uri.https(_baseUrl, 'Events/$eventId.json');
     try {
       final resp = await http.delete(url);
-
-      print(resp.body);
     } catch (e) {
       print('Error al eliminar el evento: $e');
     }
@@ -48,7 +46,6 @@ class EventsService extends ChangeNotifier {
       }
       List<Event> eventsAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
-      // print('Data response; $data');
 
       data.forEach((key, value) {
         final event = Event.fromRawJson(jsonEncode(value));
