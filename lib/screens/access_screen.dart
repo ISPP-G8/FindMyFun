@@ -1,4 +1,5 @@
 import 'package:findmyfun/services/page_view_service.dart';
+import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,6 @@ class AccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageControllerService = Provider.of<PageViewService>(context);
-    final size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: ProjectColors.primary,
         body: Container(
@@ -19,7 +19,12 @@ class AccessScreen extends StatelessWidget {
           child: PageView(
               controller: pageControllerService.pageController,
               physics: const NeverScrollableScrollPhysics(),
-              children: const [AccessView(), LoginView()]),
+              children: const [
+                AccessView(),
+                LoginView(),
+                ProfileDetailsView(),
+                PreferencesView()
+              ]),
         ));
   }
 }
