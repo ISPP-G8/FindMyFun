@@ -6,7 +6,13 @@ import '../models/preferences.dart';
 import '../services/preferences_service.dart';
 
 class CategoryDropdown extends StatefulWidget {
-  const CategoryDropdown({Key? key}) : super(key: key);
+  final List<Object>? selectedValues;
+  final Function(List<Object>) onSelectionChanged;
+  const CategoryDropdown({
+    Key? key,
+    this.selectedValues,
+    required this.onSelectionChanged,
+  }) : super(key: key);
 
   @override
   State<CategoryDropdown> createState() => _CategoryDropdown();
@@ -21,9 +27,6 @@ class _CategoryDropdown extends State<CategoryDropdown> {
     preferencesService.getPreferences();
     List<String> prefs =
         preferencesService.preferences.map((e) => e.name).toList();
-    debugPrint(prefs.toString());
-    debugPrint('AAAAAAAAA');
-    // List<String> nombres = preferences.map((e) => e.name.toString()).toList();
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -33,10 +36,12 @@ class _CategoryDropdown extends State<CategoryDropdown> {
         options: prefs,
         selectedValues: selectedCategories,
         onChanged: (value) {
-          print('selected fruit $value');
+          print('selected category $value');
           setState(() {
             selectedCategories = value;
+            widget.onSelectionChanged(value);
           });
+          widget.onSelectionChanged.call(selectedCategories);
         },
         whenEmpty: 'Selecciona las categorías del evento',
       ),
