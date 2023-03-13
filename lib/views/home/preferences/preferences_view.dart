@@ -83,8 +83,6 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                                   shape: MaterialStateProperty.all<
                                           RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(25.0),
                                           side: BorderSide(
                                             color: preferencesByUserId.contains(
                                                     preferences[index])

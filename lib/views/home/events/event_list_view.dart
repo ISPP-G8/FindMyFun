@@ -53,7 +53,7 @@ class _EventContainer extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(25)),
+          color: Colors.white),
       child: Column(
         children: [
           Row(

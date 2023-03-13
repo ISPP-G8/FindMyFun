@@ -39,7 +39,6 @@ class ProfileDetailsView extends StatelessWidget {
           width: 400,
           decoration: BoxDecoration(
             color: const Color(0xff828a92),
-            borderRadius: BorderRadius.circular(15),
           ),
           child: SingleChildScrollView(
             child: Column(

@@ -14,8 +14,7 @@ class LoginContainer extends StatelessWidget {
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-          color: ProjectColors.secondary,
-          borderRadius: BorderRadius.circular(15)),
+          color: ProjectColors.secondary),
       child: child,
     );
   }
