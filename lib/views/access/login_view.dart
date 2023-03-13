@@ -124,7 +124,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                       Future.delayed(
                         Duration.zero,
                         () async {
-                          await usersService.getUserWithUid();
+                          await usersService.getCurrentUserWithUid();
                         },
                       );
                     } on FirebaseAuthException catch (e) {

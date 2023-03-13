@@ -4,6 +4,7 @@
 
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/models/preferences.dart';
+import 'package:findmyfun/services/services.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
@@ -12,7 +13,6 @@ class Event {
     required this.address,
     required this.city,
     required this.country,
-    required this.creator,
     required this.description,
     required this.finished,
     required this.id,
@@ -26,16 +26,18 @@ class Event {
   String address;
   String city;
   String country;
-  String creator;
   String description;
   bool finished;
   String id;
   String image;
   String name;
   DateTime startDate;
-  List<String?> tags;
+  List<Preferences> tags;
   List<String> users;
 
+  bool get hasFinished => DateTime.now().isAfter(startDate);
+
+  String get creator => users.first;
 
   factory Event.fromRawJson(String str) => Event.fromJson(json.decode(str));
 
@@ -45,16 +47,13 @@ class Event {
         address: json["address"],
         city: json["city"],
         country: json["country"],
-        creator: json["creator"],
         description: json["description"],
         finished: json["finished"],
         id: json["id"],
         image: json["image"],
         name: json["name"],
         startDate: DateTime.parse(json["startDate"]),
-        tags: json['tags'] != null
-            ? List<String>.from(json["tags"].map((x) => x))
-            : [],
+        tags: Map.from(json["tags"]).map((k, v) => MapEntry<String, Preferences>(k, Preferences.fromJson(v))).values.toList(),
         users: json["users"] != null
             ? List<String>.from(json["users"].map((x) => x))
             : [],
@@ -64,19 +63,17 @@ class Event {
         "address": address,
         "city": city,
         "country": country,
-        "creator": creator,
         "description": description,
         "finished": finished,
         "id": id,
         "image": image,
         "name": name,
         "startDate": startDate.toIso8601String(),
-        "tags": List<String>.from(tags.map((x) => x)),
+        "tags": Map.from(tags.fold({}, (r, p) => r..[p.id] = p)).map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "users": List<String>.from(users.map((x) => x)),
-
       };
 
   @override
   String toString() =>
-      'address: $address, city: $city, country: $country, creator: $creator, description: $description, finished: $finished, id: $id, image: $image, name: $name, startDate: $startDate, tags: $tags, users: $users';
+      'address: $address, city: $city, country: $country, description: $description, finished: $finished, id: $id, image: $image, name: $name, startDate: $startDate, tags: $tags, users: $users';
 }

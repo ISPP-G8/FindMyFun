@@ -20,7 +20,25 @@ class UsersService extends ChangeNotifier {
   }
 
   // TODO: Hacer el getItem pasando el uid del AuthService()
-  Future<void> getUserWithUid() async {
+  Future<User> getUserWithUid(String userUid) async {
+    final url = Uri.https(_baseUrl, 'Users/$userUid.json');
+    User user;
+    try {
+      final resp = await http.get(url);
+      if (resp.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(resp.body);
+        user = User.fromJson(data);
+        return user;
+      } else {
+        throw Exception(
+            'Errors ocurred while trying to get the user with Uid $userUid');
+      }
+    } catch (e) {
+      throw Exception('The user $e couldn´t be found.');
+    }
+  }
+
+  Future<void> getCurrentUserWithUid() async {
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final url = Uri.https(_baseUrl, 'Users/$activeUserId.json');
     User user;
@@ -32,10 +50,10 @@ class UsersService extends ChangeNotifier {
         currentUser = user;
       } else {
         throw Exception(
-            'Errors ocurred while trying to get the user with Uid $activeUserId');
+            'Errors ocurred while trying to get the current user with Uid $activeUserId');
       }
     } catch (e) {
-      throw Exception('The user $e couldn´t be found.');
+      throw Exception('The current user $e couldn´t be found.');
     }
   }
   // TODO: Hacer el updateItem pasando el uid del AuthService()

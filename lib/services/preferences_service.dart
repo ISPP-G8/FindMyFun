@@ -8,44 +8,82 @@ import 'auth_service.dart';
 
 class PreferencesService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
-  List<dynamic> _preferences = [];
-  List<dynamic> _preferencesByUserId = [];
+  List<Preferences> _preferences = [];
+  Preferences? _preference;
+  List<Preferences> _preferencesByUserId = [];
 
   User? currentUser;
 
-  List<dynamic> get preferences => _preferences;
-  List<dynamic> get preferencesByUserId => _preferencesByUserId;
+  List<Preferences> get preferences => _preferences;
+  Preferences? get preference => _preference;
+  List<Preferences> get preferencesByUserId => _preferencesByUserId;
 
-  set preferences(List<dynamic> inputPreferences) {
+  set preferences(List<Preferences> inputPreferences) {
     _preferences = inputPreferences;
     notifyListeners();
   }
 
-  set preferencesByUserId(List<dynamic> inputPreferences) {
+  set preference(Preferences? inputPreference) {
+    _preference = inputPreference;
+    notifyListeners();
+  }
+
+  set preferencesByUserId(List<Preferences> inputPreferences) {
     _preferencesByUserId = inputPreferences;
     notifyListeners();
   }
 
   //READ PREFERENCES
-  Future<void> getPreferences() async {
+  Future<List<Preferences>> getPreferences() async {
     final url = Uri.https(_baseUrl, 'Preferences.json');
     try {
       final resp = await http.get(url);
 
       if (resp.statusCode != 200) {
-        return;
+        throw Exception('Error in response');
+      }
+
+      List<Preferences> preferencesAux = [];
+      Map<String, dynamic> data = jsonDecode(resp.body);
+
+      data.forEach((key, value) {
+        final preference = Preferences.fromRawJson(jsonEncode(value));
+        preferencesAux.add(preference);
+      });
+      preferences = preferencesAux;
+      return preferencesAux;
+    } catch (e) {
+      throw Exception('Error in response');
+    }
+  }
+
+  // TODO: De momento no se usa, la dejo por si hace falta
+  Future<Preferences> getPreferenceByName(String name) async {
+    final url = Uri.https(_baseUrl, 'Preferences.json');
+    try {
+      final resp = await http.get(url);
+
+      if (resp.statusCode != 200) {
+        throw Exception('Error in response');
       }
 
       Map<String, dynamic> data = jsonDecode(resp.body);
-      print(data);
+      Preferences? preferenceAux;
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
-        if(!preferences.contains(preference)){
-          preferences.add(preference);
-        }  
+
+        if (preference.name == name) {
+          preferenceAux = preference;
+        }
       });
+
+      if (preferenceAux == null) {
+        throw Exception('No existe preferencia');
+      }
+      preference = preferenceAux;
+      return preferenceAux!;
     } catch (e) {
-      print('Error getting all preferences: $e');
+      throw Exception('Error in response');
     }
   }
 
@@ -63,9 +101,9 @@ class PreferencesService extends ChangeNotifier {
 
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
-        if(!preferences.contains(preference)){
+        if (!preferences.contains(preference)) {
           preferences.add(preference);
-        }  
+        }
       });
     } catch (e) {
       print('Error getting preferences by user id: $e');

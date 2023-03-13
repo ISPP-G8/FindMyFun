@@ -119,7 +119,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                 username: _usernameController.text,
                 city: _locationController.text,
                 email: _emailController.text,
-                // preferences: []
+                preferences: []
               );
               print(credential.user?.getIdToken());
               final pageViewService =

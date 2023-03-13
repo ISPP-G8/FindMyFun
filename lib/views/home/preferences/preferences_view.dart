@@ -55,6 +55,8 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
     final preferences = preferencesService.preferences;
     final preferencesNames = preferences.map((e) => e.name).toList();
     final preferencesByUserId = preferencesService.preferencesByUserId;
+    print("object");
+    print(preferencesNames);
     String activeUserId = AuthService().currentUser?.uid ?? "";
     return Column(
       children: [
@@ -131,11 +133,14 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
         const SizedBox(
           height: 10,
         ),
-        FloatingActionButton(onPressed: () {
-          // When merge, change first option by current user id
-          preferencesService.savePreferences(activeUserId, preferencesByUserId);
-          Navigator.pop(context, "main");
-        }, child: const Icon(Icons.save),
+        FloatingActionButton(
+          onPressed: () {
+            // When merge, change first option by current user id
+            preferencesService.savePreferences(
+                activeUserId, preferencesByUserId);
+            Navigator.pop(context, "main");
+          },
+          child: const Icon(Icons.save),
         ),
         /*SubmitButton(
             text:

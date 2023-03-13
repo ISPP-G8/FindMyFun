@@ -10,6 +10,8 @@ class CustomTextForm extends StatelessWidget {
   final bool enabled;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final String? initialValue;
+
   const CustomTextForm({
     super.key,
     required this.hintText,
@@ -20,6 +22,7 @@ class CustomTextForm extends StatelessWidget {
     this.enabled = true,
     this.controller,
     this.validator,
+    this.initialValue,
   });
 
   @override
@@ -39,6 +42,7 @@ class CustomTextForm extends StatelessWidget {
         enabled: enabled,
         textAlign: TextAlign.center,
         validator: validator,
+        initialValue: initialValue,
         decoration: InputDecoration(
           enabledBorder: InputBorder.none,
           hintText: hintText,
