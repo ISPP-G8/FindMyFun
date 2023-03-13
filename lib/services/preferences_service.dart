@@ -60,7 +60,7 @@ class PreferencesService extends ChangeNotifier {
       }
 
       Map<String, dynamic> data = jsonDecode(resp.body);
-      print(data);
+
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
         if(!preferences.contains(preference)){

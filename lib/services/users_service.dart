@@ -1,5 +1,7 @@
 import 'dart:convert';
+//import 'dart:html';
 
+import 'package:findmyfun/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/user.dart';
@@ -18,18 +20,19 @@ class UsersService extends ChangeNotifier {
   }
 
   // TODO: Hacer el getItem pasando el uid del AuthService()
-  Future<User> getUserWithUid(String userUid) async {
-    final url = Uri.https(_baseUrl, 'Users/$userUid.json');
+  Future<void> getUserWithUid() async {
+    String activeUserId = AuthService().currentUser?.uid ?? "";
+    final url = Uri.https(_baseUrl, 'Users/$activeUserId.json');
     User user;
     try {
       final resp = await http.get(url);
       if (resp.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(resp.body);
         user = User.fromJson(data);
-        return user;
+        currentUser = user;
       } else {
         throw Exception(
-            'Errors ocurred while trying to get the user with Uid $userUid');
+            'Errors ocurred while trying to get the user with Uid $activeUserId');
       }
     } catch (e) {
       throw Exception('The user $e couldn´t be found.');

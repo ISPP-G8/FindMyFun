@@ -38,6 +38,7 @@ class _RegisterFormContainer extends StatefulWidget {
 }
 
 class _RegisterFormContainerState extends State<_RegisterFormContainer> {
+  final _imageController = TextEditingController();
   final _emailController = TextEditingController();
   final _nameController = TextEditingController();
   final _surnameController = TextEditingController();
@@ -54,6 +55,11 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       key: _formKey,
       child: Column(children: [
+        CustomTextForm(
+          hintText: 'https://tuimagen.ejemplo',
+          controller: _imageController,
+          validator: (value) => Validators.validateNotEmpty(value),
+        ),
         CustomTextForm(
           hintText: 'Nombre',
           controller: _nameController,
@@ -106,13 +112,15 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                       email: _emailController.text,
                       password: _passwordController.text);
               userService.currentUser = user.User(
-                  id: credential.user!.uid,
-                  name: _nameController.text,
-                  surname: _surnameController.text,
-                  username: _usernameController.text,
-                  city: _locationController.text,
-                  email: _emailController.text,
-                  preferences: []);
+                id: credential.user!.uid,
+                image: _imageController.text,
+                name: _nameController.text,
+                surname: _surnameController.text,
+                username: _usernameController.text,
+                city: _locationController.text,
+                email: _emailController.text,
+                // preferences: []
+              );
               print(credential.user?.getIdToken());
               final pageViewService =
                   Provider.of<PageViewService>(context, listen: false);
