@@ -73,6 +73,7 @@ class _FormsColumn extends StatelessWidget {
         city: "a",
         email: "a",
         preferences: [], image: '');
+
     userService.getUserWithUid(selectedEvent.users.first).then((value) {
       eventCreator = value;
     });

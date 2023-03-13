@@ -67,6 +67,7 @@ class PreferencesService extends ChangeNotifier {
         throw Exception('Error in response');
       }
 
+      List<Preferences> preferencesAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
       Preferences? preferenceAux;
       data.forEach((key, value) {
