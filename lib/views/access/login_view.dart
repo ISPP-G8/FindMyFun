@@ -105,7 +105,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                       builder: (context) => Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: const [
                             SizedBox(
                                 height: 50,
                                 width: 50,

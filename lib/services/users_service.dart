@@ -8,19 +8,18 @@ import '../models/user.dart';
 
 class UsersService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
-  List<dynamic> _users = [];
+  List<User> _users = [];
 
   User? currentUser;
 
-  List<dynamic> get users => _users;
+  List<User> get users => _users;
 
-  set users(List<dynamic> inputUsers) {
+  void set users(List<User> inputUsers) {
     _users = inputUsers;
     notifyListeners();
   }
 
   // TODO: Hacer el getItem pasando el uid del AuthService()
-
   Future<void> getUserWithUid() async {
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final url = Uri.https(_baseUrl, 'Users/$activeUserId.json');

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../../../widgets/custom_button.dart';
+
 class ProfileDetailsView extends StatelessWidget {
   const ProfileDetailsView({super.key});
 
@@ -68,6 +70,9 @@ class ProfileDetailsView extends StatelessWidget {
                   hintText: currentUser.email,
                   enabled: false,
                 ),
+                GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, 'preferences'),
+                  child: const CustomButton(text: 'Tus preferencias')),
               ],
             ),
           ),

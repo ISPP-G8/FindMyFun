@@ -6,8 +6,6 @@ import 'package:findmyfun/models/preferences.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-enum Preferences { futbol, cerveza, tenis, ajedrez, videojuegos, musica }
-
 class User {
   User({
     required this.id,
