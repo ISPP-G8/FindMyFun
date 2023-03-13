@@ -1,6 +1,7 @@
 import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
+import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,7 @@ class EventFindView extends StatelessWidget {
   Widget build(BuildContext context) {
     final eventsService = Provider.of<EventsService>(context);
     eventsService.findEvents();
-    List<Event> events = eventsService.eventsFound;
+    final events = eventsService.eventsFound;
     final size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: ProjectColors.primary,
@@ -20,7 +21,7 @@ class EventFindView extends StatelessWidget {
             children: [
               const Center(
                   child: Text(
-                'Recomendados',
+                'EVENTOS RECOMENDADOS',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,
@@ -70,14 +71,19 @@ class _EventContainer extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text('5/8 asistentes'),
+                  Text('${event.users.length} asistente/s'),
                 ],
               ),
               Spacer(),
               Container(
                   width: 150, height: 150, child: Image.network(event.image))
             ],
-          )
+          ),
+          CustomButton(
+            text: 'Detalles',
+            onTap: () =>
+                Navigator.pushNamed(context, 'eventDetails', arguments: event),
+          ),
         ],
       ),
     );

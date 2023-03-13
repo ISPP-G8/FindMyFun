@@ -21,7 +21,7 @@ class EventListView extends StatelessWidget {
             children: [
               const Center(
                   child: Text(
-                'Tus eventos',
+                'TUS EVENTOS',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,
@@ -71,7 +71,7 @@ class _EventContainer extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text('5/8 asistentes'),
+                  Text('${event.users.length} asistente/s'),
                 ],
               ),
               Spacer(),
