@@ -67,12 +67,13 @@ class _FormsColumn extends StatelessWidget {
 
     User eventCreator = User(
         id: "1",
-        name: "a",
-        surname: "a",
-        username: "a",
-        city: "a",
-        email: "a",
-        preferences: [], image: '');
+        name: "Name",
+        surname: "Surname",
+        username: "Username",
+        city: "City",
+        email: "email@email.com",
+        preferences: [],
+        image: '');
 
     userService.getUserWithUid(selectedEvent.users.first).then((value) {
       eventCreator = value;
@@ -109,10 +110,17 @@ class _FormsColumn extends StatelessWidget {
         EventCreator(
           creatorUsername: eventCreator.username,
         ),
-        if(!selectedEvent.users.contains(activeUserId))
+        if (!selectedEvent.users.contains(activeUserId))
           SubmitButton(
-          text: 'Unirse',
-          onTap: () => eventService.addUserToEvent(selectedEvent),
+            text: 'Unirse',
+            onTap: () => {
+              eventService.addUserToEvent(selectedEvent),
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EventDetailsView(),
+                      settings: RouteSettings(arguments: selectedEvent)))
+            },
           ),
         const SubmitButton(
           text: 'Chat',

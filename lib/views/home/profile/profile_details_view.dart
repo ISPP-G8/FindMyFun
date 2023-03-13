@@ -17,7 +17,6 @@ class ProfileDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     final currentUser = userService.currentUser!;
-
     return Scaffold(
       // floatingActionButton: FloatingActionButton(onPressed: () {}),
       backgroundColor: ProjectColors.primary,
@@ -71,8 +70,8 @@ class ProfileDetailsView extends StatelessWidget {
                   enabled: false,
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, 'preferences'),
-                  child: const CustomButton(text: 'Tus preferencias')),
+                    onTap: () => Navigator.pushNamed(context, 'preferences'),
+                    child: const CustomButton(text: 'Tus preferencias')),
               ],
             ),
           ),
