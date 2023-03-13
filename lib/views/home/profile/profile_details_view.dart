@@ -26,8 +26,9 @@ class ProfileDetailsView extends StatelessWidget {
             child: const Icon(
               Icons.chevron_left,
               size: 45,
+              color: ProjectColors.secondary,
             )),
-        backgroundColor: ProjectColors.primary,
+        // backgroundColor: ProjectColors.primary,
         elevation: 0,
         centerTitle: true,
         title: Text('MI PERFIL',

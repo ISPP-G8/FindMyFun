@@ -23,13 +23,13 @@ class PreferencesView extends StatelessWidget {
                   Icons.chevron_left,
                   size: 45,
                 )),
-            backgroundColor: ProjectColors.primary,
+            // backgroundColor: ProjectColors.primary,
             elevation: 0,
             centerTitle: true,
             title: Text('PREFERENCIAS',
                 textAlign: TextAlign.center, style: Styles.appBar),
           ),
-          backgroundColor: ProjectColors.primary,
+          // backgroundColor: ProjectColors.primary,
           body: Column(children: const [
             SizedBox(
               height: 20,
@@ -84,13 +84,13 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                                           RoundedRectangleBorder>(
                                       RoundedRectangleBorder(
                                           side: BorderSide(
-                                            color: preferencesByUserId.contains(
-                                                    preferences[index])
-                                                ? Colors.black
-                                                : Colors
-                                                    .white, //Si la preferencia se encuentra en la lista se señala con un borde negro
-                                            width: 4,
-                                          ))),
+                                    color: preferencesByUserId
+                                            .contains(preferences[index])
+                                        ? Colors.black
+                                        : Colors
+                                            .white, //Si la preferencia se encuentra en la lista se señala con un borde negro
+                                    width: 4,
+                                  ))),
                                   backgroundColor:
                                       MaterialStateProperty.all(Colors.white)),
                               onPressed: () {

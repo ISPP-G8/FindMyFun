@@ -6,8 +6,8 @@ class ImageBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-                'assets/logo-banner.jpeg',
-                width: 200,
-              );
+      'assets/logo-banner.png',
+      width: 200,
+    );
   }
 }

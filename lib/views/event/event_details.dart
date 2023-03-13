@@ -38,14 +38,15 @@ class EventDetailsView extends StatelessWidget {
               child: const Icon(
                 Icons.chevron_left,
                 size: 45,
+                color: ProjectColors.secondary,
               ),
             ),
-            backgroundColor: ProjectColors.primary,
+            // backgroundColor: ProjectColors.primary,
             elevation: 0,
             centerTitle: true,
           ),
         ),
-        backgroundColor: ProjectColors.primary,
+        // backgroundColor: ProjectColors.primary,
         body: const SingleChildScrollView(
           child: LoginContainer(
             child: _FormsColumn(),
@@ -81,7 +82,7 @@ class _FormsColumn extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Image.network(
                   selectedEvent.image,
-                fit: BoxFit.cover,
+                  fit: BoxFit.cover,
                 ),
               ),
               CustomTextForm(
@@ -113,15 +114,15 @@ class _FormsColumn extends StatelessWidget {
                             settings: RouteSettings(arguments: selectedEvent)))
                   },
                 ),
-                const SubmitButton(
-                  text: 'Chat',
-                  // onTap: () => Navigator.of(context).push(
-                  //   MaterialPageRoute(builder: (context) => const AccessScreen()),
-                  // ),
-                  // onTap: => (),
-                ),
-              ],
-    );
+              const SubmitButton(
+                text: 'Chat',
+                // onTap: () => Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (context) => const AccessScreen()),
+                // ),
+                // onTap: => (),
+              ),
+            ],
+          );
         } else {
           return Column(
             children: [
@@ -132,7 +133,7 @@ class _FormsColumn extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Image.network(
                   selectedEvent.image,
-                fit: BoxFit.cover,
+                  fit: BoxFit.cover,
                 ),
               ),
               CustomTextForm(
@@ -164,14 +165,14 @@ class _FormsColumn extends StatelessWidget {
                             settings: RouteSettings(arguments: selectedEvent)))
                   },
                 ),
-                const SubmitButton(
-                  text: 'Chat',
-                  // onTap: () => Navigator.of(context).push(
-                  //   MaterialPageRoute(builder: (context) => const AccessScreen()),
-                  // ),
-                  // onTap: => (),
-                ),
-              ],
+              const SubmitButton(
+                text: 'Chat',
+                // onTap: () => Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (context) => const AccessScreen()),
+                // ),
+                // onTap: => (),
+              ),
+            ],
           );
         }
       },
