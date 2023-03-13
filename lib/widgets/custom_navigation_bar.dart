@@ -57,14 +57,14 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   color: Colors.white,
                 ),
                 label: ''),
-            BottomNavigationBarItem(
-                backgroundColor: ProjectColors.secondary,
-                icon: Icon(
-                  Icons.notifications,
-                  size: 50,
-                  color: Colors.white,
-                ),
-                label: 'Notificaciones'),
+            // BottomNavigationBarItem(
+            //     backgroundColor: ProjectColors.secondary,
+            //     icon: Icon(
+            //       Icons.notifications,
+            //       size: 50,
+            //       color: Colors.white,
+            //     ),
+            //     label: 'Notificaciones'),
             BottomNavigationBarItem(
                 backgroundColor: ProjectColors.secondary,
                 icon: Icon(

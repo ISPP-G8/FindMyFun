@@ -19,9 +19,6 @@ class SettingsView extends StatelessWidget {
               onTap: () => Navigator.pushNamed(context, 'profile'),
               child: CustomButton(text: 'Mi perfil')),
             GestureDetector(
-              onTap: () => Navigator.pushNamed(context, 'preferences'),
-              child: CustomButton(text: 'Preferencias')),
-                          GestureDetector(
               onTap: () async{
                 await AuthService().signOut();
                 Navigator.pushReplacementNamed(context, 'login');

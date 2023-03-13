@@ -15,6 +15,7 @@ class EventFindView extends StatelessWidget {
     final events = eventsService.eventsFound;
     final size = MediaQuery.of(context).size;
     return Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: ProjectColors.primary,
         body: SingleChildScrollView(
           child: Column(

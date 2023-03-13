@@ -120,8 +120,8 @@ class _FormsColumn extends StatelessWidget {
                   builder: (context) => Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(
+                      children: const [
+                        SizedBox(
                             height: 50,
                             width: 50,
                             child: CircularProgressIndicator()),

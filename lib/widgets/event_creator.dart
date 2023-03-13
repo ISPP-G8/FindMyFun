@@ -1,4 +1,5 @@
 import 'package:findmyfun/screens/access_screen.dart';
+import 'package:findmyfun/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 
@@ -33,7 +34,8 @@ class _EventCreator extends State<EventCreator> {
             text: 'Visitar perfil',
             width: 100,
             onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const AccessScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const ProfileDetailsView()),
             ),
           ),
         ],

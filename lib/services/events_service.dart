@@ -97,10 +97,9 @@ class EventsService extends ChangeNotifier {
   Future<List<Event>> findEvents() async {
     final url = Uri.https(_baseUrl, 'Events.json');
     final UsersService usersService = UsersService();
-    final AuthService authService = AuthService();
 
     User currentUser =
-        await usersService.getUserWithUid(authService.currentUser!.uid);
+        await usersService.getUserWithUid(AuthService().currentUser?.uid ?? "");
 
     try {
       final resp = await http.get(url);
