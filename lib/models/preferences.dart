@@ -24,4 +24,19 @@ class Preferences {
         "id": id,
         "name": name,
       };
+
+  @override
+  String toString() =>
+      'id: $id, name: $name';
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Preferences &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name;
 }

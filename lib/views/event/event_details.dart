@@ -76,6 +76,8 @@ class _FormsColumn extends StatelessWidget {
     userService.getUserWithUid(selectedEvent.users.first).then((value) {
       eventCreator = value;
     });
+    String activeUserId = AuthService().currentUser?.uid ?? "";
+
     //User eventCreator = UsersService().getUserWithUid(selectedEvent.users[0]);
     return Column(
       children: [
@@ -106,10 +108,11 @@ class _FormsColumn extends StatelessWidget {
         EventCreator(
           creatorUsername: eventCreator.username,
         ),
-        SubmitButton(
+        if(!selectedEvent.users.contains(activeUserId))
+          SubmitButton(
           text: 'Unirse',
           onTap: () => eventService.addUserToEvent(selectedEvent),
-        ),
+          ),
         const SubmitButton(
           text: 'Chat',
           // onTap: () => Navigator.of(context).push(
