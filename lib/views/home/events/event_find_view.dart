@@ -5,14 +5,14 @@ import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EventListView extends StatelessWidget {
-  const EventListView({super.key});
+class EventFindView extends StatelessWidget {
+  const EventFindView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final eventsService = Provider.of<EventsService>(context);
-    eventsService.getEvents();
-    final events = eventsService.events;
+    eventsService.findEvents();
+    final events = eventsService.eventsFound;
     final size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: ProjectColors.primary,
@@ -21,7 +21,7 @@ class EventListView extends StatelessWidget {
             children: [
               const Center(
                   child: Text(
-                'TUS EVENTOS',
+                'EVENTOS RECOMENDADOS',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,
