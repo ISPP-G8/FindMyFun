@@ -1,5 +1,4 @@
 import 'package:findmyfun/themes/colors.dart';
-import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,21 +10,19 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-            final pageViewService = Provider.of<PageViewService>(context);
+    final pageViewService = Provider.of<PageViewService>(context);
 
-    return  SafeArea(
-      
+    return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(),
+          // appBar: AppBar(),
           backgroundColor: ProjectColors.primary,
           body: PageView(
             controller: pageViewService.registerPageController,
             children: const [
               RegisterViewForm(),
-              RegisterViewPlan()
+              RegisterViewPlan(),
             ],
           )),
     );
   }
 }
-
