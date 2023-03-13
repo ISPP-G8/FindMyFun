@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../themes/colors.dart';
+
 class LoginContainer extends StatelessWidget {
   final Widget child;
   const LoginContainer({
@@ -12,7 +14,7 @@ class LoginContainer extends StatelessWidget {
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-          color: const Color(0xff828a92),
+          color: ProjectColors.secondary,
           borderRadius: BorderRadius.circular(15)),
       child: child,
     );

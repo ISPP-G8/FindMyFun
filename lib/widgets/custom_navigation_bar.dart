@@ -31,10 +31,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             setState(() {});
           },
           currentIndex: _selectedPage,
-          backgroundColor: ProjectColors.secondary,
+          backgroundColor: ProjectColors.tertiary,
           items: const [
             BottomNavigationBarItem(
-                backgroundColor: ProjectColors.secondary,
+                backgroundColor: ProjectColors.tertiary,
                 icon: Icon(
                   Icons.home_outlined,
                   size: 50,
@@ -42,7 +42,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 ),
                 label: 'Inicio'),
             BottomNavigationBarItem(
-                backgroundColor: ProjectColors.secondary,
+                backgroundColor: ProjectColors.tertiary,
                 icon: Icon(
                   Icons.search,
                   size: 50,
@@ -50,7 +50,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 ),
                 label: 'Buscar'),
             BottomNavigationBarItem(
-                backgroundColor: ProjectColors.secondary,
+                backgroundColor: ProjectColors.tertiary,
                 icon: Icon(
                   Icons.add_circle_outline,
                   size: 50,
@@ -58,7 +58,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 ),
                 label: ''),
             // BottomNavigationBarItem(
-            //     backgroundColor: ProjectColors.secondary,
+            //     backgroundColor: ProjectColors.tertiary,
             //     icon: Icon(
             //       Icons.notifications,
             //       size: 50,
@@ -66,7 +66,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             //     ),
             //     label: 'Notificaciones'),
             BottomNavigationBarItem(
-                backgroundColor: ProjectColors.secondary,
+                backgroundColor: ProjectColors.tertiary,
                 icon: Icon(
                   Icons.settings_outlined,
                   size: 50,
