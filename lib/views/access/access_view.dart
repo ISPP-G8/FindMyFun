@@ -39,26 +39,7 @@ class AccessView extends StatelessWidget {
               onTap: () => pageControllerService.pageController.animateToPage(1,
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut),
-            ),
-            CustomButton(
-              text: 'Lista de evento',
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EventListView(),
-                ),
-              ),
-            ),
-            CustomButton(
-                text: 'Crear evento',
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const EventCreationView(),
-                    ),
-                ),
-            ),
-          ],
+            ),          ],
         ),
       ),
     );

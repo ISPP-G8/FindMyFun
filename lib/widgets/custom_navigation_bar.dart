@@ -32,7 +32,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           },
           currentIndex: _selectedPage,
           backgroundColor: ProjectColors.secondary,
-          items: [
+          items: const [
             BottomNavigationBarItem(
                 backgroundColor: ProjectColors.secondary,
                 icon: Icon(

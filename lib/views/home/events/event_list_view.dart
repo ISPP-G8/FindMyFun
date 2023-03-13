@@ -21,7 +21,7 @@ class EventListView extends StatelessWidget {
             children: [
               const Center(
                   child: Text(
-                'Tus eventos',
+                'Eventos',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,

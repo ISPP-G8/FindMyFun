@@ -18,24 +18,26 @@ class EventCreationView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           resizeToAvoidBottomInset: true,
-          appBar: AppBar(
-            leading: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: const Icon(
-                  Icons.chevron_left,
-                  size: 45,
-                )),
-            backgroundColor: ProjectColors.primary,
-            elevation: 0,
-            centerTitle: true,
-            title: Text('CREAR EVENTO',
-                textAlign: TextAlign.center, style: Styles.appBar),
-          ),
           backgroundColor: ProjectColors.primary,
           body: SingleChildScrollView(
-            child: LoginContainer(
-              child: _FormsColumn(),
-            ),
+            child: Column(
+              children: [
+                const Center(
+                  child: Text(
+                'CREAR EVENTO',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold),
+                )),
+                const SizedBox(
+                  height: 20,
+                ),
+                LoginContainer(
+                  child: _FormsColumn(),
+                ),
+              ]
+            )
           )),
     );
   }
