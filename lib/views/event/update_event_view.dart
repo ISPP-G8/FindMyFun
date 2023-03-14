@@ -1,21 +1,17 @@
-import 'dart:math';
-
-import 'package:findmyfun/models/preferences.dart';
 import 'package:findmyfun/services/events_service.dart';
+import 'package:findmyfun/themes/styles.dart';
 import 'package:findmyfun/views/event/event_details.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:findmyfun/services/page_view_service.dart';
 import 'package:findmyfun/widgets/widgets.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../helpers/validators.dart';
 import '../../models/event.dart';
 import '../../services/preferences_service.dart';
-import '../../themes/colors.dart';
-import '../../themes/styles.dart';
 
 class UpdateEventView extends StatelessWidget {
   const UpdateEventView({super.key});
@@ -28,16 +24,13 @@ class UpdateEventView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           resizeToAvoidBottomInset: true,
-          backgroundColor: ProjectColors.primary,
+          //backgroundColor: ProjectColors.secondary,
           body: SingleChildScrollView(
               child: Column(children: [
             Center(
                 child: Text(
               'MODIFICAR EVENTO',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold),
+              style: Styles.appBar,
             )),
             SizedBox(
               height: 20,
@@ -66,12 +59,17 @@ class _FormsColumn extends StatelessWidget {
     final country = TextEditingController(text: event.country);
     final description = TextEditingController(text: event.description);
     final image = TextEditingController(text: event.image);
-    final startDateTime =
-        TextEditingController(text: event.startDate.toIso8601String());
+
+    final List<String> splitsDateTime =
+        DateFormat('yyyy-MM-dd HH:mm').format(event.startDate).split(" ");
+
+    final startDate = TextEditingController(text: splitsDateTime[0]);
+
+    final startTime = TextEditingController(text: splitsDateTime[1]);
+
     List<Object> selectedValues = event.tags.map((e) => e.name).toList();
 
     return Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formKey,
         child: Column(
           children: [
@@ -111,9 +109,14 @@ class _FormsColumn extends StatelessWidget {
               validator: (value) => Validators.validateNotEmpty(value),
             ),
             CustomTextForm(
-              hintText: 'Fecha y hora: aaaa-MM-dd hh:mm',
-              controller: startDateTime,
-              validator: (value) => Validators.validateNotEmpty(value),
+              hintText: 'Fecha: aaaa-MM-dd',
+              controller: startDate,
+              validator: (value) => Validators.validateDate(value),
+            ),
+            CustomTextForm(
+              hintText: 'Hora: HH:mm',
+              controller: startTime,
+              validator: (value) => Validators.validateTime(value),
             ),
             CategoryDropdown(
               selectedValues: selectedValues,
@@ -124,7 +127,8 @@ class _FormsColumn extends StatelessWidget {
             SubmitButton(
                 text: 'CONTINUAR',
                 onTap: () async {
-                  if (formKey.currentState!.validate()) {
+                  if (formKey.currentState!.validate() &&
+                      selectedValues.isNotEmpty) {
                     showDialog(
                       context: context,
                       builder: (context) => Column(
@@ -145,7 +149,8 @@ class _FormsColumn extends StatelessWidget {
                       event.finished = false;
                       event.image = image.text;
                       event.name = name.text;
-                      event.startDate = DateTime.parse(startDateTime.text);
+                      event.startDate =
+                          DateTime.parse('${startDate.text} ${startTime.text}');
                       event.tags = await Future.wait(selectedValues
                           .map((e) => PreferencesService()
                               .getPreferenceByName(e.toString()))

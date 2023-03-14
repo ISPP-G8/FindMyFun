@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../models/models.dart';
 import '../themes/themes.dart';
@@ -28,7 +29,7 @@ class EventContainer extends StatelessWidget {
                     event.name,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text(event.startDate.toString()),
+                  Text(DateFormat('yyyy-MM-dd HH:mm').format(event.startDate)),
                   const SizedBox(
                     height: 10,
                   ),
