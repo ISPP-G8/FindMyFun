@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/models.dart';
 import '../themes/themes.dart';
 import 'widgets.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class EventContainer extends StatelessWidget {
   final Event event;
@@ -21,6 +22,7 @@ class EventContainer extends StatelessWidget {
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Column(
                 children: [
@@ -41,7 +43,19 @@ class EventContainer extends StatelessWidget {
               ),
               Spacer(),
               Container(
-                  width: 150, height: 150, child: Image.network(event.image))
+                  width: 150,
+                  height: 150,
+                  child: CachedNetworkImage(
+                    imageUrl: event.image,
+                    errorWidget: (context, url, error) {
+                      print('Error al cargar la imagen $error');
+                      return Image.asset('assets/placeholder.png');
+                    },
+                    progressIndicatorBuilder: (context, url, progress) =>
+                        CircularProgressIndicator(
+                      value: progress.progress,
+                    ),
+                  ))
             ],
           ),
           CustomButton(

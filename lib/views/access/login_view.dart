@@ -82,7 +82,7 @@ class _FormsColumnState extends State<_FormsColumn> {
   Widget build(BuildContext context) {
     final usersService = Provider.of<UsersService>(context);
     return Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+        // autovalidateMode: AutovalidateMode.onUserInteraction,
         key: _formKey,
         child: Column(
           children: [
@@ -92,7 +92,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             CustomTextForm(
               hintText: 'Email',
               controller: _emailController,
-              validator: (value) => Validators.validateNotEmpty(value),
+              validator: (value) => Validators.validateEmail(value),
             ),
             CustomTextForm(
               hintText: 'Contraseña',

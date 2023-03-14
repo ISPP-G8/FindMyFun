@@ -14,6 +14,9 @@ class EventListView extends StatelessWidget {
     // eventsService.getEvents();
     final events = eventsService.events;
     final size = MediaQuery.of(context).size;
+    events.sort(
+      (a, b) => b.startDate.compareTo(a.startDate),
+    );
     return Scaffold(
         resizeToAvoidBottomInset: true,
         // backgroundColor: ProjectColors.primary,

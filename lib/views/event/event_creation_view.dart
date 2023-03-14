@@ -51,6 +51,7 @@ class _FormsColumn extends StatelessWidget {
   final _description = TextEditingController();
   final _image = TextEditingController();
   final _startDateTime = TextEditingController();
+  final _startTime = TextEditingController();
   List<Object> _selectedValues = [];
   // final _tags = const CategoryDropdown(onSelectionChanged: ,);
 
@@ -60,7 +61,7 @@ class _FormsColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     String? id = AuthService().currentUser?.uid ?? "";
     return Form(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      // autovalidateMode: AutovalidateMode.onUserInteraction,
       key: _formKey,
       child: Column(
         children: [
@@ -100,9 +101,14 @@ class _FormsColumn extends StatelessWidget {
             validator: (value) => Validators.validateNotEmpty(value),
           ),
           CustomTextForm(
-            hintText: 'Fecha y hora: aaaa-MM-dd hh:mm',
+            hintText: 'Fecha: aaaa-MM-dd',
             controller: _startDateTime,
-            validator: (value) => Validators.validateNotEmpty(value),
+            validator: (value) => Validators.validateDate(value),
+          ),
+          CustomTextForm(
+            hintText: 'Hora: HH:mm',
+            controller: _startTime,
+            validator: (value) => Validators.validateTime(value),
           ),
           CategoryDropdown(
             selectedValues: _selectedValues,
@@ -113,7 +119,8 @@ class _FormsColumn extends StatelessWidget {
           SubmitButton(
             text: 'CONTINUAR',
             onTap: () async {
-              if (_formKey.currentState!.validate()) {
+              if (_formKey.currentState!.validate() &&
+                  _selectedValues.isNotEmpty) {
                 showDialog(
                   context: context,
                   builder: (context) => Column(
@@ -136,7 +143,8 @@ class _FormsColumn extends StatelessWidget {
                     finished: false,
                     image: _image.text,
                     name: _name.text,
-                    startDate: DateTime.parse(_startDateTime.text),
+                    startDate: DateTime.parse(
+                        '${_startDateTime.text} ${_startTime.text}'),
                     tags: await Future.wait(_selectedValues
                         .map((e) => PreferencesService()
                             .getPreferenceByName(e.toString()))
