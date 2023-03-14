@@ -4,6 +4,7 @@ import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/ui/custom_snackbars.dart';
 import 'package:findmyfun/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,14 +15,11 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageViewController =
         Provider.of<PageViewService>(context).pageController;
+    final userService = Provider.of<UsersService>(context);
+
     return SafeArea(
       child: Scaffold(
           // Lo dejo comentado por si se quiere usar en el futuro para probar funcionalidades
-          // floatingActionButton: FloatingActionButton(
-          //   onPressed: () {
-
-          //   },
-          // ),
 
           appBar: AppBar(
             leading: GestureDetector(
@@ -32,13 +30,16 @@ class LoginView extends StatelessWidget {
                   Icons.chevron_left,
                   size: 45,
                 )),
-            backgroundColor: ProjectColors.primary,
+            // backgroundColor: ProjectColors.primary,
             elevation: 0,
             centerTitle: true,
-            title: Text('INICIO DE SESIÓN',
-                textAlign: TextAlign.center, style: Styles.appBar),
+            title: Text(
+              'INICIO DE SESIÓN',
+              textAlign: TextAlign.center,
+              style: Styles.appBar,
+            ),
           ),
-          backgroundColor: ProjectColors.primary,
+          // backgroundColor: ProjectColors.primary,
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -47,13 +48,16 @@ class LoginView extends StatelessWidget {
                 const SizedBox(
                   height: 100,
                 ),
-          
+
                 const LoginContainer(
                   child: _FormsColumn(),
                 ),
-                TextButton(
-                    onPressed: () => Navigator.pushNamed(context, 'register'),
-                    child: const Text('¿No tienes cuenta?'))
+                Visibility(
+                  visible: false,
+                  child: TextButton(
+                      onPressed: () => Navigator.pushNamed(context, 'register'),
+                      child: const Text('¿No tienes cuenta?')),
+                )
               ],
             ),
           )),
@@ -72,10 +76,11 @@ class _FormsColumn extends StatefulWidget {
 
 class _FormsColumnState extends State<_FormsColumn> {
   final _formKey = GlobalKey<FormState>();
-  final _userController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final usersService = Provider.of<UsersService>(context);
     return Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: _formKey,
@@ -85,8 +90,8 @@ class _FormsColumnState extends State<_FormsColumn> {
               height: 10,
             ),
             CustomTextForm(
-              hintText: 'Usuario',
-              controller: _userController,
+              hintText: 'Email',
+              controller: _emailController,
               validator: (value) => Validators.validateNotEmpty(value),
             ),
             CustomTextForm(
@@ -113,6 +118,27 @@ class _FormsColumnState extends State<_FormsColumn> {
                                 child: CircularProgressIndicator()),
                           ]),
                     );
+
+                    try {
+                      UserCredential credential = await AuthService()
+                          .signInWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text);
+
+                      print('User uid: ${credential.user?.uid}');
+                      await usersService.getCurrentUserWithUid();
+                    } on FirebaseAuthException catch (e) {
+                      print('Error al iniciar sesion $e');
+                      Navigator.pop(context);
+                      return;
+                    } catch (e) {
+                      print('Error al iniciar sesion $e');
+                      Navigator.pop(context);
+                      return;
+                    }
+
+                    // await usersService.getUsers();
+
                     await Future.delayed(Duration(seconds: 1));
                     Navigator.pushReplacementNamed(context, 'main');
                   } else {

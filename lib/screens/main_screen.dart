@@ -1,4 +1,3 @@
-import 'package:findmyfun/screens/screens.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +13,27 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
+int cont = 0;
+
 class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     final eventsService = Provider.of<EventsService>(context, listen: false);
-    Future.delayed(Duration.zero, () async => await eventsService.getEvents());
+
+    Future.delayed(Duration.zero, () async {
+      // Pobla la lista de eventos del servicio
+      await eventsService.getEvents();
+      await eventsService.findEvents();
+    });
+    final preferencesService =
+        Provider.of<PreferencesService>(context, listen: false);
+    if (cont == 0) {
+      Future.delayed(
+          Duration.zero, () async => await preferencesService.getPreferences());
+      cont++;
+    }
+    Future.delayed(Duration.zero,
+        () async => await preferencesService.getPreferencesByUserId());
     super.initState();
   }
 
@@ -27,22 +42,22 @@ class _MainScreenState extends State<MainScreen> {
     final pageControllerService = Provider.of<PageViewService>(context);
 
     return Scaffold(
-        backgroundColor: ProjectColors.primary,
+        // backgroundColor: ProjectColors.primary,
         bottomNavigationBar: const CustomNavigationBar(),
         // floatingActionButton: FloatingActionButton(
         //   onPressed: () {},
         // ),
         appBar: AppBar(
-          backgroundColor: ProjectColors.primary,
+          backgroundColor: ProjectColors.tertiary,
           elevation: 0,
-          leading: Image.asset('assets/logo.jpeg'),
+          leading: Image.asset('assets/logo.png'),
           centerTitle: true,
-          title: Container(
-              height: 50, child: Image.asset('assets/logo-banner.jpeg')),
+          title: SizedBox(
+              height: 50, child: Image.asset('assets/logo-banner.png')),
           actions: [
             Container(
               margin: const EdgeInsets.only(right: 10),
-              child: Icon(
+              child: const Icon(
                 Icons.chat_bubble,
                 size: 50,
               ),
@@ -58,6 +73,8 @@ class _MainScreenState extends State<MainScreen> {
                 // TODO: Vista de inicio
                 // TODO: Vista de busqueda
                 EventListView(),
+                EventFindView(),
+                EventCreationView(),
                 // TODO: Vista de notificaciones
                 SettingsView()
               ]),
