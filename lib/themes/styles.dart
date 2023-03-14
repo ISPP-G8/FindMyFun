@@ -1,6 +1,9 @@
+import 'package:findmyfun/themes/colors.dart';
 import 'package:flutter/material.dart';
 
-class Styles{
+class Styles {
   static TextStyle appBar = TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 35);
+      color: ProjectColors.secondary,
+      fontWeight: FontWeight.bold,
+      fontSize: 35);
 }
