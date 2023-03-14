@@ -80,7 +80,8 @@ class EventsService extends ChangeNotifier {
     try {
       final get = await http.get(url);
       final jsonResponse = json.decode(get.body);
-      getCreator = jsonResponse['creator'];
+      List<dynamic> getUsers = jsonResponse['users'];
+      getCreator = getUsers.first;
     } catch (e) {
       print('Error creating event: $e');
     }

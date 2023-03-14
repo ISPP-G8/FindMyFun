@@ -1,5 +1,6 @@
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
+import 'package:findmyfun/views/event/update_event_view.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:findmyfun/screens/access_screen.dart';
@@ -121,6 +122,17 @@ class _FormsColumn extends StatelessWidget {
                 // ),
                 // onTap: => (),
               ),
+              if (selectedEvent.creator == activeUserId)
+                SubmitButton(
+                  text: 'Editar Evento',
+                  onTap: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UpdateEventView(),
+                            settings: RouteSettings(arguments: selectedEvent)))
+                  },
+                )
             ],
           );
         } else {
@@ -172,6 +184,17 @@ class _FormsColumn extends StatelessWidget {
                 // ),
                 // onTap: => (),
               ),
+              if (selectedEvent.creator == activeUserId)
+                SubmitButton(
+                  text: 'Editar Evento',
+                  onTap: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UpdateEventView(),
+                            settings: RouteSettings(arguments: selectedEvent)))
+                  },
+                ),
             ],
           );
         }

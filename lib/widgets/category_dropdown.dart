@@ -22,6 +22,12 @@ class _CategoryDropdown extends State<CategoryDropdown> {
   List<Object> selectedCategories = [];
 
   @override
+  void initState() {
+    super.initState();
+    selectedCategories = widget.selectedValues!;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final preferencesService = Provider.of<PreferencesService>(context);
     preferencesService.getPreferences();

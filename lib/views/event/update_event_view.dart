@@ -1,13 +1,19 @@
+import 'dart:math';
+
+import 'package:findmyfun/models/preferences.dart';
 import 'package:findmyfun/services/events_service.dart';
+import 'package:findmyfun/views/event/event_details.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:findmyfun/services/page_view_service.dart';
 import 'package:findmyfun/widgets/widgets.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../helpers/validators.dart';
 import '../../models/event.dart';
+import '../../services/preferences_service.dart';
 import '../../themes/colors.dart';
 import '../../themes/styles.dart';
 
@@ -19,68 +25,54 @@ class UpdateEventView extends StatelessWidget {
     final pageViewController =
         Provider.of<PageViewService>(context).pageController;
 
-    return Scaffold(
-        backgroundColor: ProjectColors.primary,
-        body: Container(
-          alignment: Alignment.center,
-          // padding: const EdgeInsetsDirectional.only(top: 25.0),
-          child: PageView(
-            children: [
-              SafeArea(
-                child: Scaffold(
-                    resizeToAvoidBottomInset: true,
-                    appBar: AppBar(
-                      leading: GestureDetector(
-                          onTap: () => Navigator.pop(context),
-                          child: const Icon(
-                            Icons.chevron_left,
-                            size: 45,
-                          )),
-                      backgroundColor: ProjectColors.primary,
-                      elevation: 0,
-                      centerTitle: true,
-                      title: Text('MODIFICAR EVENTO',
-                          textAlign: TextAlign.center, style: Styles.appBar),
-                    ),
-                    backgroundColor: ProjectColors.primary,
-                    body: const SingleChildScrollView(
-                      child: LoginContainer(
-                        child: _FormsColumn(),
-                      ),
-                    )),
-              )
-            ],
-          ),
-        ));
+    return SafeArea(
+      child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: ProjectColors.primary,
+          body: SingleChildScrollView(
+              child: Column(children: [
+            Center(
+                child: Text(
+              'MODIFICAR EVENTO',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),
+            )),
+            SizedBox(
+              height: 20,
+            ),
+            LoginContainer(
+              child: _FormsColumn(),
+            )
+          ]))),
+    );
   }
 }
 
-class _FormsColumn extends StatefulWidget {
-  const _FormsColumn({
+class _FormsColumn extends StatelessWidget {
+  _FormsColumn({
     super.key,
   });
-
-  @override
-  State<_FormsColumn> createState() => _FormsColumnState();
-}
-
-class _FormsColumnState extends State<_FormsColumn> {
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final Event event = ModalRoute.of(context)!.settings.arguments as Event;
 
-    final eventNameController = TextEditingController(text: event.name);
-    final placeController = TextEditingController(text: event.address);
-    final descriptionController =
-        TextEditingController(text: event.description);
-    final imageController = TextEditingController(text: event.image);
-    final datetimeController =
+    final formKey = GlobalKey<FormState>();
+    final name = TextEditingController(text: event.name);
+    final address = TextEditingController(text: event.address);
+    final city = TextEditingController(text: event.city);
+    final country = TextEditingController(text: event.country);
+    final description = TextEditingController(text: event.description);
+    final image = TextEditingController(text: event.image);
+    final startDateTime =
         TextEditingController(text: event.startDate.toIso8601String());
+    List<Object> selectedValues = event.tags.map((e) => e.name).toList();
 
     return Form(
-        key: GlobalKey<FormState>(),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        key: formKey,
         child: Column(
           children: [
             const SizedBox(
@@ -88,37 +80,51 @@ class _FormsColumnState extends State<_FormsColumn> {
             ),
             CustomTextForm(
               hintText: 'Nombre del evento',
-              controller: eventNameController,
+              controller: name,
               validator: (value) => Validators.validateNotEmpty(value),
             ),
             CustomTextForm(
               hintText: 'Lugar',
-              controller: placeController,
+              controller: address,
+              validator: (value) => Validators.validateNotEmpty(value),
+            ),
+            CustomTextForm(
+              hintText: 'Ciudad',
+              controller: city,
+              validator: (value) => Validators.validateNotEmpty(value),
+            ),
+            CustomTextForm(
+              hintText: 'País',
+              controller: country,
               validator: (value) => Validators.validateNotEmpty(value),
             ),
             CustomTextForm(
               hintText: 'Descripción',
               maxLines: 5,
               type: TextInputType.multiline,
-              controller: descriptionController,
+              controller: description,
               validator: (value) => Validators.validateNotEmpty(value),
             ),
             CustomTextForm(
               hintText: 'Link de la imagen',
-              controller: imageController,
+              controller: image,
               validator: (value) => Validators.validateNotEmpty(value),
             ),
             CustomTextForm(
-              hintText: 'Fecha y hora',
-              type: TextInputType.datetime,
-              controller: datetimeController,
+              hintText: 'Fecha y hora: aaaa-MM-dd hh:mm',
+              controller: startDateTime,
               validator: (value) => Validators.validateNotEmpty(value),
             ),
-            const CategoryDropdown(),
+            CategoryDropdown(
+              selectedValues: selectedValues,
+              onSelectionChanged: (selected) {
+                selectedValues = selected;
+              },
+            ),
             SubmitButton(
                 text: 'CONTINUAR',
                 onTap: () async {
-                  if (_formKey.currentState!.validate()) {
+                  if (formKey.currentState!.validate()) {
                     showDialog(
                       context: context,
                       builder: (context) => Column(
@@ -132,17 +138,28 @@ class _FormsColumnState extends State<_FormsColumn> {
                           ]),
                     );
                     try {
-                      event.name = eventNameController.text;
-                      event.address = placeController.text;
-                      event.description = descriptionController.text;
-                      // event.image = DateTime.parse(datetimeController.text);
-                      event.startDate = DateTime.parse(datetimeController.text);
+                      event.address = address.text;
+                      event.city = city.text;
+                      event.country = country.text;
+                      event.description = description.text;
+                      event.finished = false;
+                      event.image = image.text;
+                      event.name = name.text;
+                      event.startDate = DateTime.parse(startDateTime.text);
+                      event.tags = await Future.wait(selectedValues
+                          .map((e) => PreferencesService()
+                              .getPreferenceByName(e.toString()))
+                          .toList());
 
                       await EventsService().updateEvent(event);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EventDetailsView(),
+                              settings: RouteSettings(arguments: event)));
                     } on FirebaseException catch (e) {
                       print('Hay un error al actualizar el evento $e');
                       Navigator.pop(context);
-                      return;
                     }
                   }
                 })
