@@ -8,26 +8,23 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        backgroundColor: ProjectColors.primary,
+    return Scaffold(
+        // backgroundColor: ProjectColors.primary,
         body: Column(
-          children: [
-            SizedBox(
-              height: 50,
-            ),
-            GestureDetector(
-              onTap: () => Navigator.pushNamed(context, 'profile'),
-              child: CustomButton(text: 'Mi perfil')),
-            GestureDetector(
-              onTap: () => Navigator.pushNamed(context, 'preferences'),
-              child: CustomButton(text: 'Preferencias')),
-                          GestureDetector(
-              onTap: () async{
-                await AuthService().signOut();
-                Navigator.pushReplacementNamed(context, 'login');
-              },
-              child: CustomButton(text: 'Cerrar sesión'))
-          ],
-        ));
+      children: [
+        SizedBox(
+          height: 50,
+        ),
+        GestureDetector(
+            onTap: () => Navigator.pushNamed(context, 'profile'),
+            child: CustomButton(text: 'Mi perfil')),
+        GestureDetector(
+            onTap: () async {
+              await AuthService().signOut();
+              Navigator.pushReplacementNamed(context, 'login');
+            },
+            child: CustomButton(text: 'Cerrar sesión'))
+      ],
+    ));
   }
 }

@@ -15,14 +15,14 @@ class RegisterScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           // appBar: AppBar(),
-          backgroundColor: ProjectColors.primary,
+          // backgroundColor: ProjectColors.primary,
           body: PageView(
-            controller: pageViewService.registerPageController,
-            children: const [
-              RegisterViewForm(),
-              RegisterViewPlan(),
-            ],
-          )),
+        controller: pageViewService.registerPageController,
+        children: const [
+          RegisterViewForm(),
+          RegisterViewPlan(),
+        ],
+      )),
     );
   }
 }

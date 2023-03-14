@@ -1,8 +1,9 @@
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
+import 'package:findmyfun/views/event/update_event_view.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:findmyfun/screens/access_screen.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/event.dart';
@@ -38,14 +39,15 @@ class EventDetailsView extends StatelessWidget {
               child: const Icon(
                 Icons.chevron_left,
                 size: 45,
+                color: ProjectColors.secondary,
               ),
             ),
-            backgroundColor: ProjectColors.primary,
+            // backgroundColor: ProjectColors.primary,
             elevation: 0,
             centerTitle: true,
           ),
         ),
-        backgroundColor: ProjectColors.primary,
+        // backgroundColor: ProjectColors.primary,
         body: const SingleChildScrollView(
           child: LoginContainer(
             child: _FormsColumn(),
@@ -64,63 +66,140 @@ class _FormsColumn extends StatelessWidget {
     final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
     final eventService = Provider.of<EventsService>(context, listen: false);
     final userService = Provider.of<UsersService>(context, listen: false);
+    final creator = userService.getUserWithUid(selectedEvent.creator);
 
-    User eventCreator = User(
-        id: "1",
-        name: "a",
-        surname: "a",
-        username: "a",
-        city: "a",
-        email: "a",
-        preferences: []);
-    userService.getUserWithUid(selectedEvent.users.first).then((value) {
-      eventCreator = value;
-    });
     String activeUserId = AuthService().currentUser?.uid ?? "";
 
-    //User eventCreator = UsersService().getUserWithUid(selectedEvent.users[0]);
-    return Column(
-      children: [
-        const SizedBox(
-          height: 10,
-        ),
-        Container(
-          padding: const EdgeInsets.all(10.0),
-          child: Image.network(
-            selectedEvent.image,
-            fit: BoxFit.cover,
-          ),
-        ),
-        CustomTextForm(
-          hintText: selectedEvent.address,
-          enabled: false,
-        ),
-        CustomTextForm(
-          hintText: selectedEvent.startDate.toString(),
-          enabled: false,
-        ),
-        CustomTextForm(
-          hintText: selectedEvent.description,
-          enabled: false,
-          maxLines: 5,
-          type: TextInputType.multiline,
-        ),
-        EventCreator(
-          creatorUsername: eventCreator.username,
-        ),
-        if(!selectedEvent.users.contains(activeUserId))
-          SubmitButton(
-          text: 'Unirse',
-          onTap: () => eventService.addUserToEvent(selectedEvent),
-          ),
-        const SubmitButton(
-          text: 'Chat',
-          // onTap: () => Navigator.of(context).push(
-          //   MaterialPageRoute(builder: (context) => const AccessScreen()),
-          // ),
-          // onTap: => (),
-        ),
-      ],
+    return FutureBuilder<User>(
+      future: creator,
+      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: const EdgeInsets.all(10.0),
+                child: Image.network(
+                  selectedEvent.image,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.address,
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: DateFormat('yyyy-MM-dd HH:mm')
+                    .format(selectedEvent.startDate),
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.description,
+                enabled: false,
+                maxLines: 5,
+                type: TextInputType.multiline,
+              ),
+              EventCreator(
+                creatorUsername: snapshot.data?.username ?? 'username',
+              ),
+              if (!selectedEvent.users.contains(activeUserId))
+                SubmitButton(
+                  text: 'Unirse',
+                  onTap: () => {
+                    eventService.addUserToEvent(selectedEvent),
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EventDetailsView(),
+                            settings: RouteSettings(arguments: selectedEvent)))
+                  },
+                ),
+              const SubmitButton(
+                text: 'Chat',
+                // onTap: () => Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (context) => const AccessScreen()),
+                // ),
+                // onTap: => (),
+              ),
+              if (selectedEvent.creator == activeUserId)
+                SubmitButton(
+                  text: 'Editar Evento',
+                  onTap: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UpdateEventView(),
+                            settings: RouteSettings(arguments: selectedEvent)))
+                  },
+                )
+            ],
+          );
+        } else {
+          return Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: const EdgeInsets.all(10.0),
+                child: Image.network(
+                  selectedEvent.image,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.address,
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.startDate.toString(),
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.description,
+                enabled: false,
+                maxLines: 5,
+                type: TextInputType.multiline,
+              ),
+              EventCreator(
+                creatorUsername: snapshot.data?.username ?? 'username',
+              ),
+              if (!selectedEvent.users.contains(activeUserId))
+                SubmitButton(
+                  text: 'Unirse',
+                  onTap: () => {
+                    eventService.addUserToEvent(selectedEvent),
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EventDetailsView(),
+                            settings: RouteSettings(arguments: selectedEvent)))
+                  },
+                ),
+              const SubmitButton(
+                text: 'Chat',
+                // onTap: () => Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (context) => const AccessScreen()),
+                // ),
+                // onTap: => (),
+              ),
+              if (selectedEvent.creator == activeUserId)
+                SubmitButton(
+                  text: 'Editar Evento',
+                  onTap: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UpdateEventView(),
+                            settings: RouteSettings(arguments: selectedEvent)))
+                  },
+                ),
+            ],
+          );
+        }
+      },
     );
   }
 }

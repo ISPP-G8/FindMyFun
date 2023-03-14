@@ -64,7 +64,6 @@ class EventsService extends ChangeNotifier {
 
         eventsAux.add(event);
       });
-
       events = eventsAux;
 
       return true;
@@ -74,13 +73,34 @@ class EventsService extends ChangeNotifier {
     }
   }
 
+  Future<void> updateEvent(Event event) async {
+    final url = Uri.https(_baseUrl, 'Events/${event.id}.json');
+    String eventCreator = event.creator;
+    String getCreator = '';
+    try {
+      final get = await http.get(url);
+      final jsonResponse = json.decode(get.body);
+      List<dynamic> getUsers = jsonResponse['users'];
+      getCreator = getUsers.first;
+    } catch (e) {
+      print('Error creating event: $e');
+    }
+    if (eventCreator == getCreator) {
+      try {
+        final put = await http.put(url, body: jsonEncode(event.toJson()));
+      } catch (e) {
+        print('Error creating event: $e');
+      }
+    }
+  }
+
   //FIND EVENTS
   Future<List<Event>> findEvents() async {
     final url = Uri.https(_baseUrl, 'Events.json');
     final UsersService usersService = UsersService();
-    final AuthService authService = AuthService();
 
-    User currentUser = await usersService.getUserWithUid(authService.currentUser!.uid);
+    User currentUser =
+        await usersService.getUserWithUid(AuthService().currentUser?.uid ?? "");
 
     try {
       final resp = await http.get(url);
@@ -92,13 +112,16 @@ class EventsService extends ChangeNotifier {
 
       data.forEach((key, value) {
         final event = Event.fromRawJson(jsonEncode(value));
-        if (currentUser.preferences.toSet().intersection(event.tags.toSet()).isNotEmpty && !event.hasFinished/* && currentUser.city == event.city*/) {
+        if (currentUser.preferences
+                .toSet()
+                .intersection(event.tags.toSet())
+                .isNotEmpty &&
+            !event.hasFinished /* && currentUser.city == event.city*/) {
           eventsAux.add(event);
         }
       });
       eventsFound = eventsAux;
       return eventsAux;
-      
     } catch (e) {
       throw Exception('Error getting events: $e');
     }

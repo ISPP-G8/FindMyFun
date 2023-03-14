@@ -13,8 +13,7 @@ class PreferencesContainer extends StatelessWidget {
       height: 700,
       margin: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-          color: const Color(0xff828a92),
-          borderRadius: BorderRadius.circular(15)),
+          color: const Color(0xff828a92)),
       child: child,
     );
   }

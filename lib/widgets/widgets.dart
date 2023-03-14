@@ -1,3 +1,5 @@
+export 'package:findmyfun/widgets/event_container.dart';
+
 export 'package:findmyfun/widgets/custom_button.dart';
 export 'package:findmyfun/widgets/custom_text_form.dart';
 export 'package:findmyfun/widgets/custom_navigation_bar.dart';

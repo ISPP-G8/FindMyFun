@@ -1,3 +1,4 @@
+import 'package:findmyfun/themes/colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
@@ -20,8 +21,7 @@ class CustomButton extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         padding: const EdgeInsets.symmetric(vertical: 15),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
+          color: ProjectColors.secondary,
         ),
         child: Text(
           text,

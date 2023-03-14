@@ -45,7 +45,7 @@ class PreferencesService extends ChangeNotifier {
 
       List<Preferences> preferencesAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
-      print(data);
+
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
         preferencesAux.add(preference);
@@ -67,6 +67,7 @@ class PreferencesService extends ChangeNotifier {
         throw Exception('Error in response');
       }
 
+      List<Preferences> preferencesAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
       Preferences? preferenceAux;
       data.forEach((key, value) {
@@ -98,7 +99,7 @@ class PreferencesService extends ChangeNotifier {
       }
 
       Map<String, dynamic> data = jsonDecode(resp.body);
-      print(data);
+
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
         if (!preferences.contains(preference)) {

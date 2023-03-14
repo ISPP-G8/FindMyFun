@@ -32,7 +32,6 @@ class CustomTextForm extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
       ),
       child: TextFormField(
         keyboardType: type,

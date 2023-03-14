@@ -72,7 +72,7 @@ class _PlanContainer extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 10),
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                color: Colors.white),
             child: Column(
               children: [
                 _CustomPlan(

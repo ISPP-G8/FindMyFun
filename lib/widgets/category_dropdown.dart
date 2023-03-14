@@ -22,6 +22,12 @@ class _CategoryDropdown extends State<CategoryDropdown> {
   List<Object> selectedCategories = [];
 
   @override
+  void initState() {
+    super.initState();
+    selectedCategories = widget.selectedValues!;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final preferencesService = Provider.of<PreferencesService>(context);
     preferencesService.getPreferences();
@@ -31,7 +37,7 @@ class _CategoryDropdown extends State<CategoryDropdown> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(15)),
+          color: Colors.white),
       child: DropDownMultiSelect(
         options: prefs,
         selectedValues: selectedCategories,

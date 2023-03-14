@@ -39,7 +39,8 @@ class AccessView extends StatelessWidget {
               onTap: () => pageControllerService.pageController.animateToPage(1,
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut),
-            ),          ],
+            ),
+          ],
         ),
       ),
     );
