@@ -31,7 +31,7 @@ class _CategoryDropdown extends State<CategoryDropdown> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(15)),
+          color: Colors.white),
       child: DropDownMultiSelect(
         options: prefs,
         selectedValues: selectedCategories,

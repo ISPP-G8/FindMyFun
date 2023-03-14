@@ -26,8 +26,9 @@ class ProfileDetailsView extends StatelessWidget {
             child: const Icon(
               Icons.chevron_left,
               size: 45,
+              color: ProjectColors.secondary,
             )),
-        backgroundColor: ProjectColors.primary,
+        // backgroundColor: ProjectColors.primary,
         elevation: 0,
         centerTitle: true,
         title: Text('MI PERFIL',
@@ -39,7 +40,6 @@ class ProfileDetailsView extends StatelessWidget {
           width: 400,
           decoration: BoxDecoration(
             color: const Color(0xff828a92),
-            borderRadius: BorderRadius.circular(15),
           ),
           child: SingleChildScrollView(
             child: Column(

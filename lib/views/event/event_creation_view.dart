@@ -5,9 +5,11 @@ import 'package:findmyfun/services/preferences_service.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../helpers/validators.dart';
+import '../../services/services.dart';
 import '../../ui/custom_snackbars.dart';
 
 class EventCreationView extends StatelessWidget {
@@ -18,27 +20,24 @@ class EventCreationView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           resizeToAvoidBottomInset: true,
-          backgroundColor: ProjectColors.primary,
+          // backgroundColor: ProjectColors.primary,
           body: SingleChildScrollView(
-            child: Column(
-              children: [
-                const Center(
-                  child: Text(
-                'CREAR EVENTO',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
-                )),
-                const SizedBox(
-                  height: 20,
-                ),
-                LoginContainer(
-                  child: _FormsColumn(),
-                ),
-              ]
-            )
-          )),
+              child: Column(children: [
+            const Center(
+                child: Text(
+              'CREAR EVENTO',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),
+            )),
+            const SizedBox(
+              height: 20,
+            ),
+            LoginContainer(
+              child: _FormsColumn(),
+            ),
+          ]))),
     );
   }
 }
@@ -127,7 +126,9 @@ class _FormsColumn extends StatelessWidget {
                             child: CircularProgressIndicator()),
                       ]),
                 );
-                await EventsService().saveEvent(Event(
+                final eventsService =
+                    Provider.of<EventsService>(context, listen: false);
+                await eventsService.saveEvent(Event(
                     address: _address.text,
                     city: _city.text,
                     country: _country.text,
@@ -143,8 +144,12 @@ class _FormsColumn extends StatelessWidget {
                     users: [id],
                     id: Uuid().v1()));
 
-                await Future.delayed(const Duration(seconds: 1));
-                Navigator.pushReplacementNamed(context, 'main');
+                // await Future.delayed(const Duration(seconds: 1));
+                // Navigator.pushReplacementNamed(context, 'main');
+                Navigator.pop(context);
+                final pageController =
+                    Provider.of<PageViewService>(context, listen: false);
+                pageController.mainPageController.jumpToPage(0);
               } else {
                 CustomSnackbars.showCustomSnackbar(
                   context,

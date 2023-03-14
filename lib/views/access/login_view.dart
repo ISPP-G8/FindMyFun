@@ -30,13 +30,16 @@ class LoginView extends StatelessWidget {
                   Icons.chevron_left,
                   size: 45,
                 )),
-            backgroundColor: ProjectColors.primary,
+            // backgroundColor: ProjectColors.primary,
             elevation: 0,
             centerTitle: true,
-            title: Text('INICIO DE SESIÓN',
-                textAlign: TextAlign.center, style: Styles.appBar),
+            title: Text(
+              'INICIO DE SESIÓN',
+              textAlign: TextAlign.center,
+              style: Styles.appBar,
+            ),
           ),
-          backgroundColor: ProjectColors.primary,
+          // backgroundColor: ProjectColors.primary,
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -49,9 +52,12 @@ class LoginView extends StatelessWidget {
                 const LoginContainer(
                   child: _FormsColumn(),
                 ),
-                TextButton(
-                    onPressed: () => Navigator.pushNamed(context, 'register'),
-                    child: const Text('¿No tienes cuenta?'))
+                Visibility(
+                  visible: false,
+                  child: TextButton(
+                      onPressed: () => Navigator.pushNamed(context, 'register'),
+                      child: const Text('¿No tienes cuenta?')),
+                )
               ],
             ),
           )),
@@ -120,13 +126,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                               password: _passwordController.text);
 
                       print('User uid: ${credential.user?.uid}');
-
-                      Future.delayed(
-                        Duration.zero,
-                        () async {
-                          await usersService.getCurrentUserWithUid();
-                        },
-                      );
+                      await usersService.getCurrentUserWithUid();
                     } on FirebaseAuthException catch (e) {
                       print('Error al iniciar sesion $e');
                       Navigator.pop(context);
