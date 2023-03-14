@@ -1,5 +1,6 @@
 import 'package:findmyfun/routes/app_routes.dart';
 import 'package:findmyfun/services/services.dart';
+import 'package:findmyfun/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,7 +23,16 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => PageViewService(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => EventsService(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => UsersService(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PreferencesService(),
+        ),
       ],
       child: const MyApp(),
     );
@@ -37,7 +47,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: exportRoutes(),
-      initialRoute: 'access',
+      initialRoute: 'middle',
+      theme: AppTheme.lightTheme,
     );
   }
 }
