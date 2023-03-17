@@ -7,17 +7,16 @@ import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class User {
-  User({
-    required this.id,
-    required this.image,
-    required this.name,
-    required this.surname,
-    required this.username,
-    required this.city,
-    required this.email,
-    required this.preferences,
-    this.isAdmin = false
-  });
+  User(
+      {required this.id,
+      required this.image,
+      required this.name,
+      required this.surname,
+      required this.username,
+      required this.city,
+      required this.email,
+      required this.preferences,
+      this.isAdmin = false});
 
   String id;
   String? image;
@@ -48,7 +47,7 @@ class User {
                 .values
                 .toList()
             : [],
-         isAdmin: json["isAdmin"] ?? false,
+        isAdmin: json["isAdmin"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
