@@ -48,13 +48,13 @@ class EventsService extends ChangeNotifier {
   }
 
   //READ EVENT
-  Future<bool> getEvents() async {
+  Future<List<Event>> getEvents() async {
     final url = Uri.https(_baseUrl, 'Events.json');
     try {
       final resp = await http.get(url);
 
       if (resp.statusCode != 200) {
-        return false;
+        throw Exception('Error in response');
       }
       List<Event> eventsAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
@@ -66,11 +66,10 @@ class EventsService extends ChangeNotifier {
       });
 
       events = eventsAux;
+      return eventsAux;
 
-      return true;
     } catch (e) {
-      debugPrint('Error getting events: $e');
-      return false;
+      throw Exception('Error getting events: $e');
     }
   }
 
