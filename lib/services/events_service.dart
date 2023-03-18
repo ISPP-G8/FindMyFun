@@ -75,17 +75,15 @@ class EventsService extends ChangeNotifier {
 
   Future<void> updateEvent(Event event) async {
     final url = Uri.https(_baseUrl, 'Events/${event.id}.json');
+    String activeUserId = AuthService().currentUser?.uid ?? "";
     String eventCreator = event.creator;
-    String getCreator = '';
     try {
       final get = await http.get(url);
       final jsonResponse = json.decode(get.body);
-      List<dynamic> getUsers = jsonResponse['users'];
-      getCreator = getUsers.first;
     } catch (e) {
       print('Error creating event: $e');
     }
-    if (eventCreator == getCreator) {
+    if (eventCreator == activeUserId) {
       try {
         final put = await http.put(url, body: jsonEncode(event.toJson()));
       } catch (e) {
