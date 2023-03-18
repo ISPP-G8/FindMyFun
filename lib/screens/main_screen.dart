@@ -40,13 +40,13 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final pageControllerService = Provider.of<PageViewService>(context);
+    
+
 
     return Scaffold(
         // backgroundColor: ProjectColors.primary,
         bottomNavigationBar: const CustomNavigationBar(),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {},
-        // ),
+         
         appBar: AppBar(
           backgroundColor: ProjectColors.tertiary,
           elevation: 0,
