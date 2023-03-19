@@ -99,9 +99,11 @@ class _FormsColumn extends StatelessWidget {
           future: creator,
           builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
             if (snapshot.hasData) {
-              return EventCreator(creatorUsername: snapshot.data?.username ?? 'username');
+              return EventCreator(
+                  creatorUsername: snapshot.data?.username ?? 'username');
             } else {
-              return EventCreator(creatorUsername: snapshot.data?.username ?? '');
+              return EventCreator(
+                  creatorUsername: snapshot.data?.username ?? '');
             }
           },
         ),

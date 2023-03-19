@@ -32,13 +32,13 @@ class _EventListView extends State<EventListView> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        // backgroundColor: ProjectColors.primary,
+        backgroundColor: ProjectColors.primary,
         body: SingleChildScrollView(
           child: Column(
             children: [
               const Center(
                   child: Text(
-                'EVENTOS',
+                'TODOS LOS EVENTOS',
                 style: TextStyle(
                     color: ProjectColors.tertiary,
                     fontSize: 30,
@@ -58,12 +58,10 @@ class _EventListView extends State<EventListView> {
                       ),
                     );
                   } else {
-                    return Column(
-                      children: const [
-                        SizedBox(height: 100),
-                        Center(child: CircularProgressIndicator())
-                      ]
-                    );
+                    return Column(children: const [
+                      SizedBox(height: 100),
+                      Center(child: CircularProgressIndicator())
+                    ]);
                   }
                 },
               ),

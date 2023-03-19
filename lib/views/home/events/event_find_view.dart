@@ -29,10 +29,12 @@ class _EventFindView extends State<EventFindView> {
 
   @override
   Widget build(BuildContext context) {
+    final eventsService = Provider.of<EventsService>(context);
+    eventsService.findEvents();
+    final events = eventsService.eventsFound;
     final size = MediaQuery.of(context).size;
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        // backgroundColor: ProjectColors.primary,
+        backgroundColor: ProjectColors.primary,
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -58,12 +60,10 @@ class _EventFindView extends State<EventFindView> {
                       ),
                     );
                   } else {
-                    return Column(
-                      children: const [
-                        SizedBox(height: 100),
-                        Center(child: CircularProgressIndicator())
-                      ]
-                    );
+                    return Column(children: const [
+                      SizedBox(height: 100),
+                      Center(child: CircularProgressIndicator())
+                    ]);
                   }
                 },
               ),
@@ -83,7 +83,7 @@ class _EventFindView extends State<EventFindView> {
 //       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
 //       padding: const EdgeInsets.symmetric(horizontal: 20),
 //       decoration: BoxDecoration(
-//           color: Colors.white),
+//           color: Colors.white, borderRadius: BorderRadius.circular(25)),
 //       child: Column(
 //         children: [
 //           Row(
