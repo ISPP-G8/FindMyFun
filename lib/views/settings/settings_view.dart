@@ -2,12 +2,15 @@ import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/colors.dart';
 import 'package:findmyfun/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final userService = Provider.of<UsersService>(context);
+    final user = userService.currentUser!;
     return Scaffold(
         // backgroundColor: ProjectColors.primary,
         body: Column(
@@ -18,6 +21,12 @@ class SettingsView extends StatelessWidget {
         GestureDetector(
             onTap: () => Navigator.pushNamed(context, 'profile'),
             child: CustomButton(text: 'Mi perfil')),
+        Visibility(
+          visible: user.isAdmin,
+          child: GestureDetector(
+              onTap: () => Navigator.pushNamed(context, 'users'),
+              child: CustomButton(text: 'Usuarios registrados')),
+        ),
         GestureDetector(
             onTap: () async {
               await AuthService().signOut();

@@ -32,12 +32,11 @@ class _UsersListViewScreenState extends State<UsersListViewScreen> {
       child: Scaffold(
           appBar: AppBar(
             leading: GestureDetector(
-                onTap: () => pageViewController.animateToPage(0,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut),
+                onTap: () => Navigator.pop(context),
                 child: const Icon(
                   Icons.chevron_left,
                   size: 45,
+                  color: ProjectColors.secondary,
                 )),
             backgroundColor: ProjectColors.primary,
             elevation: 0,
