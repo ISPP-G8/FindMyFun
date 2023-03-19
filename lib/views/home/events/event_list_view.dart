@@ -19,7 +19,7 @@ class EventListView extends StatelessWidget {
     );
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        // backgroundColor: ProjectColors.primary,
+        backgroundColor: ProjectColors.primary,
         body: SingleChildScrollView(
           child: Column(
             children: [

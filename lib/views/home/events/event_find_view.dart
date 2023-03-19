@@ -11,13 +11,11 @@ class EventFindView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final eventsService = Provider.of<EventsService>(context);
-    // TODO: Cambiar los eventos que se muestran
-    // eventsService.findEvents();
-    final events = eventsService.events;
+    eventsService.findEvents();
+    final events = eventsService.eventsFound;
     final size = MediaQuery.of(context).size;
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        // backgroundColor: ProjectColors.primary,
+        backgroundColor: ProjectColors.primary,
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -54,7 +52,7 @@ class EventFindView extends StatelessWidget {
 //       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
 //       padding: const EdgeInsets.symmetric(horizontal: 20),
 //       decoration: BoxDecoration(
-//           color: Colors.white),
+//           color: Colors.white, borderRadius: BorderRadius.circular(25)),
 //       child: Column(
 //         children: [
 //           Row(

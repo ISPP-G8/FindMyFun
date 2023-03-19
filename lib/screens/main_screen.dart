@@ -71,10 +71,10 @@ class _MainScreenState extends State<MainScreen> {
               physics: const NeverScrollableScrollPhysics(),
               children: const [
                 // TODO: Vista de inicio
-                // TODO: Vista de busqueda
                 EventListView(),
                 EventFindView(),
                 EventCreationView(),
+                EventSearchView(),
                 // TODO: Vista de notificaciones
                 SettingsView()
               ]),

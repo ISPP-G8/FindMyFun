@@ -44,11 +44,11 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             BottomNavigationBarItem(
                 backgroundColor: ProjectColors.tertiary,
                 icon: Icon(
-                  Icons.search,
+                  Icons.recommend,
                   size: 50,
                   color: Colors.white,
                 ),
-                label: 'Buscar'),
+                label: 'Recomendados'),
             BottomNavigationBarItem(
                 backgroundColor: ProjectColors.tertiary,
                 icon: Icon(
@@ -56,7 +56,15 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   size: 50,
                   color: Colors.white,
                 ),
-                label: ''),
+                label: 'Crear'),
+            BottomNavigationBarItem(
+                backgroundColor: ProjectColors.tertiary,
+                icon: Icon(
+                  Icons.search_outlined,
+                  size: 50,
+                  color: Colors.white,
+                ),
+                label: 'Buscar'),
             // BottomNavigationBarItem(
             //     backgroundColor: ProjectColors.tertiary,
             //     icon: Icon(

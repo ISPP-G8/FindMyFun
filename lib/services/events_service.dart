@@ -79,7 +79,8 @@ class EventsService extends ChangeNotifier {
     final url = Uri.https(_baseUrl, 'Events.json');
     final UsersService usersService = UsersService();
 
-    User currentUser = await usersService.getUserWithUid(AuthService().currentUser?.uid ?? "");
+    User currentUser =
+        await usersService.getUserWithUid(AuthService().currentUser?.uid ?? "");
 
     try {
       final resp = await http.get(url);
@@ -91,13 +92,16 @@ class EventsService extends ChangeNotifier {
 
       data.forEach((key, value) {
         final event = Event.fromRawJson(jsonEncode(value));
-        if (currentUser.preferences.toSet().intersection(event.tags.toSet()).isNotEmpty && !event.hasFinished/* && currentUser.city == event.city*/) {
+        if (currentUser.preferences
+                .toSet()
+                .intersection(event.tags.toSet())
+                .isNotEmpty &&
+            !event.hasFinished /* && currentUser.city == event.city*/) {
           eventsAux.add(event);
         }
       });
       eventsFound = eventsAux;
       return eventsAux;
-      
     } catch (e) {
       throw Exception('Error getting events: $e');
     }
@@ -108,9 +112,10 @@ class EventsService extends ChangeNotifier {
     String activeUserId = AuthService().currentUser?.uid ?? "";
     if (activeUserId.isEmpty ||
         eventId.isEmpty ||
+        event.finished == true ||
         event.users.contains(activeUserId)) {
       throw Exception(
-          'Be sure to be logged, make sure that the event exists and check if you aren´t already part of the event');
+          'Asegúrate de haber iniciado sesión, de que el evento existe y está activo no estás dentro de él');
     } else {
       event.users.add(activeUserId);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');
@@ -126,4 +131,79 @@ class EventsService extends ChangeNotifier {
       }
     }
   }
+  
+  Future<List<Event>> searchForEvents(String text) async {
+      if (text.contains(",") ||
+          text.contains(";") ||
+          text.contains(".") ||
+          text.contains("[") ||
+          text.contains("]") ||
+          text.contains("!") ||
+          text.contains("?") ||
+          text.contains("/") ||
+          text.contains("{") ||
+          text.contains("}") ||
+          text.contains("'") ||
+          text.contains("¡") ||
+          text.contains('"') ||
+          text.contains("+") ||
+          text.contains("-") ||
+          text.contains("(") ||
+          text.contains(")") ||
+          text.contains("=") ||
+          text.contains("<") ||
+          text.contains(">") ||
+          text.contains("*") ||
+          text.contains("%") ||
+          text.contains("_") ||
+          text.contains("^") ||
+          text.contains("¬") ||
+          text.contains("€") ||
+          text.contains("~") ||
+          text.contains("|") ||
+          text.contains("@") ||
+          text.contains("#")) {
+        throw Exception(
+            'Asegúrate de introducir las palabras separadas solo por espacios en blanco');
+      } else {
+        try {
+          final url = Uri.https(_baseUrl, 'Events.json');
+          final resp = await http.get(url);
+          if (resp.statusCode != 200) {
+            throw Exception('Error in response');
+          }
+          List<String> words = text.split(" ");
+          List<Event> eventsAux = [];
+          Map<String, dynamic> data = jsonDecode(resp.body);
+
+          data.forEach((key, value) {
+            final event = Event.fromRawJson(jsonEncode(value));
+            if (!event.hasFinished) {
+              for (String word in words) {
+                int i = 0;
+                if (event.address.contains(word) ||
+                    event.city.contains(word) ||
+                    event.country.contains(word) ||
+                    event.description.contains(word) ||
+                    event.name.contains(word)) {
+                  i = i + 1;
+                }
+                if (i == words.length) {
+                  eventsAux.add(event);
+                }
+              }
+            }
+          });
+          if (eventsAux.isNotEmpty) {
+            eventsFound = eventsAux;
+            return eventsAux;
+          } else {
+            throw Exception(
+                "No se han encontrado eventos con los parámetros de búsqueda introducidos, recuerda que deben coincidir todas las palabras por separado para que el evento sea válido.");
+          }
+        } catch (e) {
+          throw Exception('Error getting events: $e');
+        }
+      }
+    }
 }
