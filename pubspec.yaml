@@ -34,6 +34,8 @@ dependencies:
   firebase_core: ^2.7.0
   flutter:
     sdk: flutter
+  
+  google_maps_flutter: ^2.2.5
   http: ^0.13.5
   multiselect: ^0.0.4
   provider: ^6.0.5

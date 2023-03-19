@@ -27,7 +27,7 @@ class EventListView extends StatelessWidget {
                   child: Text(
                 'TUS EVENTOS',
                 style: TextStyle(
-                    color: Colors.white,
+                    color: ProjectColors.primary,
                     fontSize: 30,
                     fontWeight: FontWeight.bold),
               )),
