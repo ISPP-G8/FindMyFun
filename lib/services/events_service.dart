@@ -182,9 +182,9 @@ class EventsService extends ChangeNotifier {
         data.forEach((key, value) {
           final event = Event.fromRawJson(jsonEncode(value));
           if (!event.hasFinished) {
+            int i = 0;
             for (String word in words) {
               word = word.toLowerCase();
-              int i = 0;
               if (event.address.toLowerCase().contains(word) ||
                   event.city.toLowerCase().contains(word) ||
                   event.country.toLowerCase().contains(word) ||
