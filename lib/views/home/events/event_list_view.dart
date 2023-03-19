@@ -19,13 +19,13 @@ class EventListView extends StatelessWidget {
     );
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        // backgroundColor: ProjectColors.primary,
+        backgroundColor: ProjectColors.primary,
         body: SingleChildScrollView(
           child: Column(
             children: [
               const Center(
                   child: Text(
-                'TUS EVENTOS',
+                'TODOS LOS EVENTOS',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,
