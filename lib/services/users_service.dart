@@ -78,4 +78,15 @@ class UsersService extends ChangeNotifier {
       print('Error getting users: $e');
     }
   }
+
+  //UPDATE PROFILE
+  Future<void> updateProfile(User user) async {
+    final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
+    try {
+      final resp = await http.put(url, body: jsonEncode(user.toJson()));
+    } catch (e) {
+      debugPrint('Error editing profile: $e');
+    }
+  }
+
 }
