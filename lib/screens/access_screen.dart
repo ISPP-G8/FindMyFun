@@ -13,26 +13,18 @@ class AccessScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageControllerService = Provider.of<PageViewService>(context);
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            final service =
-                Provider.of<EventPointsService>(context, listen: false);
-            await service.getItems();
-            print(service.eventPoints);
-          },
-        ),
         // backgroundColor: ProjectColors.primary,
         body: Container(
-          alignment: Alignment.center,
-          child: PageView(
-              controller: pageControllerService.pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: const [
-                AccessView(),
-                LoginView(),
-                ProfileDetailsView(),
-                PreferencesView()
-              ]),
-        ));
+      alignment: Alignment.center,
+      child: PageView(
+          controller: pageControllerService.pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: const [
+            AccessView(),
+            LoginView(),
+            ProfileDetailsView(),
+            PreferencesView()
+          ]),
+    ));
   }
 }
