@@ -22,6 +22,7 @@ class PreferencesView extends StatelessWidget {
                 child: const Icon(
                   Icons.chevron_left,
                   size: 45,
+                  color: ProjectColors.secondary,
                 )),
             // backgroundColor: ProjectColors.primary,
             elevation: 0,

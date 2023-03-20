@@ -18,7 +18,7 @@ class EventMapView extends StatelessWidget {
             child: const Icon(
               Icons.chevron_left,
               size: 45,
-              color: Colors.black,
+              color: ProjectColors.secondary,
             )),
         elevation: 0,
         centerTitle: true,
@@ -40,7 +40,7 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   static const _initialCameraPosition = CameraPosition(
     target: LatLng(37.392529,  -5.994072),
-    zoom: 11.5,
+    zoom: 13,
   );
 
   late GoogleMapController _googleMapController;
@@ -55,11 +55,17 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     
     final eventService = Provider.of<EventsService>(context, listen: false);
+    List<Marker> markers = [];
 
-    final Marker _marker = Marker(
-      markerId: const MarkerId('Casa Juanma'), 
-      position: const LatLng(37.357937, -5.978426), 
-      onTap: () => Navigator.pushNamed(context, 'main'),
+    Marker marker = const Marker(
+      markerId: MarkerId('Casa Juanma'), 
+      position: LatLng(37.357937, -5.978426), 
+      // onTap: () => Navigator.pop(context, 'main'),
+      infoWindow: InfoWindow(
+        title: 'Casa Juanma',
+        snippet: 'Hola soy Juanma, esta es mi casa'
+      ),
+      draggable: true,
     );
     
     return MaterialApp(
@@ -68,10 +74,26 @@ class _MapScreenState extends State<MapScreen> {
         alignment: Alignment.center,
         children: [
           GoogleMap(
-            markers: {_marker},
+            markers: Set<Marker>.from(markers),
             initialCameraPosition: _initialCameraPosition,
             onMapCreated: (controller) => _googleMapController = controller,
-            mapType: MapType.terrain,
+            mapType: MapType.normal,
+            onTap: (position){
+              setState(() {
+                markers.add(
+                  Marker(
+                    markerId: MarkerId('${markers.length}'), 
+                    position: LatLng(position.latitude,position.longitude), 
+                    // onTap: () => Navigator.pop(context, 'main'),
+                    infoWindow: const InfoWindow(
+                      title: 'Casa Juanma',
+                      snippet: 'Hola soy Juanma, esta es mi casa'
+                    ),
+                    draggable: true,
+                  )
+                );
+              });
+            },
           ),
         ],
       ),
