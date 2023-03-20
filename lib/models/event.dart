@@ -36,7 +36,7 @@ class Event {
   DateTime startDate;
   List<Preferences> tags;
   List<String> users;
-  List<String> messages;
+  List<Messages> messages;
 
   bool get hasFinished => DateTime.now().isAfter(startDate);
 
@@ -64,9 +64,10 @@ class Event {
       users: json["users"] != null
           ? List<String>.from(json["users"].map((x) => x))
           : [],
-      messages: json["messages"] != null
-          ? List<String>.from(json["messages"].map((x) => x))
-          : []);
+      messages: Map.from(json["messages"])
+          .map((k, v) => MapEntry<String, Messages>(k, Messages.fromJson(v)))
+          .values
+          .toList());
 
   Map<String, dynamic> toJson() => {
         "address": address,
@@ -81,7 +82,8 @@ class Event {
         "tags": Map.from(tags.fold({}, (r, p) => r..[p.id] = p))
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "users": List<String>.from(users.map((x) => x)),
-        "messages": List<String>.from(messages.map((x) => x)),
+        "messages": Map.from(messages.fold({}, (r, m) => r..[m.id] = m))
+            .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
       };
 
   @override

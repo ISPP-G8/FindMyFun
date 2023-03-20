@@ -1,4 +1,5 @@
 import 'package:findmyfun/screens/screens.dart';
+import 'package:findmyfun/views/event/event_chat_view.dart';
 import 'package:findmyfun/views/event/event_details.dart';
 import 'package:flutter/material.dart';
 import '../views/views.dart';
@@ -13,6 +14,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'main': (_) => const MainScreen(),
     'middle': (_) => const MiddleScreen(),
     'eventDetails': (_) => const EventDetailsView(),
+    'chat': (_) => ChatScreen(),
   };
 
   return routes;

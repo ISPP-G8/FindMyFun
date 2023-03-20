@@ -123,12 +123,7 @@ class _FormsColumn extends StatelessWidget {
         ElevatedButton(
           child: const Text('Abrir chat'),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ChatScreen(),
-                  settings: RouteSettings(arguments: selectedEvent.id)),
-            );
+            Navigator.pushNamed(context, 'chat', arguments: selectedEvent);
           },
         ),
       ],

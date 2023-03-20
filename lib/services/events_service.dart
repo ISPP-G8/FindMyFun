@@ -67,7 +67,6 @@ class EventsService extends ChangeNotifier {
 
       events = eventsAux;
       return eventsAux;
-
     } catch (e) {
       throw Exception('Error getting events: $e');
     }
@@ -78,7 +77,8 @@ class EventsService extends ChangeNotifier {
     final url = Uri.https(_baseUrl, 'Events.json');
     final UsersService usersService = UsersService();
 
-    User currentUser = await usersService.getUserWithUid(AuthService().currentUser?.uid ?? "");
+    User currentUser =
+        await usersService.getUserWithUid(AuthService().currentUser?.uid ?? "");
 
     try {
       final resp = await http.get(url);
@@ -90,13 +90,16 @@ class EventsService extends ChangeNotifier {
 
       data.forEach((key, value) {
         final event = Event.fromRawJson(jsonEncode(value));
-        if (currentUser.preferences.toSet().intersection(event.tags.toSet()).isNotEmpty && !event.hasFinished/* && currentUser.city == event.city*/) {
+        if (currentUser.preferences
+                .toSet()
+                .intersection(event.tags.toSet())
+                .isNotEmpty &&
+            !event.hasFinished /* && currentUser.city == event.city*/) {
           eventsAux.add(event);
         }
       });
       eventsFound = eventsAux;
       return eventsAux;
-      
     } catch (e) {
       throw Exception('Error getting events: $e');
     }

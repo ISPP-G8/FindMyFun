@@ -1,6 +1,7 @@
 import 'dart:convert';
 //import 'dart:html';
 
+import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/models/messages.dart';
 import 'package:findmyfun/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,8 @@ class MessagesService extends ChangeNotifier {
   // TODO: Hacer el updateItem pasando el uid del AuthService()
 
   //READ MESSAGES
-  Future<void> getMessages() async {
-    final url = Uri.https(_baseUrl, 'Messages.json');
+  Future<void> getMessages(String eventId) async {
+    final url = Uri.https(_baseUrl, 'Events/$eventId/messages.json');
     try {
       final resp = await http.get(url);
 
@@ -42,6 +43,16 @@ class MessagesService extends ChangeNotifier {
       messages = messagesAux;
     } catch (e) {
       print('Error getting messages: $e');
+    }
+  }
+
+  Future<void> saveMessage(Messages message, Event event) async {
+    final url = Uri.https(_baseUrl, 'Events/${event.id}/messages.json');
+    event.messages.add(message);
+    try {
+      final resp = await http.post(url, body: jsonEncode(message.toJson()));
+    } catch (e) {
+      debugPrint('Error posting message: $e');
     }
   }
 }
