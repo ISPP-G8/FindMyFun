@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/event.dart';
 import '../../models/user.dart';
+import 'event_chat_view.dart';
 
 class EventDetailsView extends StatelessWidget {
   const EventDetailsView({super.key});
@@ -99,9 +100,11 @@ class _FormsColumn extends StatelessWidget {
           future: creator,
           builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
             if (snapshot.hasData) {
-              return EventCreator(creatorUsername: snapshot.data?.username ?? 'username');
+              return EventCreator(
+                  creatorUsername: snapshot.data?.username ?? 'username');
             } else {
-              return EventCreator(creatorUsername: snapshot.data?.username ?? '');
+              return EventCreator(
+                  creatorUsername: snapshot.data?.username ?? '');
             }
           },
         ),
@@ -117,12 +120,16 @@ class _FormsColumn extends StatelessWidget {
                       settings: RouteSettings(arguments: selectedEvent)))
             },
           ),
-        const SubmitButton(
-          text: 'Chat',
-          // onTap: () => Navigator.of(context).push(
-          //   MaterialPageRoute(builder: (context) => const AccessScreen()),
-          // ),
-          // onTap: => (),
+        ElevatedButton(
+          child: const Text('Abrir chat'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatScreen(),
+                  settings: RouteSettings(arguments: selectedEvent.id)),
+            );
+          },
         ),
       ],
     );

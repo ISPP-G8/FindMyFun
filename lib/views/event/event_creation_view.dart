@@ -150,6 +150,7 @@ class _FormsColumn extends StatelessWidget {
                             .getPreferenceByName(e.toString()))
                         .toList()),
                     users: [id],
+                    messages: [],
                     id: Uuid().v1()));
 
                 // await Future.delayed(const Duration(seconds: 1));
