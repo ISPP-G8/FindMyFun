@@ -69,6 +69,9 @@ class _FormsColumn extends StatelessWidget {
 
     List<Object> selectedValues = event.tags.map((e) => e.name).toList();
 
+    final eventsService = Provider.of<EventsService>(context, listen: false);
+
+
     return Form(
         key: formKey,
         child: Column(
@@ -157,11 +160,8 @@ class _FormsColumn extends StatelessWidget {
                           .toList());
 
                       await EventsService().updateEvent(event);
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EventDetailsView(),
-                              settings: RouteSettings(arguments: event)));
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                      await eventsService.getEvents();
                     } on FirebaseException catch (e) {
                       print('Hay un error al actualizar el evento $e');
                       Navigator.pop(context);
