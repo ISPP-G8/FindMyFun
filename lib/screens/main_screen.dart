@@ -75,6 +75,7 @@ class _MainScreenState extends State<MainScreen> {
                 EventListView(),
                 EventFindView(),
                 EventCreationView(),
+                EventSearchView(),
                 // TODO: Vista de notificaciones
                 SettingsView()
               ]),

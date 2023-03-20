@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Styles {
   static TextStyle appBar = TextStyle(
-      color: ProjectColors.secondary,
+      color: Color.fromARGB(255, 255, 255, 255),
       fontWeight: FontWeight.bold,
       fontSize: 35);
 }

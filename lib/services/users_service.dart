@@ -78,4 +78,27 @@ class UsersService extends ChangeNotifier {
       print('Error getting users: $e');
     }
   }
+
+  //UPDATE PROFILE
+  Future<void> updateProfile(User user) async {
+    final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
+    try {
+      final resp = await http.put(url, body: jsonEncode(user.toJson()));
+    } catch (e) {
+      debugPrint('Error editing profile: $e');
+    }
+  }
+
+  //DELETE PROFILE
+  Future<void> deleteProfile(User user, BuildContext context) async {
+    final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
+    try {
+      final resp = await http.delete(url);
+      AuthService().signOut;
+      await Navigator.pushNamed(context, 'access');
+    } catch (e) {
+      debugPrint('Error deleting profile: $e');
+    }
+  }
+
 }
