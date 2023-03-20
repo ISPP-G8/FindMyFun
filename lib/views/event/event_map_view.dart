@@ -50,20 +50,27 @@ class _MapScreenState extends State<MapScreen> {
     super.dispose();
   }
 
-  List<Marker> markers = [];
-
   @override
   Widget build(BuildContext context) {
-    final eventService = Provider.of<EventsService>(context, listen: false);
 
-    Marker marker = const Marker(
-      markerId: MarkerId('Casa Juanma'),
-      position: LatLng(37.357937, -5.978426),
-      // onTap: () => Navigator.pop(context, 'main'),
+    Marker markerDePrueba1 = const Marker(markerId: MarkerId("Evento 1"), position: LatLng(37.391123, -6.001676), 
       infoWindow: InfoWindow(
-          title: 'Casa Juanma', snippet: 'Hola soy Juanma, esta es mi casa'),
-      draggable: true,
+          title: 'Partido de tenis', 
+      ),
     );
+    Marker markerDePrueba2 = const Marker(markerId: MarkerId("Evento 2"), position: LatLng(37.391226, -5.997486),
+      infoWindow: InfoWindow(
+          title: 'Quedada en el centro', 
+      ),
+    );    
+    Marker markerDePrueba3 = Marker(markerId: const MarkerId("Punto de Promoción"), position: const LatLng(37.389335, -5.988552),
+      infoWindow: const InfoWindow(
+          title: 'Oferta en los 100 Montaditos', 
+      ),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+    );
+
+    List<Marker> markers = [markerDePrueba1, markerDePrueba2, markerDePrueba3];
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -75,24 +82,25 @@ class _MapScreenState extends State<MapScreen> {
             initialCameraPosition: _initialCameraPosition,
             onMapCreated: (controller) => _googleMapController = controller,
             mapType: MapType.normal,
-            onTap: _handleTap,
           ),
         ],
       ),
     );
   }
 
-  _handleTap(LatLng tappedPos) {
-    setState(() {
-      markers = [];
-      markers.add(Marker(
-        markerId: MarkerId('${markers.length}'),
-        position: tappedPos,
-        // onTap: () => Navigator.pop(context, 'main'),
-        infoWindow: const InfoWindow(
-            title: 'Casa Juanma', snippet: 'Hola soy Juanma, esta es mi casa'),
-        draggable: true,
-      ));
-    });
-  }
+
+  // Usado para formularios para conseguir lat,long,city,address
+  // _handleTap(LatLng tappedPos) {
+  //   setState(() {
+  //     markers = [];
+  //     markers.add(Marker(
+  //       markerId: MarkerId('${markers.length}'),
+  //       position: tappedPos,
+  //       // onTap: () => Navigator.pop(context, 'main'),
+  //       infoWindow: const InfoWindow(
+  //           title: 'Partido de fútbol', snippet: 'Partido de aficionados'),
+  //       draggable: true,
+  //     ));
+  //   });
+  // }
 }
