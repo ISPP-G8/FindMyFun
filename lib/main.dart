@@ -33,6 +33,9 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => PreferencesService(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => EventPointsService(),
+        ),
       ],
       child: const MyApp(),
     );
@@ -47,7 +50,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: exportRoutes(),
-      initialRoute: 'middle',
+      initialRoute: 'eventpointcreation',
       theme: AppTheme.lightTheme,
     );
   }

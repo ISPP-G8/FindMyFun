@@ -14,9 +14,12 @@ class EventPointsService extends ChangeNotifier {
 
   //POST AND UPDATE EVENT
   Future<void> saveEvent(EventPoint eventPoint) async {
-    final url = Uri.https(_baseUrl, 'Events/${eventPoint.id}.json');
+    final url = Uri.https(_baseUrl, 'EventPoints/${eventPoint.id}.json');
     try {
       final resp = await http.put(url, body: jsonEncode(eventPoint.toJson()));
+      if (resp.statusCode != 200) {
+        throw Exception('Error in response');
+      }
     } catch (e) {
       debugPrint('Error creating event point: $e');
     }

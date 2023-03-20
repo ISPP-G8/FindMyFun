@@ -23,7 +23,13 @@ class SettingsView extends StatelessWidget {
               await AuthService().signOut();
               Navigator.pushReplacementNamed(context, 'login');
             },
-            child: CustomButton(text: 'Cerrar sesión'))
+            child: CustomButton(text: 'Cerrar sesión')),
+        GestureDetector(
+            onTap: () async {
+              await AuthService().signOut();
+              Navigator.pushReplacementNamed(context, 'eventpointcreation');
+            },
+            child: CustomButton(text: 'Crear punto de event'))
       ],
     ));
   }
