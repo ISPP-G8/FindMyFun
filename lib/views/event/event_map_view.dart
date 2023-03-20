@@ -22,8 +22,7 @@ class EventMapView extends StatelessWidget {
             )),
         elevation: 0,
         centerTitle: true,
-        title: Text('MAPA',
-            textAlign: TextAlign.center, style: Styles.appBar),
+        title: Text('MAPA', textAlign: TextAlign.center, style: Styles.appBar),
       ),
       body: const MapScreen(),
     );
@@ -39,7 +38,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   static const _initialCameraPosition = CameraPosition(
-    target: LatLng(37.392529,  -5.994072),
+    target: LatLng(37.392529, -5.994072),
     zoom: 13,
   );
 
@@ -51,23 +50,21 @@ class _MapScreenState extends State<MapScreen> {
     super.dispose();
   }
 
+  List<Marker> markers = [];
+
   @override
   Widget build(BuildContext context) {
-    
     final eventService = Provider.of<EventsService>(context, listen: false);
-    List<Marker> markers = [];
 
     Marker marker = const Marker(
-      markerId: MarkerId('Casa Juanma'), 
-      position: LatLng(37.357937, -5.978426), 
+      markerId: MarkerId('Casa Juanma'),
+      position: LatLng(37.357937, -5.978426),
       // onTap: () => Navigator.pop(context, 'main'),
       infoWindow: InfoWindow(
-        title: 'Casa Juanma',
-        snippet: 'Hola soy Juanma, esta es mi casa'
-      ),
+          title: 'Casa Juanma', snippet: 'Hola soy Juanma, esta es mi casa'),
       draggable: true,
     );
-    
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Stack(
@@ -78,25 +75,24 @@ class _MapScreenState extends State<MapScreen> {
             initialCameraPosition: _initialCameraPosition,
             onMapCreated: (controller) => _googleMapController = controller,
             mapType: MapType.normal,
-            onTap: (position){
-              setState(() {
-                markers.add(
-                  Marker(
-                    markerId: MarkerId('${markers.length}'), 
-                    position: LatLng(position.latitude,position.longitude), 
-                    // onTap: () => Navigator.pop(context, 'main'),
-                    infoWindow: const InfoWindow(
-                      title: 'Casa Juanma',
-                      snippet: 'Hola soy Juanma, esta es mi casa'
-                    ),
-                    draggable: true,
-                  )
-                );
-              });
-            },
+            onTap: _handleTap,
           ),
         ],
       ),
     );
+  }
+
+  _handleTap(LatLng tappedPos) {
+    setState(() {
+      markers = [];
+      markers.add(Marker(
+        markerId: MarkerId('${markers.length}'),
+        position: tappedPos,
+        // onTap: () => Navigator.pop(context, 'main'),
+        infoWindow: const InfoWindow(
+            title: 'Casa Juanma', snippet: 'Hola soy Juanma, esta es mi casa'),
+        draggable: true,
+      ));
+    });
   }
 }
