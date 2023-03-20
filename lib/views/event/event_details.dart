@@ -90,6 +90,10 @@ class _FormsColumn extends StatelessWidget {
                 enabled: false,
               ),
               CustomTextForm(
+                hintText: selectedEvent.city,
+                enabled: false,
+              ),
+              CustomTextForm(
                 hintText: selectedEvent.startDate.toString(),
                 enabled: false,
               ),
@@ -138,6 +142,14 @@ class _FormsColumn extends StatelessWidget {
               ),
               CustomTextForm(
                 hintText: selectedEvent.address,
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.city,
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.country,
                 enabled: false,
               ),
               CustomTextForm(

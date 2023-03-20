@@ -81,3 +81,5 @@ project:
       githubUsername: davsabtro
       pivotalUsername: davidsatro
 
+- name: Notion Burndown Chart
+  uses: szenius/notion-burndown@3.0.0

@@ -13,6 +13,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'main': (_) => const MainScreen(),
     'middle': (_) => const MiddleScreen(),
     'eventDetails': (_) => const EventDetailsView(),
+    'searchResulst': (_) => const EventSearchView(),
   };
 
   return routes;
