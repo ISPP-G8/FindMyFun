@@ -52,14 +52,14 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     return Form(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      // autovalidateMode: AutovalidateMode.onUserInteraction,
       key: _formKey,
       child: Column(children: [
-        CustomTextForm(
-          hintText: 'https://tuimagen.ejemplo',
-          controller: _imageController,
-          validator: (value) => Validators.validateNotEmpty(value),
-        ),
+        // CustomTextForm(
+        //   hintText: 'https://tuimagen.ejemplo',
+        //   controller: _imageController,
+        //   validator: (value) => Validators.validateNotEmpty(value),
+        // ),
         CustomTextForm(
           hintText: 'Nombre',
           controller: _nameController,
@@ -107,30 +107,72 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
             if (_formKey.currentState!.validate()) {
               if (_passwordConfirmController.text !=
                   _passwordConfirmController.text) return;
-              UserCredential credential = await AuthService()
-                  .createUserWithEmailAndPassword(
-                      email: _emailController.text,
-                      password: _passwordController.text);
-              userService.currentUser = user.User(
-                id: credential.user!.uid,
-                image: _imageController.text,
-                name: _nameController.text,
-                surname: _surnameController.text,
-                username: _usernameController.text,
-                city: _locationController.text,
-                email: _emailController.text,
-                preferences: []
-              );
-              print(credential.user?.getIdToken());
-              final pageViewService =
-                  Provider.of<PageViewService>(context, listen: false);
-              pageViewService.registerPageController.animateToPage(1,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut);
+              try {
+                showDialog(
+                  context: context,
+                  builder: (context) => Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: CircularProgressIndicator()),
+                      ]),
+                );
+                UserCredential credential = await AuthService()
+                    .createUserWithEmailAndPassword(
+                        email: _emailController.text,
+                        password: _passwordController.text);
+
+                userService.currentUser = user.User(
+                    id: credential.user!.uid,
+                    image: _imageController.text,
+                    name: _nameController.text,
+                    surname: _surnameController.text,
+                    username: _usernameController.text,
+                    city: _locationController.text,
+                    email: _emailController.text,
+                    preferences: []);
+                final resp =
+                    await userService.addItem(userService.currentUser!);
+                if (resp) {
+                  Navigator.pop(context);
+                  final pageViewService =
+                      Provider.of<PageViewService>(context, listen: false);
+                  pageViewService.registerPageController.animateToPage(1,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut);
+                } else {
+                  Navigator.pop(context);
+                  _formKey.currentState!.validate();
+                  print('Error al crear el usuario');
+                }
+                print(
+                    'Usuario creado con uid: ${credential.user?.getIdToken()}');
+              } on FirebaseAuthException catch (e) {
+                Navigator.pop(context);
+                showExceptionDialog(context);
+              } on FirebaseException catch (e) {
+                Navigator.pop(context);
+                showExceptionDialog(context);
+              } catch (e) {
+                Navigator.pop(context);
+                showExceptionDialog(context);
+              }
             }
           },
         )
       ]),
     );
   }
+}
+
+showExceptionDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      content: Text('Por favor, revisa los datos proporcionados.'),
+    ),
+  );
 }
