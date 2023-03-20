@@ -69,64 +69,125 @@ class _FormsColumn extends StatelessWidget {
 
     String activeUserId = AuthService().currentUser?.uid ?? "";
 
-    return Column(
-      children: [
-        const SizedBox(
-          height: 10,
-        ),
-        Container(
-          padding: const EdgeInsets.all(10.0),
-          child: Image.network(
-            selectedEvent.image,
-            fit: BoxFit.cover,
-          ),
-        ),
-        CustomTextForm(
-          hintText: selectedEvent.address,
-          enabled: false,
-        ),
-        CustomTextForm(
-          hintText: selectedEvent.startDate.toString(),
-          enabled: false,
-        ),
-        CustomTextForm(
-          hintText: selectedEvent.description,
-          enabled: false,
-          maxLines: 5,
-          type: TextInputType.multiline,
-        ),
-        FutureBuilder<User>(
-          future: creator,
-          builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-            if (snapshot.hasData) {
-              return EventCreator(
-                  creatorUsername: snapshot.data?.username ?? 'username');
-            } else {
-              return EventCreator(
-                  creatorUsername: snapshot.data?.username ?? '');
-            }
-          },
-        ),
-        if (!selectedEvent.users.contains(activeUserId))
-          SubmitButton(
-            text: 'Unirse',
-            onTap: () => {
-              eventService.addUserToEvent(selectedEvent),
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const EventDetailsView(),
-                      settings: RouteSettings(arguments: selectedEvent)))
-            },
-          ),
-        const SubmitButton(
-          text: 'Chat',
-          // onTap: () => Navigator.of(context).push(
-          //   MaterialPageRoute(builder: (context) => const AccessScreen()),
-          // ),
-          // onTap: => (),
-        ),
-      ],
+    return FutureBuilder<User>(
+      future: creator,
+      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: const EdgeInsets.all(10.0),
+                child: Image.network(
+                  selectedEvent.image,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.address,
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.city,
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.startDate.toString(),
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.description,
+                enabled: false,
+                maxLines: 5,
+                type: TextInputType.multiline,
+              ),
+              EventCreator(
+                creatorUsername: snapshot.data?.username ?? 'username',
+              ),
+              if (!selectedEvent.users.contains(activeUserId))
+                SubmitButton(
+                  text: 'Unirse',
+                  onTap: () => {
+                    eventService.addUserToEvent(selectedEvent),
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EventDetailsView(),
+                            settings: RouteSettings(arguments: selectedEvent)))
+                  },
+                ),
+              const SubmitButton(
+                text: 'Chat',
+                // onTap: () => Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (context) => const AccessScreen()),
+                // ),
+                // onTap: => (),
+              ),
+            ],
+          );
+        } else {
+          return Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: const EdgeInsets.all(10.0),
+                child: Image.network(
+                  selectedEvent.image,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.address,
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.city,
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.country,
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.startDate.toString(),
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.description,
+                enabled: false,
+                maxLines: 5,
+                type: TextInputType.multiline,
+              ),
+              EventCreator(
+                creatorUsername: snapshot.data?.username ?? 'username',
+              ),
+              if (!selectedEvent.users.contains(activeUserId))
+                SubmitButton(
+                  text: 'Unirse',
+                  onTap: () => {
+                    eventService.addUserToEvent(selectedEvent),
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EventDetailsView(),
+                            settings: RouteSettings(arguments: selectedEvent)))
+                  },
+                ),
+              const SubmitButton(
+                text: 'Chat',
+                // onTap: () => Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (context) => const AccessScreen()),
+                // ),
+                // onTap: => (),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 }
