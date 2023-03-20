@@ -94,10 +94,6 @@ class _FormsColumn extends StatelessWidget {
                 enabled: false,
               ),
               CustomTextForm(
-                hintText: selectedEvent.country,
-                enabled: false,
-              ),
-              CustomTextForm(
                 hintText: selectedEvent.startDate.toString(),
                 enabled: false,
               ),

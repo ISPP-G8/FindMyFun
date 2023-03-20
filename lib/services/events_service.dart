@@ -187,7 +187,6 @@ class EventsService extends ChangeNotifier {
               word = word.toLowerCase();
               if (event.address.toLowerCase().contains(word) ||
                   event.city.toLowerCase().contains(word) ||
-                  event.country.toLowerCase().contains(word) ||
                   event.description.toLowerCase().contains(word) ||
                   event.name.toLowerCase().contains(word)) {
                 i = i + 1;
