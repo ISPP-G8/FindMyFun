@@ -1,4 +1,3 @@
-import 'package:findmyfun/screens/screens.dart';
 import 'package:findmyfun/views/event/event_details.dart';
 import 'package:flutter/material.dart';
 import '../views/views.dart';

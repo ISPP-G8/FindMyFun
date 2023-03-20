@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class PreferencesContainer extends StatelessWidget {
   final Widget child;
   const PreferencesContainer({
-    super.key, required this.child,
+    super.key,
+    required this.child,
   });
 
   @override
@@ -12,8 +13,7 @@ class PreferencesContainer extends StatelessWidget {
       width: double.infinity,
       height: 700,
       margin: const EdgeInsets.symmetric(horizontal: 15),
-      decoration: BoxDecoration(
-          color: const Color(0xff828a92)),
+      decoration: const BoxDecoration(color: Color(0xff828a92)),
       child: child,
     );
   }
