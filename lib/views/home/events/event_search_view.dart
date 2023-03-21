@@ -1,4 +1,3 @@
-import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';

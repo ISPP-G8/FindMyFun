@@ -1,4 +1,3 @@
-import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -31,7 +30,6 @@ class _EventFindView extends State<EventFindView> {
   Widget build(BuildContext context) {
     final eventsService = Provider.of<EventsService>(context);
     eventsService.findEvents();
-    final events = eventsService.eventsFound;
     final size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: ProjectColors.primary,

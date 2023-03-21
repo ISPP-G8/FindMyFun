@@ -67,7 +67,6 @@ class PreferencesService extends ChangeNotifier {
         throw Exception('Error in response');
       }
 
-      List<Preferences> preferencesAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
       Preferences? preferenceAux;
       data.forEach((key, value) {
@@ -107,6 +106,7 @@ class PreferencesService extends ChangeNotifier {
         }
       });
     } catch (e) {
+      // ignore: avoid_print
       print('Error getting preferences by user id: $e');
     }
   }
@@ -115,17 +115,21 @@ class PreferencesService extends ChangeNotifier {
       String userId, List<dynamic> preferencesToAdd) async {
     try {
       final urlUser = Uri.https(_baseUrl, 'Users/$userId/preferences.json');
+      // ignore: unused_local_variable
       final resp = await http.delete(urlUser);
 
       for (Preferences preference in preferencesToAdd) {
+        // ignore: avoid_print
         print(preference.id);
         final urlAdd = Uri.https(
             _baseUrl, 'Users/$userId/preferences/${preference.id}.json');
 
+        // ignore: unused_local_variable
         final respAdd =
             await http.put(urlAdd, body: jsonEncode(preference.toJson()));
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Error creating event: $e');
     }
   }

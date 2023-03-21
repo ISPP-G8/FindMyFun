@@ -17,8 +17,7 @@ class SubmitButton extends StatelessWidget {
         width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 110, vertical: 10),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        decoration: BoxDecoration(
-            color: const Color(0xff004aad)),
+        decoration: const BoxDecoration(color: Color(0xff004aad)),
         child: Text(
           text,
           textAlign: TextAlign.center,
@@ -33,4 +32,3 @@ class SubmitButton extends StatelessWidget {
     );
   }
 }
-
