@@ -1,10 +1,8 @@
-import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 
 class EventFindView extends StatefulWidget {
   const EventFindView({super.key});
@@ -110,7 +108,7 @@ class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
   @override
-  _MapScreenState createState() => _MapScreenState();
+  State<StatefulWidget> createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
@@ -120,6 +118,19 @@ class _MapScreenState extends State<MapScreen> {
   );
 
   late GoogleMapController _googleMapController;
+  late Future markersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    markersFuture = _getMarkers();
+  }
+
+  _getMarkers() async {
+    MapService mapService = MapService();
+    return await mapService.getMarkers(false);
+  }
 
   @override
   void dispose() {
@@ -129,55 +140,38 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Marker markerDePrueba1 = const Marker(
-      markerId: MarkerId("Evento 1"),
-      position: LatLng(37.391123, -6.001676),
-      infoWindow: InfoWindow(
-        title: 'Partido de tenis',
-      ),
-    );
-    Marker markerDePrueba2 = const Marker(
-      markerId: MarkerId("Evento 2"),
-      position: LatLng(37.391226, -5.997486),
-      infoWindow: InfoWindow(
-        title: 'Quedada en el centro',
-      ),
-    );
-    Marker markerDePrueba3 = Marker(
-      markerId: const MarkerId("Punto de Promoción"),
-      position: const LatLng(37.389335, -5.988552),
-      infoWindow: const InfoWindow(
-        title: 'Oferta en los 100 Montaditos',
-      ),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-    );
-
-    List<Marker> markers = [
-      markerDePrueba1,
-      markerDePrueba2,
-      markerDePrueba3
-    ]; // Incluir los eventos, bucle for events -> markers
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Stack(
-        alignment: Alignment.center,
-        children: [
-          GoogleMap(
-            markers: Set<Marker>.from(markers),
-            initialCameraPosition: _initialCameraPosition,
-            onMapCreated: (controller) => _googleMapController = controller,
-            mapType: MapType.normal,
-          ),
-          GestureDetector(
-            onTap: () => Navigator.pushNamed(context, 'map'),
-            child: Container(
-                decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0),
-            )),
-          ),
-        ],
-      ),
+    return FutureBuilder<dynamic>(
+      future: markersFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: Stack(
+              alignment: Alignment.center,
+              children: [
+                GoogleMap(
+                  markers: Set<Marker>.from(snapshot.data!),
+                  initialCameraPosition: _initialCameraPosition,
+                  onMapCreated: (controller) => _googleMapController = controller,
+                  mapType: MapType.normal,
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, 'map'),
+                  child: Container(
+                      decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0),
+                  )),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Column(children: const [
+            SizedBox(height: 100),
+            Center(child: CircularProgressIndicator())
+          ]);
+        }
+      },
     );
   }
 }

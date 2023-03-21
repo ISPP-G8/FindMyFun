@@ -2,7 +2,6 @@ import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:findmyfun/screens/access_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/event.dart';
@@ -114,7 +113,7 @@ class _FormsColumn extends StatelessWidget {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EventDetailsView(),
+                            builder: (context) => const EventDetailsView(),
                             settings: RouteSettings(arguments: selectedEvent)))
                   },
                 ),
@@ -150,6 +149,14 @@ class _FormsColumn extends StatelessWidget {
               ),
               CustomTextForm(
                 hintText: selectedEvent.country,
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.latitude.toString(),
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.longitude.toString(),
                 enabled: false,
               ),
               CustomTextForm(

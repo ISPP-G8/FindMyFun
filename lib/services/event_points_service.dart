@@ -48,12 +48,12 @@ class EventPointsService extends ChangeNotifier {
         throw Exception('Error in response');
       }
 
-      final Map<String, dynamic> eventPointsMap = jsonDecode(resp.body);
+      final Map<String, dynamic> data = jsonDecode(resp.body);
 
       final List<EventPoint> eventPoints = [];
-      eventPointsMap.forEach((key, value) {
+      data.forEach((key, value) {
         final eventPoint = EventPoint.fromJson(value);
-        eventPoint.id = key;
+        debugPrint('++++++++++++++++++++++ ${eventPoint.name}');
         eventPoints.add(eventPoint);
       });
 

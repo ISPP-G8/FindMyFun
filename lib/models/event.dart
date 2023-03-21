@@ -18,6 +18,8 @@ class Event {
     required this.id,
     required this.image,
     required this.name,
+    required this.latitude,
+    required this.longitude,
     required this.startDate,
     required this.tags,
     required this.users,
@@ -31,6 +33,8 @@ class Event {
   String id;
   String image;
   String name;
+  double latitude;
+  double longitude;
   DateTime startDate;
   List<Preferences> tags;
   List<String> users;
@@ -52,6 +56,8 @@ class Event {
         id: json["id"],
         image: json["image"],
         name: json["name"],
+        latitude: json["latitude"],
+        longitude: json["longitude"],
         startDate: DateTime.parse(json["startDate"]),
         tags: Map.from(json["tags"]).map((k, v) => MapEntry<String, Preferences>(k, Preferences.fromJson(v))).values.toList(),
         users: json["users"] != null
@@ -68,6 +74,8 @@ class Event {
         "id": id,
         "image": image,
         "name": name,
+        "latitude": latitude,
+        "longitude": longitude,
         "startDate": startDate.toIso8601String(),
         "tags": Map.from(tags.fold({}, (r, p) => r..[p.id] = p)).map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "users": List<String>.from(users.map((x) => x)),
@@ -75,5 +83,5 @@ class Event {
 
   @override
   String toString() =>
-      'address: $address, city: $city, country: $country, description: $description, finished: $finished, id: $id, image: $image, name: $name, startDate: $startDate, tags: $tags, users: $users';
+      'address: $address, city: $city, country: $country, description: $description, finished: $finished, id: $id, image: $image, name: $name, latitude: $latitude, longitude: $longitude, startDate: $startDate, tags: $tags, users: $users';
 }
