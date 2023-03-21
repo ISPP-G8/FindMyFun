@@ -23,14 +23,14 @@ class PageViewService extends ChangeNotifier {
 
   PageController get pageController => _loginPageController;
 
-  void set pageController(PageController controller) {
+  set pageController(PageController controller) {
     _loginPageController = controller;
     notifyListeners();
   }
 
   PageController get registerPageController => _registerPageController;
 
-  void set registerPageController(PageController controller) {
+  set registerPageController(PageController controller) {
     _registerPageController = controller;
     notifyListeners();
   }

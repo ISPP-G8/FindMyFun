@@ -1,12 +1,8 @@
-// To parse this JSON data, do
-//
-//     final event = eventFromJson(jsonString);
 
 import 'package:findmyfun/models/messages.dart';
 import 'package:findmyfun/models/models.dart';
+
 import 'package:findmyfun/models/preferences.dart';
-import 'package:findmyfun/services/services.dart';
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Event {
@@ -68,6 +64,7 @@ class Event {
           .map((k, v) => MapEntry<String, Messages>(k, Messages.fromJson(v)))
           .values
           .toList());
+      );
 
   Map<String, dynamic> toJson() => {
         "address": address,

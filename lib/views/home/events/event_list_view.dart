@@ -1,9 +1,7 @@
-import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class EventListView extends StatefulWidget {
   const EventListView({super.key});
@@ -32,13 +30,13 @@ class _EventListView extends State<EventListView> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        // backgroundColor: ProjectColors.primary,
+        backgroundColor: ProjectColors.primary,
         body: SingleChildScrollView(
           child: Column(
             children: [
               const Center(
                   child: Text(
-                'EVENTOS',
+                'TODOS LOS EVENTOS',
                 style: TextStyle(
                     color: ProjectColors.tertiary,
                     fontSize: 30,
@@ -58,12 +56,10 @@ class _EventListView extends State<EventListView> {
                       ),
                     );
                   } else {
-                    return Column(
-                      children: const [
-                        SizedBox(height: 100),
-                        Center(child: CircularProgressIndicator())
-                      ]
-                    );
+                    return Column(children: const [
+                      SizedBox(height: 100),
+                      Center(child: CircularProgressIndicator())
+                    ]);
                   }
                 },
               ),

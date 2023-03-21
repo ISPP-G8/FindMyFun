@@ -3,7 +3,6 @@
 //     final user = userFromJson(jsonString);
 
 import 'package:findmyfun/models/preferences.dart';
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class User {
