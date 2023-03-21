@@ -13,10 +13,12 @@ class EventPointsService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
 
   //POST AND UPDATE EVENT
-  Future<void> saveEvent(EventPoint eventPoint) async {
+  Future<void> saveEvent(EventPoint eventPoint, User currentUser) async {
+    if (currentUser.isCompany == null || currentUser.isCompany == false) return;
     final url = Uri.https(_baseUrl, 'EventPoints/${eventPoint.id}.json');
     try {
       final resp = await http.put(url, body: jsonEncode(eventPoint.toJson()));
+
       if (resp.statusCode != 200) {
         throw Exception('Error in response');
       }
