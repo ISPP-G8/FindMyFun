@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously
+
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/models.dart' as user;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,7 +18,7 @@ class RegisterViewForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        children: [
+        children: const [
           LoginTitle(text: 'REGISTRO'),
           ImageLogo(),
           LoginContainer(
@@ -29,9 +31,7 @@ class RegisterViewForm extends StatelessWidget {
 }
 
 class _RegisterFormContainer extends StatefulWidget {
-  const _RegisterFormContainer({
-    super.key,
-  });
+  const _RegisterFormContainer();
 
   @override
   State<_RegisterFormContainer> createState() => _RegisterFormContainerState();
@@ -91,8 +91,9 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
           obscure: true,
           controller: _passwordConfirmController,
           validator: (value) {
-            if (_passwordConfirmController.text != _passwordController.text)
+            if (_passwordConfirmController.text != _passwordController.text) {
               return 'Las contraseñas no coinciden.';
+            }
             return null;
           },
         ),

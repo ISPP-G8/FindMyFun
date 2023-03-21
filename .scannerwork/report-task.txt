@@ -1,0 +1,6 @@
+projectKey=FindMyFun
+serverUrl=http://localhost:9000
+serverVersion=8.9.9.56886
+dashboardUrl=http://localhost:9000/dashboard?id=FindMyFun
+ceTaskId=AYcA5Qs6rvMJoXezOCSe
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYcA5Qs6rvMJoXezOCSe
