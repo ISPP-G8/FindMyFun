@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:findmyfun/models/preferences.dart';
 import 'package:findmyfun/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -41,6 +40,7 @@ class EventsService extends ChangeNotifier {
   Future<void> saveEvent(Event event) async {
     final url = Uri.https(_baseUrl, 'Events/${event.id}.json');
     try {
+      // ignore: unused_local_variable
       final resp = await http.put(url, body: jsonEncode(event.toJson()));
     } catch (e) {
       debugPrint('Error creating event: $e');
@@ -67,7 +67,6 @@ class EventsService extends ChangeNotifier {
 
       events = eventsAux;
       return eventsAux;
-
     } catch (e) {
       throw Exception('Error getting events: $e');
     }

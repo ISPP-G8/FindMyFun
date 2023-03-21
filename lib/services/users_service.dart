@@ -14,7 +14,7 @@ class UsersService extends ChangeNotifier {
 
   List<User> get users => _users;
 
-  void set users(List<User> inputUsers) {
+  set users(List<User> inputUsers) {
     _users = inputUsers;
     notifyListeners();
   }
@@ -68,14 +68,32 @@ class UsersService extends ChangeNotifier {
         return;
       }
 
+      List<User> userAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
 
       data.forEach((key, value) {
         final user = User.fromRawJson(jsonEncode(value));
-        _users.add(user);
+        userAux.add(user);
       });
+
+      users = userAux;
     } catch (e) {
+      // ignore: avoid_print
       print('Error getting users: $e');
+    }
+  }
+
+
+  Future<bool> addItem(User user) async {
+    final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
+    try {
+      final resp = await http.put(url, body: jsonEncode(user.toJson()));
+      if (resp.statusCode != 200) return false;
+
+      return true;
+    } catch (e) {
+      print('Error al crear el usuario: $e');
+      return false;
     }
   }
 
@@ -83,6 +101,7 @@ class UsersService extends ChangeNotifier {
   Future<void> updateProfile(User user) async {
     final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
     try {
+      // ignore: unused_local_variable
       final resp = await http.put(url, body: jsonEncode(user.toJson()));
     } catch (e) {
       debugPrint('Error editing profile: $e');
@@ -93,6 +112,7 @@ class UsersService extends ChangeNotifier {
   Future<void> deleteProfile(User user, BuildContext context) async {
     final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
     try {
+      // ignore: unused_local_variable
       final resp = await http.delete(url);
       AuthService().signOut;
       await Navigator.pushNamed(context, 'access');
@@ -100,5 +120,4 @@ class UsersService extends ChangeNotifier {
       debugPrint('Error deleting profile: $e');
     }
   }
-
 }
