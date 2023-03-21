@@ -86,7 +86,6 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
 
 class _PlanContainer extends StatelessWidget {
   const _PlanContainer({
-    super.key,
     required this.title,
     required this.subtitle,
     required this.firstPrice,
@@ -126,7 +125,6 @@ class _PlanContainer extends StatelessWidget {
 
 class _CustomPlan extends StatelessWidget {
   const _CustomPlan({
-    super.key,
     required this.title,
     required this.subtitle,
     required this.firstPrice,
@@ -144,7 +142,7 @@ class _CustomPlan extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         Text(
           subtitle,
@@ -158,17 +156,17 @@ class _CustomPlan extends StatelessWidget {
           children: [
             Text(
               firstPrice,
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             if (secondPrice.isNotEmpty)
-              Text(
+              const Text(
                 'o',
                 style: TextStyle(fontSize: 18),
               ),
             if (secondPrice.isNotEmpty)
               Text(
                 secondPrice,
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
               ),
           ],
         )
