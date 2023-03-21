@@ -7,6 +7,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'login': (_) => const LoginView(),
     'register': (_) => const RegisterScreen(),
     'access': (_) => const AccessScreen(),
+    'users': (_) => const UsersListViewScreen(),
     'profile': (_) => const ProfileDetailsView(),
     'preferences': (_) => const PreferencesView(),
     'main': (_) => const MainScreen(),
