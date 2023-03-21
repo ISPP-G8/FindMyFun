@@ -163,7 +163,7 @@ class _FormsColumn extends StatelessWidget {
                 type: TextInputType.multiline,
               ),
               EventCreator(
-                creatorUsername: snapshot.data?.username ?? 'username',
+                creatorUsername: snapshot.data?.username ?? '',
               ),
               if (!selectedEvent.users.contains(activeUserId))
                 SubmitButton(

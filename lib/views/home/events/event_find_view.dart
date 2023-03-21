@@ -30,9 +30,6 @@ class _EventFindView extends State<EventFindView> {
 
   @override
   Widget build(BuildContext context) {
-    final eventsService = Provider.of<EventsService>(context);
-    eventsService.findEvents();
-    // final events = eventsService.events;
     final size = MediaQuery.of(context).size;
     return Scaffold(
         resizeToAvoidBottomInset: true,
