@@ -38,7 +38,7 @@ class _EventListView extends State<EventListView> {
                   child: Text(
                 'TODOS LOS EVENTOS',
                 style: TextStyle(
-                    color: ProjectColors.tertiary,
+                    color: ProjectColors.primary,
                     fontSize: 30,
                     fontWeight: FontWeight.bold),
               )),
