@@ -1,4 +1,6 @@
+import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/widgets.dart';
 
@@ -23,29 +25,61 @@ class RegisterViewPlan extends StatelessWidget {
   }
 }
 
-class _RegisterFormContainer extends StatelessWidget {
+class _RegisterFormContainer extends StatefulWidget {
   const _RegisterFormContainer({
     super.key,
   });
 
   @override
+  State<_RegisterFormContainer> createState() => _RegisterFormContainerState();
+}
+
+class _RegisterFormContainerState extends State<_RegisterFormContainer> {
+  bool isCompany = false;
+  @override
   Widget build(BuildContext context) {
-    return Column(children:  [
-      const _PlanContainer(
-        title: 'Soy un usuario',
-        subtitle:
-            'Crea y únete a eventos creados por empresas u otros usuarios',
-        firstPrice: '0€ al mes',
-        secondPrice: '3,99€ al mes',
+    print(isCompany);
+    return Column(children: [
+      GestureDetector(
+        onTap: () => setState(() {
+          isCompany = false;
+        }),
+        child: _PlanContainer(
+          title: 'Soy un usuario',
+          subtitle:
+              'Crea y únete a eventos creados por empresas u otros usuarios',
+          firstPrice: '0€ al mes',
+          secondPrice: '3,99€ al mes',
+          selected: !isCompany,
+        ),
       ),
-      const _PlanContainer(
+      GestureDetector(
+        onTap: () => setState(() {
+          isCompany = true;
+        }),
+        child: _PlanContainer(
           title: 'Soy una empresa',
           subtitle:
               'Crea eventos como empresa sin ningún límite y registra tu establecimiento como punto de interés',
           firstPrice: '9,99€ al mes',
-          secondPrice: ''),
-      SubmitButton(text: 'CONTINUAR', onTap: () => Navigator.pushReplacementNamed(context, 'main'),)
-      
+          secondPrice: '',
+          selected: isCompany,
+        ),
+      ),
+      SubmitButton(
+        text: 'CONTINUAR',
+        onTap: () async {
+          if (isCompany) {
+            final userService =
+                Provider.of<UsersService>(context, listen: false);
+            if (userService.currentUser != null) {
+              userService.currentUser!.isCompany = true;
+              await userService.addItem(userService.currentUser!);
+            }
+          }
+          Navigator.pushReplacementNamed(context, 'main');
+        },
+      )
     ]);
   }
 }
@@ -57,12 +91,14 @@ class _PlanContainer extends StatelessWidget {
     required this.subtitle,
     required this.firstPrice,
     required this.secondPrice,
+    required this.selected,
   });
   final String title;
   final String subtitle;
   final String firstPrice;
 
   final String secondPrice;
+  final bool selected;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +108,9 @@ class _PlanContainer extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 10),
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Colors.white),
+                color: Colors.white,
+                border:
+                    Border.all(color: Colors.black, width: selected ? 5 : 0)),
             child: Column(
               children: [
                 _CustomPlan(
