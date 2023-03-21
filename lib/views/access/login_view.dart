@@ -50,12 +50,9 @@ class LoginView extends StatelessWidget {
                 const LoginContainer(
                   child: _FormsColumn(),
                 ),
-                Visibility(
-                  visible: false,
-                  child: TextButton(
-                      onPressed: () => Navigator.pushNamed(context, 'register'),
-                      child: const Text('¿No tienes cuenta?')),
-                )
+                TextButton(
+                    onPressed: () => Navigator.pushNamed(context, 'register'),
+                    child: const Text('¿No tienes cuenta?'))
               ],
             ),
           )),

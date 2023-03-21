@@ -83,6 +83,20 @@ class UsersService extends ChangeNotifier {
     }
   }
 
+
+  Future<bool> addItem(User user) async {
+    final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
+    try {
+      final resp = await http.put(url, body: jsonEncode(user.toJson()));
+      if (resp.statusCode != 200) return false;
+
+      return true;
+    } catch (e) {
+      print('Error al crear el usuario: $e');
+      return false;
+    }
+  }
+
   //UPDATE PROFILE
   Future<void> updateProfile(User user) async {
     final url = Uri.https(_baseUrl, 'Users/${user.id}.json');

@@ -17,6 +17,7 @@ class RegisterScreen extends StatelessWidget {
           // backgroundColor: ProjectColors.primary,
           body: PageView(
         controller: pageViewService.registerPageController,
+        physics: const NeverScrollableScrollPhysics(),
         children: const [
           RegisterViewForm(),
           RegisterViewPlan(),
