@@ -11,7 +11,7 @@ class PreferencesContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 700,
+      height: 600,
       margin: const EdgeInsets.symmetric(horizontal: 15),
       decoration: const BoxDecoration(color: Color(0xff828a92)),
       child: child,

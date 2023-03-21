@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.isppg8.findmyfun">
+
    <application
         android:label="findmyfun"
         android:name="${applicationName}"
@@ -30,5 +31,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD9ejRBt5CuRvQ4KpCzN5L7alTNW8fS3_4" />
     </application>
 </manifest>
