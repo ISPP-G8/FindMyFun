@@ -14,8 +14,9 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'main': (_) => const MainScreen(),
     'middle': (_) => const MiddleScreen(),
     'eventDetails': (_) => const EventDetailsView(),
+    'eventpointcreation': (_) => const EventPointCreationScreen(),
+    'searchResulst': (_) => const EventSearchView(),
     'map': (_) => EventMapView(),
-
   };
 
   return routes;

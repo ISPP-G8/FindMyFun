@@ -21,8 +21,8 @@ class PreferencesView extends StatelessWidget {
                 onTap: () => Navigator.pop(context),
                 child: const Icon(
                   Icons.chevron_left,
-                  size: 45,
                   color: ProjectColors.secondary,
+                  size: 45,
                 )),
             // backgroundColor: ProjectColors.primary,
             elevation: 0,

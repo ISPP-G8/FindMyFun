@@ -33,6 +33,9 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => PreferencesService(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => EventPointsService(),
+        ),
       ],
       child: const MyApp(),
     );
