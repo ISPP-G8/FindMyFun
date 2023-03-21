@@ -68,12 +68,15 @@ class UsersService extends ChangeNotifier {
         return;
       }
 
+      List<User> userAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
 
       data.forEach((key, value) {
         final user = User.fromRawJson(jsonEncode(value));
-        _users.add(user);
+        userAux.add(user);
       });
+
+      users = userAux;
     } catch (e) {
       // ignore: avoid_print
       print('Error getting users: $e');
