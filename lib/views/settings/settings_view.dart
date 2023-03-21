@@ -1,5 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:findmyfun/services/services.dart';
-import 'package:findmyfun/themes/colors.dart';
 import 'package:findmyfun/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,7 @@ class SettingsView extends StatelessWidget {
         // backgroundColor: ProjectColors.primary,
         body: Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 50,
         ),
         GestureDetector(
@@ -32,7 +33,7 @@ class SettingsView extends StatelessWidget {
               await AuthService().signOut();
               Navigator.pushReplacementNamed(context, 'login');
             },
-            child: CustomButton(text: 'Cerrar sesión'))
+            child: const CustomButton(text: 'Cerrar sesión'))
       ],
     ));
   }

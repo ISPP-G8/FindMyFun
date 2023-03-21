@@ -1,11 +1,4 @@
-// To parse this JSON data, do
-//
-//     final event = eventFromJson(jsonString);
-
-import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/models/preferences.dart';
-import 'package:findmyfun/services/services.dart';
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Event {
@@ -53,7 +46,11 @@ class Event {
         image: json["image"],
         name: json["name"],
         startDate: DateTime.parse(json["startDate"]),
-        tags: Map.from(json["tags"]).map((k, v) => MapEntry<String, Preferences>(k, Preferences.fromJson(v))).values.toList(),
+        tags: Map.from(json["tags"])
+            .map((k, v) =>
+                MapEntry<String, Preferences>(k, Preferences.fromJson(v)))
+            .values
+            .toList(),
         users: json["users"] != null
             ? List<String>.from(json["users"].map((x) => x))
             : [],
@@ -69,7 +66,8 @@ class Event {
         "image": image,
         "name": name,
         "startDate": startDate.toIso8601String(),
-        "tags": Map.from(tags.fold({}, (r, p) => r..[p.id] = p)).map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
+        "tags": Map.from(tags.fold({}, (r, p) => r..[p.id] = p))
+            .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "users": List<String>.from(users.map((x) => x)),
       };
 

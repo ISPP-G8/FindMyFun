@@ -2,7 +2,6 @@ import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:findmyfun/screens/access_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/event.dart';
@@ -90,6 +89,10 @@ class _FormsColumn extends StatelessWidget {
                 enabled: false,
               ),
               CustomTextForm(
+                hintText: selectedEvent.city,
+                enabled: false,
+              ),
+              CustomTextForm(
                 hintText: selectedEvent.startDate.toString(),
                 enabled: false,
               ),
@@ -110,7 +113,7 @@ class _FormsColumn extends StatelessWidget {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EventDetailsView(),
+                            builder: (context) => const EventDetailsView(),
                             settings: RouteSettings(arguments: selectedEvent)))
                   },
                 ),
@@ -141,6 +144,14 @@ class _FormsColumn extends StatelessWidget {
                 enabled: false,
               ),
               CustomTextForm(
+                hintText: selectedEvent.city,
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.country,
+                enabled: false,
+              ),
+              CustomTextForm(
                 hintText: selectedEvent.startDate.toString(),
                 enabled: false,
               ),
@@ -161,7 +172,7 @@ class _FormsColumn extends StatelessWidget {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EventDetailsView(),
+                            builder: (context) => const EventDetailsView(),
                             settings: RouteSettings(arguments: selectedEvent)))
                   },
                 ),

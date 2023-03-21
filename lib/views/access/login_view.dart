@@ -1,5 +1,4 @@
 import 'package:findmyfun/helpers/helpers.dart';
-import 'package:findmyfun/services/page_view_service.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/ui/custom_snackbars.dart';
@@ -15,7 +14,6 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageViewController =
         Provider.of<PageViewService>(context).pageController;
-    final userService = Provider.of<UsersService>(context);
 
     return SafeArea(
       child: Scaffold(
@@ -66,9 +64,7 @@ class LoginView extends StatelessWidget {
 }
 
 class _FormsColumn extends StatefulWidget {
-  const _FormsColumn({
-    super.key,
-  });
+  const _FormsColumn();
 
   @override
   State<_FormsColumn> createState() => _FormsColumnState();
@@ -82,7 +78,7 @@ class _FormsColumnState extends State<_FormsColumn> {
   Widget build(BuildContext context) {
     final usersService = Provider.of<UsersService>(context);
     return Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+        // autovalidateMode: AutovalidateMode.onUserInteraction,
         key: _formKey,
         child: Column(
           children: [
@@ -92,7 +88,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             CustomTextForm(
               hintText: 'Email',
               controller: _emailController,
-              validator: (value) => Validators.validateNotEmpty(value),
+              validator: (value) => Validators.validateEmail(value),
             ),
             CustomTextForm(
               hintText: 'Contraseña',
@@ -125,13 +121,16 @@ class _FormsColumnState extends State<_FormsColumn> {
                               email: _emailController.text,
                               password: _passwordController.text);
 
+                      // ignore: avoid_print
                       print('User uid: ${credential.user?.uid}');
                       await usersService.getCurrentUserWithUid();
                     } on FirebaseAuthException catch (e) {
+                      // ignore: avoid_print
                       print('Error al iniciar sesion $e');
                       Navigator.pop(context);
                       return;
                     } catch (e) {
+                      // ignore: avoid_print
                       print('Error al iniciar sesion $e');
                       Navigator.pop(context);
                       return;
@@ -139,7 +138,7 @@ class _FormsColumnState extends State<_FormsColumn> {
 
                     // await usersService.getUsers();
 
-                    await Future.delayed(Duration(seconds: 1));
+                    await Future.delayed(const Duration(seconds: 1));
                     Navigator.pushReplacementNamed(context, 'main');
                   } else {
                     CustomSnackbars.showCustomSnackbar(

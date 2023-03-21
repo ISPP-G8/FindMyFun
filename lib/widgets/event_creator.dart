@@ -1,4 +1,3 @@
-import 'package:findmyfun/screens/access_screen.dart';
 import 'package:findmyfun/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -18,8 +17,7 @@ class _EventCreator extends State<EventCreator> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-          color: Colors.white),
+      decoration: const BoxDecoration(color: Colors.white),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

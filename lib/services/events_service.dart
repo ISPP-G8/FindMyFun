@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:findmyfun/models/preferences.dart';
 import 'package:findmyfun/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -41,6 +40,7 @@ class EventsService extends ChangeNotifier {
   Future<void> saveEvent(Event event) async {
     final url = Uri.https(_baseUrl, 'Events/${event.id}.json');
     try {
+      // ignore: unused_local_variable
       final resp = await http.put(url, body: jsonEncode(event.toJson()));
     } catch (e) {
       debugPrint('Error creating event: $e');
@@ -48,13 +48,13 @@ class EventsService extends ChangeNotifier {
   }
 
   //READ EVENT
-  Future<bool> getEvents() async {
+  Future<List<Event>> getEvents() async {
     final url = Uri.https(_baseUrl, 'Events.json');
     try {
       final resp = await http.get(url);
 
       if (resp.statusCode != 200) {
-        return false;
+        throw Exception('Error in response');
       }
       List<Event> eventsAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
@@ -66,11 +66,9 @@ class EventsService extends ChangeNotifier {
       });
 
       events = eventsAux;
-
-      return true;
+      return eventsAux;
     } catch (e) {
-      debugPrint('Error getting events: $e');
-      return false;
+      throw Exception('Error getting events: $e');
     }
   }
 
@@ -79,7 +77,8 @@ class EventsService extends ChangeNotifier {
     final url = Uri.https(_baseUrl, 'Events.json');
     final UsersService usersService = UsersService();
 
-    User currentUser = await usersService.getUserWithUid(AuthService().currentUser?.uid ?? "");
+    User currentUser =
+        await usersService.getUserWithUid(AuthService().currentUser?.uid ?? "");
 
     try {
       final resp = await http.get(url);
@@ -91,13 +90,16 @@ class EventsService extends ChangeNotifier {
 
       data.forEach((key, value) {
         final event = Event.fromRawJson(jsonEncode(value));
-        if (currentUser.preferences.toSet().intersection(event.tags.toSet()).isNotEmpty && !event.hasFinished/* && currentUser.city == event.city*/) {
+        if (currentUser.preferences
+                .toSet()
+                .intersection(event.tags.toSet())
+                .isNotEmpty &&
+            !event.hasFinished /* && currentUser.city == event.city*/) {
           eventsAux.add(event);
         }
       });
       eventsFound = eventsAux;
       return eventsAux;
-      
     } catch (e) {
       throw Exception('Error getting events: $e');
     }
@@ -108,9 +110,10 @@ class EventsService extends ChangeNotifier {
     String activeUserId = AuthService().currentUser?.uid ?? "";
     if (activeUserId.isEmpty ||
         eventId.isEmpty ||
+        event.finished == true ||
         event.users.contains(activeUserId)) {
       throw Exception(
-          'Be sure to be logged, make sure that the event exists and check if you aren´t already part of the event');
+          'Asegúrate de haber iniciado sesión, de que el evento existe y está activo no estás dentro de él');
     } else {
       event.users.add(activeUserId);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');
@@ -123,6 +126,86 @@ class EventsService extends ChangeNotifier {
         }
       } catch (e) {
         throw Exception('Error while trying to update the event');
+      }
+    }
+  }
+
+  Future<List<Event>> searchForEvents(String text) async {
+    if (text.contains(",") ||
+        text.contains(";") ||
+        text.contains(".") ||
+        text.contains("[") ||
+        text.contains("]") ||
+        text.contains("!") ||
+        text.contains("?") ||
+        text.contains("/") ||
+        text.contains("{") ||
+        text.contains("}") ||
+        text.contains("'") ||
+        text.contains("¡") ||
+        text.contains('"') ||
+        text.contains("+") ||
+        text.contains("-") ||
+        text.contains("(") ||
+        text.contains(")") ||
+        text.contains("=") ||
+        text.contains("<") ||
+        text.contains(">") ||
+        text.contains("*") ||
+        text.contains("%") ||
+        text.contains("_") ||
+        text.contains("^") ||
+        text.contains("¬") ||
+        text.contains("€") ||
+        text.contains("~") ||
+        text.contains("|") ||
+        text.contains("@") ||
+        text.contains("#") ||
+        text == "" ||
+        text.isEmpty) {
+      eventsFound = [];
+      throw Exception(
+          'Asegúrate de introducir palabras separadas solo por espacios en blanco');
+    } else {
+      try {
+        final url = Uri.https(_baseUrl, 'Events.json');
+        final resp = await http.get(url);
+        if (resp.statusCode != 200) {
+          throw Exception('Error in response');
+        }
+        List<String> words = text.split(" ");
+        List<Event> eventsAux = [];
+        Map<String, dynamic> data = jsonDecode(resp.body);
+
+        data.forEach((key, value) {
+          final event = Event.fromRawJson(jsonEncode(value));
+          if (!event.hasFinished) {
+            int i = 0;
+            for (String word in words) {
+              word = word.toLowerCase();
+              if (event.address.toLowerCase().contains(word) ||
+                  event.city.toLowerCase().contains(word) ||
+                  event.description.toLowerCase().contains(word) ||
+                  event.name.toLowerCase().contains(word)) {
+                i = i + 1;
+              }
+              if (i == words.length) {
+                eventsAux.add(event);
+              }
+            }
+          }
+        });
+        if (eventsAux.isNotEmpty) {
+          eventsFound = eventsAux;
+          return eventsAux;
+        } else {
+          eventsFound = [];
+          throw Exception(
+              "No se han encontrado eventos con los parámetros de búsqueda introducidos, recuerda que deben coincidir todas las palabras por separado para que el evento sea válido.");
+        }
+      } catch (e) {
+        eventsFound = [];
+        throw Exception('Error getting events: $e');
       }
     }
   }

@@ -1,23 +1,38 @@
-import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EventFindView extends StatelessWidget {
+class EventFindView extends StatefulWidget {
   const EventFindView({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _EventFindView();
+}
+
+class _EventFindView extends State<EventFindView> {
+  late Future eventsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    eventsFuture = _findEvents();
+  }
+
+  _findEvents() async {
+    EventsService eventsService = EventsService();
+    return await eventsService.findEvents();
+  }
 
   @override
   Widget build(BuildContext context) {
     final eventsService = Provider.of<EventsService>(context);
-    // TODO: Cambiar los eventos que se muestran
-    // eventsService.findEvents();
-    final events = eventsService.events;
+    eventsService.findEvents();
     final size = MediaQuery.of(context).size;
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        // backgroundColor: ProjectColors.primary,
+        backgroundColor: ProjectColors.primary,
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -25,19 +40,31 @@ class EventFindView extends StatelessWidget {
                   child: Text(
                 'EVENTOS RECOMENDADOS',
                 style: TextStyle(
-                    color: Colors.white,
+                    color: ProjectColors.tertiary,
                     fontSize: 30,
                     fontWeight: FontWeight.bold),
               )),
-              ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: size.height),
-                child: ListView.builder(
-                  itemCount: events.length,
-                  itemBuilder: (_, index) => EventContainer(
-                    event: events[index],
-                  ),
-                ),
-              )
+              FutureBuilder<dynamic>(
+                future: eventsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ConstrainedBox(
+                      constraints: BoxConstraints(maxHeight: size.height),
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (_, index) => EventContainer(
+                          event: snapshot.data![index],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Column(children: const [
+                      SizedBox(height: 100),
+                      Center(child: CircularProgressIndicator())
+                    ]);
+                  }
+                },
+              ),
             ],
           ),
         ));
@@ -54,7 +81,7 @@ class EventFindView extends StatelessWidget {
 //       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
 //       padding: const EdgeInsets.symmetric(horizontal: 20),
 //       decoration: BoxDecoration(
-//           color: Colors.white),
+//           color: Colors.white, borderRadius: BorderRadius.circular(25)),
 //       child: Column(
 //         children: [
 //           Row(
