@@ -36,7 +36,8 @@ class EventPointsService extends ChangeNotifier {
     }
   }
 
-  Future<void> getItems() async {
+  Future<void> getEventPointsAdmin(User currentUser) async {
+    if (currentUser.isAdmin == false || currentUser.isAdmin == null) return;
     final url = Uri.https(_baseUrl, 'EventPoints.json');
 
     try {
