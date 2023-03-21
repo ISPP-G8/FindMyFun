@@ -80,7 +80,8 @@ class _EventFindView extends State<EventFindView> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return ConstrainedBox(
-                          constraints: BoxConstraints(maxHeight: size.height*0.37),
+                          constraints:
+                              BoxConstraints(maxHeight: size.height * 0.37),
                           child: ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (_, index) => EventContainer(
@@ -129,7 +130,7 @@ class _MapScreenState extends State<MapScreen> {
 
   _getMarkers() async {
     MapService mapService = MapService();
-    return await mapService.getMarkers(false);
+    return await mapService.getMarkers();
   }
 
   @override
@@ -150,9 +151,11 @@ class _MapScreenState extends State<MapScreen> {
               alignment: Alignment.center,
               children: [
                 GoogleMap(
-                  markers: Set<Marker>.from(snapshot.data!.map((m) => m.marker).toSet()),
+                  markers: Set<Marker>.from(
+                      snapshot.data!.map((m) => m.marker).toSet()),
                   initialCameraPosition: _initialCameraPosition,
-                  onMapCreated: (controller) => _googleMapController = controller,
+                  onMapCreated: (controller) =>
+                      _googleMapController = controller,
                   mapType: MapType.normal,
                 ),
                 GestureDetector(

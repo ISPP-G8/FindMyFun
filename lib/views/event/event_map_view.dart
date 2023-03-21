@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:findmyfun/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:findmyfun/services/services.dart';
@@ -43,7 +44,7 @@ class _MapScreenState extends State<MapScreen> {
 
   late GoogleMapController _googleMapController;
   late Future markersFuture;
-  bool isEventDetailsVisible = false;
+  String? isEventDetailsVisible;
 
   @override
   void initState() {
@@ -54,9 +55,8 @@ class _MapScreenState extends State<MapScreen> {
 
   _getMarkers() async {
     MapService mapService = MapService();
-    return await mapService.getMarkers(isEventDetailsVisible);
+    return await mapService.getMarkers();
   }
-
 
   @override
   void dispose() {
@@ -68,40 +68,58 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    Marker markerDePrueba3 = Marker(
-      markerId: const MarkerId("Punto de Promoción"),
-      position: const LatLng(37.389335, -5.988552),
-      onTap: () => {
-        setState(() {
-          isEventDetailsVisible = !isEventDetailsVisible;
-        }),
-      },
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
-    );
-    
     return FutureBuilder<dynamic>(
       future: markersFuture,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          List<Point> points = snapshot.data!;
+
+          dynamic selectedEvent;
+
+          if (isEventDetailsVisible != null) {
+            dynamic event = points
+                .where((p) => p.marker.markerId.value == isEventDetailsVisible)
+                .map((p) => p.event)
+                .toList()
+                .first;
+
+            if (event is Event) {
+              selectedEvent = event;
+            } else if (event is EventPoint) {
+              selectedEvent = event;
+            }
+          }
+
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             home: Stack(
               alignment: Alignment.center,
               children: [
                 GoogleMap(
-                  markers: Set<Marker>.from(snapshot.data!.map((m) => m.marker).map((m) => m.copyWith(
+                  markers: Set<Marker>.from(points
+                      .map((m) => m.marker)
+                      .map((m) => m.copyWith(
                           onTapParam: () => setState(() {
-                                isEventDetailsVisible = !isEventDetailsVisible;
-                              }))).toSet()),
+                                isEventDetailsVisible =
+                                    isEventDetailsVisible != m.markerId.value
+                                        ? m.markerId.value
+                                        : null;
+                              })))
+                      .toSet()),
                   initialCameraPosition: _initialCameraPosition,
-                  onMapCreated: (controller) => _googleMapController = controller,
+                  onMapCreated: (controller) =>
+                      _googleMapController = controller,
                   mapType: MapType.normal,
                 ),
                 Visibility(
-                  visible: isEventDetailsVisible,
+                  visible: isEventDetailsVisible != null,
                   child: GestureDetector(
-                    // este onTap es para llevar a los detalles del evento, todavia sin implementar
-                    // onTap: () => Navigator.pushNamed(context, 'eventDetails', arguments: event),
+                    // onTap: () => selectedEvent is Event ? Navigator.pushNamed(context, 'eventDetails',  arguments: selectedEvent) :
+                    // Navigator.pushNamed(context, 'eventDetails',
+                    //     arguments: selectedEvent) */,
+
+                    //TODO: A falta de implementar la vista de detalles de un punto de evento
+
                     child: Align(
                         alignment: Alignment.bottomCenter,
                         child: Container(
@@ -126,41 +144,54 @@ class _MapScreenState extends State<MapScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Column(
-                                    children: const [
-                                      SizedBox(
+                                    children: [
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                       Text(
-                                        "Oferta en los 100 montaditos",
-                                        style: TextStyle(
+                                        selectedEvent != null
+                                            ? selectedEvent.name
+                                            : '',
+                                        style: const TextStyle(
                                             decoration: TextDecoration.none,
                                             color: Colors.black,
                                             fontSize: 10.5,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
-                                      Text('19/08/2023 18:30',
-                                          style: TextStyle(
+                                      Text(
+                                          selectedEvent is Event
+                                              ? selectedEvent.startDate
+                                                  .toString()
+                                              : "",
+                                          style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 9,
                                             decoration: TextDecoration.none,
                                           )),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
-                                      Text("Av. de la Constitución",
-                                          style: TextStyle(
+                                      Text(
+                                          selectedEvent != null
+                                              ? selectedEvent.address
+                                              : '',
+                                          style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 9,
                                             decoration: TextDecoration.none,
                                           )),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
-                                      Text('3 asistente/s',
-                                          style: TextStyle(
+                                      Text(
+                                          selectedEvent is Event
+                                              ? selectedEvent.users.length
+                                                  .toString()
+                                              : '',
+                                          style: const TextStyle(
                                             color: Colors.black,
                                             fontSize: 9,
                                             decoration: TextDecoration.none,
@@ -172,10 +203,12 @@ class _MapScreenState extends State<MapScreen> {
                                       width: 150,
                                       height: size.height * 0.12,
                                       child: CachedNetworkImage(
-                                        imageUrl:
-                                            "https://media-cdn.tripadvisor.com/media/photo-s/02/e1/2e/ce/cerveceria-100-montaditos.jpg",
+                                        imageUrl: selectedEvent != null
+                                            ? selectedEvent.image
+                                            : 'assets/placeholder.png',
                                         errorWidget: (context, url, error) {
-                                          print('Error al cargar la imagen $error');
+                                          print(
+                                              'Error al cargar la imagen $error');
                                           return Image.asset(
                                               'assets/placeholder.png');
                                         },
