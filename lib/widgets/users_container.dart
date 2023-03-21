@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class PreferencesContainer extends StatelessWidget {
+class UsersContainer extends StatelessWidget {
   final Widget child;
-  const PreferencesContainer({
+  const UsersContainer({
     super.key,
     required this.child,
   });
@@ -11,9 +11,10 @@ class PreferencesContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 600,
       margin: const EdgeInsets.symmetric(horizontal: 15),
-      decoration: const BoxDecoration(color: Color(0xff828a92)),
+      decoration: BoxDecoration(
+          color: Color.fromARGB(255, 255, 242, 242),
+          borderRadius: BorderRadius.circular(15)),
       child: child,
     );
   }

@@ -1,48 +1,68 @@
-import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class EventListView extends StatelessWidget {
+class EventListView extends StatefulWidget {
   const EventListView({super.key});
 
   @override
+  State<StatefulWidget> createState() => _EventListView();
+}
+
+class _EventListView extends State<EventListView> {
+  late Future eventsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    eventsFuture = _getEvents();
+  }
+
+  _getEvents() async {
+    EventsService eventsService = EventsService();
+    return await eventsService.getEvents();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final eventsService = Provider.of<EventsService>(context);
-    // eventsService.getEvents();
-    final events = eventsService.events;
     final size = MediaQuery.of(context).size;
-    events.sort(
-      (a, b) => b.startDate.compareTo(a.startDate),
-    );
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        // backgroundColor: ProjectColors.primary,
+        backgroundColor: ProjectColors.primary,
         body: SingleChildScrollView(
           child: Column(
             children: [
               const Center(
                   child: Text(
-                'TUS EVENTOS',
+                'TODOS LOS EVENTOS',
                 style: TextStyle(
                     color: ProjectColors.primary,
                     fontSize: 30,
                     fontWeight: FontWeight.bold),
               )),
-              ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: size.height),
-                child: RefreshIndicator(
-                  onRefresh: () async => await eventsService.getEvents(),
-                  child: ListView.builder(
-                    itemCount: events.length,
-                    itemBuilder: (_, index) => EventContainer(
-                      event: events[index],
-                    ),
-                  ),
-                ),
-              )
+              FutureBuilder<dynamic>(
+                future: eventsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ConstrainedBox(
+                      constraints: BoxConstraints(maxHeight: size.height),
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (_, index) => EventContainer(
+                          event: snapshot.data![index],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Column(children: const [
+                      SizedBox(height: 100),
+                      Center(child: CircularProgressIndicator())
+                    ]);
+                  }
+                },
+              ),
             ],
           ),
         ));

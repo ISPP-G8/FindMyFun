@@ -1,4 +1,3 @@
-import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -194,7 +193,7 @@ class _MapScreenState extends State<MapScreen> {
 //       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
 //       padding: const EdgeInsets.symmetric(horizontal: 20),
 //       decoration: BoxDecoration(
-//           color: Colors.white),
+//           color: Colors.white, borderRadius: BorderRadius.circular(25)),
 //       child: Column(
 //         children: [
 //           Row(

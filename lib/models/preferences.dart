@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Preferences {
@@ -26,8 +25,7 @@ class Preferences {
       };
 
   @override
-  String toString() =>
-      'id: $id, name: $name';
+  String toString() => 'id: $id, name: $name';
 
   @override
   int get hashCode => id.hashCode ^ name.hashCode;

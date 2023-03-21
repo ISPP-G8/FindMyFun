@@ -1,5 +1,4 @@
 import 'package:findmyfun/models/models.dart';
-import 'package:findmyfun/services/auth_service.dart';
 import 'package:findmyfun/services/users_service.dart';
 import 'package:findmyfun/themes/colors.dart';
 import 'package:findmyfun/themes/styles.dart';
@@ -38,8 +37,8 @@ class ProfileDetailsView extends StatelessWidget {
         child: Container(
           height: 800,
           width: 400,
-          decoration: BoxDecoration(
-            color: const Color(0xff828a92),
+          decoration: const BoxDecoration(
+            color: Color(0xff828a92),
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -94,7 +93,7 @@ Widget userImage(User user) {
   try {
     return CircleAvatar(
         radius: 120,
-        backgroundImage: AssetImage('assets/placeholder.png'),
+        backgroundImage: const AssetImage('assets/placeholder.png'),
         child: ClipOval(
           child: CachedNetworkImage(
             fit: BoxFit.cover,
@@ -103,6 +102,7 @@ Widget userImage(User user) {
                 Image.asset('assets/placeholder.png'),
             imageUrl: user.image!,
             errorWidget: (context, url, error) {
+              // ignore: avoid_print
               print('Error al obtener la imagen: $error');
 
               return const Icon(

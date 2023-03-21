@@ -1,13 +1,10 @@
 import 'package:findmyfun/services/auth_service.dart';
-import 'package:findmyfun/services/page_view_service.dart';
 import 'package:findmyfun/services/preferences_service.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/events_service.dart';
 import '../../../widgets/preferences_container.dart';
-import '../../../widgets/submit_button.dart';
 
 class PreferencesView extends StatelessWidget {
   const PreferencesView({super.key});
@@ -21,6 +18,7 @@ class PreferencesView extends StatelessWidget {
                 onTap: () => Navigator.pop(context),
                 child: const Icon(
                   Icons.chevron_left,
+                  color: ProjectColors.secondary,
                   size: 45,
                   color: ProjectColors.secondary,
                 )),
@@ -56,7 +54,9 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
     final preferences = preferencesService.preferences;
     final preferencesNames = preferences.map((e) => e.name).toList();
     final preferencesByUserId = preferencesService.preferencesByUserId;
+    // ignore: avoid_print
     print("object");
+    // ignore: avoid_print
     print(preferencesNames);
     String activeUserId = AuthService().currentUser?.uid ?? "";
     return Column(
@@ -115,7 +115,7 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                                   }
                                 });
                               },
-                              child: Text('${preferencesNames[index]}',
+                              child: Text(preferencesNames[index],
                                   style: const TextStyle(
                                       color: Colors
                                           .black)) //Nombre de la preferencia
