@@ -113,7 +113,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   static const _initialCameraPosition = CameraPosition(
-    target: LatLng(37.392529, -5.994072),
+    target: LatLng(37.356342, -5.984759),
     zoom: 13,
   );
 
@@ -150,7 +150,7 @@ class _MapScreenState extends State<MapScreen> {
               alignment: Alignment.center,
               children: [
                 GoogleMap(
-                  markers: Set<Marker>.from(snapshot.data!),
+                  markers: Set<Marker>.from(snapshot.data!.map((m) => m.marker).toSet()),
                   initialCameraPosition: _initialCameraPosition,
                   onMapCreated: (controller) => _googleMapController = controller,
                   mapType: MapType.normal,

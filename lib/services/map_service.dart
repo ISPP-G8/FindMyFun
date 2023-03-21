@@ -9,25 +9,31 @@ class MapService extends ChangeNotifier {
   EventPointsService eventPointsService = EventPointsService();
 
   // GET ALL MARKERS
-  Future<List<Marker>> getMarkers(isEventDetailsVisible) async {
-    List<Marker> markers = [];
+  Future<List<Point>> getMarkers(isEventDetailsVisible) async {
+    List<Point> markers = [];
 
     List<Event> events = await eventsService.getEvents();
     List<EventPoint> eventPoints = await eventPointsService.getEventPoints();
 
     for (var event in events) {
-      markers.add(Marker(
-          markerId: MarkerId(event.id),
-          position: LatLng(event.latitude, event.longitude),
+      markers.add(Point(
+          event: event,
+          marker: Marker(
+              markerId: MarkerId(event.id),
+              position: LatLng(event.latitude, event.longitude),
+          )
         )
       );
     }
 
     for (var eventPoint in eventPoints) {
-      markers.add(Marker(
-          markerId: MarkerId(eventPoint.id),
-          position: LatLng(eventPoint.latitude, eventPoint.longitude),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+      markers.add(Point(
+          event: eventPoint,
+          marker: Marker(
+              markerId: MarkerId(eventPoint.id),
+              position: LatLng(eventPoint.latitude, eventPoint.longitude),
+              icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+          )
         )
       );
     }
