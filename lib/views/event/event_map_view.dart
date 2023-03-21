@@ -56,21 +56,21 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Marker markerDePrueba1 = const Marker(
+    Marker testMarker1 = const Marker(
       markerId: MarkerId("Evento 1"),
       position: LatLng(37.391123, -6.001676),
       infoWindow: InfoWindow(
         title: 'Partido de tenis',
       ),
     );
-    Marker markerDePrueba2 = const Marker(
+    Marker testMarker2 = const Marker(
       markerId: MarkerId("Evento 2"),
       position: LatLng(37.391226, -5.997486),
       infoWindow: InfoWindow(
         title: 'Quedada en el centro',
       ),
     );
-    Marker markerDePrueba3 = Marker(
+    Marker testMarker3 = Marker(
       markerId: const MarkerId("Punto de Promoción"),
       position: const LatLng(37.389335, -5.988552),
       onTap: () => {
@@ -81,7 +81,7 @@ class _MapScreenState extends State<MapScreen> {
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
     );
 
-    List<Marker> markers = [markerDePrueba1, markerDePrueba2, markerDePrueba3];
+    List<Marker> markers = [testMarker1, testMarker2, testMarker3];
     final size = MediaQuery.of(context).size;
 
     return MaterialApp(
