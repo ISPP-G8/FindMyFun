@@ -1,4 +1,3 @@
-
 import 'package:findmyfun/models/messages.dart';
 import 'package:findmyfun/models/models.dart';
 
@@ -64,7 +63,6 @@ class Event {
           .map((k, v) => MapEntry<String, Messages>(k, Messages.fromJson(v)))
           .values
           .toList());
-      );
 
   Map<String, dynamic> toJson() => {
         "address": address,
@@ -79,7 +77,7 @@ class Event {
         "tags": Map.from(tags.fold({}, (r, p) => r..[p.id] = p))
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "users": List<String>.from(users.map((x) => x)),
-        "messages": Map.from(messages.fold({}, (r, m) => r..[m.id] = m))
+        "messages": Map.from(messages.fold({}, (r, m) => r..[m.userId] = m))
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
       };
 

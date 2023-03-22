@@ -40,12 +40,8 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           FloatingActionButton(
               onPressed: () {
-                int setId = selectedEvent.messages.length + 1;
                 Messages m = Messages(
-                    id: String.fromCharCode(setId),
-                    userId: activeUserId,
-                    date: DateTime.now(),
-                    text: "Pepe");
+                    userId: activeUserId, date: DateTime.now(), text: "Pepe");
                 messagesService.saveMessage(m, selectedEvent);
                 Navigator.pop(context, "chat");
               },

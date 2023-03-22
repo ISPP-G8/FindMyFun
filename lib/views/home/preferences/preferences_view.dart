@@ -20,7 +20,6 @@ class PreferencesView extends StatelessWidget {
                   Icons.chevron_left,
                   color: ProjectColors.secondary,
                   size: 45,
-                  color: ProjectColors.secondary,
                 )),
             // backgroundColor: ProjectColors.primary,
             elevation: 0,
