@@ -87,27 +87,27 @@ class PreferencesService extends ChangeNotifier {
     }
   }
 
-  Future<void> getPreferencesByUserId() async {
+  Future<List<Preferences>> getPreferencesByUserId() async {
     String activeUserId = AuthService().currentUser?.uid ?? "";
-    final url = Uri.https(_baseUrl, 'Users/{$activeUserId}/preferences.json');
+    final url = Uri.https(_baseUrl, 'Users/$activeUserId/preferences.json');
     try {
       final resp = await http.get(url);
 
       if (resp.statusCode != 200) {
-        return;
+        throw Exception('Error in response');
       }
+
+      List<Preferences> preferencesAux = [];
 
       Map<String, dynamic> data = jsonDecode(resp.body);
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
-        if (!preferencesByUserId.contains(preference)) {
-          print(preference);
-          preferencesByUserId.add(preference);
-        }
+        preferencesAux.add(preference);
       });
+
+      return preferencesAux;
     } catch (e) {
-      // ignore: avoid_print
-      print('Error getting preferences by user id: $e');
+      throw Exception('Error getting preferences by user id: $e');
     }
   }
 
@@ -119,8 +119,6 @@ class PreferencesService extends ChangeNotifier {
       final resp = await http.delete(urlUser);
 
       for (Preferences preference in preferencesToAdd) {
-        // ignore: avoid_print
-        print(preference.id);
         final urlAdd = Uri.https(
             _baseUrl, 'Users/$userId/preferences/${preference.id}.json');
 
@@ -129,8 +127,7 @@ class PreferencesService extends ChangeNotifier {
             await http.put(urlAdd, body: jsonEncode(preference.toJson()));
       }
     } catch (e) {
-      // ignore: avoid_print
-      print('Error creating event: $e');
+      throw Exception('Error creating event: $e');
     }
   }
 }
