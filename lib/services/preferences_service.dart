@@ -47,13 +47,17 @@ class PreferencesService extends ChangeNotifier {
       Map<String, dynamic> data = jsonDecode(resp.body);
 
       data.forEach((key, value) {
-        final preference = Preferences.fromRawJson(jsonEncode(value));
-        preferencesAux.add(preference);
+        try {
+          final preference = Preferences.fromRawJson(jsonEncode(value));
+          preferencesAux.add(preference);
+        } catch (e) {
+          debugPrint('Error parsing preference: $e');
+        }
       });
       preferences = preferencesAux;
       return preferencesAux;
     } catch (e) {
-      throw Exception('Error in response');
+      throw Exception('Error getting preferences: $e');
     }
   }
 
@@ -70,10 +74,13 @@ class PreferencesService extends ChangeNotifier {
       Map<String, dynamic> data = jsonDecode(resp.body);
       Preferences? preferenceAux;
       data.forEach((key, value) {
-        final preference = Preferences.fromRawJson(jsonEncode(value));
-
-        if (preference.name == name) {
-          preferenceAux = preference;
+        try {
+          final preference = Preferences.fromRawJson(jsonEncode(value));
+          if (preference.name == name) {
+            preferenceAux = preference;
+          }
+        } catch (e) {
+          debugPrint('Error parsing preference: $e');
         }
       });
 
@@ -83,7 +90,7 @@ class PreferencesService extends ChangeNotifier {
       preference = preferenceAux;
       return preferenceAux!;
     } catch (e) {
-      throw Exception('Error in response');
+      throw Exception('Error getting preference by name: $e');
     }
   }
 
@@ -101,8 +108,12 @@ class PreferencesService extends ChangeNotifier {
 
       Map<String, dynamic> data = jsonDecode(resp.body);
       data.forEach((key, value) {
-        final preference = Preferences.fromRawJson(jsonEncode(value));
-        preferencesAux.add(preference);
+        try {
+          final preference = Preferences.fromRawJson(jsonEncode(value));
+          preferencesAux.add(preference);
+        } catch (e) {
+          debugPrint('Error parsing preference: $e');
+        }
       });
 
       return preferencesAux;
@@ -127,7 +138,7 @@ class PreferencesService extends ChangeNotifier {
             await http.put(urlAdd, body: jsonEncode(preference.toJson()));
       }
     } catch (e) {
-      throw Exception('Error creating event: $e');
+      throw Exception('Error creating preference: $e');
     }
   }
 }
