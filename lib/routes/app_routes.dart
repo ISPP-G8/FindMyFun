@@ -1,4 +1,6 @@
 
+import 'dart:js';
+
 import 'package:findmyfun/screens/screens.dart';
 import 'package:findmyfun/views/event/event_chat_view.dart';
 import 'package:findmyfun/views/event/event_details.dart';
