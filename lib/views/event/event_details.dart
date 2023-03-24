@@ -16,6 +16,7 @@ class EventDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
 
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -68,6 +69,12 @@ class _FormsColumn extends StatelessWidget {
     final userService = Provider.of<UsersService>(context, listen: false);
     final creator = userService.getUserWithUid(selectedEvent.creator);
 
+    var asistentes = Future.delayed(Duration.zero, () async {
+            List<String> users = await eventService.getUsersFromEvent(selectedEvent);
+            await eventService.getNameFromId(users);
+          });
+
+    print(asistentes);
     String activeUserId = AuthService().currentUser?.uid ?? "";
 
     return FutureBuilder<User>(
