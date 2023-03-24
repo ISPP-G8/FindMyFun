@@ -24,4 +24,18 @@ class AuthService {
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }
+
+  //UPDATE PASSWORD
+  Future<void> updatePassword(String email, String currentPassword, String newPassword) async {
+    final user = await _firebaseAuth.currentUser;
+    AuthCredential credential = EmailAuthProvider.credential(email: email, password: currentPassword);
+    user?.reauthenticateWithCredential(credential).then((value) {
+    user.updatePassword(newPassword).then((_) {
+      print("Contraseña cambiada");
+    }).catchError((error) {
+      print(error);
+    });
+  }).catchError((err) {
+});}
+
 }
