@@ -16,7 +16,6 @@ class EventDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
 
-
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -74,7 +73,7 @@ class _FormsColumn extends StatelessWidget {
             await eventService.getNameFromId(users);
           });
 
-    print(asistentes);
+    //print(asistentes);
     String activeUserId = AuthService().currentUser?.uid ?? "";
 
     return FutureBuilder<User>(
@@ -133,6 +132,17 @@ class _FormsColumn extends StatelessWidget {
                       arguments: selectedEvent);
                 },
               ),
+              if (snapshot.hasData)
+                ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: 10,//asistentes.lenght,
+                    itemBuilder: (BuildContext context, int index) {
+                      return const ListTile(
+                        leading: Icon(Icons.person),
+                        title: Text("Name"//assistentes.name
+                        ),);
+                    })
             ],
           );
         } else {
