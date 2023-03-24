@@ -17,7 +17,6 @@ class ProfileDetailsView extends StatelessWidget {
     final userService = Provider.of<UsersService>(context);
     final currentUser = userService.currentUser!;
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(onPressed: () {}),
       backgroundColor: ProjectColors.primary,
       appBar: AppBar(
         leading: GestureDetector(
@@ -25,13 +24,15 @@ class ProfileDetailsView extends StatelessWidget {
             child: const Icon(
               Icons.chevron_left,
               size: 45,
-              color: ProjectColors.secondary,
+              color: Color.fromARGB(255, 161, 154, 154),
             )),
-        // backgroundColor: ProjectColors.primary,
         elevation: 0,
         centerTitle: true,
-        title: Text('MI PERFIL',
-            textAlign: TextAlign.center, style: Styles.appBar),
+        title: Text(
+          'MI PERFIL',
+          textAlign: TextAlign.center,
+          style: Styles.appBar,
+        ),
       ),
       body: Center(
         child: Container(
@@ -50,27 +51,35 @@ class ProfileDetailsView extends StatelessWidget {
                     child: userImage(currentUser)),
                 CustomTextForm(
                   hintText: currentUser.username,
+                  initialValue: currentUser.username,
                   enabled: false,
                 ),
                 CustomTextForm(
                   hintText: currentUser.name,
+                  initialValue: currentUser.name,
                   enabled: false,
                 ),
                 CustomTextForm(
                   hintText: currentUser.surname,
+                  initialValue: currentUser.surname,
                   enabled: false,
                 ),
                 CustomTextForm(
                   hintText: currentUser.city,
+                  initialValue: currentUser.city,
                   enabled: false,
                 ),
                 CustomTextForm(
                   hintText: currentUser.email,
+                  initialValue: currentUser.email,
                   enabled: false,
                 ),
                 GestureDetector(
                     onTap: () => Navigator.pushNamed(context, 'preferences'),
                     child: const CustomButton(text: 'Tus preferencias')),
+                GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, 'editProfile'),
+                    child: const CustomButton(text: 'Editar Perfil')),
               ],
             ),
           ),
