@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../../../helpers/validators.dart';
 import '../../../services/services.dart';
 import '../../../themes/colors.dart';
+// ignore: unused_import
 import '../../../themes/styles.dart';
 import '../../../widgets/widgets.dart';
 
@@ -172,7 +173,6 @@ class _ProfileCredentialsFormState extends State<_ProfileCredentialsForm> {
                     _passwordController.text,
                     _passwordNewController.text);
 
-                print('RESP = ${resp}');
                 await Future.delayed(
                   const Duration(seconds: 3),
                 );
@@ -184,7 +184,7 @@ class _ProfileCredentialsFormState extends State<_ProfileCredentialsForm> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Cambio de contraseña.'),
+                        title: const Text('Cambio de contraseña.'),
                         content: const Text(
                             'El cambio de contraseña se ha realizado con éxito.'),
                         actions: [
@@ -206,15 +206,15 @@ class _ProfileCredentialsFormState extends State<_ProfileCredentialsForm> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Error al cambiar la contraseña'),
-                        content: Text(
+                        title: const Text('Error al cambiar la contraseña'),
+                        content: const Text(
                             'Comprueba que has introducido bien la dirección de correo y las contraseñas e inténtelo de nuevo.'),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text('Cerrar'),
+                            child: const Text('Cerrar'),
                           ),
                         ],
                       );
@@ -243,7 +243,7 @@ class _ProfileCredentialsFormState extends State<_ProfileCredentialsForm> {
 showExceptionDialog(BuildContext context) {
   showDialog(
     context: context,
-    builder: (_) => AlertDialog(
+    builder: (_) => const AlertDialog(
       content: Text('Por favor, revisa los datos proporcionados.'),
     ),
   );
