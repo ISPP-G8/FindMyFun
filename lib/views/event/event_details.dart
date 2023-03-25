@@ -68,10 +68,15 @@ class _FormsColumn extends StatelessWidget {
     final userService = Provider.of<UsersService>(context, listen: false);
     final creator = userService.getUserWithUid(selectedEvent.creator);
 
-    var asistentes = Future.delayed(Duration.zero, () async {
-            List<String> users = await eventService.getUsersFromEvent(selectedEvent);
-            await eventService.getNameFromId(users);
+    //List<String> asistentesList = [];
+    Future<List<String>> asistentes = Future.delayed(Duration.zero, () async {
+              List<String> users = await eventService.getUsersFromEvent(selectedEvent);
+              List<String> names = await eventService.getNameFromId(users);
+              return names;
+              //asistentesList = names;
+            
           });
+
 
     //print(asistentes);
     String activeUserId = AuthService().currentUser?.uid ?? "";
@@ -132,17 +137,30 @@ class _FormsColumn extends StatelessWidget {
                       arguments: selectedEvent);
                 },
               ),
-              if (snapshot.hasData)
-                ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 10,//asistentes.lenght,
-                    itemBuilder: (BuildContext context, int index) {
-                      return const ListTile(
-                        leading: Icon(Icons.person),
-                        title: Text("Name"//assistentes.name
-                        ),);
-                    })
+              FutureBuilder<List<String>>(
+                  future: asistentes,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final asistentesList = snapshot.data!;
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: asistentesList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            leading: const Icon(Icons.person),
+                            title: Text(asistentesList[index]),
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
+                ),
+                
             ],
           );
         } else {
