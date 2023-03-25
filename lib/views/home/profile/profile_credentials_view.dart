@@ -6,13 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../helpers/validators.dart';
 import '../../../services/services.dart';
 import '../../../themes/colors.dart';
 import '../../../themes/styles.dart';
 import '../../../widgets/widgets.dart';
 
-class ProfileEditForm extends StatelessWidget {
-  const ProfileEditForm({
+class ProfileCredentialsForm extends StatelessWidget {
+  const ProfileCredentialsForm({
     super.key,
   });
 
@@ -30,10 +31,13 @@ class ProfileEditForm extends StatelessWidget {
             )),
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          'MODIFICAR PERFIL',
+        title: const Text(
+          'MODIFICAR CREDENCIALES',
           textAlign: TextAlign.center,
-          style: Styles.appBar,
+          style: TextStyle(
+              color: Color.fromARGB(255, 0, 0, 0),
+              fontWeight: FontWeight.bold,
+              fontSize: 20),
         ),
       ),
       body: Center(
@@ -47,7 +51,7 @@ class ProfileEditForm extends StatelessWidget {
             child: Column(
               children: [
                 const LoginContainer(
-                  child: _ProfileEditForm(),
+                  child: _ProfileCredentialsForm(),
                 )
               ],
             ),
@@ -58,35 +62,34 @@ class ProfileEditForm extends StatelessWidget {
   }
 }
 
-class _ProfileEditForm extends StatefulWidget {
-  const _ProfileEditForm();
+class _ProfileCredentialsForm extends StatefulWidget {
+  const _ProfileCredentialsForm();
 
   @override
-  State<_ProfileEditForm> createState() => _ProfileEditFormState();
+  State<_ProfileCredentialsForm> createState() =>
+      _ProfileCredentialsFormState();
 }
 
-class _ProfileEditFormState extends State<_ProfileEditForm> {
-  final _imageController = TextEditingController();
-  final _nameController = TextEditingController();
-  final _surnameController = TextEditingController();
-  final _usernameController = TextEditingController();
-  final _cityController = TextEditingController();
+class _ProfileCredentialsFormState extends State<_ProfileCredentialsForm> {
+  final _passwordController = TextEditingController();
+  final _passwordNewController = TextEditingController();
+  final _passwordConfirmController = TextEditingController();
+  final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     final currentUser = userService.currentUser!;
+    // final authService = Provider.of<AuthService>(context);
 
     return Form(
       key: _formKey,
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
-            padding: const EdgeInsets.all(10.0),
-            // child: Image.network(currentUser.image!, fit: BoxFit.cover),
-            child: userImage(currentUser)),
+            padding: const EdgeInsets.all(10.0), child: userImage(currentUser)),
         const Text(
-          "Nombre de usuario",
+          "Correo electrónico",
           style: TextStyle(
             color: Color.fromARGB(255, 0, 0, 0),
             fontWeight: FontWeight.bold,
@@ -94,11 +97,13 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
           ),
         ),
         CustomTextForm(
-          hintText: currentUser.username,
-          controller: _usernameController,
+          hintText: currentUser.email,
+          controller: _emailController,
+          validator: (value) =>
+              Validators.validateCurrentEmail(value, currentUser.email),
         ),
         const Text(
-          "Nombre",
+          "Contraseña actual",
           style: TextStyle(
             color: Color.fromARGB(255, 0, 0, 0),
             fontWeight: FontWeight.bold,
@@ -106,11 +111,13 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
           ),
         ),
         CustomTextForm(
-          hintText: currentUser.name,
-          controller: _nameController,
+          hintText: "",
+          controller: _passwordController,
+          obscure: true,
+          validator: (value) => Validators.validatePassword(value),
         ),
         const Text(
-          "Apellidos",
+          "Nueva contraseña",
           style: TextStyle(
             color: Color.fromARGB(255, 0, 0, 0),
             fontWeight: FontWeight.bold,
@@ -118,11 +125,13 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
           ),
         ),
         CustomTextForm(
-          hintText: currentUser.surname,
-          controller: _surnameController,
+          hintText: "",
+          controller: _passwordNewController,
+          obscure: true,
+          validator: (value) => Validators.validatePassword(value),
         ),
         const Text(
-          "Ciudad",
+          "Confirme la nueva contraseña",
           style: TextStyle(
             color: Color.fromARGB(255, 0, 0, 0),
             fontWeight: FontWeight.bold,
@@ -130,23 +139,19 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
           ),
         ),
         CustomTextForm(
-          hintText: currentUser.city,
-          controller: _cityController,
-        ),
-        const Text(
-          "URL de imagen",
-          style: TextStyle(
-            color: Color.fromARGB(255, 0, 0, 0),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-        ),
-        CustomTextForm(
-          hintText: currentUser.image!,
-          controller: _imageController,
+          hintText: '',
+          controller: _passwordConfirmController,
+          obscure: true,
+          validator: (value) {
+            if (_passwordConfirmController.text !=
+                _passwordNewController.text) {
+              return 'Las contraseñas no coinciden.';
+            }
+            return null;
+          },
         ),
         SubmitButton(
-          text: 'MODIFICAR',
+          text: 'CAMBIAR CREDENCIALES',
           onTap: () async {
             if (_formKey.currentState!.validate()) {
               try {
@@ -162,41 +167,24 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
                             child: CircularProgressIndicator()),
                       ]),
                 );
+                final resp = await AuthService().updatePassword(
+                    _emailController.text,
+                    _passwordController.text,
+                    _passwordNewController.text);
 
-                if (_usernameController.text == "") {
-                  _usernameController.text = currentUser.username;
-                }
-                if (_nameController.text == "") {
-                  _nameController.text = currentUser.name;
-                }
-                if (_surnameController.text == "") {
-                  _surnameController.text = currentUser.surname;
-                }
-                if (_cityController.text == "") {
-                  _cityController.text = currentUser.city;
-                }
-                if (_imageController.text == "") {
-                  _imageController.text = currentUser.image!;
-                }
-                userService.currentUser = user.User(
-                    id: currentUser.id,
-                    image: _imageController.text,
-                    name: _nameController.text,
-                    surname: _surnameController.text,
-                    username: _usernameController.text,
-                    city: _cityController.text,
-                    email: currentUser.email,
-                    preferences: currentUser.preferences);
-                final resp =
-                    await userService.updateProfile(userService.currentUser!);
+                print('RESP = ${resp}');
+                await Future.delayed(
+                  const Duration(seconds: 3),
+                );
                 if (resp) {
                   Navigator.pushNamed(context, 'profile');
+                  print(
+                      'Credenciales modificadas del usuario con uid: ${currentUser.id}');
                 } else {
                   Navigator.pop(context);
                   _formKey.currentState!.validate();
-                  print('Error al crear el usuario');
+                  print('Error al cambiar las credenciales');
                 }
-                print('Usuario modificado con uid: ${currentUser.id}');
               } on FirebaseAuthException catch (e) {
                 Navigator.pop(context);
                 showExceptionDialog(context);

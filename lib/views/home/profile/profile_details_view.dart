@@ -17,7 +17,7 @@ class ProfileDetailsView extends StatelessWidget {
     final userService = Provider.of<UsersService>(context);
     final currentUser = userService.currentUser!;
     return Scaffold(
-      backgroundColor: ProjectColors.primary,
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         leading: GestureDetector(
             onTap: () => Navigator.pop(context),
@@ -80,6 +80,10 @@ class ProfileDetailsView extends StatelessWidget {
                 GestureDetector(
                     onTap: () => Navigator.pushNamed(context, 'editProfile'),
                     child: const CustomButton(text: 'Editar Perfil')),
+                GestureDetector(
+                    onTap: () =>
+                        Navigator.pushNamed(context, 'editCredentials'),
+                    child: const CustomButton(text: 'Editar Credenciales')),
               ],
             ),
           ),
