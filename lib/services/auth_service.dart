@@ -29,30 +29,20 @@ class AuthService {
   //UPDATE PASSWORD
   Future<bool> updatePassword(
       String email, String currentPassword, String newPassword) async {
-    final user = await _firebaseAuth.currentUser;
+    final user = _firebaseAuth.currentUser;
     bool result = false;
-    AuthCredential credential =
-        EmailAuthProvider.credential(email: email, password: currentPassword);
-    await user?.reauthenticateWithCredential(credential).then((value) {
-      user.updatePassword(newPassword).then((_) {
-        print("Contraseña cambiada");
-        result = true;
-        return result;
-      }).catchError((error) {
-        print(error);
-        result = false;
-        return result;
-      });
-    }).catchError((err) {
-      print('catcherror');
-      error = err;
+    try {
+      final credential = EmailAuthProvider.credential(
+        email: email,
+        password: currentPassword,
+      );
+      await user?.reauthenticateWithCredential(credential);
+      await user?.updatePassword(newPassword);
+      result = true;
+    } catch (error) {
+      print(error);
       result = false;
-      return result;
-    });
-    // Future.delayed(
-    //   Duration(seconds: 2),
-    // );
-    print('WOWOWOWO ${result}');
+    }
     return result;
   }
 }

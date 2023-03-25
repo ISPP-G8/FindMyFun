@@ -32,10 +32,10 @@ class ProfileCredentialsForm extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          'MODIFICAR CREDENCIALES',
+          'CAMBIAR CONTRASEÑA',
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
+              color: Color(0xff828a92),
               fontWeight: FontWeight.bold,
               fontSize: 20),
         ),
@@ -151,7 +151,7 @@ class _ProfileCredentialsFormState extends State<_ProfileCredentialsForm> {
           },
         ),
         SubmitButton(
-          text: 'CAMBIAR CREDENCIALES',
+          text: 'CAMBIAR CONTRASEÑA',
           onTap: () async {
             if (_formKey.currentState!.validate()) {
               try {
@@ -177,12 +177,49 @@ class _ProfileCredentialsFormState extends State<_ProfileCredentialsForm> {
                   const Duration(seconds: 3),
                 );
                 if (resp) {
-                  Navigator.pushNamed(context, 'profile');
                   print(
                       'Credenciales modificadas del usuario con uid: ${currentUser.id}');
+                  Navigator.of(context).pop();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Cambio de contraseña.'),
+                        content: const Text(
+                            'El cambio de contraseña se ha realizado con éxito.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Cerrar'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 } else {
                   Navigator.pop(context);
                   _formKey.currentState!.validate();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Error al cambiar la contraseña'),
+                        content: Text(
+                            'Comprueba que has introducido bien la dirección de correo y las contraseñas e inténtelo de nuevo.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('Cerrar'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                   print('Error al cambiar las credenciales');
                 }
               } on FirebaseAuthException catch (e) {
