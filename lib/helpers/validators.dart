@@ -1,9 +1,20 @@
+import 'package:findmyfun/services/services.dart';
+
 class Validators {
   static String? validateNotEmpty(String? value) {
     if (value == null || value.isEmpty) {
       return 'Por favor, introduce un valor válido';
     }
 
+    return null;
+  }
+
+  static String? validateCurrentEmail(String? value, email) {
+    if (value == null || value.isEmpty) {
+      return 'Debe introducir la dirección de correo asociada a su perfil.';
+    } else if (value != email) {
+      return 'Debe introducir la dirección de correo asociada a su perfil.';
+    }
     return null;
   }
 
