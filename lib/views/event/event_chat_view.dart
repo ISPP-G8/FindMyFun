@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
-
   @override
   State<StatefulWidget> createState() => _ChatScreenState();
 }
@@ -48,7 +47,6 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
-          
           CustomTextForm(
             hintText: 'Descripción',
             maxLines: 5,
@@ -59,12 +57,14 @@ class _ChatScreenState extends State<ChatScreen> {
           ElevatedButton(
               onPressed: () {
                 Messages m = Messages(
-                    userId: activeUserId, date: DateTime.now(), text: messageToSend.text);
+                    userId: activeUserId,
+                    date: DateTime.now(),
+                    text: messageToSend.text);
                 messagesService.saveMessage(m, selectedEvent);
-                Navigator.popAndPushNamed(context, "chat", arguments: selectedEvent);
+                Navigator.popAndPushNamed(context, "middle",
+                    arguments: selectedEvent);
               },
-              child: const Icon(Icons.send)
-          ),
+              child: const Icon(Icons.send)),
         ],
       ),
     );
