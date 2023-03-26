@@ -84,6 +84,7 @@ class ProfileDetailsView extends StatelessWidget {
                     onTap: () =>
                         Navigator.pushNamed(context, 'editCredentials'),
                     child: const CustomButton(text: 'Cambiar contraseña')),
+                const DeleteProfile(),
               ],
             ),
           ),
@@ -129,6 +130,60 @@ Widget userImage(User user) {
     return const Icon(
       Icons.account_circle,
       size: 150,
+    );
+  }
+}
+
+// Importa los paquetes necesarios
+
+// Define un StatefulWidget
+class DeleteProfile extends StatefulWidget {
+  const DeleteProfile({super.key});
+
+  @override
+  _DeleteProfile createState() => _DeleteProfile();
+}
+
+class _DeleteProfile extends State<DeleteProfile> {
+  @override
+  Widget build(BuildContext context) {
+    final userService = Provider.of<UsersService>(context);
+    final currentUser = userService.currentUser!;
+
+    return ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+              const Color.fromARGB(255, 128, 13, 5))),
+      child: const Text('Eliminar cuenta'),
+      onPressed: () {
+        // Muestra el pop-up al pulsar el botón
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Confirmación'),
+              content: const Text(
+                  '¿Estás seguro de que quieres eliminar tu cuenta?'),
+              actions: [
+                TextButton(
+                  child: const Text('Mejor me quedo'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Si, estoy seguro'),
+                  onPressed: () {
+                    UsersService().deleteProfile(currentUser,
+                        context); // Agrega aquí el código que se ejecutará al confirmar
+                    // Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }
