@@ -7,6 +7,8 @@ import 'package:findmyfun/widgets/custom_text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../themes/colors.dart';
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
@@ -32,6 +34,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(
+              Icons.chevron_left,
+              size: 45,
+              color: ProjectColors.secondary,
+            )),
+        
         title: const Text('Chat'),
       ),
       body: Column(
