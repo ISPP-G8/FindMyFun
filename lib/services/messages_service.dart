@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/models/messages.dart';
-import 'package:findmyfun/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/user.dart';
@@ -16,33 +15,38 @@ class MessagesService extends ChangeNotifier {
 
   List<Messages> get messages => _messages;
 
-  void set messages(List<Messages> inputMessages) {
+  set messages(List<Messages> inputMessages) {
     _messages = inputMessages;
     notifyListeners();
   }
   // TODO: Hacer el updateItem pasando el uid del AuthService()
 
   //READ MESSAGES
-  Future<void> getMessages(String eventId) async {
+  Future<List<Messages>> getMessages(String eventId) async {
     final url = Uri.https(_baseUrl, 'Events/$eventId/messages.json');
     try {
       final resp = await http.get(url);
 
       if (resp.statusCode != 200) {
-        return;
+        throw Exception('Error in response');
       }
 
       List<Messages> messagesAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
 
       data.forEach((key, value) {
-        final message = Messages.fromRawJson(jsonEncode(value));
-        messagesAux.add(message);
+        try {
+          final message = Messages.fromRawJson(jsonEncode(value));
+          messagesAux.add(message);
+        } catch (e) {
+          debugPrint('Error parsing message: $e');
+        }
       });
 
       messages = messagesAux;
+      return messagesAux;
     } catch (e) {
-      print('Error getting messages: $e');
+      throw Exception('Error getting messages: $e');
     }
   }
 
