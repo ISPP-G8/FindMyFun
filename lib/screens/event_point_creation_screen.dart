@@ -37,13 +37,20 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
     final usersService = Provider.of<UsersService>(context);
     return Scaffold(
         appBar: AppBar(
+        leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(
+              Icons.chevron_left,
+              size: 45,
+              color: ProjectColors.secondary,
+            )),
           elevation: 0,
           title: const FittedBox(
             child: Text(
               'ESTABLECER PUNTO DE INTERÉS',
               style: TextStyle(
                   fontSize: 25,
-                  color: Colors.black,
+                  color: ProjectColors.secondary,
                   fontWeight: FontWeight.bold),
             ),
           ),
@@ -139,6 +146,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
 
                                 // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
+                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
                               }
                             },
@@ -175,7 +183,7 @@ class _Button extends StatelessWidget {
           alignment: Alignment.center,
           color: ProjectColors.buttonColor,
           width: size.width * 0.4,
-          height: 80,
+          height: 90,
           padding: const EdgeInsets.all(10),
           child: Text(
             title,

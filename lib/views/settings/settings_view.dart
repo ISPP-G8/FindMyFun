@@ -35,7 +35,7 @@ class SettingsView extends StatelessWidget {
                 await AuthService().signOut();
                 Navigator.pushNamed(context, 'eventpointcreation');
               },
-              child: CustomButton(text: 'Crear punto de event')),
+              child: const CustomButton(text: 'Crear punto de evento')),
         ),
         GestureDetector(
             onTap: () async {

@@ -21,8 +21,6 @@ class AccessScreen extends StatelessWidget {
           children: const [
             AccessView(),
             LoginView(),
-            ProfileDetailsView(),
-            PreferencesView()
           ]),
     ));
   }
