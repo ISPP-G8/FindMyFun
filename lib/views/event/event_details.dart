@@ -2,7 +2,6 @@ import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:findmyfun/screens/access_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/event.dart';
@@ -189,6 +188,14 @@ class _FormsColumn extends StatelessWidget {
                 enabled: false,
               ),
               CustomTextForm(
+                hintText: selectedEvent.latitude.toString(),
+                enabled: false,
+              ),
+              CustomTextForm(
+                hintText: selectedEvent.longitude.toString(),
+                enabled: false,
+              ),
+              CustomTextForm(
                 hintText: selectedEvent.startDate.toString(),
                 enabled: false,
               ),
@@ -199,7 +206,7 @@ class _FormsColumn extends StatelessWidget {
                 type: TextInputType.multiline,
               ),
               EventCreator(
-                creatorUsername: snapshot.data?.username ?? 'username',
+                creatorUsername: snapshot.data?.username ?? '',
               ),
               if (!selectedEvent.users.contains(activeUserId))
                 SubmitButton(

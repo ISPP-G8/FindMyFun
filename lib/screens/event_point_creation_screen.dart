@@ -134,7 +134,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                     id: const Uuid().v1());
                                 showCircularProgressDialog(context);
 
-                                await eventPointsService.saveEvent(
+                                await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);
 
                                 // ignore: use_build_context_synchronously
