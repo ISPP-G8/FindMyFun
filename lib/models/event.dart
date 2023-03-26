@@ -77,7 +77,7 @@ class Event {
         "tags": Map.from(tags.fold({}, (r, p) => r..[p.id] = p))
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "users": List<String>.from(users.map((x) => x)),
-        "messages": Map.from(messages.fold({}, (r, m) => r..[m.id] = m))
+        "messages": Map.from(messages.fold({}, (r, m) => r..[m.userId] = m))
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
       };
 

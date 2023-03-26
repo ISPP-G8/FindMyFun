@@ -98,11 +98,11 @@ class PreferencesService extends ChangeNotifier {
       }
 
       Map<String, dynamic> data = jsonDecode(resp.body);
-
       data.forEach((key, value) {
         final preference = Preferences.fromRawJson(jsonEncode(value));
-        if (!preferences.contains(preference)) {
-          preferences.add(preference);
+        if (!preferencesByUserId.contains(preference)) {
+          print(preference);
+          preferencesByUserId.add(preference);
         }
       });
     } catch (e) {
