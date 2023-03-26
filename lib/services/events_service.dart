@@ -60,13 +60,17 @@ class EventsService extends ChangeNotifier {
       Map<String, dynamic> data = jsonDecode(resp.body);
 
       data.forEach((key, value) {
-        final event = Event.fromRawJson(jsonEncode(value));
-
-        eventsAux.add(event);
+        try {
+          final event = Event.fromRawJson(jsonEncode(value));
+          eventsAux.add(event);
+        } catch (e) {
+          debugPrint('Error parsing event: $e');
+        }
       });
 
       events = eventsAux;
       return eventsAux;
+      
     } catch (e) {
       throw Exception('Error getting events: $e');
     }
@@ -89,17 +93,22 @@ class EventsService extends ChangeNotifier {
       Map<String, dynamic> data = jsonDecode(resp.body);
 
       data.forEach((key, value) {
-        final event = Event.fromRawJson(jsonEncode(value));
-        if (currentUser.preferences
-                .toSet()
-                .intersection(event.tags.toSet())
-                .isNotEmpty &&
-            !event.hasFinished /* && currentUser.city == event.city*/) {
-          eventsAux.add(event);
+        try {
+          final event = Event.fromRawJson(jsonEncode(value));
+          if (currentUser.preferences
+                  .toSet()
+                  .intersection(event.tags.toSet())
+                  .isNotEmpty &&
+              !event.hasFinished /* && currentUser.city == event.city*/) {
+            eventsAux.add(event);
+          }
+        } catch (e) {
+          debugPrint('Error parsing event: $e');
         }
       });
       eventsFound = eventsAux;
       return eventsAux;
+
     } catch (e) {
       throw Exception('Error getting events: $e');
     }
@@ -178,21 +187,25 @@ class EventsService extends ChangeNotifier {
         Map<String, dynamic> data = jsonDecode(resp.body);
 
         data.forEach((key, value) {
-          final event = Event.fromRawJson(jsonEncode(value));
-          if (!event.hasFinished) {
-            int i = 0;
-            for (String word in words) {
-              word = word.toLowerCase();
-              if (event.address.toLowerCase().contains(word) ||
-                  event.city.toLowerCase().contains(word) ||
-                  event.description.toLowerCase().contains(word) ||
-                  event.name.toLowerCase().contains(word)) {
-                i = i + 1;
-              }
-              if (i == words.length) {
-                eventsAux.add(event);
+          try {
+            final event = Event.fromRawJson(jsonEncode(value));
+            if (!event.hasFinished) {
+              int i = 0;
+              for (String word in words) {
+                word = word.toLowerCase();
+                if (event.address.toLowerCase().contains(word) ||
+                    event.city.toLowerCase().contains(word) ||
+                    event.description.toLowerCase().contains(word) ||
+                    event.name.toLowerCase().contains(word)) {
+                  i = i + 1;
+                }
+                if (i == words.length) {
+                  eventsAux.add(event);
+                }
               }
             }
+          } catch (e) {
+            debugPrint('Error parsing event: $e');
           }
         });
         if (eventsAux.isNotEmpty) {
@@ -208,5 +221,49 @@ class EventsService extends ChangeNotifier {
         throw Exception('Error getting events: $e');
       }
     }
+  }
+
+  //READ USERS EVENTS
+
+  Future<List<String>> getUsersFromEvent(Event event) async {
+      String eventId = event.id;
+      final url = Uri.https(_baseUrl, 'Events/$eventId.json');
+
+      try {
+        List<String> idAux = [];
+        final resp = await http.get(url);
+        if (resp.statusCode != 200) {
+          throw Exception('Error in response');
+        }
+        Map<String, dynamic> data = jsonDecode(resp.body);
+
+        for (var a in data["users"]) { 
+          idAux.add(a.toString());
+        }
+        return idAux;
+      } 
+      catch (e) {
+        throw Exception('Error getting ids');
+      }
+
+    }
+  Future<List<String>> getNameFromId(List<String> ids) async {
+     try {
+        List<String> usersAux = [];
+        print(ids);
+        for (var id in ids) {
+          final resp = await http.get(Uri.https(_baseUrl, 'Users/$id.json'));
+
+          Map<String, dynamic> data = jsonDecode(resp.body);
+          print(data["username"]);
+          usersAux.add(data["username"]);
+        } 
+         print(usersAux);
+        return usersAux;
+     }
+        catch (e) {
+        throw Exception('Error getting users');
+      }
+
   }
 }
