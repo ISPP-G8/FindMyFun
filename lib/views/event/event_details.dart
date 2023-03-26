@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/event.dart';
 import '../../models/user.dart';
+import 'event_chat_view.dart';
 
 class EventDetailsView extends StatelessWidget {
   const EventDetailsView({super.key});
@@ -117,12 +118,12 @@ class _FormsColumn extends StatelessWidget {
                             settings: RouteSettings(arguments: selectedEvent)))
                   },
                 ),
-              const SubmitButton(
-                text: 'Chat',
-                // onTap: () => Navigator.of(context).push(
-                //   MaterialPageRoute(builder: (context) => const AccessScreen()),
-                // ),
-                // onTap: => (),
+              ElevatedButton(
+                child: const Text('Abrir chat'),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'chat',
+                      arguments: selectedEvent);
+                },
               ),
             ],
           );
@@ -180,16 +181,16 @@ class _FormsColumn extends StatelessWidget {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EventDetailsView(),
+                            builder: (context) => const EventDetailsView(),
                             settings: RouteSettings(arguments: selectedEvent)))
                   },
                 ),
-              const SubmitButton(
-                text: 'Chat',
-                // onTap: () => Navigator.of(context).push(
-                //   MaterialPageRoute(builder: (context) => const AccessScreen()),
-                // ),
-                // onTap: => (),
+              ElevatedButton(
+                child: const Text('Abrir chat'),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'chat',
+                      arguments: selectedEvent);
+                },
               ),
             ],
           );

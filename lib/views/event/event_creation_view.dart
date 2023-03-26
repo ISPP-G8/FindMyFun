@@ -1,4 +1,4 @@
-import 'package:findmyfun/models/event.dart';
+import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -150,8 +150,13 @@ class _FormsColumn extends StatelessWidget {
                             .getPreferenceByName(e.toString()))
                         .toList()),
                     users: [id],
+                    messages: [
+                      Messages(
+                          userId: "8AH3CM76DydLFLrAQANT2gTBYlk2",
+                          date: DateTime.now(),
+                          text: "Bienvenido")
+                    ],
                     id: Uuid().v1()));
-
                 // await Future.delayed(const Duration(seconds: 1));
                 // Navigator.pushReplacementNamed(context, 'main');
                 Navigator.pop(context);

@@ -1,5 +1,4 @@
 import 'package:findmyfun/models/models.dart';
-import 'package:findmyfun/services/auth_service.dart';
 import 'package:findmyfun/services/users_service.dart';
 import 'package:findmyfun/themes/colors.dart';
 import 'package:findmyfun/themes/styles.dart';
@@ -18,28 +17,29 @@ class ProfileDetailsView extends StatelessWidget {
     final userService = Provider.of<UsersService>(context);
     final currentUser = userService.currentUser!;
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(onPressed: () {}),
-      backgroundColor: ProjectColors.primary,
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         leading: GestureDetector(
             onTap: () => Navigator.pop(context),
             child: const Icon(
               Icons.chevron_left,
               size: 45,
-              color: ProjectColors.secondary,
+              color: Color.fromARGB(255, 161, 154, 154),
             )),
-        // backgroundColor: ProjectColors.primary,
         elevation: 0,
         centerTitle: true,
-        title: Text('MI PERFIL',
-            textAlign: TextAlign.center, style: Styles.appBar),
+        title: Text(
+          'MI PERFIL',
+          textAlign: TextAlign.center,
+          style: Styles.appBar,
+        ),
       ),
       body: Center(
         child: Container(
           height: 800,
           width: 400,
-          decoration: BoxDecoration(
-            color: const Color(0xff828a92),
+          decoration: const BoxDecoration(
+            color: Color(0xff828a92),
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -51,27 +51,40 @@ class ProfileDetailsView extends StatelessWidget {
                     child: userImage(currentUser)),
                 CustomTextForm(
                   hintText: currentUser.username,
+                  initialValue: currentUser.username,
                   enabled: false,
                 ),
                 CustomTextForm(
                   hintText: currentUser.name,
+                  initialValue: currentUser.name,
                   enabled: false,
                 ),
                 CustomTextForm(
                   hintText: currentUser.surname,
+                  initialValue: currentUser.surname,
                   enabled: false,
                 ),
                 CustomTextForm(
                   hintText: currentUser.city,
+                  initialValue: currentUser.city,
                   enabled: false,
                 ),
                 CustomTextForm(
                   hintText: currentUser.email,
+                  initialValue: currentUser.email,
                   enabled: false,
                 ),
                 GestureDetector(
                     onTap: () => Navigator.pushNamed(context, 'preferences'),
                     child: const CustomButton(text: 'Tus preferencias')),
+                GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, 'editProfile'),
+                    child: const CustomButton(text: 'Editar perfil')),
+                GestureDetector(
+                    onTap: () =>
+                        Navigator.pushNamed(context, 'editCredentials'),
+                    child: const CustomButton(text: 'Cambiar contraseña')),
+                const DeleteProfile(),
               ],
             ),
           ),
@@ -94,7 +107,7 @@ Widget userImage(User user) {
   try {
     return CircleAvatar(
         radius: 120,
-        backgroundImage: AssetImage('assets/placeholder.png'),
+        backgroundImage: const AssetImage('assets/placeholder.png'),
         child: ClipOval(
           child: CachedNetworkImage(
             fit: BoxFit.cover,
@@ -103,6 +116,7 @@ Widget userImage(User user) {
                 Image.asset('assets/placeholder.png'),
             imageUrl: user.image!,
             errorWidget: (context, url, error) {
+              // ignore: avoid_print
               print('Error al obtener la imagen: $error');
 
               return const Icon(
@@ -116,6 +130,60 @@ Widget userImage(User user) {
     return const Icon(
       Icons.account_circle,
       size: 150,
+    );
+  }
+}
+
+// Importa los paquetes necesarios
+
+// Define un StatefulWidget
+class DeleteProfile extends StatefulWidget {
+  const DeleteProfile({super.key});
+
+  @override
+  _DeleteProfile createState() => _DeleteProfile();
+}
+
+class _DeleteProfile extends State<DeleteProfile> {
+  @override
+  Widget build(BuildContext context) {
+    final userService = Provider.of<UsersService>(context);
+    final currentUser = userService.currentUser!;
+
+    return ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+              const Color.fromARGB(255, 128, 13, 5))),
+      child: const Text('Eliminar cuenta'),
+      onPressed: () {
+        // Muestra el pop-up al pulsar el botón
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Confirmación'),
+              content: const Text(
+                  '¿Estás seguro de que quieres eliminar tu cuenta?'),
+              actions: [
+                TextButton(
+                  child: const Text('Mejor me quedo'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Si, estoy seguro'),
+                  onPressed: () {
+                    UsersService().deleteProfile(currentUser,
+                        context); // Agrega aquí el código que se ejecutará al confirmar
+                    // Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }

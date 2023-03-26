@@ -45,13 +45,14 @@ class EventContainer extends StatelessWidget {
                   Text('${event.users.length} asistente/s'),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               Container(
                   width: 150,
                   height: size.height*0.12,
                   child: CachedNetworkImage(
                     imageUrl: event.image,
                     errorWidget: (context, url, error) {
+                      // ignore: avoid_print
                       print('Error al cargar la imagen $error');
                       return Image.asset('assets/placeholder.png');
                     },

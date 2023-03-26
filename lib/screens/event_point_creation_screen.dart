@@ -34,6 +34,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final eventPointsService = Provider.of<EventPointsService>(context);
+    final usersService = Provider.of<UsersService>(context);
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -132,15 +133,19 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                     image: '',
                                     id: const Uuid().v1());
                                 showCircularProgressDialog(context);
-                                await eventPointsService.saveEventPoint(eventPoint);
+
+                                await eventPointsService.saveEventPoint(
+                                    eventPoint, usersService.currentUser!);
+
                                 // ignore: use_build_context_synchronously
+                                Navigator.pop(context);
                                 Navigator.pop(context);
                               }
                             },
                           ),
                           _Button(
                             title: 'CONTINUAR',
-                            onTap: () => print('Continuar'),
+                            onTap: () => Navigator.pop(context),
                           ),
                         ],
                       ),

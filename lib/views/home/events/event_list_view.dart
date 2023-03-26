@@ -1,9 +1,7 @@
-import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class EventListView extends StatefulWidget {
   const EventListView({super.key});
@@ -40,7 +38,7 @@ class _EventListView extends State<EventListView> {
                   child: Text(
                 'TODOS LOS EVENTOS',
                 style: TextStyle(
-                    color: ProjectColors.tertiary,
+                    color: ProjectColors.primary,
                     fontSize: 30,
                     fontWeight: FontWeight.bold),
               )),
