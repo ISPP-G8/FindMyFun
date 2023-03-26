@@ -223,8 +223,8 @@ class _FormsColumn extends StatelessWidget {
               ElevatedButton(
                 child: const Text('Abrir chat'),
                 onPressed: () {
-                  Navigator.pushNamed(context, 'chat',
-                      arguments: selectedEvent);
+                  Navigator.popAndPushNamed(context, 'chat',
+                      arguments: selectedEvent, result: selectedEvent.messages);
                 },
               ),
             ],
