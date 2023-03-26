@@ -1,4 +1,4 @@
-import 'package:findmyfun/models/event.dart';
+import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -44,6 +44,8 @@ class _FormsColumn extends StatelessWidget {
   final _address = TextEditingController();
   final _city = TextEditingController();
   final _country = TextEditingController();
+  final _latitude = TextEditingController();
+  final _longitude = TextEditingController();
   final _description = TextEditingController();
   final _image = TextEditingController();
   final _startDateTime = TextEditingController();
@@ -139,6 +141,8 @@ class _FormsColumn extends StatelessWidget {
                     finished: false,
                     image: _image.text,
                     name: _name.text,
+                    latitude: double.parse(_latitude.text),
+                    longitude: double.parse(_longitude.text),
                     startDate: DateTime.parse(
                         '${_startDateTime.text} ${_startTime.text}'),
                     tags: await Future.wait(_selectedValues
@@ -146,9 +150,13 @@ class _FormsColumn extends StatelessWidget {
                             .getPreferenceByName(e.toString()))
                         .toList()),
                     users: [id],
-                    messages: [],
+                    messages: [
+                      Messages(
+                          userId: "8AH3CM76DydLFLrAQANT2gTBYlk2",
+                          date: DateTime.now(),
+                          text: "Bienvenido")
+                    ],
                     id: Uuid().v1()));
-
                 // await Future.delayed(const Duration(seconds: 1));
                 // Navigator.pushReplacementNamed(context, 'main');
                 Navigator.pop(context);

@@ -50,7 +50,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
               'ESTABLECER PUNTO DE INTERÉS',
               style: TextStyle(
                   fontSize: 25,
-                  color: ProjectColors.secondary,
+                  color: Colors.black,
                   fontWeight: FontWeight.bold),
             ),
           ),
@@ -140,13 +140,11 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                     image: '',
                                     id: const Uuid().v1());
                                 showCircularProgressDialog(context);
-
-                                await eventPointsService.saveEvent(
+                                await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);
 
                                 // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
-                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
                               }
                             },
@@ -183,7 +181,7 @@ class _Button extends StatelessWidget {
           alignment: Alignment.center,
           color: ProjectColors.buttonColor,
           width: size.width * 0.4,
-          height: 90,
+          height: 80,
           padding: const EdgeInsets.all(10),
           child: Text(
             title,
