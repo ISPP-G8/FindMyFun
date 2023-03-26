@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class EventPoint {
+
   EventPoint({
     required this.name,
     required this.description,
@@ -43,7 +44,8 @@ class EventPoint {
         country: json["country"],
         image: json["image"],
         id: json["id"],
-      );
+    );
+
 
   Map<String, dynamic> toJson() => {
         "name": name,

@@ -37,6 +37,13 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
     final usersService = Provider.of<UsersService>(context);
     return Scaffold(
         appBar: AppBar(
+        leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(
+              Icons.chevron_left,
+              size: 45,
+              color: ProjectColors.secondary,
+            )),
           elevation: 0,
           title: const FittedBox(
             child: Text(
@@ -133,7 +140,6 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                     image: '',
                                     id: const Uuid().v1());
                                 showCircularProgressDialog(context);
-
                                 await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);
 
