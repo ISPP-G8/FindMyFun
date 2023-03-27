@@ -23,10 +23,12 @@ class LoginView extends StatelessWidget {
             leading: GestureDetector(
                 onTap: () => pageViewController.animateToPage(0,
                     duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut),
+                    curve: Curves.easeInOut
+                  ),
                 child: const Icon(
                   Icons.chevron_left,
                   size: 45,
+                  color: ProjectColors.secondary,
                 )),
             // backgroundColor: ProjectColors.primary,
             elevation: 0,

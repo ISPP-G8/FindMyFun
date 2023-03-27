@@ -9,6 +9,11 @@ import '../models/event_point.dart';
 import '../models/user.dart';
 import 'users_service.dart';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../models/models.dart';
+
 class EventPointsService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
   List<EventPoint> _eventPoints = [];
@@ -21,13 +26,12 @@ class EventPointsService extends ChangeNotifier {
     notifyListeners();
   }
 
-  //POST AND UPDATE EVENT
-  Future<void> saveEvent(EventPoint eventPoint, User currentUser) async {
+  //POST AND UPDATE EVENT POINT
+  Future<void> saveEventPoint(EventPoint eventPoint, User currentUser) async {
     if (currentUser.isCompany == null || currentUser.isCompany == false) return;
     final url = Uri.https(_baseUrl, 'EventPoints/${eventPoint.id}.json');
     try {
       final resp = await http.put(url, body: jsonEncode(eventPoint.toJson()));
-
       if (resp.statusCode != 200) {
         throw Exception('Error in response');
       }
@@ -55,6 +59,47 @@ class EventPointsService extends ChangeNotifier {
       eventPoints = aux;
     } catch (e) {
       print('Error al obtener los puntos de eventos: $e');
+    }
+  }
+
+  // DELETE EVENT POINT
+  Future<void> deleteEventPoint(String eventPointId) async {
+    final url = Uri.https(_baseUrl, 'EventPoints/$eventPointId.json');
+    try {
+      final resp = await http.delete(url);
+      if (resp.statusCode != 200) {
+        throw Exception('Error in response');
+      }
+    } catch (e) {
+      throw Exception('Error al eliminar el punto de evento: $e');
+    }
+  }
+
+  // GET ALL EVENT POINTS
+  Future<List<EventPoint>> getEventPoints() async {
+    final url = Uri.https(_baseUrl, 'EventPoints.json');
+    try {
+      final resp = await http.get(url);
+      if (resp.statusCode != 200) {
+        throw Exception('Error in response');
+      }
+
+      final Map<String, dynamic> data = jsonDecode(resp.body);
+
+      final List<EventPoint> eventPoints = [];
+      data.forEach((key, value) {
+        try {
+          final eventPoint = EventPoint.fromJson(value);
+          eventPoints.add(eventPoint);
+        } catch (e) {
+          debugPrint('Error parsing event point: $e');
+        }
+      });
+
+      return eventPoints;
+
+    } catch (e) {
+      throw Exception('Error getting event points: $e');
     }
   }
 }

@@ -44,6 +44,8 @@ class _FormsColumn extends StatelessWidget {
   final _address = TextEditingController();
   final _city = TextEditingController();
   final _country = TextEditingController();
+  final _latitude = TextEditingController();
+  final _longitude = TextEditingController();
   final _description = TextEditingController();
   final _image = TextEditingController();
   final _startDateTime = TextEditingController();
@@ -139,6 +141,8 @@ class _FormsColumn extends StatelessWidget {
                     finished: false,
                     image: _image.text,
                     name: _name.text,
+                    latitude: double.parse(_latitude.text),
+                    longitude: double.parse(_longitude.text),
                     startDate: DateTime.parse(
                         '${_startDateTime.text} ${_startTime.text}'),
                     tags: await Future.wait(_selectedValues
