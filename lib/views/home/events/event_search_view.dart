@@ -14,7 +14,7 @@ class EventSearchView extends StatefulWidget {
 
 class _EventSearchViewState extends State<EventSearchView> {
   final TextEditingController _searchController = TextEditingController();
-  String _inputText = ' ';
+  String _inputText = '';
   String _searchedText = '';
 
   @override

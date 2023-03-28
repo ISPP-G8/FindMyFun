@@ -51,7 +51,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
               'ESTABLECER PUNTO DE INTERÉS',
               style: TextStyle(
                   fontSize: 25,
-                  color: Colors.black,
+                  color: ProjectColors.secondary,
                   fontWeight: FontWeight.bold),
             ),
           ),
@@ -201,8 +201,8 @@ class _Button extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: const TextStyle(
-                color: Color(0xffffde59),
-                fontSize: 20,
+                color: ProjectColors.primary,
+                fontSize: 18,
                 fontWeight: FontWeight.bold),
           )),
     );
