@@ -151,10 +151,10 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                 }
                 print(
                     'Usuario creado con uid: ${credential.user?.getIdToken()}');
-              } on FirebaseAuthException catch (e) {
+              } on FirebaseAuthException {
                 Navigator.pop(context);
                 showExceptionDialog(context);
-              } on FirebaseException catch (e) {
+              } on FirebaseException {
                 Navigator.pop(context);
                 showExceptionDialog(context);
               } catch (e) {
@@ -172,7 +172,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
 showExceptionDialog(BuildContext context) {
   showDialog(
     context: context,
-    builder: (_) => AlertDialog(
+    builder: (_) => const AlertDialog(
       content: Text('Por favor, revisa los datos proporcionados.'),
     ),
   );

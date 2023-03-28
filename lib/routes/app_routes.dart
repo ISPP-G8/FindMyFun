@@ -1,4 +1,3 @@
-import 'package:findmyfun/screens/screens.dart';
 import 'package:findmyfun/views/event/event_chat_view.dart';
 import 'package:findmyfun/views/event/event_details.dart';
 import 'package:findmyfun/views/event/event_map_view.dart';
@@ -17,7 +16,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'middle': (_) => const MiddleScreen(),
     'eventDetails': (_) => const EventDetailsView(),
     'eventpointcreation': (_) => const EventPointCreationScreen(),
-    'map': (_) => EventMapView(),
+    'map': (_) => const EventMapView(),
     'chat': (_) => ChatScreen(),
     'searchResulst': (_) => const EventSearchView(),
   };

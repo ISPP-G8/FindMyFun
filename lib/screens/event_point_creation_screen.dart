@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/event_point.dart';
 import 'package:findmyfun/themes/themes.dart';
@@ -79,7 +78,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                         // TODO: Tenemos la imagen como un archivo, esto hay que subirlo a firebase storage y obtener el link.
                         setState(() {});
                       },
-                      child: Container(
+                      child: SizedBox(
                         height: 200,
                         width: 200,
                         child: image,
@@ -139,6 +138,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
 
                                 // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
+                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
                               }
                             },
@@ -163,7 +163,7 @@ class _Button extends StatelessWidget {
   final String title;
   final void Function()? onTap;
 
-  const _Button({super.key, required this.title, this.onTap});
+  const _Button({required this.title, this.onTap});
 
   @override
   Widget build(BuildContext context) {

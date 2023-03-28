@@ -8,6 +8,7 @@ class EventSearchView extends StatefulWidget {
   const EventSearchView({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EventSearchViewState createState() => _EventSearchViewState();
 }
 

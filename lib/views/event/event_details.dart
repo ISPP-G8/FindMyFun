@@ -2,12 +2,10 @@ import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:findmyfun/screens/access_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/event.dart';
 import '../../models/user.dart';
-import 'event_chat_view.dart';
 
 class EventDetailsView extends StatelessWidget {
   const EventDetailsView({super.key});

@@ -26,7 +26,7 @@ class SettingsView extends StatelessWidget {
           visible: user.isAdmin ?? false,
           child: GestureDetector(
               onTap: () => Navigator.pushNamed(context, 'users'),
-              child: CustomButton(text: 'Usuarios registrados')),
+              child: const CustomButton(text: 'Usuarios registrados')),
         ),
         Visibility(
           visible: user.isCompany ?? false,
@@ -35,7 +35,7 @@ class SettingsView extends StatelessWidget {
                 await AuthService().signOut();
                 Navigator.pushNamed(context, 'eventpointcreation');
               },
-              child: CustomButton(text: 'Crear punto de event')),
+              child: const CustomButton(text: 'Crear punto de event')),
         ),
         GestureDetector(
             onTap: () async {

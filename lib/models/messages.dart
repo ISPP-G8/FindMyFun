@@ -1,5 +1,3 @@
-import 'package:findmyfun/models/models.dart';
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Messages {
@@ -30,5 +28,6 @@ class Messages {
   String toString() => 'userId: $userId, date: $date, text: $text';
 
   @override
+  // ignore: hash_and_equals
   int get hashCode => userId.hashCode ^ date.hashCode ^ text.hashCode;
 }

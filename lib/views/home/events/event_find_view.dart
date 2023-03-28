@@ -84,7 +84,8 @@ class _EventFindView extends State<EventFindView> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return ConstrainedBox(
-                          constraints: BoxConstraints(maxHeight: size.height*0.37),
+                          constraints:
+                              BoxConstraints(maxHeight: size.height * 0.37),
                           child: ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (_, index) => EventContainer(
@@ -112,6 +113,7 @@ class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MapScreenState createState() => _MapScreenState();
 }
 

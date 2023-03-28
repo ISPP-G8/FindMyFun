@@ -82,12 +82,10 @@ class UsersService extends ChangeNotifier {
 
       users = usersAux;
       return usersAux;
-      
     } catch (e) {
       throw Exception('Error getting users: $e');
     }
   }
-
 
   Future<bool> addItem(User user) async {
     final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
@@ -97,6 +95,7 @@ class UsersService extends ChangeNotifier {
 
       return true;
     } catch (e) {
+      // ignore: avoid_print
       print('Error al crear el usuario: $e');
       return false;
     }
@@ -120,6 +119,7 @@ class UsersService extends ChangeNotifier {
       // ignore: unused_local_variable
       final resp = await http.delete(url);
       AuthService().signOut;
+      // ignore: use_build_context_synchronously
       await Navigator.pushNamed(context, 'access');
     } catch (e) {
       debugPrint('Error deleting profile: $e');

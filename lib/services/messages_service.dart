@@ -54,6 +54,7 @@ class MessagesService extends ChangeNotifier {
     final url = Uri.https(_baseUrl, 'Events/${event.id}/messages.json');
     event.messages.add(message);
     try {
+      // ignore: unused_local_variable
       final resp = await http.post(url, body: jsonEncode(message.toJson()));
     } catch (e) {
       debugPrint('Error posting message: $e');

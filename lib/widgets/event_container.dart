@@ -11,7 +11,6 @@ class EventContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final size = MediaQuery.of(context).size;
 
     return Container(
@@ -21,8 +20,7 @@ class EventContainer extends StatelessWidget {
           color: ProjectColors.secondary,
           boxShadow: [
             BoxShadow(color: Colors.black54, spreadRadius: 1, blurRadius: 7)
-          ]
-      ),
+          ]),
       child: Column(
         children: [
           Row(
@@ -46,9 +44,9 @@ class EventContainer extends StatelessWidget {
                 ],
               ),
               const Spacer(),
-              Container(
+              SizedBox(
                   width: 150,
-                  height: size.height*0.12,
+                  height: size.height * 0.12,
                   child: CachedNetworkImage(
                     imageUrl: event.image,
                     errorWidget: (context, url, error) {

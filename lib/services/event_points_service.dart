@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:findmyfun/models/preferences.dart';
-import 'package:findmyfun/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/event_point.dart';
 import '../models/user.dart';
-import 'users_service.dart';
 
 class EventPointsService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
@@ -54,6 +51,7 @@ class EventPointsService extends ChangeNotifier {
       });
       eventPoints = aux;
     } catch (e) {
+      // ignore: avoid_print
       print('Error al obtener los puntos de eventos: $e');
     }
   }

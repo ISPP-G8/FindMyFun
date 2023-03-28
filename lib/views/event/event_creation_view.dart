@@ -38,6 +38,7 @@ class EventCreationView extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _FormsColumn extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _name = TextEditingController();
@@ -152,11 +153,11 @@ class _FormsColumn extends StatelessWidget {
                           date: DateTime.now(),
                           text: "Bienvenido")
                     ],
-                    id: Uuid().v1()));
-                // await Future.delayed(const Duration(seconds: 1));
-                // Navigator.pushReplacementNamed(context, 'main');
+                    id: const Uuid().v1()));
+                // ignore: use_build_context_synchronously
                 Navigator.pop(context);
                 final pageController =
+                    // ignore: use_build_context_synchronously
                     Provider.of<PageViewService>(context, listen: false);
                 pageController.mainPageController.jumpToPage(0);
               } else {

@@ -1,12 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 
-import '../../services/events_service.dart';
 import '../../themes/colors.dart';
 import '../../themes/styles.dart';
-import '../../widgets/custom_button.dart';
 
 class EventMapView extends StatelessWidget {
   const EventMapView({super.key});
@@ -35,6 +32,7 @@ class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MapScreenState createState() => _MapScreenState();
 }
 
@@ -173,6 +171,7 @@ class _MapScreenState extends State<MapScreen> {
                                   imageUrl:
                                       "https://media-cdn.tripadvisor.com/media/photo-s/02/e1/2e/ce/cerveceria-100-montaditos.jpg",
                                   errorWidget: (context, url, error) {
+                                    // ignore: avoid_print
                                     print('Error al cargar la imagen $error');
                                     return Image.asset(
                                         'assets/placeholder.png');

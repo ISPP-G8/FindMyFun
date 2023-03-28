@@ -26,9 +26,7 @@ class RegisterViewPlan extends StatelessWidget {
 }
 
 class _RegisterFormContainer extends StatefulWidget {
-  const _RegisterFormContainer({
-    super.key,
-  });
+  const _RegisterFormContainer();
 
   @override
   State<_RegisterFormContainer> createState() => _RegisterFormContainerState();
@@ -38,6 +36,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
   bool isCompany = false;
   @override
   Widget build(BuildContext context) {
+    // ignore: avoid_print
     print(isCompany);
     return Column(children: [
       GestureDetector(
@@ -77,6 +76,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
               await userService.addItem(userService.currentUser!);
             }
           }
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacementNamed(context, 'main');
         },
       )

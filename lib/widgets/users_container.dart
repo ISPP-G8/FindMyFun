@@ -13,7 +13,7 @@ class UsersContainer extends StatelessWidget {
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-          color: Color.fromARGB(255, 255, 242, 242),
+          color: const Color.fromARGB(255, 255, 242, 242),
           borderRadius: BorderRadius.circular(15)),
       child: child,
     );

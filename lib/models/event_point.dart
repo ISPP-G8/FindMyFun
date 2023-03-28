@@ -2,7 +2,6 @@
 //
 //     final eventPoint = eventPointFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class EventPoint {

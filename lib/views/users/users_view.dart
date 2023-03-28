@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -26,8 +24,6 @@ class _UsersListViewScreenState extends State<UsersListViewScreen> {
   Widget build(BuildContext context) {
     final usersService = Provider.of<UsersService>(context);
     // final users = usersService.users;
-    final pageViewController =
-        Provider.of<PageViewService>(context).pageController;
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -46,7 +42,7 @@ class _UsersListViewScreenState extends State<UsersListViewScreen> {
           ),
           backgroundColor: ProjectColors.primary,
           body: Column(children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             UsersContainer(
@@ -61,7 +57,7 @@ class _UsersListViewScreenState extends State<UsersListViewScreen> {
 
 class _UsersColumn extends StatelessWidget {
   final List<User> users;
-  const _UsersColumn({super.key, required this.users});
+  const _UsersColumn({required this.users});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,5 @@
-import 'package:findmyfun/models/messages.dart';
 import 'package:findmyfun/models/models.dart';
 
-import 'package:findmyfun/models/preferences.dart';
 import 'dart:convert';
 
 class Event {
