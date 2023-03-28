@@ -52,6 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: ListView.builder(
               itemCount: messages.length,
               itemBuilder: (BuildContext context, int index) {
+                messages.sort((a, b) => a.date.compareTo(b.date));
                 final message = messages[index];
                 final bool isMe = message.userId == activeUserId;
                 return Container(
@@ -130,7 +131,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             userId: activeUserId,
                             date: DateTime.now(),
                             text: messageToSend.text);
-                        if (m.text != "") {
+                        if (m.text.isNotEmpty) {
                           messagesService.saveMessage(m, selectedEvent);
                           Navigator.popAndPushNamed(context, "chat",
                               arguments: selectedEvent);
