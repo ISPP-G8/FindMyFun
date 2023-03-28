@@ -188,8 +188,8 @@ class _MapScreenState extends State<MapScreen> {
                                       ),
                                       Text(
                                           selectedEvent is Event
-                                              ? selectedEvent.users.length
-                                                  .toString()
+                                              ? '${selectedEvent.users.length
+                                                  .toString()} asistente/s'
                                               : '',
                                           style: const TextStyle(
                                             color: Colors.black,
@@ -200,7 +200,7 @@ class _MapScreenState extends State<MapScreen> {
                                   ),
                                   const Spacer(),
                                   SizedBox(
-                                      width: 150,
+                                      width: size.width * 0.3,
                                       height: size.height * 0.12,
                                       child: CachedNetworkImage(
                                         imageUrl: selectedEvent != null
