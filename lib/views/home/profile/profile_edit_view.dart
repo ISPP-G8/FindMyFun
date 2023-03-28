@@ -190,7 +190,9 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
                 final resp =
                     await userService.updateProfile(userService.currentUser!);
                 if (resp) {
-                  Navigator.pushNamed(context, 'profile');
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 } else {
                   Navigator.pop(context);
                   _formKey.currentState!.validate();
