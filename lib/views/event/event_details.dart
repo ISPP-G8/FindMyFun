@@ -68,13 +68,11 @@ class _FormsColumn extends StatelessWidget {
 
     //List<String> asistentesList = [];
     Future<List<String>> asistentes = Future.delayed(Duration.zero, () async {
-              List<String> users = await eventService.getUsersFromEvent(selectedEvent);
-              List<String> names = await eventService.getNameFromId(users);
-              return names;
-              //asistentesList = names;
-            
-          });
-
+      List<String> users = await eventService.getUsersFromEvent(selectedEvent);
+      List<String> names = await eventService.getNameFromId(users);
+      return names;
+      //asistentesList = names;
+    });
 
     //print(asistentes);
     String activeUserId = AuthService().currentUser?.uid ?? "";
@@ -128,37 +126,37 @@ class _FormsColumn extends StatelessWidget {
                             settings: RouteSettings(arguments: selectedEvent)))
                   },
                 ),
-              ElevatedButton(
-                child: const Text('Abrir chat'),
-                onPressed: () {
-                  Navigator.pushNamed(context, 'chat',
-                      arguments: selectedEvent);
-                },
-              ),
-              FutureBuilder<List<String>>(
-                  future: asistentes,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final asistentesList = snapshot.data!;
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: asistentesList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ListTile(
-                            leading: const Icon(Icons.person),
-                            title: Text(asistentesList[index]),
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    } else {
-                      return const CircularProgressIndicator();
-                    }
+              if (selectedEvent.users.contains(activeUserId))
+                ElevatedButton(
+                  child: const Text('Abrir chat'),
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'chat',
+                        arguments: selectedEvent);
                   },
                 ),
-                
+              FutureBuilder<List<String>>(
+                future: asistentes,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final asistentesList = snapshot.data!;
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: asistentesList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          leading: const Icon(Icons.person),
+                          title: Text(asistentesList[index]),
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
+              ),
             ],
           );
         } else {
