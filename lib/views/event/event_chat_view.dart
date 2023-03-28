@@ -53,15 +53,30 @@ class _ChatScreenState extends State<ChatScreen> {
               itemCount: messages.length,
               itemBuilder: (BuildContext context, int index) {
                 final message = messages[index];
+                final bool isMe = message.userId == activeUserId;
                 return Container(
-                  margin:
-                      const EdgeInsets.all(8.0), // Margen exterior de la caja
-                  padding:
-                      const EdgeInsets.all(16.0), // Margen interior de la caja
+                  margin: EdgeInsets.only(
+                    top: 8.0,
+                    bottom: 8.0,
+                    left: isMe ? 50.0 : 0.0,
+                    right: isMe ? 0.0 : 50.0,
+                  ),
+                  padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-                    color: Colors.blueGrey, // Color de fondo de la caja
-                    borderRadius: BorderRadius.circular(
-                        8.0), // Bordes redondeados de la caja
+                    color: isMe
+                        ? Color.fromARGB(255, 46, 84, 252)
+                        : Color.fromARGB(255, 104, 102, 102),
+                    borderRadius: isMe
+                        ? const BorderRadius.only(
+                            topLeft: Radius.circular(15.0),
+                            bottomLeft: Radius.circular(15.0),
+                            topRight: Radius.circular(15.0),
+                          )
+                        : const BorderRadius.only(
+                            topRight: Radius.circular(15.0),
+                            bottomRight: Radius.circular(15.0),
+                            topLeft: Radius.circular(15.0),
+                          ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,26 +104,45 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
-          CustomTextForm(
-            hintText: 'Escribe tu mensaje aquí...',
-            maxLines: 5,
-            type: TextInputType.multiline,
-            controller: messageToSend,
-            validator: (value) => Validators.validateNotEmpty(value),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Container(
+                color: Colors.lightBlue,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextForm(
+                        hintText: 'Escribe tu mensaje aquí...',
+                        //maxLines: 5,
+                        type: TextInputType.multiline,
+                        controller: messageToSend,
+                        validator: (value) =>
+                            Validators.validateNotEmpty(value),
+                      ),
+                    ),
+                    IconButton(
+                      color: Colors.white,
+                      icon: Icon(Icons.send),
+                      onPressed: () {
+                        Messages m = Messages(
+                            userId: activeUserId,
+                            date: DateTime.now(),
+                            text: messageToSend.text);
+                        if (m.text != "") {
+                          messagesService.saveMessage(m, selectedEvent);
+                          Navigator.popAndPushNamed(context, "chat",
+                              arguments: selectedEvent);
+                        }
+                        messageToSend.clear();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-          ElevatedButton(
-              onPressed: () {
-                Messages m = Messages(
-                    userId: activeUserId,
-                    date: DateTime.now(),
-                    text: messageToSend.text);
-                if (m.text != "") {
-                  messagesService.saveMessage(m, selectedEvent);
-                  Navigator.popAndPushNamed(context, "chat",
-                      arguments: selectedEvent);
-                }
-              },
-              child: const Icon(Icons.send)),
         ],
       ),
     );
