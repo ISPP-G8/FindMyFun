@@ -11,8 +11,10 @@ class EventContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: const BoxDecoration(
           color: ProjectColors.secondary,
@@ -41,13 +43,14 @@ class EventContainer extends StatelessWidget {
                   Text('${event.users.length} asistente/s'),
                 ],
               ),
-              Spacer(),
-              Container(
-                  width: 150,
-                  height: 150,
+              const Spacer(),
+              SizedBox(
+                  width: size.width * 0.34,
+                  height: size.height * 0.12,
                   child: CachedNetworkImage(
                     imageUrl: event.image,
                     errorWidget: (context, url, error) {
+                      // ignore: avoid_print
                       print('Error al cargar la imagen $error');
                       return Image.asset('assets/placeholder.png');
                     },

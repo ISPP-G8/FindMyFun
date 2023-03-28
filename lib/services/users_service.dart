@@ -14,7 +14,7 @@ class UsersService extends ChangeNotifier {
 
   List<User> get users => _users;
 
-  void set users(List<User> inputUsers) {
+  set users(List<User> inputUsers) {
     _users = inputUsers;
     notifyListeners();
   }
@@ -59,23 +59,74 @@ class UsersService extends ChangeNotifier {
   // TODO: Hacer el updateItem pasando el uid del AuthService()
 
   //READ EVENT
-  Future<void> getUsers() async {
+  Future<List<User>> getUsers() async {
     final url = Uri.https(_baseUrl, 'Users.json');
     try {
       final resp = await http.get(url);
 
       if (resp.statusCode != 200) {
-        return;
+        throw Exception('Error in response');
       }
 
+      List<User> usersAux = [];
       Map<String, dynamic> data = jsonDecode(resp.body);
 
       data.forEach((key, value) {
-        final user = User.fromRawJson(jsonEncode(value));
-        _users.add(user);
+        try {
+          final user = User.fromRawJson(jsonEncode(value));
+          usersAux.add(user);
+        } catch (e) {
+          debugPrint('Error parsing user: $e');
+        }
       });
+
+      users = usersAux;
+      return usersAux;
     } catch (e) {
-      print('Error getting users: $e');
+      throw Exception('Error getting users: $e');
+    }
+  }
+
+  Future<bool> addItem(User user) async {
+    final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
+    try {
+      final resp = await http.put(url, body: jsonEncode(user.toJson()));
+      if (resp.statusCode != 200) return false;
+
+      return true;
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error al crear el usuario: $e');
+      return false;
+    }
+  }
+
+  //UPDATE PROFILE
+  Future<bool> updateProfile(User user) async {
+    final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
+    try {
+      // ignore: unused_local_variable
+      final resp = await http.put(url, body: jsonEncode(user.toJson()));
+
+      if (resp.statusCode != 200) return false;
+      return true;
+    } catch (e) {
+      debugPrint('Error editing profile: $e');
+      return false;
+    }
+  }
+
+  //DELETE PROFILE
+  Future<void> deleteProfile(User user, BuildContext context) async {
+    final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
+    try {
+      // ignore: unused_local_variable
+      final resp = await http.delete(url);
+      AuthService().signOut;
+      // ignore: use_build_context_synchronously
+      await Navigator.pushNamed(context, 'access');
+    } catch (e) {
+      debugPrint('Error deleting profile: $e');
     }
   }
 }

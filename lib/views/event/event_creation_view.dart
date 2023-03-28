@@ -1,8 +1,4 @@
-import 'package:findmyfun/models/event.dart';
-import 'package:findmyfun/services/auth_service.dart';
-import 'package:findmyfun/services/events_service.dart';
-import 'package:findmyfun/services/preferences_service.dart';
-import 'package:findmyfun/themes/themes.dart';
+import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,12 +38,15 @@ class EventCreationView extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _FormsColumn extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _name = TextEditingController();
   final _address = TextEditingController();
   final _city = TextEditingController();
   final _country = TextEditingController();
+  final _latitude = TextEditingController();
+  final _longitude = TextEditingController();
   final _description = TextEditingController();
   final _image = TextEditingController();
   final _startDateTime = TextEditingController();
@@ -86,6 +85,16 @@ class _FormsColumn extends StatelessWidget {
           CustomTextForm(
             hintText: 'País',
             controller: _country,
+            validator: (value) => Validators.validateNotEmpty(value),
+          ),
+          CustomTextForm(
+            hintText: 'Latitud',
+            controller: _latitude,
+            validator: (value) => Validators.validateNotEmpty(value),
+          ),
+          CustomTextForm(
+            hintText: 'Longitud',
+            controller: _longitude,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
           CustomTextForm(
@@ -143,6 +152,8 @@ class _FormsColumn extends StatelessWidget {
                     finished: false,
                     image: _image.text,
                     name: _name.text,
+                    latitude: double.parse(_latitude.text),
+                    longitude: double.parse(_longitude.text),
                     startDate: DateTime.parse(
                         '${_startDateTime.text} ${_startTime.text}'),
                     tags: await Future.wait(_selectedValues
@@ -150,12 +161,17 @@ class _FormsColumn extends StatelessWidget {
                             .getPreferenceByName(e.toString()))
                         .toList()),
                     users: [id],
-                    id: Uuid().v1()));
-
-                // await Future.delayed(const Duration(seconds: 1));
-                // Navigator.pushReplacementNamed(context, 'main');
+                    messages: [
+                      Messages(
+                          userId: "8AH3CM76DydLFLrAQANT2gTBYlk2",
+                          date: DateTime.now(),
+                          text: "Bienvenido")
+                    ],
+                    id: const Uuid().v1()));
+                // ignore: use_build_context_synchronously
                 Navigator.pop(context);
                 final pageController =
+                    // ignore: use_build_context_synchronously
                     Provider.of<PageViewService>(context, listen: false);
                 pageController.mainPageController.jumpToPage(0);
               } else {

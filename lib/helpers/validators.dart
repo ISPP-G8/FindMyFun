@@ -7,6 +7,15 @@ class Validators {
     return null;
   }
 
+  static String? validateCurrentEmail(String? value, email) {
+    if (value == null || value.isEmpty) {
+      return 'Debe introducir la dirección de correo asociada a su perfil.';
+    } else if (value != email) {
+      return 'Debe introducir la dirección de correo asociada a su perfil.';
+    }
+    return null;
+  }
+
   static String? validateEmail(String? value) {
     RegExp regExp = RegExp(r'[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+');
 

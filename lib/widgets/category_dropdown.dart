@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:multiselect/multiselect.dart';
 import 'package:provider/provider.dart';
 
-import '../models/preferences.dart';
 import '../services/preferences_service.dart';
 
 class CategoryDropdown extends StatefulWidget {
@@ -30,12 +29,12 @@ class _CategoryDropdown extends State<CategoryDropdown> {
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-          color: Colors.white),
+      decoration: const BoxDecoration(color: Colors.white),
       child: DropDownMultiSelect(
         options: prefs,
         selectedValues: selectedCategories,
         onChanged: (value) {
+          // ignore: avoid_print
           print('selected category $value');
           setState(() {
             selectedCategories = value;

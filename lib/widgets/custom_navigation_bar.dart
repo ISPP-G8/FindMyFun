@@ -1,8 +1,6 @@
 import 'package:findmyfun/services/page_view_service.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 
 class CustomNavigationBar extends StatefulWidget {
@@ -44,11 +42,11 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             BottomNavigationBarItem(
                 backgroundColor: ProjectColors.tertiary,
                 icon: Icon(
-                  Icons.search,
+                  Icons.recommend,
                   size: 50,
                   color: Colors.white,
                 ),
-                label: 'Buscar'),
+                label: 'Recomendados'),
             BottomNavigationBarItem(
                 backgroundColor: ProjectColors.tertiary,
                 icon: Icon(
@@ -56,7 +54,15 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   size: 50,
                   color: Colors.white,
                 ),
-                label: ''),
+                label: 'Crear'),
+            BottomNavigationBarItem(
+                backgroundColor: ProjectColors.tertiary,
+                icon: Icon(
+                  Icons.search_outlined,
+                  size: 50,
+                  color: Colors.white,
+                ),
+                label: 'Buscar'),
             // BottomNavigationBarItem(
             //     backgroundColor: ProjectColors.tertiary,
             //     icon: Icon(
