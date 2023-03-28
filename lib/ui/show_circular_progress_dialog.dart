@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-Future<void> showCircularProgressDialog(BuildContext context) async {
+Future<void> showCircularProgressDialog(BuildContext context,
+    {bool dismissible = false}) async {
   await showDialog(
     context: context,
+    barrierDismissible: dismissible,
     builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
