@@ -47,7 +47,7 @@ class _EventListView extends State<EventListView> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: size.height),
+                      constraints: BoxConstraints(maxHeight: size.height*0.68),
                       child: ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (_, index) => EventContainer(
