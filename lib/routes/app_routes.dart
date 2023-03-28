@@ -22,6 +22,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'searchResulst': (_) => const EventSearchView(),
     'editProfile': (_) => const ProfileEditForm(),
     'editCredentials': (_) => const ProfileCredentialsForm(),
+    'eventpointsadmin': (_) => const EventPointsAdminView(),
   };
 
   return routes;
