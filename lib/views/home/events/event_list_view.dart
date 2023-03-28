@@ -38,7 +38,7 @@ class _EventListView extends State<EventListView> {
                   child: Text(
                 'TODOS LOS EVENTOS',
                 style: TextStyle(
-                    color: ProjectColors.secondary,
+                    color: ProjectColors.primary,
                     fontSize: 30,
                     fontWeight: FontWeight.bold),
               )),
@@ -68,3 +68,54 @@ class _EventListView extends State<EventListView> {
         ));
   }
 }
+
+// class _EventContainer extends StatelessWidget {
+//   final Event event;
+//   const _EventContainer({super.key, required this.event});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       decoration: const BoxDecoration(
+//           color: ProjectColors.secondary,
+//           boxShadow: [
+//             BoxShadow(color: Colors.black54, spreadRadius: 1, blurRadius: 7)
+//           ]),
+//       child: Column(
+//         children: [
+//           Row(
+//             children: [
+//               Column(
+//                 children: [
+//                   Text(
+//                     event.name,
+//                     style: const TextStyle(fontWeight: FontWeight.bold),
+//                   ),
+//                   Text(event.startDate.toString()),
+//                   const SizedBox(
+//                     height: 10,
+//                   ),
+//                   Text(event.address),
+//                   const SizedBox(
+//                     height: 10,
+//                   ),
+//                   Text('${event.users.length} asistente/s'),
+//                 ],
+//               ),
+//               Spacer(),
+//               Container(
+//                   width: 150, height: 150, child: Image.network(event.image))
+//             ],
+//           ),
+//           CustomButton(
+//             text: 'Detalles',
+//             onTap: () =>
+//                 Navigator.pushNamed(context, 'eventDetails', arguments: event),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
