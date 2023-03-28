@@ -52,14 +52,8 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     return Form(
-      // autovalidateMode: AutovalidateMode.onUserInteraction,
       key: _formKey,
       child: Column(children: [
-        // CustomTextForm(
-        //   hintText: 'https://tuimagen.ejemplo',
-        //   controller: _imageController,
-        //   validator: (value) => Validators.validateNotEmpty(value),
-        // ),
         CustomTextForm(
           hintText: 'Nombre',
           controller: _nameController,
@@ -98,7 +92,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
           },
         ),
         CustomTextForm(
-          hintText: 'Localización',
+          hintText: 'Ciudad',
           controller: _locationController,
           validator: (value) => Validators.validateNotEmpty(value),
         ),

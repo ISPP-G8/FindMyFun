@@ -70,7 +70,6 @@ class EventsService extends ChangeNotifier {
 
       events = eventsAux;
       return eventsAux;
-      
     } catch (e) {
       throw Exception('Error getting events: $e');
     }
@@ -108,7 +107,6 @@ class EventsService extends ChangeNotifier {
       });
       eventsFound = eventsAux;
       return eventsAux;
-
     } catch (e) {
       throw Exception('Error getting events: $e');
     }
@@ -220,6 +218,50 @@ class EventsService extends ChangeNotifier {
         eventsFound = [];
         throw Exception('Error getting events: $e');
       }
+    }
+  }
+
+  //READ USERS EVENTS
+
+  Future<List<String>> getUsersFromEvent(Event event) async {
+    String eventId = event.id;
+    final url = Uri.https(_baseUrl, 'Events/$eventId.json');
+
+    try {
+      List<String> idAux = [];
+      final resp = await http.get(url);
+      if (resp.statusCode != 200) {
+        throw Exception('Error in response');
+      }
+      Map<String, dynamic> data = jsonDecode(resp.body);
+
+      for (var a in data["users"]) {
+        idAux.add(a.toString());
+      }
+      return idAux;
+    } catch (e) {
+      throw Exception('Error getting ids');
+    }
+  }
+
+  Future<List<String>> getNameFromId(List<String> ids) async {
+    try {
+      List<String> usersAux = [];
+      // ignore: avoid_print
+      print(ids);
+      for (var id in ids) {
+        final resp = await http.get(Uri.https(_baseUrl, 'Users/$id.json'));
+
+        Map<String, dynamic> data = jsonDecode(resp.body);
+        // ignore: avoid_print
+        print(data["username"]);
+        usersAux.add(data["username"]);
+      }
+      // ignore: avoid_print
+      print(usersAux);
+      return usersAux;
+    } catch (e) {
+      throw Exception('Error getting users');
     }
   }
 }

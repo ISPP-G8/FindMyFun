@@ -23,6 +23,8 @@ class EventPointCreationScreen extends StatefulWidget {
 class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
+  final _latitudeController = TextEditingController();
+  final _longitudeController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _cityController = TextEditingController();
   final _countryController = TextEditingController();
@@ -36,6 +38,13 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
     final usersService = Provider.of<UsersService>(context);
     return Scaffold(
         appBar: AppBar(
+          leading: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: const Icon(
+                Icons.chevron_left,
+                size: 45,
+                color: ProjectColors.secondary,
+              )),
           elevation: 0,
           title: const FittedBox(
             child: Text(
@@ -95,6 +104,16 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                       validator: (value) => Validators.validateNotEmpty(value),
                     ),
                     CustomTextForm(
+                      hintText: 'Latitud',
+                      controller: _latitudeController,
+                      validator: (value) => Validators.validateNotEmpty(value),
+                    ),
+                    CustomTextForm(
+                      hintText: 'Longitud',
+                      controller: _longitudeController,
+                      validator: (value) => Validators.validateNotEmpty(value),
+                    ),
+                    CustomTextForm(
                       hintText: 'Ciudad',
                       controller: _cityController,
                       validator: (value) => Validators.validateNotEmpty(value),
@@ -124,16 +143,17 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                 final eventPoint = EventPoint(
                                     name: _nameController.text,
                                     description: _descriptionController.text,
-                                    longitude: 0.0,
-                                    latitude: 0.0,
+                                    longitude:
+                                        double.parse(_longitudeController.text),
+                                    latitude:
+                                        double.parse(_latitudeController.text),
                                     address: _addressController.text,
                                     city: _cityController.text,
                                     country: _countryController.text,
                                     image: '',
                                     id: const Uuid().v1());
                                 showCircularProgressDialog(context);
-
-                                await eventPointsService.saveEvent(
+                                await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);
 
                                 // ignore: use_build_context_synchronously
@@ -143,10 +163,10 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                               }
                             },
                           ),
-                          _Button(
-                            title: 'CONTINUAR',
-                            onTap: () => Navigator.pop(context),
-                          ),
+                          // _Button(
+                          //   title: 'CONTINUAR',
+                          //   onTap: () => Navigator.pop(context),
+                          // ),
                         ],
                       ),
                     )
