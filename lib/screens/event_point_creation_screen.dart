@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/event_point.dart';
 import 'package:findmyfun/themes/themes.dart';
@@ -28,14 +29,27 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   final _descriptionController = TextEditingController();
   final _cityController = TextEditingController();
   final _countryController = TextEditingController();
+  final _imageController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  Widget image = Image.asset('assets/placeholder.png');
+  Widget placeholder = Container(
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+        image: DecorationImage(
+            image: Image.asset('assets/placeholder.png').image)),
+    child: Text(
+      'Seleccione una imagen de su galería',
+      textAlign: TextAlign.center,
+    ),
+  );
+  String imageUrl = '';
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final eventPointsService = Provider.of<EventPointsService>(context);
     final usersService = Provider.of<UsersService>(context);
+    final eventPointId = const Uuid().v1();
     return Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
@@ -71,26 +85,31 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        final imagePicker = ImagePicker();
+                        // Muestra el circulo de progreso
+                        showCircularProgressDialog(context);
 
-                        final XFile? pickedImage = await imagePicker.pickImage(
-                            source: ImageSource.gallery);
-                        if (pickedImage == null) return;
-                        image = SizedBox(
-                          width: 500,
-                          height: 500,
-                          child: Image.file(
-                            File(pickedImage.path),
-                            fit: BoxFit.cover,
-                          ),
-                        );
-                        // TODO: Tenemos la imagen como un archivo, esto hay que subirlo a firebase storage y obtener el link.
+                        // Coge la imagen de la galería, la sube a storage y devuelve el url.
+                        imageUrl = await uploadImage(context,
+                            imageId: eventPointId, route: 'EventPoints');
+
+                        Navigator.pop(
+                            context); // Cierra el circulo de progreso.
+
                         setState(() {});
                       },
                       child: SizedBox(
                         height: 200,
-                        width: 200,
-                        child: image,
+                        width: 500,
+                        child: imageUrl.isEmpty
+                            ? placeholder
+                            : CachedNetworkImage(
+                                imageUrl: imageUrl,
+                                fit: BoxFit.contain,
+                                progressIndicatorBuilder:
+                                    (context, url, progress) =>
+                                        CircularProgressIndicator(
+                                            value: progress.progress),
+                              ),
                       ),
                     ),
                     CustomTextForm(
@@ -140,6 +159,23 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                             title: 'CREAR EVENTO EN ESTE LUGAR',
                             onTap: () async {
                               if (_formKey.currentState!.validate()) {
+                                if (imageUrl.isEmpty) {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      actions: [
+                                        MaterialButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text('Ok'),
+                                        )
+                                      ],
+                                      content: Text(
+                                          'Por favor, seleccione una imagen'),
+                                    ),
+                                  );
+                                  return;
+                                }
                                 final eventPoint = EventPoint(
                                     name: _nameController.text,
                                     description: _descriptionController.text,
@@ -150,8 +186,8 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                     address: _addressController.text,
                                     city: _cityController.text,
                                     country: _countryController.text,
-                                    image: '',
-                                    id: const Uuid().v1());
+                                    image: imageUrl,
+                                    id: eventPointId);
                                 showCircularProgressDialog(context);
                                 await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);
