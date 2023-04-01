@@ -75,9 +75,14 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
               userService.currentUser!.isCompany = true;
               await userService.addItem(userService.currentUser!);
             }
+            // ignore: use_build_context_synchronously
+            Navigator.pushReplacementNamed(context, 'paymentBusiness');
+
           }
-          // ignore: use_build_context_synchronously
-          Navigator.pushReplacementNamed(context, 'main');
+          else{
+            // ignore: use_build_context_synchronously
+            Navigator.pushReplacementNamed(context, 'paymentUser');
+          } 
         },
       )
     ]);
