@@ -1,11 +1,10 @@
+import 'package:findmyfun/widgets/submit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paypal/flutter_paypal.dart';
 import 'package:pay/pay.dart';
 
-import '../../widgets/submit_button.dart';
-
-class PaymentViewUser extends StatelessWidget {
-  const PaymentViewUser({
+class PaymentViewBusiness extends StatelessWidget {
+  const PaymentViewBusiness({
     super.key,
   });
 
@@ -22,12 +21,6 @@ class PaymentViewUser extends StatelessWidget {
           child: CircularProgressIndicator(),
         ),
       ),
-      SubmitButton(
-        text: 'CONTINUAR PLAN GRATUITO',
-        onTap: () async {
-          Navigator.pushReplacementNamed(context, 'middle');
-        }
-      )
     ]);
   }
 
@@ -35,7 +28,7 @@ class PaymentViewUser extends StatelessWidget {
     const _paymentItems = [
       PaymentItem(
         label: 'Total',
-        amount: '3.99',
+        amount: '29.99',
         status: PaymentItemStatus.final_price,
       ),
     ];
@@ -51,7 +44,7 @@ class PaymentViewUser extends StatelessWidget {
 const String defaultGooglePay = '''{
   "provider": "google_pay",
   "data": {
-    "environment": "TEST",
+    "environment": "PLAN DE PAGO",
     "apiVersion": 2,
     "apiVersionMinor": 0,
     "allowedPaymentMethods": [
@@ -76,12 +69,12 @@ const String defaultGooglePay = '''{
       }
     ],
     "merchantInfo": {
-      "merchantId": "01234567890123456789",
-      "merchantName": "Example Merchant Name"
+      "merchantId": "BCR2DN4TUSG357B2",
+      "merchantName": "FindMyFun"
     },
     "transactionInfo": {
-      "countryCode": "US",
-      "currencyCode": "USD"
+      "countryCode": "ES",
+      "currencyCode": "EUR"
     }
   }
 }''';

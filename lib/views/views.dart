@@ -13,5 +13,6 @@ export 'package:findmyfun/views/event/event_chat_view.dart';
 export 'package:findmyfun/views/event/event_details.dart';
 export 'package:findmyfun/views/event/event_list_admin.dart';
 export 'package:findmyfun/views/home/profile/profile_details_view.dart';
+export 'package:findmyfun/views/register/payment_view.dart';
 
 export 'package:findmyfun/views/event/event_creation_view.dart';

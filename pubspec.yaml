@@ -43,6 +43,8 @@ dependencies:
   provider: ^6.0.5
   pull_to_refresh: ^2.0.0
   uuid: ^3.0.7
+  flutter_paypal: ^0.0.8
+  pay: ^1.1.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
