@@ -37,6 +37,12 @@ class SettingsView extends StatelessWidget {
         Visibility(
           visible: user.isAdmin ?? false,
           child: GestureDetector(
+              onTap: () => Navigator.pushNamed(context, 'payment'),
+              child: const CustomButton(text: 'Plan de pago')),
+        ),
+        Visibility(
+          visible: user.isAdmin ?? false,
+          child: GestureDetector(
               onTap: () => Navigator.pushNamed(context, 'events'),
               child: const CustomButton(text: 'Eventos registrados')),
         ),

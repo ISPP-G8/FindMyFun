@@ -2,6 +2,7 @@ import 'package:findmyfun/views/event/event_map_view.dart';
 import 'package:findmyfun/views/home/profile/profile_credentials_view.dart';
 import 'package:findmyfun/views/home/profile/profile_edit_view.dart';
 import 'package:flutter/material.dart';
+import '../views/home/profile/payment_plan_view.dart';
 
 import '../views/views.dart';
 
@@ -21,6 +22,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'chat': (_) => const ChatScreen(),
     'searchResulst': (_) => const EventSearchView(),
     'editProfile': (_) => const ProfileEditForm(),
+    'payment': (_) => const PaymentPlanView(),
     'editCredentials': (_) => const ProfileCredentialsForm(),
     'eventpointsadmin': (_) => const EventPointsAdminView(),
     'events': (_) => const EventListViewAdmin()
