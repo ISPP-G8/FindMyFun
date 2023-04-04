@@ -26,13 +26,7 @@ class EventPointCreationScreen extends StatefulWidget {
 
 class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   final _nameController = TextEditingController();
-  final _addressController = TextEditingController();
-  final _latitudeController = TextEditingController();
-  final _longitudeController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _cityController = TextEditingController();
-  final _countryController = TextEditingController();
-  final _imageController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   Widget placeholder = Container(
@@ -238,24 +232,22 @@ class _MapPlaceSelectorScreen extends State<MapPlaceSelectorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          GoogleMap(
-            initialCameraPosition: _initialCameraPosition,
-            onMapCreated: (controller) => _googleMapController = controller,
-            markers: Set.from(tappedMarker),
-            onTap: _handleTapMarker,
-            mapType: MapType.normal,
-            gestureRecognizers: {
-              Factory<OneSequenceGestureRecognizer>(
-                () => EagerGestureRecognizer(),
-              ),
-            },
-          ),
-        ],
-      ),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        GoogleMap(
+          initialCameraPosition: _initialCameraPosition,
+          onMapCreated: (controller) => _googleMapController = controller,
+          markers: Set.from(tappedMarker),
+          onTap: _handleTapMarker,
+          mapType: MapType.normal,
+          gestureRecognizers: {
+            Factory<OneSequenceGestureRecognizer>(
+              () => EagerGestureRecognizer(),
+            ),
+          },
+        ),
+      ],
     );
   }
 
