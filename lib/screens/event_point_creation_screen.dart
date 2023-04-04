@@ -14,7 +14,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../services/services.dart';
 
-List<Marker> tappedMarker = [];
+List<Marker> tappedMarkerEventPoint = [];
 
 class EventPointCreationScreen extends StatefulWidget {
   const EventPointCreationScreen({Key? key}) : super(key: key);
@@ -120,7 +120,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                       constraints: BoxConstraints(
                           maxHeight: size.height * 0.5,
                           maxWidth: size.width * 0.8),
-                      child: const MapPlaceSelectorScreen(),
+                      child: const MapPlaceSelectorEventPointScreen(),
                     ),
                     Divider(
                       thickness: 7,
@@ -168,7 +168,8 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                   return;
                                 }
 
-                                Marker selectedMarker = tappedMarker[0];
+                                Marker selectedMarker =
+                                    tappedMarkerEventPoint[0];
 
                                 List<Placemark> selectedPlaceMark =
                                     await placemarkFromCoordinates(
@@ -215,14 +216,16 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   }
 }
 
-class MapPlaceSelectorScreen extends StatefulWidget {
-  const MapPlaceSelectorScreen({super.key});
+class MapPlaceSelectorEventPointScreen extends StatefulWidget {
+  const MapPlaceSelectorEventPointScreen({super.key});
 
   @override
-  State<MapPlaceSelectorScreen> createState() => _MapPlaceSelectorScreen();
+  State<MapPlaceSelectorEventPointScreen> createState() =>
+      _MapPlaceSelectorEventPointScreen();
 }
 
-class _MapPlaceSelectorScreen extends State<MapPlaceSelectorScreen> {
+class _MapPlaceSelectorEventPointScreen
+    extends State<MapPlaceSelectorEventPointScreen> {
   late GoogleMapController _googleMapController;
 
   static const _initialCameraPosition = CameraPosition(
@@ -238,7 +241,7 @@ class _MapPlaceSelectorScreen extends State<MapPlaceSelectorScreen> {
         GoogleMap(
           initialCameraPosition: _initialCameraPosition,
           onMapCreated: (controller) => _googleMapController = controller,
-          markers: Set.from(tappedMarker),
+          markers: Set.from(tappedMarkerEventPoint),
           onTap: _handleTapMarker,
           mapType: MapType.normal,
           gestureRecognizers: {
@@ -251,12 +254,10 @@ class _MapPlaceSelectorScreen extends State<MapPlaceSelectorScreen> {
     );
   }
 
-  getLatLongMarker() {}
-
   _handleTapMarker(LatLng tappedPoint) {
     setState(() {
-      tappedMarker.clear();
-      tappedMarker.add(Marker(
+      tappedMarkerEventPoint.clear();
+      tappedMarkerEventPoint.add(Marker(
           markerId: MarkerId(tappedPoint.toString()), position: tappedPoint));
     });
   }
