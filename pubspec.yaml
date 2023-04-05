@@ -36,6 +36,7 @@ dependencies:
   flutter:
     sdk: flutter
   
+  geocoding: ^2.1.0
   google_maps_flutter: ^2.2.5
   http: ^0.13.5
   image_picker: ^0.8.7
