@@ -2,6 +2,7 @@
 //
 //     final user = userFromJson(jsonString);
 
+import 'package:findmyfun/models/important_notification.dart';
 import 'package:findmyfun/models/preferences.dart';
 import 'dart:convert';
 
@@ -17,6 +18,7 @@ class User {
     required this.preferences,
     this.isAdmin = false,
     this.isCompany = false,
+    required this.notifications,
   });
 
   String id;
@@ -29,6 +31,7 @@ class User {
   List<Preferences?> preferences;
   bool? isAdmin;
   bool? isCompany;
+  List<ImportantNotification?> notifications;
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
@@ -49,8 +52,15 @@ class User {
               .values
               .toList()
           : [],
+      notifications: json["notifications"] != null
+          ? Map.from(json["notifications"])
+              .map((k, v) =>
+                  MapEntry<String, ImportantNotification>(k, ImportantNotification.fromJson(v)))
+              .values
+              .toList()
+          : [],
       isAdmin: json["isAdmin"] ?? false,
-      isCompany: json["isCompany"] ?? false);
+      isCompany: json["isCompany"] ?? false); 
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -64,5 +74,7 @@ class User {
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "isAdmin": isAdmin,
         "isCompany": isCompany,
+        "notifications": Map.from(notifications.fold({}, (r, n) => r..[n?.userId] = n))
+            .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
       };
 }

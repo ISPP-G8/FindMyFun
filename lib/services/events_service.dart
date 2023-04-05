@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:findmyfun/models/important_notification.dart';
 import 'package:findmyfun/services/auth_service.dart';
+import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/event.dart';
@@ -42,6 +44,8 @@ class EventsService extends ChangeNotifier {
     try {
       // ignore: unused_local_variable
       final resp = await http.put(url, body: jsonEncode(event.toJson()));
+      ImportantNotification notificationCreacionEvento = ImportantNotification(userId: event.creator, date: DateTime.now(), info: "Has creado correctamente el evento ${event.name}");
+      ImportantNotificationService().saveNotification(notificationCreacionEvento, event.creator);
     } catch (e) {
       debugPrint('Error creating event: $e');
     }
@@ -123,6 +127,10 @@ class EventsService extends ChangeNotifier {
           'Asegúrate de haber iniciado sesión, de que el evento existe y está activo no estás dentro de él');
     } else {
       event.users.add(activeUserId);
+      ImportantNotification notificationUsuarioEntra = ImportantNotification(userId: activeUserId, date: DateTime.now(), info: "Te has unido correctamente al evento ${event.name}");
+      ImportantNotification notificationDuenoEvento = ImportantNotification(userId: event.creator, date: DateTime.now(), info: "Te has unido correctamente al evento ${event.name}");
+      ImportantNotificationService().saveNotification(notificationUsuarioEntra, activeUserId);
+      ImportantNotificationService().saveNotification(notificationDuenoEvento, event.creator);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');
 
       try {
