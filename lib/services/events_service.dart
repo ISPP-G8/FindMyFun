@@ -190,11 +190,15 @@ class EventsService extends ChangeNotifier {
             if (!event.hasFinished) {
               int i = 0;
               for (String word in words) {
-                word = word.toLowerCase();
-                if (event.address.toLowerCase().contains(word) ||
-                    event.city.toLowerCase().contains(word) ||
-                    event.description.toLowerCase().contains(word) ||
-                    event.name.toLowerCase().contains(word)) {
+                word = removeDiacritics(word).toLowerCase();
+                if (removeDiacritics(event.address)
+                        .toLowerCase()
+                        .contains(word) ||
+                    removeDiacritics(event.city).toLowerCase().contains(word) ||
+                    removeDiacritics(event.description)
+                        .toLowerCase()
+                        .contains(word) ||
+                    removeDiacritics(event.name).toLowerCase().contains(word)) {
                   i = i + 1;
                 }
                 if (i == words.length) {
@@ -221,6 +225,18 @@ class EventsService extends ChangeNotifier {
     }
   }
 
+  String removeDiacritics(String str) {
+    var withDia =
+        'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+    var withoutDia =
+        'AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz';
+
+    for (int i = 0; i < withDia.length; i++) {
+      str = str.replaceAll(withDia[i], withoutDia[i]);
+    }
+
+    return str;
+  }
   //READ USERS EVENTS
 
   Future<List<String>> getUsersFromEvent(Event event) async {

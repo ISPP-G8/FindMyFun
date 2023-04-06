@@ -45,7 +45,7 @@ class EventContainer extends StatelessWidget {
               ),
               const Spacer(),
               SizedBox(
-                  width: size.width * 0.34,
+                  width: size.width * 0.3,
                   height: size.height * 0.12,
                   child: CachedNetworkImage(
                     imageUrl: event.image,
