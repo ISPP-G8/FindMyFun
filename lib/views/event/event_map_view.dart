@@ -111,26 +111,79 @@ class _MapScreenState extends State<MapScreen> {
                       _googleMapController = controller,
                   mapType: MapType.normal,
                 ),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      color: ProjectColors.primary.withOpacity(0.7),
+                      padding: EdgeInsets.symmetric(vertical: size.height * 0.025, horizontal: size.width * 0.01),
+                      height: size.height * 0.1,
+                      width: size.width * 0.6,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(color: Colors.red, height: 10, width: 10,),
+                              const Text(
+                                " Eventos disponibles",
+                                style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                decoration: TextDecoration.none,
+                                )
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          Row(
+                            children: [
+                              Container(color: Colors.purple, height: 10, width: 10,),
+                              const Text(
+                                " Puntos de evento disponibles",
+                                style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                decoration: TextDecoration.none,
+                                )
+                              ),
+                            ],
+                          )
+
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: FloatingActionButton(
+                      backgroundColor: ProjectColors.tertiary.withOpacity(0.7),
+                      onPressed: () =>_googleMapController.animateCamera(CameraUpdate.newCameraPosition(_initialCameraPosition)),
+                      child: const Icon(Icons.my_location),
+                    ),
+                  ),
+                ),
                 Visibility(
                   visible: isEventDetailsVisible != null,
                   child: GestureDetector(
-                    // onTap: () => selectedEvent is Event ? Navigator.pushNamed(context, 'eventDetails',  arguments: selectedEvent) :
-                    // Navigator.pushNamed(context, 'eventDetails',
-                    //     arguments: selectedEvent) */,
-
-                    //TODO: A falta de implementar la vista de detalles de un punto de evento
-
                     child: Align(
                         alignment: Alignment.bottomCenter,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: ProjectColors.secondary,
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black54,
-                                    spreadRadius: 1,
-                                    blurRadius: 7)
-                              ]),
+                        child: 
+                          GestureDetector(
+                            onTap: () => Navigator.pushNamed(context, 'eventDetails', arguments: selectedEvent),
+                            child: Container(
+                          decoration: BoxDecoration(
+                          color: ProjectColors.secondary.withOpacity(0.7),
+                          // ignore: prefer_const_literals_to_create_immutables
+                          boxShadow: [
+                            const BoxShadow(
+                              color: Colors.black54,
+                                spreadRadius: 1,
+                                blurRadius: 7)
+                          ]),
                           margin: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 15),
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -188,8 +241,8 @@ class _MapScreenState extends State<MapScreen> {
                                       ),
                                       Text(
                                           selectedEvent is Event
-                                              ? selectedEvent.users.length
-                                                  .toString()
+                                              ? '${selectedEvent.users.length
+                                                  .toString()} asistente/s'
                                               : '',
                                           style: const TextStyle(
                                             color: Colors.black,
@@ -200,7 +253,7 @@ class _MapScreenState extends State<MapScreen> {
                                   ),
                                   const Spacer(),
                                   SizedBox(
-                                      width: 150,
+                                      width: size.width * 0.3,
                                       height: size.height * 0.12,
                                       child: CachedNetworkImage(
                                         imageUrl: selectedEvent != null
@@ -223,7 +276,9 @@ class _MapScreenState extends State<MapScreen> {
                               ),
                             ],
                           ),
-                        )),
+                        ), 
+                          ),
+                    ),
                   ),
                 )
               ],

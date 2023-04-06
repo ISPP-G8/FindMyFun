@@ -48,7 +48,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
           subtitle:
               'Crea y únete a eventos creados por empresas u otros usuarios',
           firstPrice: '0€ al mes',
-          secondPrice: '3,99€ al mes',
+          secondPrice: '6,99€ al mes',
           selected: !isCompany,
         ),
       ),
