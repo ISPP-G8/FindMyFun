@@ -19,6 +19,7 @@ class EventCreationView extends StatelessWidget {
           // backgroundColor: ProjectColors.primary,
           body: SingleChildScrollView(
               child: Column(children: [
+            const CustomAd(),
             const Center(
                 child: Text(
               'CREAR EVENTO',

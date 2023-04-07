@@ -34,11 +34,12 @@ class _EventListView extends State<EventListView> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              const CustomAd(),
               const Center(
                   child: Text(
                 'TODOS LOS EVENTOS',
                 style: TextStyle(
-                    color: ProjectColors.primary,
+                    color: ProjectColors.secondary,
                     fontSize: 30,
                     fontWeight: FontWeight.bold),
               )),
@@ -47,7 +48,8 @@ class _EventListView extends State<EventListView> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: size.height*0.68),
+                      constraints:
+                          BoxConstraints(maxHeight: size.height * 0.68),
                       child: ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (_, index) => EventContainer(

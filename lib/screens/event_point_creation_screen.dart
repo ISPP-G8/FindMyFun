@@ -7,7 +7,6 @@ import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/ui/ui.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -29,7 +28,6 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   final _descriptionController = TextEditingController();
   final _cityController = TextEditingController();
   final _countryController = TextEditingController();
-  final _imageController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   Widget placeholder = Container(
@@ -37,7 +35,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
     decoration: BoxDecoration(
         image: DecorationImage(
             image: Image.asset('assets/placeholder.png').image)),
-    child: Text(
+    child: const Text(
       'Seleccione una imagen de su galería',
       textAlign: TextAlign.center,
     ),
@@ -83,6 +81,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+                    const CustomAd(),
                     GestureDetector(
                       onTap: () async {
                         // Muestra el circulo de progreso

@@ -83,6 +83,7 @@ class _FormsColumn extends StatelessWidget {
         if (snapshot.hasData) {
           return Column(
             children: [
+              const CustomAd(),
               const SizedBox(
                 height: 10,
               ),
