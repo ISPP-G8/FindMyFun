@@ -3,14 +3,18 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/event_point.dart';
+import 'package:findmyfun/services/ad_service.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/ui/ui.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../services/services.dart';
+
+const int maxFailedLoadAttemptsEventPoint = 3;
 
 class EventPointCreationScreen extends StatefulWidget {
   const EventPointCreationScreen({Key? key}) : super(key: key);
@@ -30,6 +34,12 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   final _countryController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  InterstitialAd? _interstitialAd;
+  static const AdRequest request = AdRequest(
+    nonPersonalizedAds: true,
+  );
+  int _numInterstitialLoadAttempts = 0;
+
   Widget placeholder = Container(
     alignment: Alignment.center,
     decoration: BoxDecoration(
@@ -41,6 +51,58 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
     ),
   );
   String imageUrl = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _createInterstitialAd();
+  }
+
+  void _createInterstitialAd() {
+    InterstitialAd.load(
+        adUnitId: AdService.interstitialAdUnitId!,
+        request: request,
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            print('$ad loaded');
+            _interstitialAd = ad;
+            _numInterstitialLoadAttempts = 0;
+            _interstitialAd!.setImmersiveMode(true);
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            print('InterstitialAd failed to load: $error.');
+            _numInterstitialLoadAttempts += 1;
+            _interstitialAd = null;
+            if (_numInterstitialLoadAttempts <
+                maxFailedLoadAttemptsEventPoint) {
+              _createInterstitialAd();
+            }
+          },
+        ));
+  }
+
+  void _showInterstitialAd() {
+    if (_interstitialAd == null) {
+      print('Warning: attempt to show interstitial before loaded.');
+      return;
+    }
+    _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+      onAdShowedFullScreenContent: (InterstitialAd ad) =>
+          print('ad onAdShowedFullScreenContent.'),
+      onAdDismissedFullScreenContent: (InterstitialAd ad) {
+        print('$ad onAdDismissedFullScreenContent.');
+        ad.dispose();
+        _createInterstitialAd();
+      },
+      onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+        print('$ad onAdFailedToShowFullScreenContent: $error');
+        ad.dispose();
+        _createInterstitialAd();
+      },
+    );
+    _interstitialAd!.show();
+    _interstitialAd = null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,6 +252,8 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                 showCircularProgressDialog(context);
                                 await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);
+
+                                _showInterstitialAd();
 
                                 // ignore: use_build_context_synchronously
                                 Navigator.pop(context);

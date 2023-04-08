@@ -1,12 +1,15 @@
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../helpers/validators.dart';
 import '../../services/services.dart';
 import '../../ui/custom_snackbars.dart';
+
+const int maxFailedLoadAttemptsEvent = 3;
 
 class EventCreationView extends StatelessWidget {
   const EventCreationView({super.key});
@@ -40,7 +43,14 @@ class EventCreationView extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class _FormsColumn extends StatelessWidget {
+class _FormsColumn extends StatefulWidget {
+  _FormsColumn();
+
+  @override
+  State<_FormsColumn> createState() => _FormsColumnState();
+}
+
+class _FormsColumnState extends State<_FormsColumn> {
   final _formKey = GlobalKey<FormState>();
   final _name = TextEditingController();
   final _address = TextEditingController();
@@ -53,9 +63,63 @@ class _FormsColumn extends StatelessWidget {
   final _startDateTime = TextEditingController();
   final _startTime = TextEditingController();
   List<Object> _selectedValues = [];
-  // final _tags = const CategoryDropdown(onSelectionChanged: ,);
 
-  _FormsColumn();
+  InterstitialAd? _interstitialAd;
+  static const AdRequest request = AdRequest(
+    nonPersonalizedAds: true,
+  );
+  int _numInterstitialLoadAttempts = 0;
+
+  void _createInterstitialAd() {
+    InterstitialAd.load(
+        adUnitId: AdService.interstitialAdUnitId!,
+        request: request,
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            print('$ad loaded');
+            _interstitialAd = ad;
+            _numInterstitialLoadAttempts = 0;
+            _interstitialAd!.setImmersiveMode(true);
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            print('InterstitialAd failed to load: $error.');
+            _numInterstitialLoadAttempts += 1;
+            _interstitialAd = null;
+            if (_numInterstitialLoadAttempts < maxFailedLoadAttemptsEvent) {
+              _createInterstitialAd();
+            }
+          },
+        ));
+  }
+
+  void _showInterstitialAd() {
+    if (_interstitialAd == null) {
+      print('Warning: attempt to show interstitial before loaded.');
+      return;
+    }
+    _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+      onAdShowedFullScreenContent: (InterstitialAd ad) =>
+          print('ad onAdShowedFullScreenContent.'),
+      onAdDismissedFullScreenContent: (InterstitialAd ad) {
+        print('$ad onAdDismissedFullScreenContent.');
+        ad.dispose();
+        _createInterstitialAd();
+      },
+      onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+        print('$ad onAdFailedToShowFullScreenContent: $error');
+        ad.dispose();
+        _createInterstitialAd();
+      },
+    );
+    _interstitialAd!.show();
+    _interstitialAd = null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _createInterstitialAd();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,30 +209,8 @@ class _FormsColumn extends StatelessWidget {
                 );
                 final eventsService =
                     Provider.of<EventsService>(context, listen: false);
-                await eventsService.saveEvent(Event(
-                    address: _address.text,
-                    city: _city.text,
-                    country: _country.text,
-                    description: _description.text,
-                    finished: false,
-                    image: _image.text,
-                    name: _name.text,
-                    latitude: double.parse(_latitude.text),
-                    longitude: double.parse(_longitude.text),
-                    startDate: DateTime.parse(
-                        '${_startDateTime.text} ${_startTime.text}'),
-                    tags: await Future.wait(_selectedValues
-                        .map((e) => PreferencesService()
-                            .getPreferenceByName(e.toString()))
-                        .toList()),
-                    users: [id],
-                    messages: [
-                      Messages(
-                          userId: "8AH3CM76DydLFLrAQANT2gTBYlk2",
-                          date: DateTime.now(),
-                          text: "Bienvenido")
-                    ],
-                    id: const Uuid().v1()));
+                // El evento aqui
+                _showInterstitialAd();
                 // ignore: use_build_context_synchronously
                 Navigator.pop(context);
                 final pageController =
