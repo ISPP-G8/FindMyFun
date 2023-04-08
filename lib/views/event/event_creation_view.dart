@@ -209,7 +209,30 @@ class _FormsColumnState extends State<_FormsColumn> {
                 );
                 final eventsService =
                     Provider.of<EventsService>(context, listen: false);
-                // El evento aqui
+                await eventsService.saveEvent(Event(
+                    address: _address.text,
+                    city: _city.text,
+                    country: _country.text,
+                    description: _description.text,
+                    finished: false,
+                    image: _image.text,
+                    name: _name.text,
+                    latitude: double.parse(_latitude.text),
+                    longitude: double.parse(_longitude.text),
+                    startDate: DateTime.parse(
+                        '${_startDateTime.text} ${_startTime.text}'),
+                    tags: await Future.wait(_selectedValues
+                        .map((e) => PreferencesService()
+                            .getPreferenceByName(e.toString()))
+                        .toList()),
+                    users: [id],
+                    messages: [
+                      Messages(
+                          userId: "8AH3CM76DydLFLrAQANT2gTBYlk2",
+                          date: DateTime.now(),
+                          text: "Bienvenido")
+                    ],
+                    id: const Uuid().v1()));
                 _showInterstitialAd();
                 // ignore: use_build_context_synchronously
                 Navigator.pop(context);
