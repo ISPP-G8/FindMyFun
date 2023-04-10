@@ -17,7 +17,7 @@ class User {
     required this.preferences,
     this.isAdmin = false,
     this.isCompany = false,
-    this.subscription,
+    required this.subscription,
   });
 
   String id;
@@ -30,7 +30,7 @@ class User {
   List<Preferences?> preferences;
   bool? isAdmin;
   bool? isCompany;
-  Subscription? subscription;
+  Subscription subscription;
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
@@ -68,6 +68,6 @@ class User {
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "isAdmin": isAdmin,
         "isCompany": isCompany,
-        "subscription": subscription?.toJson(),
+        "subscription": subscription.toJson(),
       };
 }

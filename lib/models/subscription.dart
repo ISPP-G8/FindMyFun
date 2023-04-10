@@ -1,16 +1,42 @@
 import 'dart:convert';
 
-enum SubscriptionType { free, premium, business }
+enum SubscriptionType { free, premium, company }
 
 class Subscription {
   Subscription(
       {required this.type,
-      required this.validUntil,
+      this.validUntil,
       required this.numEventsCreatedThisMonth});
 
   SubscriptionType type;
   DateTime? validUntil;
   int numEventsCreatedThisMonth = 0;
+
+  int get maxEventsPerMonth => type == SubscriptionType.free
+      ? 5
+      : type == SubscriptionType.premium
+          ? 15
+          : -1;
+
+  int get maxTimeInAdvanceToJoinEventsInDays => type == SubscriptionType.free
+      ? 10
+      : type == SubscriptionType.premium
+          ? 30
+          : -1;
+
+  int get maxVisiblityOfEventsInDays => type == SubscriptionType.free
+      ? 3
+      : type == SubscriptionType.premium
+          ? 10
+          : -1;
+
+  int get maxUsersPerEvent => type == SubscriptionType.free
+      ? 8
+      : type == SubscriptionType.premium
+          ? 20
+          : -1;
+  
+  bool get canCreateEvents => maxEventsPerMonth == -1 || numEventsCreatedThisMonth < maxEventsPerMonth;
 
   factory Subscription.fromRawJson(String str) =>
       Subscription.fromJson(json.decode(str));

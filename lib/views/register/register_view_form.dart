@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:findmyfun/helpers/helpers.dart';
-import 'package:findmyfun/models/models.dart' as user;
+import 'package:findmyfun/models/models.dart' as models;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -120,7 +120,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                         email: _emailController.text,
                         password: _passwordController.text);
 
-                userService.currentUser = user.User(
+                userService.currentUser = models.User(
                     id: credential.user!.uid,
                     image: _imageController.text,
                     name: _nameController.text,
@@ -128,7 +128,8 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                     username: _usernameController.text,
                     city: _locationController.text,
                     email: _emailController.text,
-                    preferences: []);
+                    preferences: [],
+                    subscription: models.Subscription.fromRawJson('subscription {"type": 0,"numEventsCreatedThisMonth": "0"}'));
                 final resp =
                     await userService.addItem(userService.currentUser!);
                 if (resp) {

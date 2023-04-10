@@ -8,8 +8,29 @@ import '../../helpers/validators.dart';
 import '../../services/services.dart';
 import '../../ui/custom_snackbars.dart';
 
-class EventCreationView extends StatelessWidget {
+late Future<User> loggedUserFuture;
+late User loggedUser;
+
+class EventCreationView extends StatefulWidget {
   const EventCreationView({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _EventCreationView();
+}
+
+class _EventCreationView extends State<EventCreationView> {
+  @override
+  void initState() {
+    super.initState();
+
+    loggedUserFuture = getLoggedUser();
+  }
+
+  Future<User> getLoggedUser() async {
+    User user = await UsersService()
+        .getUserWithUid(AuthService().currentUser?.uid ?? "");
+    return user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +51,28 @@ class EventCreationView extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            LoginContainer(
-              child: _FormsColumn(),
+            FutureBuilder<dynamic>(
+              future: loggedUserFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  loggedUser = snapshot.data;
+
+                  if (loggedUser.subscription.canCreateEvents) {
+                    return LoginContainer(
+                      child: _FormsColumn(),
+                    );
+                  } else {
+                    return const Center(
+                      child: Text('Ya no puedes crear más eventos este mes'),
+                    );
+                  }
+                } else {
+                  return Column(children: const [
+                    SizedBox(height: 100),
+                    Center(child: CircularProgressIndicator())
+                  ]);
+                }
+              },
             ),
           ]))),
     );
@@ -144,36 +185,46 @@ class _FormsColumn extends StatelessWidget {
                 );
                 final eventsService =
                     Provider.of<EventsService>(context, listen: false);
-                await eventsService.saveEvent(Event(
-                    address: _address.text,
-                    city: _city.text,
-                    country: _country.text,
-                    description: _description.text,
-                    finished: false,
-                    image: _image.text,
-                    name: _name.text,
-                    latitude: double.parse(_latitude.text),
-                    longitude: double.parse(_longitude.text),
-                    startDate: DateTime.parse(
-                        '${_startDateTime.text} ${_startTime.text}'),
-                    tags: await Future.wait(_selectedValues
-                        .map((e) => PreferencesService()
-                            .getPreferenceByName(e.toString()))
-                        .toList()),
-                    users: [id],
-                    messages: [
-                      Messages(
-                          userId: "8AH3CM76DydLFLrAQANT2gTBYlk2",
-                          date: DateTime.now(),
-                          text: "Bienvenido")
-                    ],
-                    id: const Uuid().v1()));
-                // ignore: use_build_context_synchronously
-                Navigator.pop(context);
-                final pageController =
-                    // ignore: use_build_context_synchronously
-                    Provider.of<PageViewService>(context, listen: false);
-                pageController.mainPageController.jumpToPage(0);
+                if (loggedUser.subscription.canCreateEvents) {
+                  await eventsService.saveEvent(Event(
+                      address: _address.text,
+                      city: _city.text,
+                      country: _country.text,
+                      description: _description.text,
+                      finished: false,
+                      image: _image.text,
+                      name: _name.text,
+                      latitude: double.parse(_latitude.text),
+                      longitude: double.parse(_longitude.text),
+                      startDate: DateTime.parse(
+                          '${_startDateTime.text} ${_startTime.text}'),
+                      tags: await Future.wait(_selectedValues
+                          .map((e) => PreferencesService()
+                              .getPreferenceByName(e.toString()))
+                          .toList()),
+                      users: [id],
+                      maxUsers: loggedUser.subscription.maxUsersPerEvent,
+                      messages: [
+                        Messages(
+                            userId: "8AH3CM76DydLFLrAQANT2gTBYlk2",
+                            date: DateTime.now(),
+                            text: "Bienvenido")
+                      ],
+                      id: const Uuid().v1()));
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
+                  final pageController =
+                      // ignore: use_build_context_synchronously
+                      Provider.of<PageViewService>(context, listen: false);
+                  pageController.mainPageController.jumpToPage(0);
+                } else {
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
+                  CustomSnackbars.showCustomSnackbar(
+                    context,
+                    const Text('Ya no puedes crear más eventos este mes'),
+                  );
+                }
               } else {
                 CustomSnackbars.showCustomSnackbar(
                   context,
