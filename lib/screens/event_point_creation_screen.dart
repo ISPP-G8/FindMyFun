@@ -1,17 +1,20 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/event_point.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/ui/ui.dart';
 import 'package:findmyfun/widgets/widgets.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../services/services.dart';
+
+List<Marker> tappedMarkerEventPoint = [];
 
 class EventPointCreationScreen extends StatefulWidget {
   const EventPointCreationScreen({Key? key}) : super(key: key);
@@ -23,13 +26,7 @@ class EventPointCreationScreen extends StatefulWidget {
 
 class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   final _nameController = TextEditingController();
-  final _addressController = TextEditingController();
-  final _latitudeController = TextEditingController();
-  final _longitudeController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _cityController = TextEditingController();
-  final _countryController = TextEditingController();
-  final _imageController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   Widget placeholder = Container(
@@ -37,7 +34,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
     decoration: BoxDecoration(
         image: DecorationImage(
             image: Image.asset('assets/placeholder.png').image)),
-    child: Text(
+    child: const Text(
       'Seleccione una imagen de su galería',
       textAlign: TextAlign.center,
     ),
@@ -92,6 +89,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                         imageUrl = await uploadImage(context,
                             imageId: eventPointId, route: 'EventPoints');
 
+                        // ignore: use_build_context_synchronously
                         Navigator.pop(
                             context); // Cierra el circulo de progreso.
 
@@ -112,34 +110,27 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                               ),
                       ),
                     ),
+                    Divider(
+                      thickness: 7,
+                      color: ProjectColors.tertiary,
+                      indent: size.height * 0.05,
+                      endIndent: size.height * 0.05,
+                    ),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                          maxHeight: size.height * 0.5,
+                          maxWidth: size.width * 0.8),
+                      child: const MapPlaceSelectorEventPointScreen(),
+                    ),
+                    Divider(
+                      thickness: 7,
+                      color: ProjectColors.tertiary,
+                      indent: size.height * 0.05,
+                      endIndent: size.height * 0.05,
+                    ),
                     CustomTextForm(
                       hintText: 'Nombre',
                       controller: _nameController,
-                      validator: (value) => Validators.validateNotEmpty(value),
-                    ),
-                    CustomTextForm(
-                      hintText: 'Pais',
-                      controller: _countryController,
-                      validator: (value) => Validators.validateNotEmpty(value),
-                    ),
-                    CustomTextForm(
-                      hintText: 'Latitud',
-                      controller: _latitudeController,
-                      validator: (value) => Validators.validateNotEmpty(value),
-                    ),
-                    CustomTextForm(
-                      hintText: 'Longitud',
-                      controller: _longitudeController,
-                      validator: (value) => Validators.validateNotEmpty(value),
-                    ),
-                    CustomTextForm(
-                      hintText: 'Ciudad',
-                      controller: _cityController,
-                      validator: (value) => Validators.validateNotEmpty(value),
-                    ),
-                    CustomTextForm(
-                      hintText: 'Dirección',
-                      controller: _addressController,
                       validator: (value) => Validators.validateNotEmpty(value),
                     ),
                     CustomTextForm(
@@ -167,25 +158,35 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                         MaterialButton(
                                           onPressed: () =>
                                               Navigator.pop(context),
-                                          child: Text('Ok'),
+                                          child: const Text('Ok'),
                                         )
                                       ],
-                                      content: Text(
+                                      content: const Text(
                                           'Por favor, seleccione una imagen'),
                                     ),
                                   );
                                   return;
                                 }
+
+                                Marker selectedMarker =
+                                    tappedMarkerEventPoint[0];
+
+                                List<Placemark> selectedPlaceMark =
+                                    await placemarkFromCoordinates(
+                                        selectedMarker.position.latitude,
+                                        selectedMarker.position.longitude);
+
+                                Placemark placeMark = selectedPlaceMark[0];
+
                                 final eventPoint = EventPoint(
                                     name: _nameController.text,
                                     description: _descriptionController.text,
                                     longitude:
-                                        double.parse(_longitudeController.text),
-                                    latitude:
-                                        double.parse(_latitudeController.text),
-                                    address: _addressController.text,
-                                    city: _cityController.text,
-                                    country: _countryController.text,
+                                        selectedMarker.position.longitude,
+                                    latitude: selectedMarker.position.latitude,
+                                    address: placeMark.street!,
+                                    city: placeMark.locality!,
+                                    country: placeMark.country!,
                                     image: imageUrl,
                                     id: eventPointId);
                                 showCircularProgressDialog(context);
@@ -212,6 +213,53 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
             ),
           ),
         ));
+  }
+}
+
+class MapPlaceSelectorEventPointScreen extends StatefulWidget {
+  const MapPlaceSelectorEventPointScreen({super.key});
+
+  @override
+  State<MapPlaceSelectorEventPointScreen> createState() =>
+      _MapPlaceSelectorEventPointScreen();
+}
+
+class _MapPlaceSelectorEventPointScreen
+    extends State<MapPlaceSelectorEventPointScreen> {
+  late GoogleMapController _googleMapController;
+
+  static const _initialCameraPosition = CameraPosition(
+    target: LatLng(37.356342, -5.984759),
+    zoom: 13,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        GoogleMap(
+          initialCameraPosition: _initialCameraPosition,
+          onMapCreated: (controller) => _googleMapController = controller,
+          markers: Set.from(tappedMarkerEventPoint),
+          onTap: _handleTapMarker,
+          mapType: MapType.normal,
+          gestureRecognizers: {
+            Factory<OneSequenceGestureRecognizer>(
+              () => EagerGestureRecognizer(),
+            ),
+          },
+        ),
+      ],
+    );
+  }
+
+  _handleTapMarker(LatLng tappedPoint) {
+    setState(() {
+      tappedMarkerEventPoint.clear();
+      tappedMarkerEventPoint.add(Marker(
+          markerId: MarkerId(tappedPoint.toString()), position: tappedPoint));
+    });
   }
 }
 
