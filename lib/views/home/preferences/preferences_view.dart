@@ -31,7 +31,6 @@ class PreferencesView extends StatelessWidget {
           ),
           // backgroundColor: ProjectColors.primary,
           body: Column(children: const [
-            CustomAd(),
             SizedBox(
               height: 20,
             ),
