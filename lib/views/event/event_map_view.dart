@@ -121,10 +121,26 @@ class _MapScreenState extends State<MapScreen> {
                       padding: EdgeInsets.symmetric(
                           vertical: size.height * 0.025,
                           horizontal: size.width * 0.01),
-                      height: size.height * 0.1,
-                      width: size.width * 0.6,
+                      height: size.height * 0.13,
+                      width: size.width * 0.7,
                       child: Column(
                         children: [
+                          Row(
+                            children: [
+                              Container(
+                                color: Colors.pink,
+                                height: 10,
+                                width: 10,
+                              ),
+                              const Text(" Eventos a los que estás apuntado",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                    decoration: TextDecoration.none,
+                                  )),
+                            ],
+                          ),
+                          SizedBox(height: size.height * 0.01),
                           Row(
                             children: [
                               Container(
