@@ -45,7 +45,7 @@ class Subscription {
 
   factory Subscription.fromJson(Map<String, dynamic> json) => Subscription(
         type: SubscriptionType.values[json['type']],
-        validUntil: DateTime.parse(json["validUntil"]),
+        validUntil: json["validUntil"] != null ? DateTime.parse(json["validUntil"]) : null,
         numEventsCreatedThisMonth: json['numEventsCreatedThisMonth'] ?? 0,
       );
 
