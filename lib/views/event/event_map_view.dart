@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:findmyfun/services/services.dart';
 import '../../themes/colors.dart';
@@ -37,13 +38,11 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  static const _initialCameraPosition = CameraPosition(
-    target: LatLng(37.356342, -5.984759),
-    zoom: 13,
-  );
 
   late GoogleMapController _googleMapController;
   late Future markersFuture;
+  // ignore: prefer_const_constructors
+  LatLng currentPosition = LatLng(37.356342, -5.984759);
   String? isEventDetailsVisible;
 
   @override
@@ -51,11 +50,20 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
 
     markersFuture = _getMarkers();
+
+    _getUserCurrentLocation();
   }
 
   _getMarkers() async {
     MapService mapService = MapService();
     return await mapService.getMarkers();
+  }
+  
+  _getUserCurrentLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    currentPosition = LatLng(position.latitude, position.longitude);
+    setState(() {});
   }
 
   @override
@@ -106,7 +114,12 @@ class _MapScreenState extends State<MapScreen> {
                                         : null;
                               })))
                       .toSet()),
-                  initialCameraPosition: _initialCameraPosition,
+                  initialCameraPosition:  CameraPosition(
+                                            target: LatLng(currentPosition.latitude, currentPosition.longitude),
+                                            zoom: 15,
+                                          ),
+                  myLocationEnabled: true,
+                  compassEnabled: true,
                   onMapCreated: (controller) =>
                       _googleMapController = controller,
                   mapType: MapType.normal,
@@ -184,9 +197,18 @@ class _MapScreenState extends State<MapScreen> {
                     alignment: Alignment.topRight,
                     child: FloatingActionButton(
                       backgroundColor: ProjectColors.tertiary.withOpacity(0.7),
-                      onPressed: () => _googleMapController.animateCamera(
-                          CameraUpdate.newCameraPosition(
-                              _initialCameraPosition)),
+                      onPressed: () async {
+                        LatLng tempPosition = currentPosition;
+                        _getUserCurrentLocation.call();
+                        while (tempPosition == currentPosition) {
+                          await Future.delayed(const Duration(milliseconds: 50));
+                        }
+                        _googleMapController.animateCamera(
+                          CameraUpdate.newCameraPosition(CameraPosition(
+                              target: LatLng(currentPosition.latitude,
+                                  currentPosition.longitude),
+                              zoom: 15)));
+                        },
                       child: const Icon(Icons.my_location),
                     ),
                   ),
