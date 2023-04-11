@@ -181,9 +181,10 @@ class _MapScreenState extends State<MapScreen> {
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: GestureDetector(
-                        onTap: () => Navigator.pushNamed(
-                            context, 'eventDetails',
-                            arguments: selectedEvent),
+                        onTap: () => selectedEvent is Event
+                            ? Navigator.pushNamed(context, 'eventDetails',
+                                arguments: selectedEvent)
+                            : null,
                         child: Container(
                           decoration: BoxDecoration(
                               color: ProjectColors.secondary.withOpacity(0.7),
