@@ -1,10 +1,8 @@
 import 'package:findmyfun/helpers/validators.dart';
 import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/models/messages.dart';
-import 'package:findmyfun/models/user.dart';
-import 'package:findmyfun/services/auth_service.dart';
-import 'package:findmyfun/services/messages_service.dart';
 import 'package:findmyfun/services/services.dart';
+import 'package:findmyfun/widgets/custom_banner_ad.dart';
 import 'package:findmyfun/widgets/custom_text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
+          const CustomAd(),
           Expanded(
             child: ListView.builder(
               itemCount: messages.length,
