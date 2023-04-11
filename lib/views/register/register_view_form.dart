@@ -128,8 +128,8 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                     username: _usernameController.text,
                     city: _locationController.text,
                     email: _emailController.text,
-                    preferences: [],
-                    subscription: models.Subscription.fromRawJson('subscription {"type": 0,"numEventsCreatedThisMonth": "0"}'));
+                    preferences: [/*models.Preferences(id: '1110', name: 'Futbol')*/],
+                    subscription: models.Subscription(type: models.SubscriptionType.free, numEventsCreatedThisMonth: 0));
                 final resp =
                     await userService.addItem(userService.currentUser!);
                 if (resp) {
