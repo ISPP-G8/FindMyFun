@@ -36,7 +36,6 @@ dependencies:
   flutter:
     sdk: flutter
   
-  flutter_braintree: ^3.0.0
   google_maps_flutter: ^2.2.5
   http: ^0.13.5
   image_picker: ^0.8.7
@@ -45,7 +44,6 @@ dependencies:
   pull_to_refresh: ^2.0.0
   uuid: ^3.0.7
   flutter_paypal: ^0.0.8
-  pay: ^1.1.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
