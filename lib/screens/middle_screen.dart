@@ -31,8 +31,6 @@ class _MiddleScreenState extends State<MiddleScreen> {
 
         try {
           user = AuthService().currentUser;
-          // ignore: avoid_print
-          print(user?.email);
           userService.getCurrentUserWithUid();
 
           return const MainScreen();
