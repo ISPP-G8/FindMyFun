@@ -1,6 +1,7 @@
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/users_service.dart';
 import 'package:findmyfun/themes/styles.dart';
+import 'package:findmyfun/widgets/custom_banner_ad.dart';
 import 'package:findmyfun/widgets/custom_text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -44,6 +45,7 @@ class ProfileDetailsView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const CustomAd(),
                 Container(
                     padding: const EdgeInsets.all(10.0),
                     // child: Image.network(currentUser.image!, fit: BoxFit.cover),

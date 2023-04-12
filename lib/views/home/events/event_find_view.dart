@@ -33,6 +33,7 @@ class _EventFindView extends State<EventFindView> {
         resizeToAvoidBottomInset: true,
         body: Column(
           children: [
+            const CustomAd(),
             SizedBox(
               height: size.height * 0.02,
             ),
@@ -81,8 +82,9 @@ class _EventFindView extends State<EventFindView> {
                       if (snapshot.hasData) {
                         return ConstrainedBox(
                           constraints:
-                              BoxConstraints(maxHeight: size.height * 0.37),
+                              BoxConstraints(maxHeight: size.height * 0.3),
                           child: ListView.builder(
+                            shrinkWrap: true,
                             itemCount: snapshot.data!.length,
                             itemBuilder: (_, index) => EventContainer(
                               event: snapshot.data![index],
