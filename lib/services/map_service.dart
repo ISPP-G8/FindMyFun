@@ -7,11 +7,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MapService extends ChangeNotifier {
   EventsService eventsService = EventsService();
   EventPointsService eventPointsService = EventPointsService();
+  AuthService authService = AuthService();
 
   // GET ALL MARKERS
   Future<List<Point>> getMarkers() async {
     List<Point> markers = [];
 
+    String currentUser = AuthService().currentUser?.uid ?? "";
     List<Event> events = await eventsService.getEvents();
     List<EventPoint> eventPoints = await eventPointsService.getEventPoints();
 
@@ -21,6 +23,7 @@ class MapService extends ChangeNotifier {
           marker: Marker(
             markerId: MarkerId(event.id),
             position: LatLng(event.latitude, event.longitude),
+            icon: event.users.contains(currentUser) ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta) : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           )));
     }
 

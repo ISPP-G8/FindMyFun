@@ -132,7 +132,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                     city: _locationController.text,
                     email: _emailController.text,
                     preferences: [
-                      /*models.Preferences(id: '1110', name: 'Futbol')*/
+                      models.Preferences(id: '0001', name: 'Preferencia')
                     ],
                     subscription: models.Subscription(
                         type: models.SubscriptionType.free,
