@@ -1,11 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:findmyfun/models/models.dart';
-import 'package:findmyfun/services/users_service.dart';
 import 'package:findmyfun/themes/styles.dart';
 import 'package:findmyfun/widgets/custom_banner_ad.dart';
 import 'package:findmyfun/widgets/custom_text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:findmyfun/services/services.dart';
 
 import '../../../widgets/custom_button.dart';
 
@@ -133,6 +135,15 @@ class ProfileDetailsView extends StatelessWidget {
                   indent: 20,
                   endIndent: 20,
                 ),
+                Visibility(
+                  visible: currentUser.isCompany ?? false,
+                  child: GestureDetector(
+                      onTap: () async {
+                        await AuthService().signOut();
+                        Navigator.pushNamed(context, 'eventpointcreation');
+                      },
+                      child: const CustomButton(text: 'Crear punto de evento')),
+                ),
                 GestureDetector(
                     onTap: () => Navigator.pushNamed(context, 'preferences'),
                     child: const CustomButton(text: 'Tus preferencias')),
@@ -143,9 +154,15 @@ class ProfileDetailsView extends StatelessWidget {
                     onTap: () =>
                         Navigator.pushNamed(context, 'editCredentials'),
                     child: const CustomButton(text: 'Cambiar contraseña')),
+                // GestureDetector(
+                //     onTap: () => Navigator.pushNamed(context, 'settings'),
+                //     child: const CustomButton(text: 'Ajustes')),
                 GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, 'settings'),
-                    child: const CustomButton(text: 'Ajustes')),
+                    onTap: () async {
+                      await AuthService().signOut();
+                      Navigator.pushReplacementNamed(context, 'access');
+                    },
+                    child: const CustomButton(text: 'Cerrar sesión')),
                 const DeleteProfile(),
               ],
             ),
