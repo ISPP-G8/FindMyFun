@@ -154,6 +154,9 @@ class EventsService extends ChangeNotifier {
       throw Exception(
           'Asegúrate de haber iniciado sesión, de que el evento existe y está activo no estás dentro de él');
     } else {
+      if (event.isFull) {
+        throw Exception('Error: Event is full');
+      }
       event.users.add(activeUserId);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');
 
