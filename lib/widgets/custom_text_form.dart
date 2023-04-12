@@ -29,11 +29,9 @@ class CustomTextForm extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       padding: padding,
-      decoration:  BoxDecoration(
-        
+      decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Colors.black38, width: 2),
-
       ),
       child: TextFormField(
         keyboardType: type,
@@ -47,6 +45,7 @@ class CustomTextForm extends StatelessWidget {
         decoration: InputDecoration(
           enabledBorder: InputBorder.none,
           hintText: hintText,
+          hintStyle: const TextStyle(color: Colors.black87),
           border: InputBorder.none,
         ),
       ),

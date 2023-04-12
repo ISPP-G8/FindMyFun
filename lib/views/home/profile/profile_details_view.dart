@@ -29,7 +29,7 @@ class ProfileDetailsView extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Container(
+        child: SizedBox(
           height: 1000,
           width: 600,
           child: SingleChildScrollView(
@@ -48,9 +48,10 @@ class ProfileDetailsView extends StatelessWidget {
                   indent: 20,
                   endIndent: 20,
                 ),
-                Text(
+                const Text(
                   "Nombre del usuario",
                   textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
                 ),
                 CustomTextForm(
                   hintText: currentUser.username,
@@ -64,9 +65,10 @@ class ProfileDetailsView extends StatelessWidget {
                   indent: 20,
                   endIndent: 20,
                 ),
-                Text(
+                const Text(
                   "Nombre",
                   textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
                 ),
                 CustomTextForm(
                   hintText: currentUser.name,
@@ -80,9 +82,10 @@ class ProfileDetailsView extends StatelessWidget {
                   indent: 20,
                   endIndent: 20,
                 ),
-                Text(
+                const Text(
                   "Apellidos",
                   textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
                 ),
                 CustomTextForm(
                   hintText: currentUser.surname,
@@ -96,9 +99,10 @@ class ProfileDetailsView extends StatelessWidget {
                   indent: 20,
                   endIndent: 20,
                 ),
-                Text(
+                const Text(
                   "Ciudad",
                   textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
                 ),
                 CustomTextForm(
                   hintText: currentUser.city,
@@ -112,14 +116,22 @@ class ProfileDetailsView extends StatelessWidget {
                   indent: 20,
                   endIndent: 20,
                 ),
-                Text(
+                const Text(
                   "Email",
                   textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
                 ),
                 CustomTextForm(
                   hintText: currentUser.email,
                   initialValue: currentUser.email,
                   enabled: false,
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
                 ),
                 GestureDetector(
                     onTap: () => Navigator.pushNamed(context, 'preferences'),
@@ -132,8 +144,7 @@ class ProfileDetailsView extends StatelessWidget {
                         Navigator.pushNamed(context, 'editCredentials'),
                     child: const CustomButton(text: 'Cambiar contraseña')),
                 GestureDetector(
-                    onTap: () =>
-                        Navigator.pushNamed(context, 'settings'),
+                    onTap: () => Navigator.pushNamed(context, 'settings'),
                     child: const CustomButton(text: 'Ajustes')),
                 const DeleteProfile(),
               ],
