@@ -50,8 +50,8 @@ class _EventCreationView extends State<EventCreationView> {
           backgroundColor: Colors.white,
           body: SingleChildScrollView(
               child: Column(children: [
-              CustomAd(width: size.width.floor()),            
-              const Center(
+            CustomAd(width: size.width.floor()),
+            const Center(
                 child: Text(
               'CREAR EVENTO',
               style: TextStyle(
@@ -196,23 +196,23 @@ class _FormsColumnState extends State<_FormsColumn> {
             controller: _description,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
-            Divider(
-              thickness: 5,
-              color: ProjectColors.secondary,
-              indent: size.height * 0.05,
-              endIndent: size.height * 0.05,
-            ),
-            ConstrainedBox(
+          Divider(
+            thickness: 5,
+            color: ProjectColors.secondary,
+            indent: size.height * 0.05,
+            endIndent: size.height * 0.05,
+          ),
+          ConstrainedBox(
             constraints: BoxConstraints(
                 maxHeight: size.height * 0.5, maxWidth: size.width),
             child: const MapPlaceSelectorEventScreen(),
           ),
-            Divider(
-              thickness: 5,
-              color: ProjectColors.secondary,
-              indent: size.height * 0.05,
-              endIndent: size.height * 0.05,
-            ),
+          Divider(
+            thickness: 5,
+            color: ProjectColors.secondary,
+            indent: size.height * 0.05,
+            endIndent: size.height * 0.05,
+          ),
           Text(
             "Link de la imagen",
             textAlign: TextAlign.center,
@@ -251,7 +251,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             },
           ),
           SubmitButton(
-            text: 'C',
+            text: 'Crear',
             onTap: () async {
               if (_formKey.currentState!.validate() &&
                   _selectedValues.isNotEmpty) {
@@ -305,7 +305,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                             text: "Bienvenido")
                       ],
                       id: const Uuid().v1()));
-                  
+
                   loggedUser.subscription.numEventsCreatedThisMonth++;
                   UsersService().updateProfile(loggedUser);
 
