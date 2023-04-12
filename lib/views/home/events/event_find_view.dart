@@ -33,9 +33,10 @@ class _EventFindView extends State<EventFindView> {
         resizeToAvoidBottomInset: true,
         body: Column(
           children: [
-            const CustomAd(),
+              CustomAd(width: size.width.floor()),
             SizedBox(
               height: size.height * 0.02,
+              width: size.width,
             ),
             const Center(
                 child: Text(

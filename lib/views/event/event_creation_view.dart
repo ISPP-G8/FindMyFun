@@ -43,18 +43,19 @@ class _EventCreationView extends State<EventCreationView> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
           resizeToAvoidBottomInset: true,
-          // backgroundColor: ProjectColors.primary,
+          backgroundColor: Colors.white,
           body: SingleChildScrollView(
               child: Column(children: [
-            const CustomAd(),
-            const Center(
+              CustomAd(width: size.width.floor()),            
+              const Center(
                 child: Text(
               'CREAR EVENTO',
               style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black38,
                   fontSize: 30,
                   fontWeight: FontWeight.bold),
             )),
@@ -175,10 +176,18 @@ class _FormsColumnState extends State<_FormsColumn> {
           const SizedBox(
             height: 10,
           ),
+          Text(
+            "Nombre del evento",
+            textAlign: TextAlign.center,
+          ),
           CustomTextForm(
             hintText: 'Nombre del evento',
             controller: _name,
             validator: (value) => Validators.validateNotEmpty(value),
+          ),
+          Text(
+            "Descripción",
+            textAlign: TextAlign.center,
           ),
           CustomTextForm(
             hintText: 'Descripción',
@@ -187,37 +196,53 @@ class _FormsColumnState extends State<_FormsColumn> {
             controller: _description,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
-          Divider(
-            thickness: 7,
-            color: ProjectColors.tertiary,
-            indent: size.height * 0.05,
-            endIndent: size.height * 0.05,
-          ),
-          ConstrainedBox(
+            Divider(
+              thickness: 5,
+              color: ProjectColors.secondary,
+              indent: size.height * 0.05,
+              endIndent: size.height * 0.05,
+            ),
+            ConstrainedBox(
             constraints: BoxConstraints(
-                maxHeight: size.height * 0.5, maxWidth: size.width * 0.8),
+                maxHeight: size.height * 0.5, maxWidth: size.width),
             child: const MapPlaceSelectorEventScreen(),
           ),
-          Divider(
-            thickness: 7,
-            color: ProjectColors.tertiary,
-            indent: size.height * 0.05,
-            endIndent: size.height * 0.05,
+            Divider(
+              thickness: 5,
+              color: ProjectColors.secondary,
+              indent: size.height * 0.05,
+              endIndent: size.height * 0.05,
+            ),
+          Text(
+            "Link de la imagen",
+            textAlign: TextAlign.center,
           ),
           CustomTextForm(
             hintText: 'Link de la imagen',
             controller: _image,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
+          Text(
+            "Fecha",
+            textAlign: TextAlign.center,
+          ),
           CustomTextForm(
             hintText: 'Fecha: aaaa-MM-dd',
             controller: _startDateTime,
             validator: (value) => Validators.validateDate(value),
           ),
+          Text(
+            "Hora",
+            textAlign: TextAlign.center,
+          ),
           CustomTextForm(
             hintText: 'Hora: HH:mm',
             controller: _startTime,
             validator: (value) => Validators.validateTime(value),
+          ),
+          Text(
+            "Categorías",
+            textAlign: TextAlign.center,
           ),
           CategoryDropdown(
             selectedValues: _selectedValues,
@@ -226,7 +251,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             },
           ),
           SubmitButton(
-            text: 'CONTINUAR',
+            text: 'C',
             onTap: () async {
               if (_formKey.currentState!.validate() &&
                   _selectedValues.isNotEmpty) {

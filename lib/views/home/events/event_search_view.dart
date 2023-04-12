@@ -30,7 +30,7 @@ class _EventSearchViewState extends State<EventSearchView> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              const CustomAd(),
+              CustomAd(width: size.width.floor()),            
               const Center(
                   child: Text(
                 'BUSCAR EVENTOS',
