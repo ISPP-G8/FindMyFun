@@ -3,7 +3,6 @@ import 'package:findmyfun/services/preferences_service.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:findmyfun/widgets/widgets.dart';
 
 import '../../../models/models.dart';
 import '../../../widgets/preferences_container.dart';

@@ -29,52 +29,60 @@ class EventContainer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  flex: 1,
+                    flex: 1,
                     child: Column(
-                  children: [
-                    Text(
-                      event.name,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(DateFormat('yyyy-MM-dd HH:mm').format(event.startDate),
-                        style: GoogleFonts.kanit(fontSize: 12)),
-                        
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Text(event.address, textAlign: TextAlign.center,),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text('${event.users.length} asistente/s'),
-                  ],
-                )),
+                      children: [
+                        Text(
+                          event.name,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                            DateFormat('yyyy-MM-dd HH:mm')
+                                .format(event.startDate),
+                            style: GoogleFonts.kanit(fontSize: 12)),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          event.address,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text('${event.users.length} asistente/s'),
+                      ],
+                    )),
                 const SizedBox(
                   width: 10,
                 ),
                 Flexible(
                   child: ConstrainedBox(
-                    constraints:
-                        const BoxConstraints(minHeight: 100, maxHeight: 200, minWidth: 100, maxWidth: 200),
-                        child: Container(
-                          decoration: BoxDecoration(border: Border.all(color: Colors.black87, width: 2)),
-                          child: CachedNetworkImage(
-                            imageUrl: event.image,
-                            errorWidget: (context, url, error) {
-                            // ignore: avoid_print
-                            print('Error al cargar la imagen $error');
-                            return Image.asset('assets/placeholder.png');
-                          },
-                          progressIndicatorBuilder: (context, url, progress) =>
+                    constraints: const BoxConstraints(
+                        minHeight: 100,
+                        maxHeight: 200,
+                        minWidth: 100,
+                        maxWidth: 200),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black87, width: 2)),
+                      child: CachedNetworkImage(
+                        imageUrl: event.image,
+                        errorWidget: (context, url, error) {
+                          // ignore: avoid_print
+                          print('Error al cargar la imagen $error');
+                          return Image.asset('assets/placeholder.png');
+                        },
+                        progressIndicatorBuilder: (context, url, progress) =>
                             CircularProgressIndicator(
-                              value: progress.progress,
-                            ),
+                          value: progress.progress,
                         ),
-                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -83,8 +91,8 @@ class EventContainer extends StatelessWidget {
               color: Colors.grey,
               thickness: 0.5,
               height: 20,
-              indent: 20,
-              endIndent: 20,
+              indent: 5,
+              endIndent: 5,
             ),
           ],
         ),

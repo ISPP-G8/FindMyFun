@@ -129,9 +129,8 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
           centerTitle: true,
         ),
         body: Container(
-          color: ProjectColors.secondary,
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
           child: ConstrainedBox(
             constraints: BoxConstraints(maxHeight: size.height),
             child: SingleChildScrollView(
@@ -141,6 +140,13 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     const CustomAd(),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 0.5,
+                      height: 20,
+                      indent: 20,
+                      endIndent: 20,
+                    ),
                     GestureDetector(
                       onTap: () async {
                         // Muestra el circulo de progreso
@@ -172,33 +178,56 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                       ),
                     ),
                     Divider(
-                      thickness: 7,
-                      color: ProjectColors.tertiary,
+                      thickness: 5,
+                      color: ProjectColors.secondary,
                       indent: size.height * 0.05,
                       endIndent: size.height * 0.05,
                     ),
                     ConstrainedBox(
                       constraints: BoxConstraints(
-                          maxHeight: size.height * 0.5,
-                          maxWidth: size.width * 0.8),
+                          maxHeight: size.height * 0.5, maxWidth: size.width),
                       child: const MapPlaceSelectorEventPointScreen(),
                     ),
                     Divider(
-                      thickness: 7,
-                      color: ProjectColors.tertiary,
+                      thickness: 5,
+                      color: ProjectColors.secondary,
                       indent: size.height * 0.05,
                       endIndent: size.height * 0.05,
+                    ),
+                    const Text(
+                      "Nombre del punto de evento",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20),
                     ),
                     CustomTextForm(
                       hintText: 'Nombre',
                       controller: _nameController,
                       validator: (value) => Validators.validateNotEmpty(value),
                     ),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 0.5,
+                      height: 20,
+                      indent: 20,
+                      endIndent: 20,
+                    ),
+                    const Text(
+                      "Descripción",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20),
+                    ),
                     CustomTextForm(
                       hintText: 'Descripción',
                       maxLines: 8,
                       controller: _descriptionController,
                       validator: (value) => Validators.validateNotEmpty(value),
+                    ),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 0.5,
+                      height: 20,
+                      indent: 20,
+                      endIndent: 20,
                     ),
                     // Spacer(),
                     Container(

@@ -176,7 +176,7 @@ class _FormsColumnState extends State<_FormsColumn> {
           const SizedBox(
             height: 10,
           ),
-          Text(
+          const Text(
             "Nombre del evento",
             textAlign: TextAlign.center,
           ),
@@ -185,7 +185,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             controller: _name,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
-          Text(
+          const Text(
             "Descripción",
             textAlign: TextAlign.center,
           ),
@@ -213,7 +213,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             indent: size.height * 0.05,
             endIndent: size.height * 0.05,
           ),
-          Text(
+          const Text(
             "Link de la imagen",
             textAlign: TextAlign.center,
           ),
@@ -222,7 +222,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             controller: _image,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
-          Text(
+          const Text(
             "Fecha",
             textAlign: TextAlign.center,
           ),
@@ -231,7 +231,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             controller: _startDateTime,
             validator: (value) => Validators.validateDate(value),
           ),
-          Text(
+          const Text(
             "Hora",
             textAlign: TextAlign.center,
           ),
@@ -240,7 +240,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             controller: _startTime,
             validator: (value) => Validators.validateTime(value),
           ),
-          Text(
+          const Text(
             "Categorías",
             textAlign: TextAlign.center,
           ),
