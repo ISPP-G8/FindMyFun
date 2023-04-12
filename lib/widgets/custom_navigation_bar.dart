@@ -74,11 +74,24 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             BottomNavigationBarItem(
                 backgroundColor: ProjectColors.tertiary,
                 icon: Icon(
-                  Icons.settings_outlined,
+                  Icons.account_circle,
+
                   size: 50,
                   color: Colors.white,
                 ),
-                label: 'Ajustes'),
+                label: 'Perfil'
+            ),
+        //     Visibility(
+        //       visible: (user.isAdmin || user.isCompany) ?? false,
+        //       child: BottomNavigationBarItem(
+        //           backgroundColor: ProjectColors.tertiary,
+        //           icon: Icon(
+        //             Icons.settings,
+        //             size: 50,
+        //             color: Colors.white,
+        //           ),
+        //           label: 'Ajustes'),
+        // ),
           ]),
     );
   }

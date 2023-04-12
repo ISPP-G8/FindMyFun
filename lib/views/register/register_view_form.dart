@@ -16,12 +16,15 @@ class RegisterViewForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
       child: Column(
-        children: const [
-          LoginTitle(text: 'REGISTRO'),
-          ImageLogo(),
-          LoginContainer(
+        children: [
+          const LoginTitle(text: 'REGISTRO'),
+          const ImageLogo(),
+          SizedBox(height: size.height * 0.05),
+          const LoginContainer(
             child: _RegisterFormContainer(),
           )
         ],
@@ -128,8 +131,12 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                     username: _usernameController.text,
                     city: _locationController.text,
                     email: _emailController.text,
-                    preferences: [/*models.Preferences(id: '1110', name: 'Futbol')*/],
-                    subscription: models.Subscription(type: models.SubscriptionType.free, numEventsCreatedThisMonth: 0));
+                    preferences: [
+                      /*models.Preferences(id: '1110', name: 'Futbol')*/
+                    ],
+                    subscription: models.Subscription(
+                        type: models.SubscriptionType.free,
+                        numEventsCreatedThisMonth: 0));
                 final resp =
                     await userService.addItem(userService.currentUser!);
                 if (resp) {

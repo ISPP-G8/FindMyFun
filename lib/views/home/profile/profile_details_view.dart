@@ -16,16 +16,10 @@ class ProfileDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     final currentUser = userService.currentUser!;
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 241, 102, 102),
       appBar: AppBar(
-        leading: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(
-              Icons.chevron_left,
-              size: 45,
-              color: Color.fromARGB(255, 161, 154, 154),
-            )),
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -36,39 +30,91 @@ class ProfileDetailsView extends StatelessWidget {
       ),
       body: Center(
         child: Container(
-          height: 800,
-          width: 400,
-          decoration: const BoxDecoration(
-            color: Color(0xff828a92),
-          ),
+          height: 1000,
+          width: 600,
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CustomAd(),
+                CustomAd(width: size.width.floor()),
                 Container(
                     padding: const EdgeInsets.all(10.0),
                     // child: Image.network(currentUser.image!, fit: BoxFit.cover),
                     child: userImage(currentUser)),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Text(
+                  "Nombre del usuario",
+                  textAlign: TextAlign.center,
+                ),
                 CustomTextForm(
                   hintText: currentUser.username,
                   initialValue: currentUser.username,
                   enabled: false,
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Text(
+                  "Nombre",
+                  textAlign: TextAlign.center,
                 ),
                 CustomTextForm(
                   hintText: currentUser.name,
                   initialValue: currentUser.name,
                   enabled: false,
                 ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Text(
+                  "Apellidos",
+                  textAlign: TextAlign.center,
+                ),
                 CustomTextForm(
                   hintText: currentUser.surname,
                   initialValue: currentUser.surname,
                   enabled: false,
                 ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Text(
+                  "Ciudad",
+                  textAlign: TextAlign.center,
+                ),
                 CustomTextForm(
                   hintText: currentUser.city,
                   initialValue: currentUser.city,
                   enabled: false,
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Text(
+                  "Email",
+                  textAlign: TextAlign.center,
                 ),
                 CustomTextForm(
                   hintText: currentUser.email,
@@ -85,6 +131,10 @@ class ProfileDetailsView extends StatelessWidget {
                     onTap: () =>
                         Navigator.pushNamed(context, 'editCredentials'),
                     child: const CustomButton(text: 'Cambiar contraseña')),
+                GestureDetector(
+                    onTap: () =>
+                        Navigator.pushNamed(context, 'settings'),
+                    child: const CustomButton(text: 'Ajustes')),
                 const DeleteProfile(),
               ],
             ),
