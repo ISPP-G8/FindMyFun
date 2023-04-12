@@ -22,7 +22,7 @@ class _EventListView extends State<EventListView> {
 
   _getEvents() async {
     EventsService eventsService = EventsService();
-    return await eventsService.getEvents();
+    return await eventsService.getEventsOfLoggedUser();
   }
 
   @override

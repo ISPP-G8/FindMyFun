@@ -75,6 +75,38 @@ class EventsService extends ChangeNotifier {
     }
   }
 
+  //GET EVENT OF LOGGED USER
+  Future<List<Event>> getEventsOfLoggedUser() async {
+    final url = Uri.https(_baseUrl, 'Events.json');
+    final currentUser = AuthService().currentUser?.uid ?? "";
+
+    try {
+      final resp = await http.get(url);
+
+      if (resp.statusCode != 200) {
+        throw Exception('Error in response');
+      }
+      List<Event> eventsAux = [];
+      Map<String, dynamic> data = jsonDecode(resp.body);
+
+      data.forEach((key, value) {
+        try {
+          final event = Event.fromRawJson(jsonEncode(value));
+          if (event.users.contains(currentUser)) {
+            eventsAux.add(event);
+          }
+        } catch (e) {
+          debugPrint('Error parsing event: $e');
+        }
+      });
+
+      events = eventsAux;
+      return eventsAux;
+    } catch (e) {
+      throw Exception('Error getting events: $e');
+    }
+  }
+
   //FIND EVENTS
   Future<List<Event>> findEvents() async {
     final url = Uri.https(_baseUrl, 'Events.json');
