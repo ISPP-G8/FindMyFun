@@ -136,7 +136,7 @@ class ProfileDetailsView extends StatelessWidget {
                   endIndent: 20,
                 ),
                 Visibility(
-                  visible: currentUser.isCompany ?? false,
+                  visible: currentUser.subscription.type == SubscriptionType.company,
                   child: GestureDetector(
                       onTap: () async {
                         await AuthService().signOut();
