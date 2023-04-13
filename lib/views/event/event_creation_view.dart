@@ -241,8 +241,10 @@ class _FormsColumnState extends State<_FormsColumn> {
           // ),
           DateTimePicker(
             selectedDateTime: _selectedDatetime,
-            controller: _startDateTime,
-            onChanged: (selected) => {},
+            onChanged: (selected) => {
+              _selectedDatetime = selected,
+              print('DATETIMEEEE: ${_selectedDatetime}'),
+            },
           ),
           const Text(
             "Categorías",
@@ -258,7 +260,8 @@ class _FormsColumnState extends State<_FormsColumn> {
             text: 'Crear',
             onTap: () async {
               if (_formKey.currentState!.validate() &&
-                  _selectedValues.isNotEmpty) {
+                  _selectedValues.isNotEmpty &&
+                  _selectedDatetime != null) {
                 showDialog(
                   context: context,
                   builder: (context) => Column(
@@ -282,6 +285,17 @@ class _FormsColumnState extends State<_FormsColumn> {
                         selectedMarker.position.longitude);
 
                 Placemark placeMark = selectedPlaceMark[0];
+                print('DATETIMEEEEEE111: ${placeMark.street!}');
+                print('DATETIMEEEEEE: ${placeMark.locality!}');
+                print('DATETIMEEEEEE: ${placeMark.country!}');
+                print('DATETIMEEEEEE: ${_description.text}');
+                print('DATETIMEEEEEE: ${_image.text}');
+                print('DATETIMEEEEEEdd: ${_name.text}');
+                print('DATETIMEEEEEEsdsa: ${selectedMarker.position.latitude}');
+                print('DATETIMEEEEEEA: ${selectedMarker.position.longitude}');
+                print('DATETIMEEEEEE SS: ${_selectedDatetime}');
+                print(
+                    'DATETIMEEEEEE: ${await Future.wait(_selectedValues.map((e) => PreferencesService().getPreferenceByName(e.toString())).toList())}');
 
                 if (loggedUser.subscription.canCreateEvents) {
                   await eventsService.saveEvent(Event(
@@ -294,7 +308,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                       name: _name.text,
                       latitude: selectedMarker.position.latitude,
                       longitude: selectedMarker.position.longitude,
-                      startDate: DateTime.parse(_startDateTime.text),
+                      startDate: DateTime.parse(_selectedDatetime!),
                       tags: await Future.wait(_selectedValues
                           .map((e) => PreferencesService()
                               .getPreferenceByName(e.toString()))
@@ -393,11 +407,13 @@ class DateTimePicker extends StatefulWidget {
   final String? selectedDateTime;
   final Function(String) onChanged;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
   const DateTimePicker(
       {super.key,
       this.selectedDateTime,
       required this.onChanged,
-      this.controller});
+      this.controller,
+      this.validator});
 
   @override
   _DateTimePicker createState() => _DateTimePicker();
@@ -457,19 +473,25 @@ class _DateTimePicker extends State<DateTimePicker> {
           children: [
             DatePickerButton(
               onTap: () {
-                callDatePicker;
+                callDatePicker();
                 setState(() {
+                  displayedCompleteDateTime =
+                      "${displayedSelectedDate.toString().split(" ").first} ${displayedSelectedTime.toString().split("(").last.replaceAll(")", "")}";
                   widget.onChanged(displayedCompleteDateTime);
                 });
+                widget.onChanged.call(displayedCompleteDateTime);
               },
               text: 'Seleccionar fecha',
             ),
             DatePickerButton(
               onTap: () {
-                callTimePicker;
+                callTimePicker();
                 setState(() {
+                  displayedCompleteDateTime =
+                      "${displayedSelectedDate.toString().split(" ").first} ${displayedSelectedTime.toString().split("(").last.replaceAll(")", "")}";
                   widget.onChanged(displayedCompleteDateTime);
                 });
+                widget.onChanged.call(displayedCompleteDateTime);
               },
               text: 'Seleccionar hora',
             )
@@ -478,6 +500,8 @@ class _DateTimePicker extends State<DateTimePicker> {
         CustomTextForm(
           hintText: "$displayedCompleteDateTime",
           enabled: false,
+          controller: widget.controller,
+          validator: widget.validator,
         )
       ],
     );
