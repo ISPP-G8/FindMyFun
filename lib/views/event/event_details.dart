@@ -77,7 +77,7 @@ class _FormsColumn extends StatelessWidget {
 
     //print(asistentes);
     String activeUserId = AuthService().currentUser?.uid ?? "";
-
+    bool creatorSameAsCurrentUser = activeUserId == selectedEvent.users.first;
     return FutureBuilder<User>(
       future: creator,
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
@@ -153,9 +153,15 @@ class _FormsColumn extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              EventCreator(
-                creatorUsername: snapshot.data?.username ?? 'username',
-              ),
+              if (!creatorSameAsCurrentUser)
+                EventCreator(
+                  creatorUsername: snapshot.data?.username ?? 'username',
+                  event: selectedEvent,
+                ),
+              if (creatorSameAsCurrentUser)
+                GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, 'profile'),
+                    child: const CustomButton(text: 'Mi perfil')),
               const SizedBox(
                 height: 20,
               ),
@@ -278,6 +284,7 @@ class _FormsColumn extends StatelessWidget {
               ),
               EventCreator(
                 creatorUsername: snapshot.data?.username ?? 'username',
+                event: selectedEvent,
               ),
               const SizedBox(
                 height: 20,

@@ -1,10 +1,13 @@
 import 'package:findmyfun/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:findmyfun/widgets/widgets.dart';
+import 'package:findmyfun/models/event.dart';
 
 class EventCreator extends StatefulWidget {
   final String creatorUsername;
-  const EventCreator({super.key, required this.creatorUsername});
+  final Event event;
+  const EventCreator(
+      {super.key, required this.creatorUsername, required this.event});
 
   @override
   State<EventCreator> createState() => _EventCreator();
@@ -18,26 +21,21 @@ class _EventCreator extends State<EventCreator> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: const BoxDecoration(color: Colors.white),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            widget.creatorUsername,
-            style: const TextStyle(
-              color: Color(0xff545454),
-              fontWeight: FontWeight.w500,
-            ),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+        Text(
+          widget.creatorUsername,
+          style: const TextStyle(
+            color: Color(0xff545454),
+            fontWeight: FontWeight.w500,
           ),
-          CustomButton(
-            text: 'Visitar perfil',
-            width: 100,
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => const ProfileDetailsView()),
-            ),
-          ),
-        ],
-      ),
+        ),
+        CustomButton(
+          text: 'Visitar perfil',
+          width: 100,
+          onTap: () => Navigator.pushNamed(context, 'creatorProfile',
+              arguments: widget.event),
+        ),
+      ]),
     );
   }
 }
