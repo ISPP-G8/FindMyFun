@@ -1,78 +1,31 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:findmyfun/services/auth_service.dart';
+import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:findmyfun/themes/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class NotificationView extends StatelessWidget {
+import '../../../models/models.dart';
+
+class NotificationView extends StatefulWidget {
   const NotificationView({Key? key}) : super(key: key);
 
   @override
+  State<NotificationView> createState() => _NotificationViewState();
+}
+
+class _NotificationViewState extends State<NotificationView> {
+  @override
+  void initState() {
+    Provider.of<ImportantNotificationService>(context, listen: false)
+        .getNotifications(AuthService().currentUser!.uid);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final notifications = [
-      ImportantNotification(
-          userId: 'sldkjfh',
-          date: DateTime.now(),
-          info: 'Juan se ha salido del grupo'),
-      ImportantNotification(
-          userId: 'fdghgfdhjfd',
-          date: DateTime.now(),
-          info: 'Manu ha enviado un mensaje'),
-      ImportantNotification(
-          userId: 'asdfasdf',
-          date: DateTime.now(),
-          info: 'Pedro se ha unido al grupo'),
-      ImportantNotification(
-          userId: 'rweter3wt',
-          date: DateTime.now(),
-          info: 'Luis ha enviado un mensaje'),
-      ImportantNotification(
-          userId: 'sldkjfh',
-          date: DateTime.now(),
-          info: 'Juan se ha salido del grupo'),
-      ImportantNotification(
-          userId: 'fdghgfdhjfd',
-          date: DateTime.now(),
-          info: 'Manu ha enviado un mensaje'),
-      ImportantNotification(
-          userId: 'asdfasdf',
-          date: DateTime.now(),
-          info: 'Pedro se ha unido al grupo'),
-      ImportantNotification(
-          userId: 'rweter3wt',
-          date: DateTime.now(),
-          info: 'Luis ha enviado un mensaje'),
-      ImportantNotification(
-          userId: 'sldkjfh',
-          date: DateTime.now(),
-          info: 'Juan se ha salido del grupo'),
-      ImportantNotification(
-          userId: 'fdghgfdhjfd',
-          date: DateTime.now(),
-          info: 'Manu ha enviado un mensaje'),
-      ImportantNotification(
-          userId: 'asdfasdf',
-          date: DateTime.now(),
-          info: 'Pedro se ha unido al grupo'),
-      ImportantNotification(
-          userId: 'rweter3wt',
-          date: DateTime.now(),
-          info: 'Luis ha enviado un mensaje'),
-      ImportantNotification(
-          userId: 'sldkjfh',
-          date: DateTime.now(),
-          info: 'Juan se ha salido del grupo'),
-      ImportantNotification(
-          userId: 'fdghgfdhjfd',
-          date: DateTime.now(),
-          info: 'Manu ha enviado un mensaje'),
-      ImportantNotification(
-          userId: 'asdfasdf',
-          date: DateTime.now(),
-          info: 'Pedro se ha unido al grupo'),
-      ImportantNotification(
-          userId: 'rweter3wt',
-          date: DateTime.now(),
-          info: 'Luis ha enviado un mensaje'),
-    ];
+    final notificationsService =
+        Provider.of<ImportantNotificationService>(context);
     return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -87,9 +40,21 @@ class NotificationView extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              ...notifications.map((e) => NotificatoinContainer(
-                    notification: e,
-                  ))
+              if (notificationsService.notifications.isNotEmpty)
+                ...notificationsService.notifications
+                    .map((e) => NotificatoinContainer(
+                          notification: e!,
+                        )),
+              if (notificationsService.notifications.isEmpty)
+                Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.all(20),
+                  child: Text(
+                    'No tienes notificaciones',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
+                )
             ],
           ),
         ));
@@ -123,14 +88,4 @@ class NotificatoinContainer extends StatelessWidget {
           ],
         ));
   }
-}
-
-// ! TODO: Importar esto de los modelos cuando se junte con backend.
-class ImportantNotification {
-  ImportantNotification(
-      {required this.userId, required this.date, required this.info});
-
-  String userId;
-  DateTime date;
-  String info;
 }

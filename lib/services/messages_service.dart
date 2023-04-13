@@ -60,8 +60,12 @@ class MessagesService extends ChangeNotifier {
     event.messages.add(message);
     for (var user in event.users) {
       if (user != activeUserId) {
-        ImportantNotification notificationChatEvento = ImportantNotification(userId: user, date: DateTime.now(), info: "$activeUserName ha enviado un mensaje en ${event.name}");
-        ImportantNotificationService().saveNotification(notificationChatEvento, user);
+        ImportantNotification notificationChatEvento = ImportantNotification(
+            userId: user,
+            date: DateTime.now(),
+            info: "$activeUserName ha enviado un mensaje en ${event.name}");
+        ImportantNotificationService()
+            .saveNotification(notificationChatEvento, user);
       }
     }
     try {

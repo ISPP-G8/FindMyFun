@@ -18,7 +18,7 @@ class User {
     required this.preferences,
     this.isAdmin = false,
     this.isCompany = false,
-    required this.notifications,
+    this.notifications = const [],
   });
 
   String id;
@@ -53,14 +53,11 @@ class User {
               .toList()
           : [],
       notifications: json["notifications"] != null
-          ? Map.from(json["notifications"])
-              .map((k, v) =>
-                  MapEntry<String, ImportantNotification>(k, ImportantNotification.fromJson(v)))
-              .values
-              .toList()
+          ? List<ImportantNotification>.from(json["notifications"]
+              .map((x) => ImportantNotification.fromJson(x)))
           : [],
       isAdmin: json["isAdmin"] ?? false,
-      isCompany: json["isCompany"] ?? false); 
+      isCompany: json["isCompany"] ?? false);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -74,7 +71,8 @@ class User {
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "isAdmin": isAdmin,
         "isCompany": isCompany,
-        "notifications": Map.from(notifications.fold({}, (r, n) => r..[n?.userId] = n))
-            .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
+        "notifications":
+            Map.from(notifications.fold({}, (r, n) => r..[n?.userId] = n))
+                .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
       };
 }
