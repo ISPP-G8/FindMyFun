@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:findmyfun/themes/themes.dart';
@@ -104,8 +106,8 @@ class _FormsColumnState extends State<_FormsColumn> {
   final _description = TextEditingController();
   final _image = TextEditingController();
   final _startDateTime = TextEditingController();
-  final _startTime = TextEditingController();
   List<Object> _selectedValues = [];
+  String? _selectedDatetime;
 
   InterstitialAd? _interstitialAd;
   static const AdRequest request = AdRequest(
@@ -222,23 +224,25 @@ class _FormsColumnState extends State<_FormsColumn> {
             controller: _image,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
-          const Text(
-            "Fecha",
-            textAlign: TextAlign.center,
-          ),
-          CustomTextForm(
-            hintText: 'Fecha: aaaa-MM-dd',
+          // const Text(
+          //   "Fecha",
+          //   textAlign: TextAlign.center,
+          // ),
+          // CustomTextForm(
+          //   hintText: 'Fecha: aaaa-MM-dd',
+          //   controller: _startDateTime,
+          //   validator: (value) => Validators.validateDate(value),
+          // ),
+
+          // CustomTextForm(
+          //   hintText: 'Hora: HH:mm',
+          //   controller: _startTime,
+          //   validator: (value) => Validators.validateTime(value),
+          // ),
+          DateTimePicker(
+            selectedDateTime: _selectedDatetime,
             controller: _startDateTime,
-            validator: (value) => Validators.validateDate(value),
-          ),
-          const Text(
-            "Hora",
-            textAlign: TextAlign.center,
-          ),
-          CustomTextForm(
-            hintText: 'Hora: HH:mm',
-            controller: _startTime,
-            validator: (value) => Validators.validateTime(value),
+            onChanged: (selected) => {},
           ),
           const Text(
             "Categorías",
@@ -290,8 +294,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                       name: _name.text,
                       latitude: selectedMarker.position.latitude,
                       longitude: selectedMarker.position.longitude,
-                      startDate: DateTime.parse(
-                          '${_startDateTime.text} ${_startTime.text}'),
+                      startDate: DateTime.parse(_startDateTime.text),
                       tags: await Future.wait(_selectedValues
                           .map((e) => PreferencesService()
                               .getPreferenceByName(e.toString()))
@@ -383,5 +386,134 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
       tappedMarkerEvent.add(Marker(
           markerId: MarkerId(tappedPoint.toString()), position: tappedPoint));
     });
+  }
+}
+
+class DateTimePicker extends StatefulWidget {
+  final String? selectedDateTime;
+  final Function(String) onChanged;
+  final TextEditingController? controller;
+  const DateTimePicker(
+      {super.key,
+      this.selectedDateTime,
+      required this.onChanged,
+      this.controller});
+
+  @override
+  _DateTimePicker createState() => _DateTimePicker();
+}
+
+class _DateTimePicker extends State<DateTimePicker> {
+  var _currentSelectedDate;
+  var _currentSelectedTime;
+
+  void callDatePicker() async {
+    var selectedDate = await getDatePickerWidget();
+    setState(() {
+      _currentSelectedDate = selectedDate;
+    });
+  }
+
+  Future<DateTime?> getDatePickerWidget() {
+    return showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(data: ThemeData.dark(), child: child!);
+      },
+    );
+  }
+
+  void callTimePicker() async {
+    var selectedTime = await getTimePickerWidget();
+    setState(() {
+      _currentSelectedTime = selectedTime;
+    });
+  }
+
+  Future<TimeOfDay?> getTimePickerWidget() {
+    return showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (context, child) {
+        return Theme(data: ThemeData.dark(), child: child!);
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    dynamic displayedSelectedDate = _currentSelectedDate ?? " ";
+    dynamic displayedSelectedTime = _currentSelectedTime ?? " ";
+    dynamic displayedCompleteDateTime =
+        "${displayedSelectedDate.toString().split(" ").first} ${displayedSelectedTime.toString().split("(").last.replaceAll(")", "")}";
+    // _displayedSelectedDate + DateTime.parse(_displayedSelectedTime);
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            DatePickerButton(
+              onTap: () {
+                callDatePicker;
+                setState(() {
+                  widget.onChanged(displayedCompleteDateTime);
+                });
+              },
+              text: 'Seleccionar fecha',
+            ),
+            DatePickerButton(
+              onTap: () {
+                callTimePicker;
+                setState(() {
+                  widget.onChanged(displayedCompleteDateTime);
+                });
+              },
+              text: 'Seleccionar hora',
+            )
+          ],
+        ),
+        CustomTextForm(
+          hintText: "$displayedCompleteDateTime",
+          enabled: false,
+        )
+      ],
+    );
+  }
+}
+
+class DatePickerButton extends StatelessWidget {
+  final String text;
+  final void Function()? onTap;
+  final double? width;
+
+  const DatePickerButton(
+      {super.key,
+      required this.text,
+      this.onTap,
+      this.width = double.infinity});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: size.width * 0.4,
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 127, 122, 122),
+        ),
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+      ),
+    );
   }
 }
