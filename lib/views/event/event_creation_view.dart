@@ -229,7 +229,12 @@ class _FormsColumnState extends State<_FormsColumn> {
           CustomTextForm(
             hintText: 'Fecha: aaaa-MM-dd',
             controller: _startDateTime,
-            validator: (value) => Validators.validateDate(value) ?? Validators.validateDateRange(value, loggedUser.subscription.maxTimeInAdvanceToCreateEventsInDays),
+            validator: (value) =>
+                Validators.validateDate(value) ??
+                Validators.validateDateRange(
+                    value,
+                    loggedUser
+                        .subscription.maxTimeInAdvanceToCreateEventsInDays),
           ),
           const Text(
             "Hora",
@@ -292,6 +297,15 @@ class _FormsColumnState extends State<_FormsColumn> {
                       longitude: selectedMarker.position.longitude,
                       startDate: DateTime.parse(
                           '${_startDateTime.text} ${_startTime.text}'),
+                      visibleFrom: loggedUser
+                                  .subscription.maxVisiblityOfEventsInDays ==
+                              -1
+                          ? DateTime.fromMillisecondsSinceEpoch(0)
+                          : DateTime.parse(
+                                  '${_startDateTime.text} ${_startTime.text}')
+                              .subtract(Duration(
+                                  days: loggedUser.subscription
+                                      .maxVisiblityOfEventsInDays)),
                       tags: await Future.wait(_selectedValues
                           .map((e) => PreferencesService()
                               .getPreferenceByName(e.toString()))

@@ -15,6 +15,7 @@ class Event {
     required this.latitude,
     required this.longitude,
     required this.startDate,
+    required this.visibleFrom,
     required this.tags,
     required this.users,
     required this.maxUsers,
@@ -32,6 +33,7 @@ class Event {
   double latitude;
   double longitude;
   DateTime startDate;
+  DateTime visibleFrom;
   List<Preferences> tags;
   List<String> users;
   int maxUsers;
@@ -42,6 +44,8 @@ class Event {
   String get creator => users.first;
 
   bool get isFull => maxUsers != -1 && users.length >= maxUsers;
+
+  bool get isVisible => visibleFrom.isBefore(DateTime.now());
 
   factory Event.fromRawJson(String str) => Event.fromJson(json.decode(str));
 
@@ -59,6 +63,7 @@ class Event {
       latitude: json["latitude"],
       longitude: json["longitude"],
       startDate: DateTime.parse(json["startDate"]),
+      visibleFrom: json["visibleFrom"] != null ? DateTime.parse(json["visibleFrom"]) : DateTime.fromMillisecondsSinceEpoch(0),
       tags: Map.from(json["tags"])
           .map((k, v) =>
               MapEntry<String, Preferences>(k, Preferences.fromJson(v)))
@@ -85,6 +90,7 @@ class Event {
         "latitude": latitude,
         "longitude": longitude,
         "startDate": startDate.toIso8601String(),
+        "visibleFrom": visibleFrom.toIso8601String(),
         "tags": Map.from(tags.fold({}, (r, p) => r..[p.id] = p))
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "users": List<String>.from(users.map((x) => x)),
@@ -95,5 +101,5 @@ class Event {
 
   @override
   String toString() =>
-      'address: $address, city: $city, country: $country, description: $description, finished: $finished, id: $id, image: $image, name: $name, latitude: $latitude, longitude: $longitude, startDate: $startDate, tags: $tags, users: $users, maxUsers: $maxUsers, messages: $messages';
+      'address: $address, city: $city, country: $country, description: $description, finished: $finished, id: $id, image: $image, name: $name, latitude: $latitude, longitude: $longitude, startDate: $startDate, visibleFrom: $visibleFrom, tags: $tags, users: $users, maxUsers: $maxUsers, messages: $messages';
 }

@@ -107,7 +107,7 @@ class EventsService extends ChangeNotifier {
     }
   }
 
-  //FIND EVENTS
+  //FIND EVENTS THAT SHARE TAGS WITH USER, ARE NOT FULL, ARE VISIBLE, ARE NOT FINISHED AND USER IS NOT IN
   Future<List<Event>> findEvents() async {
     final url = Uri.https(_baseUrl, 'Events.json');
     final UsersService usersService = UsersService();
@@ -130,7 +130,10 @@ class EventsService extends ChangeNotifier {
                   .toSet()
                   .intersection(event.tags.toSet())
                   .isNotEmpty &&
-              !event.hasFinished /* && currentUser.city == event.city*/) {
+              !event.hasFinished &&
+              event.isVisible &&
+              !event.isFull &&
+              !event.users.contains(currentUser.id)) {
             eventsAux.add(event);
           }
         } catch (e) {
