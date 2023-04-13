@@ -16,7 +16,7 @@ class PaymentViewUser extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Paypal Example'),
+      home: const MyHomePage(title: 'Flutter Paypal'),
     );
   }
 }
@@ -44,9 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         builder: (BuildContext context) => UsePaypal(
                             sandboxMode: true,
                             clientId:
-                                "AVms00YqTZIS903hvPbYKGuSa2r2VqoIxTYwLPrAC9qzf8WURLrIhDLC0tSj9oxzqIMv7yARU3EQFfk3",
+                                "AbX16roLECw5HbqfLI9Jap8DXi1dTLwPJVctqpaxDVlk6XI-rK_k6vnRZ4QRPBJmK4xxCdiqAoiDDEM3",
                             secretKey:
-                                "EGEtmyXGE3pLlgwFsvMTZH1Jl90c-g2y3DzOx8Hb9OtwGvHK3QNgh6zwz7uZUPFEXmBj6RH9ZDew8fHP",
+                                "EMzKeOeVxBcaSvhX9yQSrBlkW0mpOMxGOxcGjS_IKUNfXNOlZ_7WaJ_iS1-aNsjbMt2ouEepBchgUJ8L",
                             returnURL: "https://samplesite.com/return",
                             cancelURL: "https://samplesite.com/cancel",
                             transactions: const [
@@ -84,6 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             onSuccess: (Map params) async {
                               print("onSuccess: $params");
                               Navigator.pushNamed(context, 'middle');
+                              // Poner la subscripcion aqui cuando se haga
                             },
                             onError: (error) {
                               print("onError: $error");

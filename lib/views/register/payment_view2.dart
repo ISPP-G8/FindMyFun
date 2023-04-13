@@ -1,91 +1,40 @@
-/*import 'package:findmyfun/widgets/submit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paypal/flutter_paypal.dart';
-import 'package:pay/pay.dart';
+
+void main() {
+  runApp(const PaymentViewBusiness());
+}
 
 class PaymentViewBusiness extends StatelessWidget {
-  const PaymentViewBusiness({
-    super.key,
-  });
+  const PaymentViewBusiness({Key? key}) : super(key: key);
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      GooglePayButton(
-        paymentConfiguration: PaymentConfiguration.fromJsonString(defaultGooglePay),
-        paymentItems: paymentItems,
-        onPaymentResult: onGooglePayResult,
-        margin: const EdgeInsets.only(top: 15.0),
-        width: double.maxFinite,
-        loadingIndicator: const Center(
-          child: CircularProgressIndicator(),
-        ),
+    return MaterialApp(
+      title: 'Flutter Paypal',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
-    ]);
-  }
-
-  List<PaymentItem> get paymentItems {
-    const _paymentItems = [
-      PaymentItem(
-        label: 'Total',
-        amount: '29.99',
-        status: PaymentItemStatus.final_price,
-      ),
-    ];
-
-    return _paymentItems;
-  }
-
-  void onGooglePayResult(dynamic paymentResult) {
-    debugPrint(paymentResult.toString());
+      home: const MyHomePage(title: 'Flutter Paypal'),
+    );
   }
 }
 
-const String defaultGooglePay = '''{
-  "provider": "google_pay",
-  "data": {
-    "environment": "PLAN DE PAGO",
-    "apiVersion": 2,
-    "apiVersionMinor": 0,
-    "allowedPaymentMethods": [
-      {
-        "type": "CARD",
-        "tokenizationSpecification": {
-          "type": "PAYMENT_GATEWAY",
-          "parameters": {
-            "gateway": "example",
-            "gatewayMerchantId": "gatewayMerchantId"
-          }
-        },
-        "parameters": {
-          "allowedCardNetworks": ["VISA", "MASTERCARD"],
-          "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-          "billingAddressRequired": true,
-          "billingAddressParameters": {
-            "format": "FULL",
-            "phoneNumberRequired": true
-          }
-        }
-      }
-    ],
-    "merchantInfo": {
-      "merchantId": "BCR2DN4TUSG357B2",
-      "merchantName": "FindMyFun"
-    },
-    "transactionInfo": {
-      "countryCode": "ES",
-      "currencyCode": "EUR"
-    }
-  }
-}''';
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  final String title;
 
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
 
-
-  /*@override
+class _MyHomePageState extends State<MyHomePage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Pago"),
+          title: Text(widget.title),
         ),
         body: Center(
           child: TextButton(
@@ -95,18 +44,18 @@ const String defaultGooglePay = '''{
                         builder: (BuildContext context) => UsePaypal(
                             sandboxMode: true,
                             clientId:
-                                "AW1TdvpSGbIM5iP4HJNI5TyTmwpY9Gv9dYw8_8yW5lYIbCqf326vrkrp0ce9TAqjEGMHiV3OqJM_aRT0",
+                                "AbX16roLECw5HbqfLI9Jap8DXi1dTLwPJVctqpaxDVlk6XI-rK_k6vnRZ4QRPBJmK4xxCdiqAoiDDEM3",
                             secretKey:
-                                "EHHtTDjnmTZATYBPiGzZC_AZUfMpMAzj2VZUeqlFUrRJA_C0pQNCxDccB5qoRQSEdcOnnKQhycuOWdP9",
+                                "EMzKeOeVxBcaSvhX9yQSrBlkW0mpOMxGOxcGjS_IKUNfXNOlZ_7WaJ_iS1-aNsjbMt2ouEepBchgUJ8L",
                             returnURL: "https://samplesite.com/return",
                             cancelURL: "https://samplesite.com/cancel",
                             transactions: const [
                               {
                                 "amount": {
-                                  "total": '10.12',
-                                  "currency": "USD",
+                                  "total": '29.99',
+                                  "currency": "EUR",
                                   "details": {
-                                    "subtotal": '10.12',
+                                    "subtotal": '29.99',
                                     "shipping": '0',
                                     "shipping_discount": 0
                                   }
@@ -120,30 +69,22 @@ const String defaultGooglePay = '''{
                                 "item_list": {
                                   "items": [
                                     {
-                                      "name": "A demo product",
+                                      "name": "Plan de empresa premium",
                                       "quantity": 1,
-                                      "price": '10.12',
-                                      "currency": "USD"
+                                      "price": '29.99',
+                                      "currency": "EUR"
                                     }
                                   ],
 
                                   // shipping address is not required though
-                                  "shipping_address": {
-                                    "recipient_name": "Jane Foster",
-                                    "line1": "Travis County",
-                                    "line2": "",
-                                    "city": "Austin",
-                                    "country_code": "US",
-                                    "postal_code": "73301",
-                                    "phone": "+00000000",
-                                    "state": "Texas"
-                                  },
                                 }
                               }
                             ],
                             note: "Contact us for any questions on your order.",
                             onSuccess: (Map params) async {
                               print("onSuccess: $params");
+                              Navigator.pushNamed(context, 'middle');
+                              // Poner la subscripcion aqui cuando se haga
                             },
                             onError: (error) {
                               print("onError: $error");
@@ -157,5 +98,4 @@ const String defaultGooglePay = '''{
               child: const Text("Make Payment")),
         ));
   }
-  
-}*/*/
+}

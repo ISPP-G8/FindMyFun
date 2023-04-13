@@ -51,6 +51,11 @@ class SettingsView extends StatelessWidget {
         ),
         GestureDetector(
             onTap: () async {
+              Navigator.pushReplacementNamed(context, 'paymentUser');
+            },
+            child: const CustomButton(text: 'Actualizar plan')),
+        GestureDetector(
+            onTap: () async {
               await AuthService().signOut();
               Navigator.pushReplacementNamed(context, 'login');
             },
