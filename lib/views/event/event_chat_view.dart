@@ -1,10 +1,8 @@
 import 'package:findmyfun/helpers/validators.dart';
 import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/models/messages.dart';
-import 'package:findmyfun/models/user.dart';
-import 'package:findmyfun/services/auth_service.dart';
-import 'package:findmyfun/services/messages_service.dart';
 import 'package:findmyfun/services/services.dart';
+import 'package:findmyfun/widgets/custom_banner_ad.dart';
 import 'package:findmyfun/widgets/custom_text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
+          const CustomAd(),
           Expanded(
             child: ListView.builder(
               itemCount: messages.length,
@@ -66,8 +65,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     color: isMe
-                        ? Color.fromARGB(255, 46, 84, 252)
-                        : Color.fromARGB(255, 104, 102, 102),
+                        ? const Color.fromARGB(255, 46, 84, 252)
+                        : const Color.fromARGB(255, 104, 102, 102),
                     borderRadius: isMe
                         ? const BorderRadius.only(
                             topLeft: Radius.circular(15.0),
@@ -107,7 +106,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Container(
@@ -126,7 +125,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     IconButton(
                       color: Colors.white,
-                      icon: Icon(Icons.send),
+                      icon: const Icon(Icons.send),
                       onPressed: () {
                         Messages m = Messages(
                             userId: activeUserId,

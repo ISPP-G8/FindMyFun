@@ -2,7 +2,7 @@
 //
 //     final user = userFromJson(jsonString);
 
-import 'package:findmyfun/models/preferences.dart';
+import 'package:findmyfun/models/models.dart';
 import 'dart:convert';
 
 class User {
@@ -17,6 +17,7 @@ class User {
     required this.preferences,
     this.isAdmin = false,
     this.isCompany = false,
+    required this.subscription,
   });
 
   String id;
@@ -29,6 +30,7 @@ class User {
   List<Preferences?> preferences;
   bool? isAdmin;
   bool? isCompany;
+  Subscription subscription;
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
@@ -50,7 +52,9 @@ class User {
               .toList()
           : [],
       isAdmin: json["isAdmin"] ?? false,
-      isCompany: json["isCompany"] ?? false);
+      isCompany: json["isCompany"] ?? false,
+      subscription: Subscription.fromJson(json["subscription"])
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -64,5 +68,6 @@ class User {
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "isAdmin": isAdmin,
         "isCompany": isCompany,
+        "subscription": subscription.toJson(),
       };
 }
