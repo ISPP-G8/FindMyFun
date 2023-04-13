@@ -50,7 +50,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
   final _passwordController = TextEditingController();
   final _passwordConfirmController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  bool isChecked = false;
   @override
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
@@ -99,10 +99,34 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
           controller: _locationController,
           validator: (value) => Validators.validateNotEmpty(value),
         ),
+        CheckboxListTile(
+          value: isChecked,
+          onChanged: (value) {
+            setState(() {
+              isChecked = !isChecked;
+            });
+          },
+          title: Text('He leído y acepto los términos y condiciones de uso'),
+        ),
         SubmitButton(
           text: 'CONTINUAR',
           onTap: () async {
             if (_formKey.currentState!.validate()) {
+              if (!isChecked) {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Cerrar'))
+                    ],
+                    content:
+                        Text('Debes aceptar los términos y condiciones de uso'),
+                  ),
+                );
+                return;
+              }
               if (_passwordConfirmController.text !=
                   _passwordConfirmController.text) return;
               try {
