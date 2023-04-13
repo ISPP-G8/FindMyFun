@@ -37,7 +37,7 @@ class _EventListView extends State<EventListView> {
               CustomAd(width: size.width.floor()),
               const Center(
                   child: Text(
-                'TODOS LOS EVENTOS',
+                'TUS EVENTOS',
                 style: TextStyle(
                     color: ProjectColors.secondary,
                     fontSize: 30,

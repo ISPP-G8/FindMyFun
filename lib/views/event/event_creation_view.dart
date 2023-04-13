@@ -229,7 +229,7 @@ class _FormsColumnState extends State<_FormsColumn> {
           CustomTextForm(
             hintText: 'Fecha: aaaa-MM-dd',
             controller: _startDateTime,
-            validator: (value) => Validators.validateDate(value),
+            validator: (value) => Validators.validateDate(value) ?? Validators.validateDateRange(value, loggedUser.subscription.maxTimeInAdvanceToCreateEventsInDays),
           ),
           const Text(
             "Hora",
