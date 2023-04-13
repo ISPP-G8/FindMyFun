@@ -159,24 +159,19 @@ class _FormsColumn extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              if (!selectedEvent.users.contains(activeUserId))
-                if (selectedEvent.isFull)
-                  const Text(
-                    'El evento está lleno',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  )
-                else
-                  SubmitButton(
-                    text: 'Unirse',
-                    onTap: () => {
-                      eventService.addUserToEvent(selectedEvent),
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const EventDetailsView(),
-                              settings: RouteSettings(arguments: selectedEvent)))
-                    },
-                  ),
+              if (!selectedEvent.users.contains(activeUserId) &&
+                  !selectedEvent.isFull)
+                SubmitButton(
+                  text: 'Unirse',
+                  onTap: () => {
+                    eventService.addUserToEvent(selectedEvent),
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const EventDetailsView(),
+                            settings: RouteSettings(arguments: selectedEvent)))
+                  },
+                ),
               if (selectedEvent.users.contains(activeUserId))
                 ElevatedButton(
                   child: const Text('Abrir chat'),
