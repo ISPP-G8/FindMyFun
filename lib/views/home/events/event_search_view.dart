@@ -22,9 +22,9 @@ class _EventSearchViewState extends State<EventSearchView> {
     final eventsService = Provider.of<EventsService>(context);
     final size = MediaQuery.of(context).size;
     try {
-      await eventsService.searchForEvents(_searchedText);
+      eventsService.searchForEvents(_searchedText);
     } on Exception catch (e) {
-      await showErrorDialog(context, e.toString());
+      showErrorDialog(context, e.toString());
     }
 
     final events = eventsService.eventsFound;
@@ -35,7 +35,7 @@ class _EventSearchViewState extends State<EventSearchView> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              CustomAd(width: size.width.floor()),            
+              CustomAd(width: size.width.floor()),
               const Center(
                   child: Text(
                 'BUSCAR EVENTOS',
@@ -91,7 +91,7 @@ class _EventSearchViewState extends State<EventSearchView> {
   //   // TODO: implement createState
   //   throw UnimplementedError();
   // }
-  Future<void> showErrorDialog(BuildContext context, String exception) async{
+  Future<void> showErrorDialog(BuildContext context, String exception) async {
     return showDialog(
       context: context,
       builder: (context) {

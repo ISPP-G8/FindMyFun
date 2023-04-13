@@ -159,7 +159,8 @@ class _FormsColumn extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              if (!selectedEvent.users.contains(activeUserId))
+              if (!selectedEvent.users.contains(activeUserId) &&
+                  !selectedEvent.isFull)
                 SubmitButton(
                   text: 'Unirse',
                   onTap: () => {
