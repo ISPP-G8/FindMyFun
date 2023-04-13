@@ -251,6 +251,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             },
           ),
           SubmitButton(
+            margin: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
             text: 'Crear',
             onTap: () async {
               if (_formKey.currentState!.validate() &&
