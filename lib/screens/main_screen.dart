@@ -55,11 +55,14 @@ class _MainScreenState extends State<MainScreen> {
           title: SizedBox(
               height: 50, child: Image.asset('assets/logo-banner.png')),
           actions: [
-            Container(
-              margin: const EdgeInsets.only(right: 10),
-              child: const Icon(
-                Icons.chat_bubble,
-                size: 50,
+            GestureDetector(
+              onTap: () => Navigator.pushNamed(context, 'notifications'),
+              child: Container(
+                margin: const EdgeInsets.only(right: 10),
+                child: const Icon(
+                  Icons.chat_bubble,
+                  size: 50,
+                ),
               ),
             )
           ],
