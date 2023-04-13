@@ -119,12 +119,17 @@ class UsersService extends ChangeNotifier {
   //DELETE PROFILE
   Future<void> deleteProfile(User user, BuildContext context) async {
     final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
+    String? correo = AuthService().currentUser!.email;
     try {
+      if (user.email==correo) {
       // ignore: unused_local_variable
-      final resp = await http.delete(url);
-      AuthService().signOut;
+        final resp = await http.delete(url);
+        AuthService().signOut;
       // ignore: use_build_context_synchronously
-      await Navigator.pushNamed(context, 'access');
+        await Navigator.pushNamed(context, 'access');
+      } else {
+        final resp = await http.delete(url);
+      }
     } catch (e) {
       debugPrint('Error deleting profile: $e');
     }

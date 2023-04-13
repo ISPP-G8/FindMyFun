@@ -19,9 +19,9 @@ class SettingsView extends StatelessWidget {
         const SizedBox(
           height: 50,
         ),
-        GestureDetector(
+        /* GestureDetector(
             onTap: () => Navigator.pushNamed(context, 'profile'),
-            child: const CustomButton(text: 'Mi perfil')),
+            child: const CustomButton(text: 'Mi perfil')), */
         Visibility(
           visible: user.isAdmin ?? false,
           child: GestureDetector(
@@ -49,12 +49,12 @@ class SettingsView extends StatelessWidget {
               },
               child: const CustomButton(text: 'Crear punto de evento')),
         ),
-        GestureDetector(
-            onTap: () async {
+        /* GestureDetector(
+            onTap: () async {SS
               await AuthService().signOut();
               Navigator.pushReplacementNamed(context, 'access');
             },
-            child: const CustomButton(text: 'Cerrar sesión')),
+            child: const CustomButton(text: 'Cerrar sesión')), */
       ],
     ));
   }

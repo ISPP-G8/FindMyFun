@@ -154,9 +154,9 @@ class ProfileDetailsView extends StatelessWidget {
                     onTap: () =>
                         Navigator.pushNamed(context, 'editCredentials'),
                     child: const CustomButton(text: 'Cambiar contraseña')),
-                // GestureDetector(
-                //     onTap: () => Navigator.pushNamed(context, 'settings'),
-                //     child: const CustomButton(text: 'Ajustes')),
+                 GestureDetector(
+                     onTap: () => Navigator.pushNamed(context, 'settings'),
+                     child: const CustomButton(text: 'Ajustes')),
                 GestureDetector(
                     onTap: () async {
                       await AuthService().signOut();
