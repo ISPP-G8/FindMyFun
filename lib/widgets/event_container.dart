@@ -54,7 +54,9 @@ class EventContainer extends StatelessWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        Text('${event.users.length} asistente/s'),
+                        event.maxUsers != -1
+                        ? Text('${event.users.length}/${event.maxUsers} asistentes')
+                        : Text('${event.users.length} asistente/s'),
                       ],
                     )),
                 const SizedBox(
