@@ -13,6 +13,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'access': (_) => const AccessScreen(),
     'users': (_) => const UsersListViewScreen(),
     'profile': (_) => const ProfileDetailsView(),
+    'settings': (_) => const SettingsView(),
     'preferences': (_) => const PreferencesView(),
     'main': (_) => const MainScreen(),
     'middle': (_) => const MiddleScreen(),

@@ -12,7 +12,6 @@ class PreferencesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -44,7 +43,7 @@ class PreferencesView extends StatelessWidget {
 
 class PreferencesColumn extends StatefulWidget {
   const PreferencesColumn({super.key});
-  
+
   @override
   State<StatefulWidget> createState() => _PreferencesColumnState();
 }
@@ -58,9 +57,9 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
     preferencesFuture = _getPreferences();
   }
 
-  _getPreferences() async{
+  _getPreferences() async {
     PreferencesService preferencesService = PreferencesService();
-    
+
     return await preferencesService.getPreferencesByUserId();
   }
 
@@ -76,9 +75,8 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
       future: preferencesFuture,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-
           selectedPreferences = snapshot.data;
-          
+
           return Column(
             children: [
               const SizedBox(
@@ -113,7 +111,8 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                                           width: 4,
                                         ))),
                                         backgroundColor:
-                                            MaterialStateProperty.all(Colors.white)),
+                                            MaterialStateProperty.all(
+                                                Colors.white)),
                                     onPressed: () {
                                       setState(() {
                                         if (selectedPreferences
@@ -121,15 +120,16 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                                           //Si una preferencia seleccionada se presiona, es eliminada de la lista
                                           selectedPreferences
                                               .remove(preferences[index]);
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
                                                   content: Text(
                                                       'Se ha deseleccionado la preferencia ${preferences[index].name}')));
                                         } else {
                                           //Si una preferencia sin seleccionar se presiona, es añadida a la lista
-                                          selectedPreferences.add(preferences[index]);
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
+                                          selectedPreferences
+                                              .add(preferences[index]);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
                                                   content: Text(
                                                       'Se ha seleccionado la preferencia ${preferences[index].name}')));
                                         }
@@ -155,16 +155,14 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
               FloatingActionButton(
                 onPressed: () {
                   // When merge, change first option by current user id
-                  if(selectedPreferences.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                  if (selectedPreferences.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
-                          'Debes seleccionar al menos una preferencia')));
-
+                            'Debes seleccionar al menos una preferencia')));
                   } else {
-                      preferencesService.savePreferences(
-                      activeUserId, selectedPreferences);
-                      Navigator.pop(context, "main");
+                    preferencesService.savePreferences(
+                        activeUserId, selectedPreferences);
+                    Navigator.pop(context, "main");
                   }
                 },
                 child: const Icon(Icons.save),
@@ -173,12 +171,11 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                 height: 10,
               ),
               const Text('Recuerda guardar para que se actualize tu perfil',
-                      
-                      textAlign: TextAlign.center, style: TextStyle( 
-                        color: ProjectColors.primary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15)
-                      ) 
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: ProjectColors.primary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15))
             ],
           );
         } else {

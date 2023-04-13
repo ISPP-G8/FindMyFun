@@ -17,20 +17,19 @@ class AccessView extends StatelessWidget {
         constraints: BoxConstraints(maxHeight: size.height),
         child: Column(
           children: [
-            const SizedBox(
-              height: 100,
+            SizedBox(
+              height: size.height * 0.15,
             ),
             const ImageLogo(),
             const ImageBanner(),
-            const SizedBox(
-              height: 100,
-            ),
+            SizedBox(height: size.height * 0.12),
             CustomButton(
               text: 'Acceder como empresa',
               onTap: () => pageControllerService.pageController.animateToPage(1,
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut),
             ),
+            SizedBox(height: size.height * 0.03),
             CustomButton(
               text: 'Acceder como usuario',
               onTap: () => pageControllerService.pageController.animateToPage(1,

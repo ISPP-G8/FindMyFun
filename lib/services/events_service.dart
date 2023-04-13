@@ -190,11 +190,20 @@ class EventsService extends ChangeNotifier {
             if (!event.hasFinished) {
               int i = 0;
               for (String word in words) {
-                word = word.toLowerCase();
-                if (event.address.toLowerCase().contains(word) ||
-                    event.city.toLowerCase().contains(word) ||
-                    event.description.toLowerCase().contains(word) ||
-                    event.name.toLowerCase().contains(word)) {
+                word = removeDiacritics(word).toLowerCase();
+                if ((removeDiacritics(event.address)
+                            .toLowerCase()
+                            .contains(word) ||
+                        removeDiacritics(event.city)
+                            .toLowerCase()
+                            .contains(word) ||
+                        removeDiacritics(event.description)
+                            .toLowerCase()
+                            .contains(word) ||
+                        removeDiacritics(event.name)
+                            .toLowerCase()
+                            .contains(word)) &&
+                    !event.isFull) {
                   i = i + 1;
                 }
                 if (i == words.length) {
@@ -203,7 +212,7 @@ class EventsService extends ChangeNotifier {
               }
             }
           } catch (e) {
-            debugPrint('Error parsing event: $e');
+            //Exception('Se ha producido un error buscando eventos: $e');
           }
         });
         if (eventsAux.isNotEmpty) {
@@ -216,11 +225,23 @@ class EventsService extends ChangeNotifier {
         }
       } catch (e) {
         eventsFound = [];
-        throw Exception('Error getting events: $e');
+        throw Exception('Se ha producido un error al obtener eventos: $e');
       }
     }
   }
 
+  String removeDiacritics(String str) {
+    var withDia =
+        'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+    var withoutDia =
+        'AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz';
+
+    for (int i = 0; i < withDia.length; i++) {
+      str = str.replaceAll(withDia[i], withoutDia[i]);
+    }
+
+    return str;
+  }
   //READ USERS EVENTS
 
   Future<List<String>> getUsersFromEvent(Event event) async {

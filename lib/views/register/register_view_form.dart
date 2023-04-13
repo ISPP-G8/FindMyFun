@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:findmyfun/helpers/helpers.dart';
-import 'package:findmyfun/models/models.dart' as user;
+import 'package:findmyfun/models/models.dart' as models;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,12 +16,15 @@ class RegisterViewForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
       child: Column(
-        children: const [
-          LoginTitle(text: 'REGISTRO'),
-          ImageLogo(),
-          LoginContainer(
+        children: [
+          const LoginTitle(text: 'REGISTRO'),
+          const ImageLogo(),
+          SizedBox(height: size.height * 0.05),
+          const LoginContainer(
             child: _RegisterFormContainer(),
           )
         ],
@@ -120,7 +123,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                         email: _emailController.text,
                         password: _passwordController.text);
 
-                userService.currentUser = user.User(
+                userService.currentUser = models.User(
                     id: credential.user!.uid,
                     image: _imageController.text,
                     name: _nameController.text,
@@ -128,7 +131,12 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                     username: _usernameController.text,
                     city: _locationController.text,
                     email: _emailController.text,
-                    preferences: []);
+                    preferences: [
+                      models.Preferences(id: '0001', name: 'Preferencia')
+                    ],
+                    subscription: models.Subscription(
+                        type: models.SubscriptionType.free,
+                        numEventsCreatedThisMonth: 0));
                 final resp =
                     await userService.addItem(userService.currentUser!);
                 if (resp) {

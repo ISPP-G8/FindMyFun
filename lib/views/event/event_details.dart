@@ -28,6 +28,7 @@ class EventDetailsView extends StatelessWidget {
                   selectedEvent.name,
                   textAlign: TextAlign.center,
                   style: Styles.appBar,
+                  selectionColor: Colors.black,
                   maxLines: 3,
                 ),
               ),
@@ -37,7 +38,7 @@ class EventDetailsView extends StatelessWidget {
               child: const Icon(
                 Icons.chevron_left,
                 size: 45,
-                color: ProjectColors.secondary,
+                color: Color.fromARGB(255, 255, 255, 255),
               ),
             ),
             // backgroundColor: ProjectColors.primary,
@@ -83,27 +84,65 @@ class _FormsColumn extends StatelessWidget {
         if (snapshot.hasData) {
           return Column(
             children: [
+              const CustomAd(),
               const SizedBox(
                 height: 10,
               ),
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                child: Image.network(
-                  selectedEvent.image,
-                  fit: BoxFit.cover,
-                ),
+              Image.network(
+                selectedEvent.image,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Dirección:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 5,
               ),
               CustomTextForm(
                 hintText: selectedEvent.address,
                 enabled: false,
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Ciudad:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
               CustomTextForm(
                 hintText: selectedEvent.city,
                 enabled: false,
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Fecha:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
               CustomTextForm(
                 hintText: selectedEvent.startDate.toString(),
                 enabled: false,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Descripción:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 5,
               ),
               CustomTextForm(
                 hintText: selectedEvent.description,
@@ -111,10 +150,17 @@ class _FormsColumn extends StatelessWidget {
                 maxLines: 5,
                 type: TextInputType.multiline,
               ),
+              const SizedBox(
+                height: 10,
+              ),
               EventCreator(
                 creatorUsername: snapshot.data?.username ?? 'username',
               ),
-              if (!selectedEvent.users.contains(activeUserId))
+              const SizedBox(
+                height: 20,
+              ),
+              if (!selectedEvent.users.contains(activeUserId) &&
+                  !selectedEvent.isFull)
                 SubmitButton(
                   text: 'Unirse',
                   onTap: () => {
@@ -165,36 +211,61 @@ class _FormsColumn extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                child: Image.network(
-                  selectedEvent.image,
-                  fit: BoxFit.cover,
-                ),
+              Image.network(
+                selectedEvent.image,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Dirección:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 5,
               ),
               CustomTextForm(
                 hintText: selectedEvent.address,
                 enabled: false,
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Ciudad:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
               CustomTextForm(
                 hintText: selectedEvent.city,
                 enabled: false,
               ),
-              CustomTextForm(
-                hintText: selectedEvent.country,
-                enabled: false,
+              const SizedBox(
+                height: 10,
               ),
-              CustomTextForm(
-                hintText: selectedEvent.latitude.toString(),
-                enabled: false,
+              const Text(
+                'Fecha:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              CustomTextForm(
-                hintText: selectedEvent.longitude.toString(),
-                enabled: false,
+              const SizedBox(
+                height: 5,
               ),
               CustomTextForm(
                 hintText: selectedEvent.startDate.toString(),
                 enabled: false,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Descripción:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 5,
               ),
               CustomTextForm(
                 hintText: selectedEvent.description,
@@ -202,8 +273,14 @@ class _FormsColumn extends StatelessWidget {
                 maxLines: 5,
                 type: TextInputType.multiline,
               ),
+              const SizedBox(
+                height: 10,
+              ),
               EventCreator(
-                creatorUsername: snapshot.data?.username ?? '',
+                creatorUsername: snapshot.data?.username ?? 'username',
+              ),
+              const SizedBox(
+                height: 20,
               ),
               if (!selectedEvent.users.contains(activeUserId))
                 SubmitButton(

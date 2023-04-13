@@ -17,6 +17,7 @@ class Event {
     required this.startDate,
     required this.tags,
     required this.users,
+    required this.maxUsers,
     required this.messages,
   });
 
@@ -33,11 +34,14 @@ class Event {
   DateTime startDate;
   List<Preferences> tags;
   List<String> users;
+  int maxUsers;
   List<Messages> messages;
 
   bool get hasFinished => DateTime.now().isAfter(startDate);
 
   String get creator => users.first;
+
+  bool get isFull => maxUsers != -1 && users.length >= maxUsers;
 
   factory Event.fromRawJson(String str) => Event.fromJson(json.decode(str));
 
@@ -63,6 +67,7 @@ class Event {
       users: json["users"] != null
           ? List<String>.from(json["users"].map((x) => x))
           : [],
+      maxUsers: json["maxUsers"] ?? -1,
       messages: Map.from(json["messages"])
           .map((k, v) => MapEntry<String, Messages>(k, Messages.fromJson(v)))
           .values
@@ -83,11 +88,12 @@ class Event {
         "tags": Map.from(tags.fold({}, (r, p) => r..[p.id] = p))
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "users": List<String>.from(users.map((x) => x)),
+        "maxUsers": maxUsers,
         "messages": Map.from(messages.fold({}, (r, m) => r..[m.userId] = m))
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
       };
 
   @override
   String toString() =>
-      'address: $address, city: $city, country: $country, description: $description, finished: $finished, id: $id, image: $image, name: $name, latitude: $latitude, longitude: $longitude, startDate: $startDate, tags: $tags, users: $users, messages: $messages';
+      'address: $address, city: $city, country: $country, description: $description, finished: $finished, id: $id, image: $image, name: $name, latitude: $latitude, longitude: $longitude, startDate: $startDate, tags: $tags, users: $users, maxUsers: $maxUsers, messages: $messages';
 }

@@ -1,5 +1,5 @@
 import 'package:findmyfun/themes/themes.dart';
-import 'package:findmyfun/widgets/custom_navigation_bar.dart';
+import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -57,10 +57,19 @@ class _MainScreenState extends State<MainScreen> {
           actions: [
             Container(
               margin: const EdgeInsets.only(right: 10),
-              child: const Icon(
-                Icons.chat_bubble,
-                size: 50,
+              child: IconButton(
+                icon: 
+                  const Icon(
+                    Icons.exit_to_app,
+                    size: 50,
+                  ),
+                onPressed: () async {
+                  await AuthService().signOut();
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushReplacementNamed(context, 'access');
+                },
               ),
+              
             )
           ],
         ),
@@ -77,6 +86,7 @@ class _MainScreenState extends State<MainScreen> {
                 EventCreationView(),
                 EventSearchView(),
                 // TODO: Vista de notificaciones
+                ProfileDetailsView(),
                 SettingsView()
               ]),
         ));
