@@ -191,14 +191,19 @@ class EventsService extends ChangeNotifier {
               int i = 0;
               for (String word in words) {
                 word = removeDiacritics(word).toLowerCase();
-                if (removeDiacritics(event.address)
-                        .toLowerCase()
-                        .contains(word) ||
-                    removeDiacritics(event.city).toLowerCase().contains(word) ||
-                    removeDiacritics(event.description)
-                        .toLowerCase()
-                        .contains(word) ||
-                    removeDiacritics(event.name).toLowerCase().contains(word)) {
+                if ((removeDiacritics(event.address)
+                            .toLowerCase()
+                            .contains(word) ||
+                        removeDiacritics(event.city)
+                            .toLowerCase()
+                            .contains(word) ||
+                        removeDiacritics(event.description)
+                            .toLowerCase()
+                            .contains(word) ||
+                        removeDiacritics(event.name)
+                            .toLowerCase()
+                            .contains(word)) &&
+                    !event.isFull) {
                   i = i + 1;
                 }
                 if (i == words.length) {
@@ -207,7 +212,7 @@ class EventsService extends ChangeNotifier {
               }
             }
           } catch (e) {
-            debugPrint('Error parsing event: $e');
+            //Exception('Se ha producido un error buscando eventos: $e');
           }
         });
         if (eventsAux.isNotEmpty) {
@@ -220,7 +225,7 @@ class EventsService extends ChangeNotifier {
         }
       } catch (e) {
         eventsFound = [];
-        throw Exception('Error getting events: $e');
+        throw Exception('Se ha producido un error al obtener eventos: $e');
       }
     }
   }
