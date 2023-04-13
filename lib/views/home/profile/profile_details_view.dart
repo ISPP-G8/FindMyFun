@@ -1,10 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:findmyfun/models/models.dart';
-import 'package:findmyfun/services/users_service.dart';
 import 'package:findmyfun/themes/styles.dart';
+import 'package:findmyfun/widgets/custom_banner_ad.dart';
 import 'package:findmyfun/widgets/custom_text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:findmyfun/services/services.dart';
 
 import '../../../widgets/custom_button.dart';
 
@@ -15,16 +18,10 @@ class ProfileDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     final currentUser = userService.currentUser!;
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 241, 102, 102),
       appBar: AppBar(
-        leading: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(
-              Icons.chevron_left,
-              size: 45,
-              color: Color.fromARGB(255, 161, 154, 154),
-            )),
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -34,44 +31,118 @@ class ProfileDetailsView extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Container(
-          height: 800,
-          width: 400,
-          decoration: const BoxDecoration(
-            color: Color(0xff828a92),
-          ),
+        child: SizedBox(
+          height: 1000,
+          width: 600,
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                CustomAd(width: size.width.floor()),
                 Container(
                     padding: const EdgeInsets.all(10.0),
                     // child: Image.network(currentUser.image!, fit: BoxFit.cover),
                     child: userImage(currentUser)),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                const Text(
+                  "Nombre del usuario",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
+                ),
                 CustomTextForm(
                   hintText: currentUser.username,
                   initialValue: currentUser.username,
                   enabled: false,
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                const Text(
+                  "Nombre",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
                 ),
                 CustomTextForm(
                   hintText: currentUser.name,
                   initialValue: currentUser.name,
                   enabled: false,
                 ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                const Text(
+                  "Apellidos",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
+                ),
                 CustomTextForm(
                   hintText: currentUser.surname,
                   initialValue: currentUser.surname,
                   enabled: false,
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                const Text(
+                  "Ciudad",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
                 ),
                 CustomTextForm(
                   hintText: currentUser.city,
                   initialValue: currentUser.city,
                   enabled: false,
                 ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                const Text(
+                  "Email",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
+                ),
                 CustomTextForm(
                   hintText: currentUser.email,
                   initialValue: currentUser.email,
                   enabled: false,
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Visibility(
+                  visible: currentUser.isCompany ?? false,
+                  child: GestureDetector(
+                      onTap: () async {
+                        await AuthService().signOut();
+                        Navigator.pushNamed(context, 'eventpointcreation');
+                      },
+                      child: const CustomButton(text: 'Crear punto de evento')),
                 ),
                 GestureDetector(
                     onTap: () => Navigator.pushNamed(context, 'preferences'),
@@ -83,6 +154,15 @@ class ProfileDetailsView extends StatelessWidget {
                     onTap: () =>
                         Navigator.pushNamed(context, 'editCredentials'),
                     child: const CustomButton(text: 'Cambiar contraseña')),
+                // GestureDetector(
+                //     onTap: () => Navigator.pushNamed(context, 'settings'),
+                //     child: const CustomButton(text: 'Ajustes')),
+                GestureDetector(
+                    onTap: () async {
+                      await AuthService().signOut();
+                      Navigator.pushReplacementNamed(context, 'access');
+                    },
+                    child: const CustomButton(text: 'Cerrar sesión')),
                 const DeleteProfile(),
               ],
             ),

@@ -52,7 +52,7 @@ class SettingsView extends StatelessWidget {
         GestureDetector(
             onTap: () async {
               await AuthService().signOut();
-              Navigator.pushReplacementNamed(context, 'login');
+              Navigator.pushReplacementNamed(context, 'access');
             },
             child: const CustomButton(text: 'Cerrar sesión')),
       ],

@@ -4,6 +4,7 @@
 
 import 'package:findmyfun/models/important_notification.dart';
 import 'package:findmyfun/models/preferences.dart';
+import 'package:findmyfun/models/models.dart';
 import 'dart:convert';
 
 class User {
@@ -19,6 +20,8 @@ class User {
     this.isAdmin = false,
     this.isCompany = false,
     this.notifications = const [],
+    required this.subscription,
+
   });
 
   String id;
@@ -32,6 +35,8 @@ class User {
   bool? isAdmin;
   bool? isCompany;
   List<ImportantNotification?> notifications;
+  Subscription subscription;
+
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
@@ -57,7 +62,9 @@ class User {
               .map((x) => ImportantNotification.fromJson(x)))
           : [],
       isAdmin: json["isAdmin"] ?? false,
-      isCompany: json["isCompany"] ?? false);
+      isCompany: json["isCompany"] ?? false,
+      subscription: Subscription.fromJson(json["subscription"])
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -74,5 +81,6 @@ class User {
         "notifications":
             Map.from(notifications.fold({}, (r, n) => r..[n?.userId] = n))
                 .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
+        "subscription": subscription.toJson(),
       };
 }
