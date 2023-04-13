@@ -166,6 +166,7 @@ class _FormsColumnState extends State<_FormsColumn> {
 
   @override
   Widget build(BuildContext context) {
+    final mapService = Provider.of<MapService>(context);
     final size = MediaQuery.of(context).size;
     String? id = AuthService().currentUser?.uid ?? "";
     return Form(
@@ -281,7 +282,8 @@ class _FormsColumnState extends State<_FormsColumn> {
 
                 if (loggedUser.subscription.canCreateEvents) {
                   await eventsService.saveEvent(Event(
-                      address: placeMark.street!,
+                      // address: placeMark.street!,
+                      address: mapService.selectedDirection,
                       city: placeMark.locality!,
                       country: placeMark.country!,
                       description: _description.text,
@@ -377,11 +379,15 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
     );
   }
 
-  _handleTapMarker(LatLng tappedPoint) {
+  _handleTapMarker(LatLng tappedPoint) async {
     setState(() {
       tappedMarkerEvent.clear();
+
       tappedMarkerEvent.add(Marker(
           markerId: MarkerId(tappedPoint.toString()), position: tappedPoint));
     });
+
+    await Provider.of<MapService>(context, listen: false)
+        .getDirectionByLatLng(tappedPoint);
   }
 }

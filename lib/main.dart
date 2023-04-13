@@ -46,7 +46,10 @@ class AppState extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => AdService(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MapService(),
+        ),
       ],
       child: const MyApp(),
     );
