@@ -346,7 +346,7 @@ class _FormsColumnState extends State<_FormsColumn> {
               } else {
                 CustomSnackbars.showCustomSnackbar(
                   context,
-                  const Text('Rellene los campos'),
+                  const Text('Asegúrese de rellenar todos los campos'),
                 );
               }
             },
