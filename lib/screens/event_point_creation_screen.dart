@@ -139,6 +139,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+                    SizedBox(height: size.height * 0.005),
                     const CustomAd(),
                     const Divider(
                       color: Colors.grey,

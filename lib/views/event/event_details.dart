@@ -62,6 +62,7 @@ class _FormsColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
     final eventService = Provider.of<EventsService>(context, listen: false);
     final userService = Provider.of<UsersService>(context, listen: false);
@@ -84,6 +85,7 @@ class _FormsColumn extends StatelessWidget {
         if (snapshot.hasData) {
           return Column(
             children: [
+              SizedBox(height: size.height * 0.005),
               const CustomAd(),
               const SizedBox(
                 height: 10,
