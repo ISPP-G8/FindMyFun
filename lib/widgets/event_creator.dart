@@ -24,9 +24,9 @@ class _EventCreator extends State<EventCreator> {
           Text(
             widget.creatorUsername,
             style: const TextStyle(
-              color: Color(0xff545454),
-              fontWeight: FontWeight.w500,
-            ),
+                color: Color(0xff545454),
+                fontWeight: FontWeight.w500,
+                fontSize: 22),
           ),
           CustomButton(
             text: 'Visitar perfil',
