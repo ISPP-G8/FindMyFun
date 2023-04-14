@@ -187,7 +187,7 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
                     city: _cityController.text,
                     email: currentUser.email,
                     preferences: currentUser.preferences,
-                    notifications: currentUser.notifications);
+                    notifications: currentUser.notifications,
                     subscription: currentUser.subscription);
                 final resp =
                     await userService.updateProfile(userService.currentUser!);

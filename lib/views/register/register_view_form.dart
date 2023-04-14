@@ -131,11 +131,10 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                     username: _usernameController.text,
                     city: _locationController.text,
                     email: _emailController.text,
-                    preferences: [],
-                    notifications: []);
                     preferences: [
                       models.Preferences(id: '0001', name: 'Preferencia')
                     ],
+                    notifications: [],
                     subscription: models.Subscription(
                         type: models.SubscriptionType.free,
                         numEventsCreatedThisMonth: 0));
