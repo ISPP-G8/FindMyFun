@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, unused_field, library_private_types_in_public_api
 
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -71,7 +71,7 @@ class _EventCreationView extends State<EventCreationView> {
                   loggedUser = snapshot.data;
 
                   if (loggedUser.subscription.canCreateEvents) {
-                    return LoginContainer(
+                    return const LoginContainer(
                       child: _FormsColumn(),
                     );
                   } else {
@@ -94,7 +94,7 @@ class _EventCreationView extends State<EventCreationView> {
 
 // ignore: must_be_immutable
 class _FormsColumn extends StatefulWidget {
-  _FormsColumn();
+  const _FormsColumn();
 
   @override
   State<_FormsColumn> createState() => _FormsColumnState();
@@ -105,7 +105,6 @@ class _FormsColumnState extends State<_FormsColumn> {
   final _name = TextEditingController();
   final _description = TextEditingController();
   final _image = TextEditingController();
-  final _startDateTime = TextEditingController();
   List<Object> _selectedValues = [];
   String? _selectedDatetime;
 
@@ -121,13 +120,13 @@ class _FormsColumnState extends State<_FormsColumn> {
         request: request,
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: (InterstitialAd ad) {
-            print('$ad loaded');
+            debugPrint('$ad loaded');
             _interstitialAd = ad;
             _numInterstitialLoadAttempts = 0;
             _interstitialAd!.setImmersiveMode(true);
           },
           onAdFailedToLoad: (LoadAdError error) {
-            print('InterstitialAd failed to load: $error.');
+            debugPrint('InterstitialAd failed to load: $error.');
             _numInterstitialLoadAttempts += 1;
             _interstitialAd = null;
             if (_numInterstitialLoadAttempts < maxFailedLoadAttemptsEvent) {
@@ -139,19 +138,19 @@ class _FormsColumnState extends State<_FormsColumn> {
 
   void _showInterstitialAd() {
     if (_interstitialAd == null) {
-      print('Warning: attempt to show interstitial before loaded.');
+      debugPrint('Warning: attempt to show interstitial before loaded.');
       return;
     }
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (InterstitialAd ad) =>
-          print('ad onAdShowedFullScreenContent.'),
+          debugPrint('ad onAdShowedFullScreenContent.'),
       onAdDismissedFullScreenContent: (InterstitialAd ad) {
-        print('$ad onAdDismissedFullScreenContent.');
+        debugPrint('$ad onAdDismissedFullScreenContent.');
         ad.dispose();
         _createInterstitialAd();
       },
       onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-        print('$ad onAdFailedToShowFullScreenContent: $error');
+        debugPrint('$ad onAdFailedToShowFullScreenContent: $error');
         ad.dispose();
         _createInterstitialAd();
       },
@@ -224,21 +223,6 @@ class _FormsColumnState extends State<_FormsColumn> {
             controller: _image,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
-          // const Text(
-          //   "Fecha",
-          //   textAlign: TextAlign.center,
-          // ),
-          // CustomTextForm(
-          //   hintText: 'Fecha: aaaa-MM-dd',
-          //   controller: _startDateTime,
-          //   validator: (value) => Validators.validateDate(value),
-          // ),
-
-          // CustomTextForm(
-          //   hintText: 'Hora: HH:mm',
-          //   controller: _startTime,
-          //   validator: (value) => Validators.validateTime(value),
-          // ),
           DateTimePicker(
             selectedDateTime: _selectedDatetime,
             onChanged: (selected) {

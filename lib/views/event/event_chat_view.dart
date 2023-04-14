@@ -30,7 +30,6 @@ class _ChatScreenState extends State<ChatScreen> {
     final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
     messages = selectedEvent.messages;
     final messagesService = Provider.of<MessagesService>(context);
-    final userService = Provider.of<UsersService>(context, listen: false);
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final messageToSend = TextEditingController();
 
