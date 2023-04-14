@@ -52,10 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             transactions: const [
                               {
                                 "amount": {
-                                  "total": '3.99',
+                                  "total": '6.99',
                                   "currency": "EUR",
                                   "details": {
-                                    "subtotal": '3.99',
+                                    "subtotal": '6.99',
                                     "shipping": '0',
                                     "shipping_discount": 0
                                   }
@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     {
                                       "name": "Plan de usuario premium",
                                       "quantity": 1,
-                                      "price": '3.99',
+                                      "price": '6.99',
                                       "currency": "EUR"
                                     }
                                   ],
@@ -83,16 +83,13 @@ class _MyHomePageState extends State<MyHomePage> {
                             note: "Contact us for any questions on your order.",
                             onSuccess: (Map params) async {
                               print("onSuccess: $params");
-                              Navigator.pushNamed(context, 'middle');
                               // Poner la subscripcion aqui cuando se haga
                             },
                             onError: (error) {
                               print("onError: $error");
-                              Navigator.pushNamed(context, 'middle');
                             },
                             onCancel: (params) {
                               print('cancelled: $params');
-                              Navigator.pushNamed(context, 'middle');
                             }),
                       ),
                     )
