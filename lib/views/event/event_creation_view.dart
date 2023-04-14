@@ -241,9 +241,8 @@ class _FormsColumnState extends State<_FormsColumn> {
           // ),
           DateTimePicker(
             selectedDateTime: _selectedDatetime,
-            onChanged: (selected) => {
-              _selectedDatetime = selected,
-              print('DATETIMEEEE: ${_selectedDatetime}'),
+            onChanged: (selected) {
+              _selectedDatetime = selected;
             },
           ),
           const Text(
@@ -411,11 +410,15 @@ class DateTimePicker extends StatefulWidget {
 class _DateTimePicker extends State<DateTimePicker> {
   var _currentSelectedDate;
   var _currentSelectedTime;
+  String? _currentSelectedDateTime;
 
   void callDatePicker() async {
     var selectedDate = await getDatePickerWidget();
     setState(() {
       _currentSelectedDate = selectedDate;
+      _currentSelectedDateTime =
+          "${selectedDate.toString().split(" ").first} ${_currentSelectedTime.toString().split("(").last.replaceAll(")", "")}";
+      widget.onChanged(_currentSelectedDateTime!);
     });
   }
 
@@ -435,6 +438,9 @@ class _DateTimePicker extends State<DateTimePicker> {
     var selectedTime = await getTimePickerWidget();
     setState(() {
       _currentSelectedTime = selectedTime;
+      _currentSelectedDateTime =
+          "${_currentSelectedDate.toString().split(" ").first} ${selectedTime.toString().split("(").last.replaceAll(")", "")}";
+      widget.onChanged(_currentSelectedDateTime!);
     });
   }
 
@@ -468,19 +474,12 @@ class _DateTimePicker extends State<DateTimePicker> {
                       "${displayedSelectedDate.toString().split(" ").first} ${displayedSelectedTime.toString().split("(").last.replaceAll(")", "")}";
                   widget.onChanged(displayedCompleteDateTime);
                 });
-                widget.onChanged.call(displayedCompleteDateTime);
               },
               text: 'Seleccionar fecha',
             ),
             DatePickerButton(
               onTap: () {
                 callTimePicker();
-                setState(() {
-                  displayedCompleteDateTime =
-                      "${displayedSelectedDate.toString().split(" ").first} ${displayedSelectedTime.toString().split("(").last.replaceAll(")", "")}";
-                  widget.onChanged(displayedCompleteDateTime);
-                });
-                widget.onChanged.call(displayedCompleteDateTime);
               },
               text: 'Seleccionar hora',
             )
