@@ -197,7 +197,7 @@ class _FormsColumn extends StatelessWidget {
                 SubmitButton(
                   text: 'Unirse',
                   onTap: () => {
-                    eventService.addUserToEvent(selectedEvent),
+                    eventService.addUserToEvent(context, selectedEvent),
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -320,7 +320,7 @@ class _FormsColumn extends StatelessWidget {
                 SubmitButton(
                   text: 'Unirse',
                   onTap: () => {
-                    eventService.addUserToEvent(selectedEvent),
+                    eventService.addUserToEvent(context, selectedEvent),
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

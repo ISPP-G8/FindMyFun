@@ -2,6 +2,7 @@
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:findmyfun/routes/app_routes.dart';
+import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,9 @@ class AppState extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => MessagesService(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ImportantNotificationService(),
         ),
         ChangeNotifierProvider(
           create: (_) => AdService(),
