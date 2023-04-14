@@ -19,7 +19,6 @@ class MessagesService extends ChangeNotifier {
     _messages = inputMessages;
     notifyListeners();
   }
-  // TODO: Hacer el updateItem pasando el uid del AuthService()
 
   //READ MESSAGES
   Future<List<Messages>> getMessages(String eventId) async {

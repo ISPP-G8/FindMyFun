@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, unused_field
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/event_point.dart';
@@ -61,13 +63,13 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
         request: request,
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: (InterstitialAd ad) {
-            print('$ad loaded');
+            debugPrint('$ad loaded');
             _interstitialAd = ad;
             _numInterstitialLoadAttempts = 0;
             _interstitialAd!.setImmersiveMode(true);
           },
           onAdFailedToLoad: (LoadAdError error) {
-            print('InterstitialAd failed to load: $error.');
+            debugPrint('InterstitialAd failed to load: $error.');
             _numInterstitialLoadAttempts += 1;
             _interstitialAd = null;
             if (_numInterstitialLoadAttempts <
@@ -80,19 +82,19 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
 
   void _showInterstitialAd() {
     if (_interstitialAd == null) {
-      print('Warning: attempt to show interstitial before loaded.');
+      debugPrint('Warning: attempt to show interstitial before loaded.');
       return;
     }
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (InterstitialAd ad) =>
-          print('ad onAdShowedFullScreenContent.'),
+          debugPrint('ad onAdShowedFullScreenContent.'),
       onAdDismissedFullScreenContent: (InterstitialAd ad) {
-        print('$ad onAdDismissedFullScreenContent.');
+        debugPrint('$ad onAdDismissedFullScreenContent.');
         ad.dispose();
         _createInterstitialAd();
       },
       onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-        print('$ad onAdFailedToShowFullScreenContent: $error');
+        debugPrint('$ad onAdFailedToShowFullScreenContent: $error');
         ad.dispose();
         _createInterstitialAd();
       },
@@ -156,7 +158,6 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                         imageUrl = await uploadImage(context,
                             imageId: eventPointId, route: 'EventPoints');
 
-                        // ignore: use_build_context_synchronously
                         Navigator.pop(
                             context); // Cierra el circulo de progreso.
 
@@ -288,9 +289,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
 
                                 _showInterstitialAd();
 
-                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
-                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
                               }
                             },

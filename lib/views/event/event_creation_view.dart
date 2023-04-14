@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, unused_field, library_private_types_in_public_api
+
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:findmyfun/themes/themes.dart';
@@ -69,7 +71,7 @@ class _EventCreationView extends State<EventCreationView> {
                   loggedUser = snapshot.data;
 
                   if (loggedUser.subscription.canCreateEvents) {
-                    return LoginContainer(
+                    return const LoginContainer(
                       child: _FormsColumn(),
                     );
                   } else {
@@ -92,7 +94,7 @@ class _EventCreationView extends State<EventCreationView> {
 
 // ignore: must_be_immutable
 class _FormsColumn extends StatefulWidget {
-  _FormsColumn();
+  const _FormsColumn();
 
   @override
   State<_FormsColumn> createState() => _FormsColumnState();
@@ -103,9 +105,8 @@ class _FormsColumnState extends State<_FormsColumn> {
   final _name = TextEditingController();
   final _description = TextEditingController();
   final _image = TextEditingController();
-  final _startDateTime = TextEditingController();
-  final _startTime = TextEditingController();
   List<Object> _selectedValues = [];
+  String? _selectedDatetime;
 
   InterstitialAd? _interstitialAd;
   static const AdRequest request = AdRequest(
@@ -119,13 +120,13 @@ class _FormsColumnState extends State<_FormsColumn> {
         request: request,
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: (InterstitialAd ad) {
-            print('$ad loaded');
+            debugPrint('$ad loaded');
             _interstitialAd = ad;
             _numInterstitialLoadAttempts = 0;
             _interstitialAd!.setImmersiveMode(true);
           },
           onAdFailedToLoad: (LoadAdError error) {
-            print('InterstitialAd failed to load: $error.');
+            debugPrint('InterstitialAd failed to load: $error.');
             _numInterstitialLoadAttempts += 1;
             _interstitialAd = null;
             if (_numInterstitialLoadAttempts < maxFailedLoadAttemptsEvent) {
@@ -137,19 +138,19 @@ class _FormsColumnState extends State<_FormsColumn> {
 
   void _showInterstitialAd() {
     if (_interstitialAd == null) {
-      print('Warning: attempt to show interstitial before loaded.');
+      debugPrint('Warning: attempt to show interstitial before loaded.');
       return;
     }
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (InterstitialAd ad) =>
-          print('ad onAdShowedFullScreenContent.'),
+          debugPrint('ad onAdShowedFullScreenContent.'),
       onAdDismissedFullScreenContent: (InterstitialAd ad) {
-        print('$ad onAdDismissedFullScreenContent.');
+        debugPrint('$ad onAdDismissedFullScreenContent.');
         ad.dispose();
         _createInterstitialAd();
       },
       onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-        print('$ad onAdFailedToShowFullScreenContent: $error');
+        debugPrint('$ad onAdFailedToShowFullScreenContent: $error');
         ad.dispose();
         _createInterstitialAd();
       },
@@ -222,23 +223,11 @@ class _FormsColumnState extends State<_FormsColumn> {
             controller: _image,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
-          const Text(
-            "Fecha",
-            textAlign: TextAlign.center,
-          ),
-          CustomTextForm(
-            hintText: 'Fecha: aaaa-MM-dd',
-            controller: _startDateTime,
-            validator: (value) => Validators.validateDate(value),
-          ),
-          const Text(
-            "Hora",
-            textAlign: TextAlign.center,
-          ),
-          CustomTextForm(
-            hintText: 'Hora: HH:mm',
-            controller: _startTime,
-            validator: (value) => Validators.validateTime(value),
+          DateTimePicker(
+            selectedDateTime: _selectedDatetime,
+            onChanged: (selected) {
+              _selectedDatetime = selected;
+            },
           ),
           const Text(
             "Categorías",
@@ -254,7 +243,8 @@ class _FormsColumnState extends State<_FormsColumn> {
             text: 'Crear',
             onTap: () async {
               if (_formKey.currentState!.validate() &&
-                  _selectedValues.isNotEmpty) {
+                  _selectedValues.isNotEmpty &&
+                  _selectedDatetime != null) {
                 showDialog(
                   context: context,
                   builder: (context) => Column(
@@ -290,8 +280,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                       name: _name.text,
                       latitude: selectedMarker.position.latitude,
                       longitude: selectedMarker.position.longitude,
-                      startDate: DateTime.parse(
-                          '${_startDateTime.text} ${_startTime.text}'),
+                      startDate: DateTime.parse(_selectedDatetime!),
                       tags: await Future.wait(_selectedValues
                           .map((e) => PreferencesService()
                               .getPreferenceByName(e.toString()))
@@ -329,7 +318,7 @@ class _FormsColumnState extends State<_FormsColumn> {
               } else {
                 CustomSnackbars.showCustomSnackbar(
                   context,
-                  const Text('Rellene los campos'),
+                  const Text('Asegúrese de rellenar todos los campos'),
                 );
               }
             },
@@ -383,5 +372,144 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
       tappedMarkerEvent.add(Marker(
           markerId: MarkerId(tappedPoint.toString()), position: tappedPoint));
     });
+  }
+}
+
+class DateTimePicker extends StatefulWidget {
+  final String? selectedDateTime;
+  final Function(String) onChanged;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
+  const DateTimePicker(
+      {super.key,
+      this.selectedDateTime,
+      required this.onChanged,
+      this.controller,
+      this.validator});
+
+  @override
+  _DateTimePicker createState() => _DateTimePicker();
+}
+
+class _DateTimePicker extends State<DateTimePicker> {
+  var _currentSelectedDate;
+  var _currentSelectedTime;
+  String? _currentSelectedDateTime;
+
+  void callDatePicker() async {
+    var selectedDate = await getDatePickerWidget();
+    setState(() {
+      _currentSelectedDate = selectedDate;
+      _currentSelectedDateTime =
+          "${selectedDate.toString().split(" ").first} ${_currentSelectedTime.toString().split("(").last.replaceAll(")", "")}";
+      widget.onChanged(_currentSelectedDateTime!);
+    });
+  }
+
+  Future<DateTime?> getDatePickerWidget() {
+    return showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(data: ThemeData.dark(), child: child!);
+      },
+    );
+  }
+
+  void callTimePicker() async {
+    var selectedTime = await getTimePickerWidget();
+    setState(() {
+      _currentSelectedTime = selectedTime;
+      _currentSelectedDateTime =
+          "${_currentSelectedDate.toString().split(" ").first} ${selectedTime.toString().split("(").last.replaceAll(")", "")}";
+      widget.onChanged(_currentSelectedDateTime!);
+    });
+  }
+
+  Future<TimeOfDay?> getTimePickerWidget() {
+    return showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (context, child) {
+        return Theme(data: ThemeData.dark(), child: child!);
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    dynamic displayedSelectedDate = _currentSelectedDate ?? " ";
+    dynamic displayedSelectedTime = _currentSelectedTime ?? " ";
+    dynamic displayedCompleteDateTime =
+        "${displayedSelectedDate.toString().split(" ").first} ${displayedSelectedTime.toString().split("(").last.replaceAll(")", "")}";
+    // _displayedSelectedDate + DateTime.parse(_displayedSelectedTime);
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            DatePickerButton(
+              onTap: () {
+                callDatePicker();
+                setState(() {
+                  displayedCompleteDateTime =
+                      "${displayedSelectedDate.toString().split(" ").first} ${displayedSelectedTime.toString().split("(").last.replaceAll(")", "")}";
+                  widget.onChanged(displayedCompleteDateTime);
+                });
+              },
+              text: 'Seleccionar fecha',
+            ),
+            DatePickerButton(
+              onTap: () {
+                callTimePicker();
+              },
+              text: 'Seleccionar hora',
+            )
+          ],
+        ),
+        CustomTextForm(
+          hintText: "$displayedCompleteDateTime",
+          enabled: false,
+          controller: widget.controller,
+          validator: widget.validator,
+        )
+      ],
+    );
+  }
+}
+
+class DatePickerButton extends StatelessWidget {
+  final String text;
+  final void Function()? onTap;
+  final double? width;
+
+  const DatePickerButton(
+      {super.key,
+      required this.text,
+      this.onTap,
+      this.width = double.infinity});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: size.width * 0.4,
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 127, 122, 122),
+        ),
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+      ),
+    );
   }
 }

@@ -1,8 +1,11 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/event.dart';
 import '../../models/user.dart';
@@ -143,7 +146,7 @@ class _FormsColumn extends StatelessWidget {
                 height: 5,
               ),
               CustomTextDetail(
-                hintText: selectedEvent.startDate.toString(),
+                hintText: hintText: DateFormat('yyyy-MM-dd HH:mm').format(selectedEvent.startDate),
                 enabled: false,
                 maxLines: 3,
               ),
