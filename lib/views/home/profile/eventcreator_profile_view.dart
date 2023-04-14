@@ -15,13 +15,17 @@ class EventCreatorProfileDetailsView extends StatelessWidget {
     final userService = Provider.of<UsersService>(context);
     final event = ModalRoute.of(context)!.settings.arguments as Event;
     final size = MediaQuery.of(context).size;
+    User eventCreator;
 
     Future<User> getEventCreator() async {
-      User eventCreator = await userService.getUserWithUid(event.users.first);
+      User eventCreatorGet =
+          await userService.getUserWithUid(event.users.first);
+      eventCreator = eventCreatorGet;
       return eventCreator;
     }
 
-    User eventCreator = getEventCreator();
+    Future.delayed(Duration.zero, () async => await getEventCreator());
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
