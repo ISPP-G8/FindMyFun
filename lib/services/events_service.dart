@@ -304,4 +304,10 @@ class EventsService extends ChangeNotifier {
       throw Exception('Error getting users');
     }
   }
+
+  Future<User> getEventCreator(BuildContext context, Event event) async {
+    final userService = Provider.of<UsersService>(context, listen: false);
+    User eventCreator = await userService.getUserWithUid(event.users.first);
+    return eventCreator;
+  }
 }

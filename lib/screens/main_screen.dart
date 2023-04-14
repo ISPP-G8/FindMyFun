@@ -68,18 +68,16 @@ class _MainScreenState extends State<MainScreen> {
             Container(
               margin: const EdgeInsets.only(right: 10),
               child: IconButton(
-                icon: 
-                  const Icon(
-                    Icons.exit_to_app,
-                    size: 50,
-                  ),
+                icon: const Icon(
+                  Icons.exit_to_app,
+                  size: 50,
+                ),
                 onPressed: () async {
                   await AuthService().signOut();
                   // ignore: use_build_context_synchronously
                   Navigator.pushReplacementNamed(context, 'access');
                 },
               ),
-              
             )
           ],
         ),
@@ -89,13 +87,10 @@ class _MainScreenState extends State<MainScreen> {
               controller: pageControllerService.mainPageController,
               physics: const NeverScrollableScrollPhysics(),
               children: const [
-                // TODO: Vista de inicio
-                // TODO: Vista de busqueda
                 EventListView(),
                 EventFindView(),
                 EventCreationView(),
                 EventSearchView(),
-                // TODO: Vista de notificaciones
                 ProfileDetailsView(),
                 SettingsView()
               ]),

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element, no_leading_underscores_for_local_identifiers
+
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:findmyfun/routes/app_routes.dart';
 import 'package:findmyfun/services/important_notification_service.dart';
