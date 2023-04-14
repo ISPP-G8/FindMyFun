@@ -138,9 +138,9 @@ class EventsService extends ChangeNotifier {
           userId: event.creator,
           date: DateTime.now(),
           info: "${currentUser!.name} se ha unido al evento ${event.name}");
-      await notificationsService.saveNotification(
+      notificationsService.saveNotification(
           context, notificationUsuarioEntra, activeUserId);
-      await notificationsService.saveNotification(
+      notificationsService.saveNotification(
           context, notificationDuenoEvento, event.creator);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');
 

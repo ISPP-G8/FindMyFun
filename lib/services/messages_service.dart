@@ -6,8 +6,10 @@ import 'package:findmyfun/models/important_notification.dart';
 import 'package:findmyfun/models/messages.dart';
 import 'package:findmyfun/services/auth_service.dart';
 import 'package:findmyfun/services/important_notification_service.dart';
+import 'package:findmyfun/services/users_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../models/user.dart';
 
 class MessagesService extends ChangeNotifier {
@@ -56,7 +58,9 @@ class MessagesService extends ChangeNotifier {
   Future<void> saveMessage(
       BuildContext context, Messages message, Event event) async {
     String? activeUserId = AuthService().currentUser?.uid;
-    String? activeUserName = AuthService().currentUser?.displayName;
+    // String? activeUserName = AuthService().currentUser?.displayName;
+    final usersService = Provider.of<UsersService>(context, listen: false);
+
     final url = Uri.https(_baseUrl, 'Events/${event.id}/messages.json');
     event.messages.add(message);
     for (var user in event.users) {
@@ -64,7 +68,8 @@ class MessagesService extends ChangeNotifier {
         ImportantNotification notificationChatEvento = ImportantNotification(
             userId: user,
             date: DateTime.now(),
-            info: "$activeUserName ha enviado un mensaje en ${event.name}");
+            info:
+                "${usersService.currentUser!.name} ha enviado un mensaje en ${event.name}");
         ImportantNotificationService()
             .saveNotification(context, notificationChatEvento, user);
       }
