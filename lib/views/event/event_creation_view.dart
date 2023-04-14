@@ -285,40 +285,42 @@ class _FormsColumnState extends State<_FormsColumn> {
                 Placemark placeMark = selectedPlaceMark[0];
 
                 if (loggedUser.subscription.canCreateEvents) {
-                  await eventsService.saveEvent(Event(
-                      address: placeMark.street!,
-                      city: placeMark.locality!,
-                      country: placeMark.country!,
-                      description: _description.text,
-                      finished: false,
-                      image: _image.text,
-                      name: _name.text,
-                      latitude: selectedMarker.position.latitude,
-                      longitude: selectedMarker.position.longitude,
-                      startDate: DateTime.parse(
-                          '${_startDateTime.text} ${_startTime.text}'),
-                      visibleFrom: loggedUser
-                                  .subscription.maxVisiblityOfEventsInDays ==
-                              -1
-                          ? DateTime.fromMillisecondsSinceEpoch(0)
-                          : DateTime.parse(
-                                  '${_startDateTime.text} ${_startTime.text}')
-                              .subtract(Duration(
-                                  days: loggedUser.subscription
-                                      .maxVisiblityOfEventsInDays)),
-                      tags: await Future.wait(_selectedValues
-                          .map((e) => PreferencesService()
-                              .getPreferenceByName(e.toString()))
-                          .toList()),
-                      users: [id],
-                      maxUsers: loggedUser.subscription.maxUsersPerEvent,
-                      messages: [
-                        Messages(
-                            userId: "8AH3CM76DydLFLrAQANT2gTBYlk2",
-                            date: DateTime.now(),
-                            text: "Bienvenido")
-                      ],
-                      id: const Uuid().v1()));
+                  await eventsService.saveEvent(
+                      context,
+                      Event(
+                          address: placeMark.street!,
+                          city: placeMark.locality!,
+                          country: placeMark.country!,
+                          description: _description.text,
+                          finished: false,
+                          image: _image.text,
+                          name: _name.text,
+                          latitude: selectedMarker.position.latitude,
+                          longitude: selectedMarker.position.longitude,
+                          startDate: DateTime.parse(
+                              '${_startDateTime.text} ${_startTime.text}'),
+                          visibleFrom: loggedUser.subscription
+                                      .maxVisiblityOfEventsInDays ==
+                                  -1
+                              ? DateTime.fromMillisecondsSinceEpoch(0)
+                              : DateTime.parse(
+                                      '${_startDateTime.text} ${_startTime.text}')
+                                  .subtract(Duration(
+                                      days: loggedUser.subscription
+                                          .maxVisiblityOfEventsInDays)),
+                          tags: await Future.wait(_selectedValues
+                              .map((e) => PreferencesService()
+                                  .getPreferenceByName(e.toString()))
+                              .toList()),
+                          users: [id],
+                          maxUsers: loggedUser.subscription.maxUsersPerEvent,
+                          messages: [
+                            Messages(
+                                userId: "8AH3CM76DydLFLrAQANT2gTBYlk2",
+                                date: DateTime.now(),
+                                text: "Bienvenido")
+                          ],
+                          id: const Uuid().v1()));
 
                   loggedUser.subscription.numEventsCreatedThisMonth++;
                   UsersService().updateProfile(loggedUser);
