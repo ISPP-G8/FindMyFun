@@ -1,4 +1,5 @@
 import 'package:findmyfun/models/models.dart';
+import 'package:findmyfun/themes/colors.dart';
 import 'package:findmyfun/themes/styles.dart';
 import 'package:findmyfun/widgets/custom_banner_ad.dart';
 import 'package:findmyfun/widgets/custom_text_form.dart';
@@ -12,24 +13,21 @@ class EventCreatorProfileDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userService = Provider.of<UsersService>(context);
-    final event = ModalRoute.of(context)!.settings.arguments as Event;
+    final eventCreator = ModalRoute.of(context)!.settings.arguments as User;
     final size = MediaQuery.of(context).size;
-    User eventCreator;
-
-    Future<User> getEventCreator() async {
-      User eventCreatorGet =
-          await userService.getUserWithUid(event.users.first);
-      eventCreator = eventCreatorGet;
-      return eventCreator;
-    }
-
-    Future.delayed(Duration.zero, () async => await getEventCreator());
 
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.chevron_left_outlined,
+            size: 44,
+            color: ProjectColors.secondary,
+          ),
+        ),
         title: Text(
           'MI PERFIL',
           textAlign: TextAlign.center,

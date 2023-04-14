@@ -38,7 +38,7 @@ class EventDetailsView extends StatelessWidget {
               child: const Icon(
                 Icons.chevron_left,
                 size: 45,
-                color: Color.fromARGB(255, 255, 255, 255),
+                color: ProjectColors.secondary,
               ),
             ),
             // backgroundColor: ProjectColors.primary,
