@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/event.dart';
 import '../../models/user.dart';
+import '../../routes/app_routes.dart';
 
 class EventDetailsView extends StatelessWidget {
   const EventDetailsView({super.key});
@@ -219,7 +220,18 @@ class _FormsColumn extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         return ListTile(
                           leading: const Icon(Icons.person),
-                          title: Text(asistentesList[index]),
+                          title: GestureDetector(
+                            onTap: () {
+                              // Ação a ser executada quando o nome do assistente for clicado
+                              // Exemplo: Navegar para a página de perfil do assistente
+                              Navigator.pushNamed(
+                                context,
+                                'profile',
+                                arguments: asistentesList[index],
+                              );
+                            },
+                            child: Text(asistentesList[index]),
+                          ),
                         );
                       },
                     );
