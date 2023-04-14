@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:findmyfun/models/important_notification.dart';
+import 'package:provider/provider.dart';
 import '../models/user.dart';
 
 class ImportantNotificationService extends ChangeNotifier {
@@ -54,12 +56,14 @@ class ImportantNotificationService extends ChangeNotifier {
   }
 
   //SAVE NOTIFICATION
-  Future<void> saveNotification(
+  Future<void> saveNotification(BuildContext context,
       ImportantNotification notification, String userId) async {
-    final url = Uri.https(_baseUrl, 'User/${userId}/notifications.json');
+    final usersService = Provider.of<UsersService>(context, listen: false);
+    final currentUser = usersService.currentUser;
+    currentUser!.notifications.add(notification);
+    final url = Uri.https(_baseUrl, 'Users/${userId}.json');
     try {
-      final resp =
-          await http.post(url, body: jsonEncode(notification.toJson()));
+      final resp = await http.put(url, body: jsonEncode(currentUser));
     } catch (e) {
       debugPrint('Error posting notification: $e');
     }

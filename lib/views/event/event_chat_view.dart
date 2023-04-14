@@ -132,7 +132,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             date: DateTime.now(),
                             text: messageToSend.text);
                         if (m.text.isNotEmpty) {
-                          messagesService.saveMessage(m, selectedEvent);
+                          messagesService.saveMessage(
+                              context, m, selectedEvent);
                           Navigator.popAndPushNamed(context, "chat",
                               arguments: selectedEvent);
                         }

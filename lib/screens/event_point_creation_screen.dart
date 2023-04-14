@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/event_point.dart';
+import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/ui/ui.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -13,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../models/models.dart';
 import '../services/services.dart';
 
 const int maxFailedLoadAttemptsEventPoint = 3;
@@ -105,6 +107,8 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final eventPointsService = Provider.of<EventPointsService>(context);
+    final notificationService =
+        Provider.of<ImportantNotificationService>(context);
     final usersService = Provider.of<UsersService>(context);
     final eventPointId = const Uuid().v1();
     return Scaffold(
@@ -282,6 +286,15 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                 showCircularProgressDialog(context);
                                 await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);
+                                final notification = ImportantNotification(
+                                    userId: AuthService().currentUser!.uid,
+                                    date: DateTime.now(),
+                                    info:
+                                        "Has creado correctamente el punto de evento ${eventPoint.name}");
+                                notificationService.saveNotification(
+                                    context,
+                                    notification,
+                                    AuthService().currentUser!.uid);
 
                                 _showInterstitialAd();
 

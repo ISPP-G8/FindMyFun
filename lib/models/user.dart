@@ -21,7 +21,6 @@ class User {
     this.isCompany = false,
     this.notifications = const [],
     required this.subscription,
-
   });
 
   String id;
@@ -36,7 +35,6 @@ class User {
   bool? isCompany;
   List<ImportantNotification?> notifications;
   Subscription subscription;
-
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
@@ -63,8 +61,7 @@ class User {
           : [],
       isAdmin: json["isAdmin"] ?? false,
       isCompany: json["isCompany"] ?? false,
-      subscription: Subscription.fromJson(json["subscription"])
-      );
+      subscription: Subscription.fromJson(json["subscription"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -79,8 +76,7 @@ class User {
         "isAdmin": isAdmin,
         "isCompany": isCompany,
         "notifications":
-            Map.from(notifications.fold({}, (r, n) => r..[n?.userId] = n))
-                .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
+            List<dynamic>.from(notifications.map((x) => x?.toJson())),
         "subscription": subscription.toJson(),
       };
 }

@@ -1,4 +1,5 @@
 import 'package:findmyfun/models/models.dart';
+import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:flutter/material.dart';
@@ -168,6 +169,7 @@ class _FormsColumnState extends State<_FormsColumn> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     String? id = AuthService().currentUser?.uid ?? "";
+    final usersService = Provider.of<UsersService>(context);
     return Form(
       // autovalidateMode: AutovalidateMode.onUserInteraction,
       key: _formKey,
@@ -269,6 +271,9 @@ class _FormsColumnState extends State<_FormsColumn> {
                 );
                 final eventsService =
                     Provider.of<EventsService>(context, listen: false);
+                final notificationService =
+                    Provider.of<ImportantNotificationService>(context,
+                        listen: false);
 
                 Marker selectedMarker = tappedMarkerEvent[0];
 
@@ -280,7 +285,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                 Placemark placeMark = selectedPlaceMark[0];
 
                 if (loggedUser.subscription.canCreateEvents) {
-                  await eventsService.saveEvent(Event(
+                  final event = Event(
                       address: placeMark.street!,
                       city: placeMark.locality!,
                       country: placeMark.country!,
@@ -304,10 +309,19 @@ class _FormsColumnState extends State<_FormsColumn> {
                             date: DateTime.now(),
                             text: "Bienvenido")
                       ],
-                      id: const Uuid().v1()));
+                      id: const Uuid().v1());
+                  await eventsService.saveEvent(event);
+                  final notificationCreacionEvento = ImportantNotification(
+                      userId: event.creator,
+                      date: DateTime.now(),
+                      info: "Has creado correctamente el evento ${event.name}");
 
-                  loggedUser.subscription.numEventsCreatedThisMonth++;
-                  UsersService().updateProfile(loggedUser);
+                  await notificationService.saveNotification(
+                      context, notificationCreacionEvento, event.creator);
+
+                  usersService
+                      .currentUser!.subscription.numEventsCreatedThisMonth++;
+                  usersService.updateProfile();
 
                   _showInterstitialAd();
 

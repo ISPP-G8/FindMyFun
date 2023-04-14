@@ -53,7 +53,8 @@ class MessagesService extends ChangeNotifier {
     }
   }
 
-  Future<void> saveMessage(Messages message, Event event) async {
+  Future<void> saveMessage(
+      BuildContext context, Messages message, Event event) async {
     String? activeUserId = AuthService().currentUser?.uid;
     String? activeUserName = AuthService().currentUser?.displayName;
     final url = Uri.https(_baseUrl, 'Events/${event.id}/messages.json');
@@ -65,7 +66,7 @@ class MessagesService extends ChangeNotifier {
             date: DateTime.now(),
             info: "$activeUserName ha enviado un mensaje en ${event.name}");
         ImportantNotificationService()
-            .saveNotification(notificationChatEvento, user);
+            .saveNotification(context, notificationChatEvento, user);
       }
     }
     try {

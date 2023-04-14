@@ -44,8 +44,6 @@ class EventsService extends ChangeNotifier {
     try {
       // ignore: unused_local_variable
       final resp = await http.put(url, body: jsonEncode(event.toJson()));
-      ImportantNotification notificationCreacionEvento = ImportantNotification(userId: event.creator, date: DateTime.now(), info: "Has creado correctamente el evento ${event.name}");
-      ImportantNotificationService().saveNotification(notificationCreacionEvento, event.creator);
     } catch (e) {
       debugPrint('Error creating event: $e');
     }
@@ -116,7 +114,7 @@ class EventsService extends ChangeNotifier {
     }
   }
 
-  Future<void> addUserToEvent(Event event) async {
+  Future<void> addUserToEvent(BuildContext context, Event event) async {
     String eventId = event.id;
     String activeUserId = AuthService().currentUser?.uid ?? "";
     if (activeUserId.isEmpty ||
@@ -127,10 +125,18 @@ class EventsService extends ChangeNotifier {
           'Asegúrate de haber iniciado sesión, de que el evento existe y está activo no estás dentro de él');
     } else {
       event.users.add(activeUserId);
-      ImportantNotification notificationUsuarioEntra = ImportantNotification(userId: activeUserId, date: DateTime.now(), info: "Te has unido correctamente al evento ${event.name}");
-      ImportantNotification notificationDuenoEvento = ImportantNotification(userId: event.creator, date: DateTime.now(), info: "Te has unido correctamente al evento ${event.name}");
-      ImportantNotificationService().saveNotification(notificationUsuarioEntra, activeUserId);
-      ImportantNotificationService().saveNotification(notificationDuenoEvento, event.creator);
+      ImportantNotification notificationUsuarioEntra = ImportantNotification(
+          userId: activeUserId,
+          date: DateTime.now(),
+          info: "Te has unido correctamente al evento ${event.name}");
+      ImportantNotification notificationDuenoEvento = ImportantNotification(
+          userId: event.creator,
+          date: DateTime.now(),
+          info: "Te has unido correctamente al evento ${event.name}");
+      ImportantNotificationService()
+          .saveNotification(context, notificationUsuarioEntra, activeUserId);
+      ImportantNotificationService()
+          .saveNotification(context, notificationDuenoEvento, event.creator);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');
 
       try {
