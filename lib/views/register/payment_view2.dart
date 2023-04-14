@@ -88,9 +88,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                             onError: (error) {
                               print("onError: $error");
+                              Navigator.pushNamed(context, 'middle');
                             },
                             onCancel: (params) {
                               print('cancelled: $params');
+                              Navigator.pushNamed(context, 'middle');
                             }),
                       ),
                     )
