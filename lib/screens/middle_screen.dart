@@ -20,8 +20,6 @@ class _MiddleScreenState extends State<MiddleScreen> {
     user = AuthService().currentUser;
     final userService = Provider.of<UsersService>(context);
 
-    // TODO: asignar usuario en usuariosService
-
     return StreamBuilder(
       stream: AuthService().authStateChanges,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
