@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:findmyfun/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../models/event.dart';
 import '../models/user.dart';
 import 'users_service.dart';
@@ -37,7 +38,9 @@ class EventsService extends ChangeNotifier {
   }
 
   //POST AND UPDATE EVENT
-  Future<void> saveEvent(Event event) async {
+  Future<void> saveEvent(BuildContext context, Event event) async {
+    final usersService = Provider.of<UsersService>(context, listen: false);
+    if (!usersService.currentUser!.subscription.canCreateEvents) return;
     final url = Uri.https(_baseUrl, 'Events/${event.id}.json');
     try {
       // ignore: unused_local_variable
@@ -112,9 +115,11 @@ class EventsService extends ChangeNotifier {
     }
   }
 
-  Future<void> addUserToEvent(Event event) async {
+  Future<void> addUserToEvent(BuildContext context, Event event) async {
     String eventId = event.id;
     String activeUserId = AuthService().currentUser?.uid ?? "";
+    final usersService = Provider.of<UsersService>(context, listen: false);
+    if (usersService.currentUser!.isCompany == true) return;
     if (activeUserId.isEmpty ||
         eventId.isEmpty ||
         event.finished == true ||

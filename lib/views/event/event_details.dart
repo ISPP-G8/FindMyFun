@@ -78,6 +78,8 @@ class _FormsColumn extends StatelessWidget {
     //print(asistentes);
     String activeUserId = AuthService().currentUser?.uid ?? "";
 
+    bool isCompany = userService.currentUser!.isCompany == true;
+
     return FutureBuilder<User>(
       future: creator,
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
@@ -160,11 +162,12 @@ class _FormsColumn extends StatelessWidget {
                 height: 20,
               ),
               if (!selectedEvent.users.contains(activeUserId) &&
-                  !selectedEvent.isFull)
+                  !selectedEvent.isFull &&
+                  !isCompany)
                 SubmitButton(
                   text: 'Unirse',
                   onTap: () => {
-                    eventService.addUserToEvent(selectedEvent),
+                    eventService.addUserToEvent(context, selectedEvent),
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -286,7 +289,7 @@ class _FormsColumn extends StatelessWidget {
                 SubmitButton(
                   text: 'Unirse',
                   onTap: () => {
-                    eventService.addUserToEvent(selectedEvent),
+                    eventService.addUserToEvent(context, selectedEvent),
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
