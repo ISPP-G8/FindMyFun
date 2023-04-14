@@ -44,9 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         builder: (BuildContext context) => UsePaypal(
                             sandboxMode: true,
                             clientId:
-                                "AbX16roLECw5HbqfLI9Jap8DXi1dTLwPJVctqpaxDVlk6XI-rK_k6vnRZ4QRPBJmK4xxCdiqAoiDDEM3",
+                                "AVms00YqTZIS903hvPbYKGuSa2r2VqoIxTYwLPrAC9qzf8WURLrIhDLC0tSj9oxzqIMv7yARU3EQFfk3",
                             secretKey:
-                                "EMzKeOeVxBcaSvhX9yQSrBlkW0mpOMxGOxcGjS_IKUNfXNOlZ_7WaJ_iS1-aNsjbMt2ouEepBchgUJ8L",
+                                "EGEtmyXGE3pLlgwFsvMTZH1Jl90c-g2y3DzOx8Hb9OtwGvHK3QNgh6zwz7uZUPFEXmBj6RH9ZDew8fHP",
                             returnURL: "https://samplesite.com/return",
                             cancelURL: "https://samplesite.com/cancel",
                             transactions: const [
