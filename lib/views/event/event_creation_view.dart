@@ -285,17 +285,6 @@ class _FormsColumnState extends State<_FormsColumn> {
                         selectedMarker.position.longitude);
 
                 Placemark placeMark = selectedPlaceMark[0];
-                print('DATETIMEEEEEE111: ${placeMark.street!}');
-                print('DATETIMEEEEEE: ${placeMark.locality!}');
-                print('DATETIMEEEEEE: ${placeMark.country!}');
-                print('DATETIMEEEEEE: ${_description.text}');
-                print('DATETIMEEEEEE: ${_image.text}');
-                print('DATETIMEEEEEEdd: ${_name.text}');
-                print('DATETIMEEEEEEsdsa: ${selectedMarker.position.latitude}');
-                print('DATETIMEEEEEEA: ${selectedMarker.position.longitude}');
-                print('DATETIMEEEEEE SS: ${_selectedDatetime}');
-                print(
-                    'DATETIMEEEEEE: ${await Future.wait(_selectedValues.map((e) => PreferencesService().getPreferenceByName(e.toString())).toList())}');
 
                 if (loggedUser.subscription.canCreateEvents) {
                   await eventsService.saveEvent(Event(
