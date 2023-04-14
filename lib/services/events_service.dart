@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:findmyfun/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../models/event.dart';
 import '../models/user.dart';
 import 'users_service.dart';
@@ -284,5 +285,11 @@ class EventsService extends ChangeNotifier {
     } catch (e) {
       throw Exception('Error getting users');
     }
+  }
+
+  Future<User> getEventCreator(BuildContext context, Event event) async {
+    final userService = Provider.of<UsersService>(context, listen: false);
+    User eventCreator = await userService.getUserWithUid(event.users.first);
+    return eventCreator;
   }
 }

@@ -178,22 +178,24 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                               ),
                       ),
                     ),
-                    Divider(
-                      thickness: 5,
-                      color: ProjectColors.secondary,
-                      indent: size.height * 0.05,
-                      endIndent: size.height * 0.05,
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 0.5,
+                      height: 20,
+                      indent: 20,
+                      endIndent: 20,
                     ),
                     ConstrainedBox(
                       constraints: BoxConstraints(
                           maxHeight: size.height * 0.5, maxWidth: size.width),
                       child: const MapPlaceSelectorEventPointScreen(),
                     ),
-                    Divider(
-                      thickness: 5,
-                      color: ProjectColors.secondary,
-                      indent: size.height * 0.05,
-                      endIndent: size.height * 0.05,
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 0.5,
+                      height: 20,
+                      indent: 20,
+                      endIndent: 20,
                     ),
                     const Text(
                       "Nombre del punto de evento",
@@ -280,6 +282,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                     country: placeMark.country!,
                                     image: imageUrl,
                                     id: eventPointId);
+                                // ignore: use_build_context_synchronously
                                 showCircularProgressDialog(context);
                                 await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);
@@ -376,7 +379,7 @@ class _Button extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: const TextStyle(
-                color: ProjectColors.primary,
+                color: Color(0xffffde59),
                 fontSize: 18,
                 fontWeight: FontWeight.bold),
           )),

@@ -3,6 +3,7 @@ import 'package:findmyfun/views/home/profile/profile_credentials_view.dart';
 import 'package:findmyfun/views/home/profile/profile_edit_view.dart';
 import 'package:flutter/material.dart';
 
+import '../views/home/profile/eventcreator_profile_view.dart';
 import '../views/views.dart';
 
 Map<String, Widget Function(BuildContext)> exportRoutes() {
@@ -24,7 +25,8 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'editProfile': (_) => const ProfileEditForm(),
     'editCredentials': (_) => const ProfileCredentialsForm(),
     'eventpointsadmin': (_) => const EventPointsAdminView(),
-    'events': (_) => const EventListViewAdmin()
+    'events': (_) => const EventListViewAdmin(),
+    'creatorProfile': (_) => const EventCreatorProfileDetailsView()
   };
 
   return routes;
