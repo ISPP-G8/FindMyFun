@@ -63,6 +63,8 @@ class _MainScreenState extends State<MainScreen> {
                   Icons.chat_bubble,
                   size: 50,
                 ),
+              )
+            ),
             Container(
               margin: const EdgeInsets.only(right: 10),
               child: IconButton(
