@@ -6,6 +6,7 @@ import 'package:findmyfun/services/auth_service.dart';
 import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../models/event.dart';
 import '../models/user.dart';
 import 'users_service.dart';
@@ -117,6 +118,9 @@ class EventsService extends ChangeNotifier {
   Future<void> addUserToEvent(BuildContext context, Event event) async {
     String eventId = event.id;
     String activeUserId = AuthService().currentUser?.uid ?? "";
+    final usersService = Provider.of<UsersService>(context, listen: false);
+    final notificationsService =
+        Provider.of<ImportantNotificationService>(context, listen: false);
     if (activeUserId.isEmpty ||
         eventId.isEmpty ||
         event.finished == true ||
@@ -125,6 +129,7 @@ class EventsService extends ChangeNotifier {
           'Asegúrate de haber iniciado sesión, de que el evento existe y está activo no estás dentro de él');
     } else {
       event.users.add(activeUserId);
+      final currentUser = usersService.currentUser;
       ImportantNotification notificationUsuarioEntra = ImportantNotification(
           userId: activeUserId,
           date: DateTime.now(),
@@ -132,11 +137,11 @@ class EventsService extends ChangeNotifier {
       ImportantNotification notificationDuenoEvento = ImportantNotification(
           userId: event.creator,
           date: DateTime.now(),
-          info: "Te has unido correctamente al evento ${event.name}");
-      ImportantNotificationService()
-          .saveNotification(context, notificationUsuarioEntra, activeUserId);
-      ImportantNotificationService()
-          .saveNotification(context, notificationDuenoEvento, event.creator);
+          info: "${currentUser!.name} se ha unido al evento ${event.name}");
+      await notificationsService.saveNotification(
+          context, notificationUsuarioEntra, activeUserId);
+      await notificationsService.saveNotification(
+          context, notificationDuenoEvento, event.creator);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');
 
       try {
