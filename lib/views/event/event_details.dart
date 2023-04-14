@@ -148,7 +148,8 @@ class _FormsColumn extends StatelessWidget {
                 height: 5,
               ),
               CustomTextDetail(
-                hintText: hintText: DateFormat('yyyy-MM-dd HH:mm').format(selectedEvent.startDate),
+                hintText: DateFormat('yyyy-MM-dd HH:mm')
+                    .format(selectedEvent.startDate),
                 enabled: false,
                 maxLines: 3,
               ),
