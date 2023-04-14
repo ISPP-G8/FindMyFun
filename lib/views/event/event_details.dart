@@ -92,66 +92,87 @@ class _FormsColumn extends StatelessWidget {
                 selectedEvent.image,
                 fit: BoxFit.cover,
               ),
-              const SizedBox(
-                height: 10,
+              const Divider(
+                color: Colors.grey,
+                thickness: 0.5,
+                height: 20,
+                indent: 20,
+                endIndent: 20,
               ),
               const Text(
                 'Dirección:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 5,
               ),
-              CustomTextForm(
+              CustomTextDetail(
                 hintText: selectedEvent.address,
                 enabled: false,
               ),
-              const SizedBox(
-                height: 10,
+              const Divider(
+                color: Colors.grey,
+                thickness: 0.5,
+                height: 20,
+                indent: 20,
+                endIndent: 20,
               ),
               const Text(
                 'Ciudad:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 5,
               ),
-              CustomTextForm(
+              CustomTextDetail(
                 hintText: selectedEvent.city,
                 enabled: false,
               ),
-              const SizedBox(
-                height: 10,
+              const Divider(
+                color: Colors.grey,
+                thickness: 0.5,
+                height: 20,
+                indent: 20,
+                endIndent: 20,
               ),
               const Text(
                 'Fecha:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 5,
               ),
-              CustomTextForm(
+              CustomTextDetail(
                 hintText: selectedEvent.startDate.toString(),
                 enabled: false,
+                maxLines: 3,
               ),
-              const SizedBox(
-                height: 10,
+              const Divider(
+                color: Colors.grey,
+                thickness: 0.5,
+                height: 20,
+                indent: 20,
+                endIndent: 20,
               ),
               const Text(
                 'Descripción:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 5,
               ),
-              CustomTextForm(
+              CustomTextDetail(
                 hintText: selectedEvent.description,
                 enabled: false,
                 maxLines: 5,
                 type: TextInputType.multiline,
               ),
-              const SizedBox(
-                height: 10,
+              const Divider(
+                color: Colors.grey,
+                thickness: 0.5,
+                height: 20,
+                indent: 20,
+                endIndent: 20,
               ),
               if (!creatorSameAsCurrentUser)
                 EventCreator(
@@ -231,7 +252,7 @@ class _FormsColumn extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              CustomTextForm(
+              CustomTextDetail(
                 hintText: selectedEvent.address,
                 enabled: false,
               ),
@@ -245,7 +266,7 @@ class _FormsColumn extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              CustomTextForm(
+              CustomTextDetail(
                 hintText: selectedEvent.city,
                 enabled: false,
               ),
@@ -259,7 +280,7 @@ class _FormsColumn extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              CustomTextForm(
+              CustomTextDetail(
                 hintText: selectedEvent.startDate.toString(),
                 enabled: false,
               ),
@@ -273,10 +294,10 @@ class _FormsColumn extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              CustomTextForm(
+              CustomTextDetail(
                 hintText: selectedEvent.description,
                 enabled: false,
-                maxLines: 5,
+                maxLines: 4,
                 type: TextInputType.multiline,
               ),
               const SizedBox(
