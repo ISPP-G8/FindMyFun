@@ -27,6 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
     messages = selectedEvent.messages;
     final messagesService = Provider.of<MessagesService>(context);
@@ -46,6 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
+          SizedBox(height: size.height * 0.005),
           const CustomAd(),
           Expanded(
             child: ListView.builder(

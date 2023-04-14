@@ -52,7 +52,8 @@ class _EventCreationView extends State<EventCreationView> {
           backgroundColor: Colors.white,
           body: SingleChildScrollView(
               child: Column(children: [
-            CustomAd(width: size.width.floor()),
+            SizedBox(height: size.height * 0.005),
+            const CustomAd(),
             const Center(
                 child: Text(
               'CREAR EVENTO',

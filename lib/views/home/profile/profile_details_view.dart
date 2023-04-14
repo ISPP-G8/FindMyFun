@@ -38,7 +38,7 @@ class ProfileDetailsView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomAd(width: size.width.floor()),
+                const CustomAd(),
                 Container(
                     padding: const EdgeInsets.all(10.0),
                     // child: Image.network(currentUser.image!, fit: BoxFit.cover),
