@@ -83,7 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             note: "Contact us for any questions on your order.",
                             onSuccess: (Map params) async {
                               print("onSuccess: $params");
-                              Navigator.pushNamed(context, 'middle');
                               // Poner la subscripcion aqui cuando se haga
                             },
                             onError: (error) {

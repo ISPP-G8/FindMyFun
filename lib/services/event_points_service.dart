@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/models.dart';
@@ -24,6 +25,7 @@ class EventPointsService extends ChangeNotifier {
     final url = Uri.https(_baseUrl, 'EventPoints/${eventPoint.id}.json');
     try {
       final resp = await http.put(url, body: jsonEncode(eventPoint.toJson()));
+
       if (resp.statusCode != 200) {
         throw Exception('Error in response');
       }

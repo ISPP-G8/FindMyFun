@@ -34,7 +34,8 @@ class _EventListView extends State<EventListView> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              CustomAd(width: size.width.floor()),
+              SizedBox(height: size.height * 0.005),
+              const CustomAd(),
               const Center(
                   child: Text(
                 'TODOS LOS EVENTOS',
