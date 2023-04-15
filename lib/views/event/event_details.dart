@@ -181,28 +181,38 @@ class _FormsColumn extends StatelessWidget {
                   },
                 ),
               FutureBuilder<List<String>>(
-                future: asistentes,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final asistentesList = snapshot.data!;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: asistentesList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                          leading: const Icon(Icons.person),
-                          title: Text(asistentesList[index]),
-                        );
-                      },
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
+  future: asistentes,
+  builder: (context, snapshot) {
+    if (snapshot.hasData) {
+      final asistentesList = snapshot.data!;
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: asistentesList.length,
+        itemBuilder: (BuildContext context, int index) {
+          final isCreator = creator == activeUserId;
+          return Row(
+            children: [
+              Expanded(
+                child: Text(asistentesList[index]),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  eventService.deleteUserFromEvent(selectedEvent.id, index.toString());
+                  asistentesList.removeAt(index);
+                },
+                child: Text('Eliminar asistente'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      return CircularProgressIndicator();
+    }
+  },
+)
+,
             ],
           );
         } else {
