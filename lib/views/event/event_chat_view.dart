@@ -56,10 +56,12 @@ class _ChatScreenState extends State<ChatScreen> {
                 messages.sort((a, b) => a.date.compareTo(b.date));
                 final message = messages[index];
                 final bool isMe = message.userId == activeUserId;
-                Future<String> getUserName() async{
-                  final User user = await userService.getUserWithUid(message.userId);
+                Future<String> getUserName() async {
+                  final User user =
+                      await userService.getUserWithUid(message.userId);
                   return user.username;
                 }
+
                 return Container(
                   margin: EdgeInsets.only(
                     top: 8.0,
@@ -87,25 +89,39 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FutureBuilder<String>(
-                          future: getUserName().timeout(const Duration(seconds: 1)),
-                          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                            if (snapshot.hasData) {
-                              return Text(
-                                snapshot.data!,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.0,
-                                ),
-                              );
-                            } else {
-                              return const CircularProgressIndicator();
-                            }
-                          },
-                        ),
-                      const SizedBox(
-                          height:
-                              8.0), // Agrega un espacio vertical de 8.0 píxeles
+                      Row(
+                        children: [
+                          Expanded(
+                            child: FutureBuilder<String>(
+                              future: getUserName()
+                                  .timeout(const Duration(seconds: 1)),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<String> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    snapshot.data!,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                    ),
+                                  );
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                              },
+                            ),
+                          ),
+                          Text(
+                            message.date.toString().substring(
+                                0, (message.date.toString().length - 7)),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8.0),
                       Text(
                         message.text,
                         style: const TextStyle(

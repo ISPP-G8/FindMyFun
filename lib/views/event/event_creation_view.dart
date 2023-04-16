@@ -300,7 +300,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                       maxUsers: loggedUser.subscription.maxUsersPerEvent,
                       messages: [
                         Messages(
-                            userId: "8AH3CM76DydLFLrAQANT2gTBYlk2",
+                            userId: "11dtVFFHOXW3e93Rd6RRS6SeWWX3",
                             date: DateTime.now(),
                             text: "Bienvenido")
                       ],
