@@ -84,17 +84,33 @@ class _EventFindView extends State<EventFindView> {
                     future: eventsFuture,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return ConstrainedBox(
-                          constraints:
-                              BoxConstraints(maxHeight: size.height * 0.25),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (_, index) => EventContainer(
-                              event: snapshot.data![index],
+                        int eventCount = snapshot.data!.length;
+                        if (eventCount == 0) {
+                          return SizedBox(
+                            height: size.height * 0.35,
+                            width: size.width * 0.8,
+                            child: const Center(
+                                child: Text(
+                                    'Ajusta tus preferencias para mostrar eventos recomendados',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: ProjectColors.tertiary,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold))),
+                          );
+                        } else {
+                          return ConstrainedBox(
+                            constraints:
+                                BoxConstraints(maxHeight: size.height * 0.25),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (_, index) => EventContainer(
+                                event: snapshot.data![index],
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       } else {
                         return Column(children: const [
                           SizedBox(height: 100),

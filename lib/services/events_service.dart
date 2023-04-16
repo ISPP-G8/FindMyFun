@@ -154,7 +154,8 @@ class EventsService extends ChangeNotifier {
     String eventId = event.id;
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final usersService = Provider.of<UsersService>(context, listen: false);
-    if (usersService.currentUser!.subscription.type == SubscriptionType.company) return;
+    if (usersService.currentUser!.subscription.type == SubscriptionType.company)
+      return;
     final notificationsService =
         Provider.of<ImportantNotificationService>(context, listen: false);
     if (activeUserId.isEmpty ||
@@ -178,9 +179,9 @@ class EventsService extends ChangeNotifier {
           date: DateTime.now(),
           info: "${currentUser!.name} se ha unido al evento ${event.name}");
       notificationsService.saveNotification(
-          context, notificationUsuarioEntra, activeUserId);
-      notificationsService.saveNotification(
           context, notificationDuenoEvento, event.creator);
+      notificationsService.saveNotification(
+          context, notificationUsuarioEntra, activeUserId);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');
 
       try {

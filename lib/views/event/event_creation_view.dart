@@ -77,8 +77,16 @@ class _EventCreationView extends State<EventCreationView> {
                       child: _FormsColumn(),
                     );
                   } else {
-                    return const Center(
-                      child: Text('Ya no puedes crear más eventos este mes'),
+                    return SizedBox(
+                      height: size.height * 0.6,
+                      width: size.width * 0.8,
+                      child: const Center(
+                          child: Text('Ya no puedes crear más eventos este mes',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ProjectColors.tertiary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold))),
                     );
                   }
                 } else {
