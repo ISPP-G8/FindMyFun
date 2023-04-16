@@ -134,7 +134,12 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                     preferences: [
                       models.Preferences(id: '0001', name: 'Preferencia')
                     ],
-                    notifications: [],
+                    notifications: [
+                      models.ImportantNotification(
+                          date: DateTime.now(),
+                          userId: credential.user!.uid,
+                          info: 'Bienvenido'),
+                    ],
                     subscription: models.Subscription(
                         type: models.SubscriptionType.free,
                         numEventsCreatedThisMonth: 0));

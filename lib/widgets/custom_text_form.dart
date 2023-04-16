@@ -53,6 +53,7 @@ class CustomTextForm extends StatelessWidget {
           hintStyle: const TextStyle(
               color: Color.fromARGB(221, 90, 87, 87), fontSize: 26),
           border: InputBorder.none,
+          errorStyle: const TextStyle(color: Color.fromARGB(255, 243, 37, 22)),
         ),
       ),
     );

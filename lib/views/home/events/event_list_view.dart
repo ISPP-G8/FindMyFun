@@ -22,7 +22,7 @@ class _EventListView extends State<EventListView> {
 
   _getEvents() async {
     EventsService eventsService = EventsService();
-    return await eventsService.getEvents();
+    return await eventsService.getEventsOfLoggedUser();
   }
 
   @override
@@ -35,10 +35,10 @@ class _EventListView extends State<EventListView> {
           child: Column(
             children: [
               SizedBox(height: size.height * 0.005),
-              const CustomAd(),
+              const AdPlanLoader(),
               const Center(
                   child: Text(
-                'TODOS LOS EVENTOS',
+                'TUS EVENTOS',
                 style: TextStyle(
                     color: ProjectColors.secondary,
                     fontSize: 30,
@@ -48,16 +48,32 @@ class _EventListView extends State<EventListView> {
                 future: eventsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return ConstrainedBox(
-                      constraints:
-                          BoxConstraints(maxHeight: size.height * 0.68),
-                      child: ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (_, index) => EventContainer(
-                          event: snapshot.data![index],
+                    int eventCount = snapshot.data!.length;
+                    if (eventCount == 0) {
+                      return SizedBox(
+                        height: size.height * 0.6,
+                        width: size.width * 0.8,
+                        child: const Center(
+                            child: Text(
+                                'No estás en ningún evento, crea o únete a uno',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ProjectColors.tertiary,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold))),
+                      );
+                    } else {
+                      return ConstrainedBox(
+                        constraints:
+                            BoxConstraints(maxHeight: size.height * 0.68),
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (_, index) => EventContainer(
+                            event: snapshot.data![index],
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   } else {
                     return Column(children: const [
                       SizedBox(height: 100),

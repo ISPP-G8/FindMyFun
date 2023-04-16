@@ -18,7 +18,7 @@ class Subscription {
           ? 15
           : -1;
 
-  int get maxTimeInAdvanceToJoinEventsInDays => type == SubscriptionType.free
+  int get maxTimeInAdvanceToCreateEventsInDays => type == SubscriptionType.free
       ? 10
       : type == SubscriptionType.premium
           ? 30

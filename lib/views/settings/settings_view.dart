@@ -5,6 +5,8 @@ import 'package:findmyfun/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/models.dart';
+
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);
 
@@ -41,7 +43,7 @@ class SettingsView extends StatelessWidget {
               child: const CustomButton(text: 'Eventos registrados')),
         ),
         Visibility(
-          visible: user.isCompany ?? false,
+          visible: user.subscription.type == SubscriptionType.company,
           child: GestureDetector(
               onTap: () async {
                 await AuthService().signOut();
