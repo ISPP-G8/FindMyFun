@@ -231,7 +231,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             onChanged: (selected) {
               _selectedDatetime = selected;
             },
-            validator: (value) => Validators.validateDateRange(value, loggedUser
+            validator: (value) => Validators.validateDateTimeRange(_selectedDatetime, loggedUser
                         .subscription.maxTimeInAdvanceToCreateEventsInDays),
           ),
           const Text(
@@ -320,9 +320,8 @@ class _FormsColumnState extends State<_FormsColumn> {
                   await notificationService.saveNotification(
                       context, notificationCreacionEvento, event.creator);
 
-                  usersService
-                      .currentUser!.subscription.numEventsCreatedThisMonth++;
-                  usersService.updateProfile();
+                  // ignore: use_build_context_synchronously
+                  await SubscriptionService().updateEventCount(context, event.creator);
 
                   _showInterstitialAd();
 
