@@ -325,13 +325,9 @@ class _FormsColumnState extends State<_FormsColumn> {
                       date: DateTime.now(),
                       info: "Has creado correctamente el evento ${event.name}");
 
-                  // ignore: use_build_context_synchronously
-                  await notificationService.saveNotification(
-                      context, notificationCreacionEvento, event.creator);
-
-                  // ignore: use_build_context_synchronously
-                  await SubscriptionService()
-                      .updateEventCount(context, event.creator);
+                  loggedUser.notifications.add(notificationCreacionEvento);
+                  loggedUser.subscription.numEventsCreatedThisMonth++;
+                  await usersService.updateUser(loggedUser);
 
                   _showInterstitialAd();
 
