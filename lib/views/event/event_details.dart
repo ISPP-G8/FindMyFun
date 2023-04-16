@@ -89,7 +89,7 @@ class _FormsColumn extends StatelessWidget {
           return Column(
             children: [
               SizedBox(height: size.height * 0.005),
-              const CustomAd(),
+              const AdPlanLoader(),
               const SizedBox(
                 height: 10,
               ),
@@ -219,7 +219,6 @@ class _FormsColumn extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final asistentesList = snapshot.data!;
-                    print(asistentesList);
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),

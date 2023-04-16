@@ -2,7 +2,6 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
-import 'package:findmyfun/models/event_point.dart';
 import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/ui/ui.dart';
@@ -146,7 +145,6 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SizedBox(height: size.height * 0.005),
-                    const CustomAd(),
                     const Divider(
                       color: Colors.grey,
                       thickness: 0.5,
@@ -287,7 +285,6 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                     country: placeMark.country!,
                                     image: imageUrl,
                                     id: eventPointId);
-                                // ignore: use_build_context_synchronously
                                 showCircularProgressDialog(context);
                                 await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);

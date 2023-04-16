@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/models.dart';

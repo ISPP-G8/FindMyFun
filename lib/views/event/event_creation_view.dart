@@ -54,7 +54,7 @@ class _EventCreationView extends State<EventCreationView> {
           body: SingleChildScrollView(
               child: Column(children: [
             SizedBox(height: size.height * 0.005),
-            const CustomAd(),
+            const AdPlanLoader(),
             const Center(
                 child: Text(
               'CREAR EVENTO',
@@ -231,8 +231,9 @@ class _FormsColumnState extends State<_FormsColumn> {
             onChanged: (selected) {
               _selectedDatetime = selected;
             },
-            validator: (value) => Validators.validateDateTimeRange(_selectedDatetime, loggedUser
-                        .subscription.maxTimeInAdvanceToCreateEventsInDays),
+            validator: (value) => Validators.validateDateTimeRange(
+                _selectedDatetime,
+                loggedUser.subscription.maxTimeInAdvanceToCreateEventsInDays),
           ),
           const Text(
             "Categorías",
@@ -288,12 +289,12 @@ class _FormsColumnState extends State<_FormsColumn> {
                       latitude: selectedMarker.position.latitude,
                       longitude: selectedMarker.position.longitude,
                       startDate: DateTime.parse(_selectedDatetime!),
-                      visibleFrom: loggedUser.subscription
-                                      .maxVisiblityOfEventsInDays ==
+                      visibleFrom:
+                          loggedUser.subscription.maxVisiblityOfEventsInDays ==
                                   -1
                               ? DateTime.fromMillisecondsSinceEpoch(0)
-                              : DateTime.parse(_selectedDatetime!)
-                                  .subtract(Duration(
+                              : DateTime.parse(_selectedDatetime!).subtract(
+                                  Duration(
                                       days: loggedUser.subscription
                                           .maxVisiblityOfEventsInDays)),
                       tags: await Future.wait(_selectedValues
@@ -309,7 +310,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                             text: "Bienvenido")
                       ],
                       id: const Uuid().v1());
-                      // ignore: use_build_context_synchronously
+                  // ignore: use_build_context_synchronously
                   await eventsService.saveEvent(context, event);
                   final notificationCreacionEvento = ImportantNotification(
                       userId: event.creator,
@@ -321,7 +322,8 @@ class _FormsColumnState extends State<_FormsColumn> {
                       context, notificationCreacionEvento, event.creator);
 
                   // ignore: use_build_context_synchronously
-                  await SubscriptionService().updateEventCount(context, event.creator);
+                  await SubscriptionService()
+                      .updateEventCount(context, event.creator);
 
                   _showInterstitialAd();
 

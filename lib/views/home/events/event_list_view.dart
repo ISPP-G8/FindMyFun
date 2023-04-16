@@ -22,7 +22,7 @@ class _EventListView extends State<EventListView> {
 
   _getEvents() async {
     EventsService eventsService = EventsService();
-    return await eventsService.getEventsOfLoggedUser();
+    return await eventsService.getEvents();
   }
 
   @override
@@ -35,10 +35,10 @@ class _EventListView extends State<EventListView> {
           child: Column(
             children: [
               SizedBox(height: size.height * 0.005),
-              const CustomAd(),
+              const AdPlanLoader(),
               const Center(
                   child: Text(
-                'TUS EVENTOS',
+                'TODOS LOS EVENTOS',
                 style: TextStyle(
                     color: ProjectColors.secondary,
                     fontSize: 30,

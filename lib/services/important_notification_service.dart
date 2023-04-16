@@ -22,7 +22,7 @@ class ImportantNotificationService extends ChangeNotifier {
 
   //READ NOTIFICATIONS
   Future<void> getNotifications(String userId) async {
-    final url = Uri.https(_baseUrl, 'Users/${userId}.json');
+    final url = Uri.https(_baseUrl, 'Users/$userId.json');
     try {
       final resp = await http.get(url);
 
@@ -61,8 +61,9 @@ class ImportantNotificationService extends ChangeNotifier {
     final usersService = Provider.of<UsersService>(context, listen: false);
     final currentUser = usersService.currentUser;
     currentUser!.notifications.add(notification);
-    final url = Uri.https(_baseUrl, 'Users/${userId}.json');
+    final url = Uri.https(_baseUrl, 'Users/$userId.json');
     try {
+      // ignore: unused_local_variable
       final resp = await http.put(url, body: jsonEncode(currentUser));
     } catch (e) {
       debugPrint('Error posting notification: $e');

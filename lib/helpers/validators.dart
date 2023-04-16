@@ -27,15 +27,12 @@ class Validators {
   }
 
   static String? validateDateTimeRange(String? value, int advanced) {
-    RegExp regExp =
-        RegExp(r'^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01]) ([0-1]?[0-9]|2[0-3]):[0-5][0-9]$');
+    RegExp regExp = RegExp(
+        r'^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01]) ([0-1]?[0-9]|2[0-3]):[0-5][0-9]$');
 
     DateTime? dateTime;
     DateTime now;
-    print("test print 1");
-    print("test print 2: ${value}");
     if (value != null && regExp.hasMatch(value)) {
-      print("test print 3: ${value}");
       dateTime = DateTime.parse(value);
       now = DateTime.now();
       final difference =
