@@ -34,7 +34,8 @@ class _EventFindView extends State<EventFindView> {
         resizeToAvoidBottomInset: true,
         body: Column(
           children: [
-              CustomAd(width: size.width.floor()),
+            SizedBox(height: size.height * 0.005),
+            const CustomAd(),
             SizedBox(
               height: size.height * 0.02,
               width: size.width,
@@ -57,11 +58,12 @@ class _EventFindView extends State<EventFindView> {
             SizedBox(
               height: size.height * 0.02,
             ),
-            Divider(
-              thickness: 5,
-              color: ProjectColors.secondary,
-              indent: size.height * 0.05,
-              endIndent: size.height * 0.05,
+            const Divider(
+              color: Colors.grey,
+              thickness: 0.5,
+              height: 20,
+              indent: 20,
+              endIndent: 20,
             ),
             SizedBox(
               height: size.height * 0.02,
@@ -117,7 +119,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-
   late GoogleMapController _googleMapController;
   late Future markersFuture;
   // ignore: prefer_const_constructors
@@ -158,7 +159,7 @@ class _MapScreenState extends State<MapScreen> {
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
-    
+
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     currentPosition = LatLng(position.latitude, position.longitude);
@@ -186,9 +187,10 @@ class _MapScreenState extends State<MapScreen> {
                   markers: Set<Marker>.from(
                       snapshot.data!.map((m) => m.marker).toSet()),
                   initialCameraPosition: CameraPosition(
-                                            target: LatLng(currentPosition.latitude, currentPosition.longitude),
-                                            zoom: 15,
-                                          ),
+                    target: LatLng(
+                        currentPosition.latitude, currentPosition.longitude),
+                    zoom: 15,
+                  ),
                   onMapCreated: (controller) =>
                       _googleMapController = controller,
                   mapType: MapType.normal,

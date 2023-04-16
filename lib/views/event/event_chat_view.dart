@@ -1,6 +1,7 @@
 import 'package:findmyfun/helpers/validators.dart';
 import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/models/messages.dart';
+import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/widgets/custom_banner_ad.dart';
 import 'package:findmyfun/widgets/custom_text_form.dart';
@@ -27,10 +28,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
     messages = selectedEvent.messages;
     final messagesService = Provider.of<MessagesService>(context);
-    final userService = Provider.of<UsersService>(context, listen: false);
+    final userService = UsersService();
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final messageToSend = TextEditingController();
 
@@ -47,6 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
+          SizedBox(height: size.height * 0.005),
           const CustomAd(),
           Expanded(
             child: ListView.builder(
@@ -55,6 +58,12 @@ class _ChatScreenState extends State<ChatScreen> {
                 messages.sort((a, b) => a.date.compareTo(b.date));
                 final message = messages[index];
                 final bool isMe = message.userId == activeUserId;
+                Future<String> getUserName() async {
+                  final User user =
+                      await userService.getUserWithUid(message.userId);
+                  return user.username;
+                }
+
                 return Container(
                   margin: EdgeInsets.only(
                     top: 8.0,
@@ -82,16 +91,39 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        message.userId,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.0,
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: FutureBuilder<String>(
+                              future: getUserName()
+                                  .timeout(const Duration(seconds: 1)),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<String> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    snapshot.data!,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                    ),
+                                  );
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                              },
+                            ),
+                          ),
+                          Text(
+                            message.date.toString().substring(
+                                0, (message.date.toString().length - 7)),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.0,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(
-                          height:
-                              8.0), // Agrega un espacio vertical de 8.0 píxeles
+                      const SizedBox(height: 8.0),
                       Text(
                         message.text,
                         style: const TextStyle(
@@ -132,7 +164,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             date: DateTime.now(),
                             text: messageToSend.text);
                         if (m.text.isNotEmpty) {
-                          messagesService.saveMessage(m, selectedEvent);
+                          messagesService.saveMessage(
+                              context, m, selectedEvent);
                           Navigator.popAndPushNamed(context, "chat",
                               arguments: selectedEvent);
                         }
