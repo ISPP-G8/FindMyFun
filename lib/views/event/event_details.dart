@@ -1,11 +1,9 @@
+import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../models/event.dart';
-import '../../models/user.dart';
 
 class EventDetailsView extends StatelessWidget {
   const EventDetailsView({super.key});
@@ -77,12 +75,13 @@ class _FormsColumn extends StatelessWidget {
 
     //print(asistentes);
     String activeUserId = AuthService().currentUser?.uid ?? "";
-    bool isCompany = userService.currentUser!.isCompany == true;
+    late User creatorUser;
 
     return FutureBuilder<User>(
       future: creator,
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         if (snapshot.hasData) {
+          creatorUser = snapshot.data!;
           return Column(
             children: [
               const CustomAd(),
@@ -162,7 +161,7 @@ class _FormsColumn extends StatelessWidget {
               ),
               if (!selectedEvent.users.contains(activeUserId) &&
                   !selectedEvent.isFull &&
-                  !isCompany)
+                  creatorUser.subscription.type != SubscriptionType.company)
                 SubmitButton(
                   text: 'Unirse',
                   onTap: () => {
@@ -187,6 +186,7 @@ class _FormsColumn extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final asistentesList = snapshot.data!;
+                    print(asistentesList);
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),

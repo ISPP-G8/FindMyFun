@@ -285,6 +285,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                 Placemark placeMark = selectedPlaceMark[0];
 
                 if (loggedUser.subscription.canCreateEvents) {
+                  // ignore: use_build_context_synchronously
                   await eventsService.saveEvent(
                       context,
                       Event(
@@ -292,7 +293,6 @@ class _FormsColumnState extends State<_FormsColumn> {
                           city: placeMark.locality!,
                           country: placeMark.country!,
                           description: _description.text,
-                          finished: false,
                           image: _image.text,
                           name: _name.text,
                           latitude: selectedMarker.position.latitude,

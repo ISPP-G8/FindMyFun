@@ -8,7 +8,6 @@ class Event {
     required this.city,
     required this.country,
     required this.description,
-    required this.finished,
     required this.id,
     required this.image,
     required this.name,
@@ -26,7 +25,6 @@ class Event {
   String city;
   String country;
   String description;
-  bool finished;
   String id;
   String image;
   String name;
@@ -56,7 +54,6 @@ class Event {
       city: json["city"],
       country: json["country"],
       description: json["description"],
-      finished: json["finished"],
       id: json["id"],
       image: json["image"],
       name: json["name"],
@@ -83,7 +80,6 @@ class Event {
         "city": city,
         "country": country,
         "description": description,
-        "finished": finished,
         "id": id,
         "image": image,
         "name": name,
@@ -101,5 +97,5 @@ class Event {
 
   @override
   String toString() =>
-      'address: $address, city: $city, country: $country, description: $description, finished: $finished, id: $id, image: $image, name: $name, latitude: $latitude, longitude: $longitude, startDate: $startDate, visibleFrom: $visibleFrom, tags: $tags, users: $users, maxUsers: $maxUsers, messages: $messages';
+      'address: $address, city: $city, country: $country, description: $description, id: $id, image: $image, name: $name, latitude: $latitude, longitude: $longitude, startDate: $startDate, visibleFrom: $visibleFrom, tags: $tags, users: $users, maxUsers: $maxUsers, messages: $messages';
 }

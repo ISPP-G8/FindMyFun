@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import '../models/event.dart';
-import '../models/user.dart';
 import 'users_service.dart';
 
 class EventsService extends ChangeNotifier {
@@ -30,8 +29,8 @@ class EventsService extends ChangeNotifier {
   Future<void> deleteEvent(String eventId) async {
     final url = Uri.https(_baseUrl, 'Events/$eventId.json');
     try {
+      // ignore: unused_local_variable
       final resp = await http.delete(url);
-      debugPrint(resp.body);
     } catch (e) {
       debugPrint('Error al eliminar el evento: $e');
     }
@@ -155,10 +154,10 @@ class EventsService extends ChangeNotifier {
     String eventId = event.id;
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final usersService = Provider.of<UsersService>(context, listen: false);
-    if (usersService.currentUser!.isCompany == true) return;
+    if (usersService.currentUser!.subscription.type == SubscriptionType.company) return;
     if (activeUserId.isEmpty ||
         eventId.isEmpty ||
-        event.finished == true ||
+        event.hasFinished == true ||
         event.users.contains(activeUserId)) {
       throw Exception(
           'Asegúrate de haber iniciado sesión, de que el evento existe y está activo no estás dentro de él');
@@ -312,14 +311,10 @@ class EventsService extends ChangeNotifier {
   Future<List<String>> getNameFromId(List<String> ids) async {
     try {
       List<String> usersAux = [];
-      // ignore: avoid_print
-      print(ids);
       for (var id in ids) {
         final resp = await http.get(Uri.https(_baseUrl, 'Users/$id.json'));
 
         Map<String, dynamic> data = jsonDecode(resp.body);
-        // ignore: avoid_print
-        print(data["username"]);
         usersAux.add(data["username"]);
       }
       // ignore: avoid_print

@@ -16,8 +16,6 @@ class User {
     required this.email,
     required this.preferences,
     this.isAdmin = false,
-    this.isCompany = false,
-    this.isPremium = false,
     required this.subscription,
   });
 
@@ -30,9 +28,6 @@ class User {
   String email;
   List<Preferences?> preferences;
   bool? isAdmin;
-  bool? isCompany;
-  bool? isPremium;
-
   Subscription subscription;
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
@@ -55,9 +50,8 @@ class User {
               .toList()
           : [],
       isAdmin: json["isAdmin"] ?? false,
-      isCompany: json["isCompany"] ?? false,
-      subscription: Subscription.fromJson(json["subscription"]),
-      isPremium: json["isPremium"] ?? false);
+      subscription: Subscription.fromJson(json["subscription"])
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -70,8 +64,6 @@ class User {
         "preferences": Map.from(preferences.fold({}, (r, p) => r..[p?.id] = p))
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "isAdmin": isAdmin,
-        "isCompany": isCompany,
-        "subscription": subscription.toJson(),
-        "isPremium": isPremium
+        "subscription": subscription.toJson()
       };
 }
