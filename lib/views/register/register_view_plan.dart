@@ -70,20 +70,12 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
         text: 'CONTINUAR',
         onTap: () async {
           if (isCompany) {
-            final userService =
-                Provider.of<UsersService>(context, listen: false);
-            if (userService.currentUser != null) {
-              await subscriptionService
-                  .changePlanToCompany(userService.currentUser!);
-            }
             // ignore: use_build_context_synchronously
             Navigator.pushReplacementNamed(context, 'paymentBusiness');
-
-          }
-          else{
+          } else {
             // ignore: use_build_context_synchronously
             Navigator.pushReplacementNamed(context, 'paymentUser');
-          } 
+          }
         },
       )
     ]);

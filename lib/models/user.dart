@@ -63,7 +63,6 @@ class User {
       isCompany: json["isCompany"] ?? false,
       isPremium: json["isPremium"] ?? false,
       subscription: Subscription.fromJson(json["subscription"]));
-      );
 
   Map<String, dynamic> toJson() => {
         "id": id,
