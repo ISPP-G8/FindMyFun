@@ -54,10 +54,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             transactions: const [
                               {
                                 "amount": {
-                                  "total": '29.99',
+                                  "total": '19.99',
                                   "currency": "EUR",
                                   "details": {
-                                    "subtotal": '29.99',
+                                    "subtotal": '19.99',
                                     "shipping": '0',
                                     "shipping_discount": 0
                                   }
@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     {
                                       "name": "Plan de empresa premium",
                                       "quantity": 1,
-                                      "price": '29.99',
+                                      "price": '19.99',
                                       "currency": "EUR"
                                     }
                                   ],
