@@ -2,19 +2,24 @@
 
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/themes/styles.dart';
+import 'package:findmyfun/widgets/custom_banner_ad.dart';
+import 'package:findmyfun/widgets/custom_text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/services/services.dart';
-import 'package:findmyfun/widgets/widgets.dart';
 
-class ProfileDetailsView extends StatelessWidget {
-  const ProfileDetailsView({super.key});
+import '../../../widgets/custom_button.dart';
+
+class ProfileDetailsAdmin extends StatelessWidget {
+  const ProfileDetailsAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final selectedUser = ModalRoute.of(context)!.settings.arguments as User;
+
     final userService = Provider.of<UsersService>(context);
-    final currentUser = userService.currentUser!;
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -34,11 +39,11 @@ class ProfileDetailsView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const AdPlanLoader(),
+                CustomAd(width: size.width.floor()),
                 Container(
                     padding: const EdgeInsets.all(10.0),
-                    // child: Image.network(currentUser.image!, fit: BoxFit.cover),
-                    child: userImage(currentUser)),
+                    // child: Image.network(selectedUser.image!, fit: BoxFit.cover),
+                    child: userImage(selectedUser)),
                 const Divider(
                   color: Colors.grey,
                   thickness: 0.5,
@@ -49,11 +54,11 @@ class ProfileDetailsView extends StatelessWidget {
                 const Text(
                   "Nombre del usuario",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
+                  style: TextStyle(fontSize: 20),
                 ),
-                CustomTextDetail(
-                  hintText: currentUser.username,
-                  initialValue: currentUser.username,
+                CustomTextForm(
+                  hintText: selectedUser.username,
+                  initialValue: selectedUser.username,
                   enabled: false,
                 ),
                 const Divider(
@@ -66,11 +71,11 @@ class ProfileDetailsView extends StatelessWidget {
                 const Text(
                   "Nombre",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
+                  style: TextStyle(fontSize: 20),
                 ),
-                CustomTextDetail(
-                  hintText: currentUser.name,
-                  initialValue: currentUser.name,
+                CustomTextForm(
+                  hintText: selectedUser.name,
+                  initialValue: selectedUser.name,
                   enabled: false,
                 ),
                 const Divider(
@@ -83,11 +88,11 @@ class ProfileDetailsView extends StatelessWidget {
                 const Text(
                   "Apellidos",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
+                  style: TextStyle(fontSize: 20),
                 ),
-                CustomTextDetail(
-                  hintText: currentUser.surname,
-                  initialValue: currentUser.surname,
+                CustomTextForm(
+                  hintText: selectedUser.surname,
+                  initialValue: selectedUser.surname,
                   enabled: false,
                 ),
                 const Divider(
@@ -100,11 +105,11 @@ class ProfileDetailsView extends StatelessWidget {
                 const Text(
                   "Ciudad",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
+                  style: TextStyle(fontSize: 20),
                 ),
-                CustomTextDetail(
-                  hintText: currentUser.city,
-                  initialValue: currentUser.city,
+                CustomTextForm(
+                  hintText: selectedUser.city,
+                  initialValue: selectedUser.city,
                   enabled: false,
                 ),
                 const Divider(
@@ -117,11 +122,11 @@ class ProfileDetailsView extends StatelessWidget {
                 const Text(
                   "Email",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
+                  style: TextStyle(fontSize: 20),
                 ),
-                CustomTextDetail(
-                  hintText: currentUser.email,
-                  initialValue: currentUser.email,
+                CustomTextForm(
+                  hintText: selectedUser.email,
+                  initialValue: selectedUser.email,
                   enabled: false,
                 ),
                 const Divider(
@@ -131,49 +136,15 @@ class ProfileDetailsView extends StatelessWidget {
                   indent: 20,
                   endIndent: 20,
                 ),
-                Visibility(
-                  visible:
-                      currentUser.subscription.type == SubscriptionType.company,
-                  child: GestureDetector(
-                      onTap: () async {
-                        await AuthService().signOut();
-                        Navigator.pushNamed(context, 'eventpointcreation');
-                      },
-                      child: const CustomButton(text: 'Crear punto de evento')),
-                ),
                 GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, 'preferences'),
-                    child: const CustomButton(text: 'Tus preferencias')),
-                GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, 'editProfile'),
+                    onTap: () => Navigator.pushNamed(
+                        context, 'editProfileAdmin',
+                        arguments: selectedUser),
                     child: const CustomButton(text: 'Editar perfil')),
                 GestureDetector(
                     onTap: () =>
-                        Navigator.pushNamed(context, 'editCredentials'),
-                    child: const CustomButton(text: 'Cambiar contraseña')),
-                Visibility(
-                  visible: currentUser.isAdmin ?? false,
-                  child: GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, 'settings'),
-                      child: const CustomButton(
-                          text: 'Ajustes de administracion')),
-                ),
-                Visibility(
-                  visible:
-                      currentUser.subscription.type == SubscriptionType.free,
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, 'registerPlan');
-                      },
-                      child: const CustomButton(text: 'Cambiar plan')),
-                ),
-                GestureDetector(
-                    onTap: () async {
-                      await AuthService().signOut();
-                      Navigator.pushReplacementNamed(context, 'access');
-                    },
-                    child: const CustomButton(text: 'Cerrar sesión')),
-                const DeleteProfile(),
+                        userService.deleteProfile(selectedUser, context),
+                    child: const CustomButton(text: 'Borrar perfil')),
               ],
             ),
           ),
@@ -237,8 +208,9 @@ class DeleteProfile extends StatefulWidget {
 class _DeleteProfile extends State<DeleteProfile> {
   @override
   Widget build(BuildContext context) {
+    final selectedUser = ModalRoute.of(context)!.settings.arguments as User;
+
     final userService = Provider.of<UsersService>(context);
-    final currentUser = userService.currentUser!;
 
     return ElevatedButton(
       style: ButtonStyle(
@@ -264,7 +236,7 @@ class _DeleteProfile extends State<DeleteProfile> {
                 TextButton(
                   child: const Text('Si, estoy seguro'),
                   onPressed: () {
-                    UsersService().deleteProfile(currentUser,
+                    UsersService().deleteProfile(selectedUser,
                         context); // Agrega aquí el código que se ejecutará al confirmar
                     // Navigator.of(context).pop();
                   },

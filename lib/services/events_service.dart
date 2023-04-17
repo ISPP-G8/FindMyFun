@@ -36,6 +36,17 @@ class EventsService extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteEventAdmin(String eventId, BuildContext context) async {
+    final url = Uri.https(_baseUrl, 'Events/$eventId.json');
+    try {
+      // ignore: unused_local_variable
+      final resp = await http.delete(url);
+      Navigator.pushNamed(context, 'events');
+    } catch (e) {
+      debugPrint('Error al eliminar el evento: $e');
+    }
+  }
+
   //POST AND UPDATE EVENT
   Future<void> saveEvent(BuildContext context, Event event) async {
     final usersService = Provider.of<UsersService>(context, listen: false);
