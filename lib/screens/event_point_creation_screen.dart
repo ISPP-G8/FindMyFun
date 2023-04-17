@@ -124,7 +124,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
           elevation: 0,
           title: const FittedBox(
             child: Text(
-              'ESTABLECER PUNTO DE INTERÉS',
+              'ESTABLECER PUNTO DE EVENTO',
               style: TextStyle(
                   fontSize: 25,
                   color: ProjectColors.secondary,

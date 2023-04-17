@@ -50,7 +50,7 @@ class LoginView extends StatelessWidget {
                 ),
                 SizedBox(
                     height: size.height * 0.1,
-                    child: const Text('Bienvenido a FindMyFun',
+                    child: const Text('¡Bienvenido a FindMyFun!',
                         style: TextStyle(
                             color: Colors.black87,
                             fontWeight: FontWeight.bold,

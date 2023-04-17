@@ -62,7 +62,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
         child: _PlanContainer(
           title: 'Soy una empresa',
           subtitle:
-              'Crea eventos como empresa sin ningún límite y registra tu establecimiento como punto de interés',
+              'Crea eventos como empresa sin ningún límite y registra tu establecimiento como punto de evento',
           firstPrice: '19,99,€ al mes',
           secondPrice: '',
           selected: isCompany,

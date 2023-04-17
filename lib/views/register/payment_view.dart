@@ -10,15 +10,15 @@ void main() {
 class PaymentViewUser extends StatelessWidget {
   const PaymentViewUser({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Paypal',
+      debugShowCheckedModeBanner: false,
+      title: 'Pago por PayPal',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Paypal'),
+      home: const MyHomePage(title: 'Pago por PayPal'),
     );
   }
 }
@@ -38,7 +38,9 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: Center(
+        body: Column(
+          children: [
+            Center(
           child: TextButton(
               onPressed: () => {
                     Navigator.of(context).push(
@@ -64,10 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 },
                                 "description":
                                     "The payment transaction description.",
-                                // "payment_options": {
-                                //   "allowed_payment_method":
-                                //       "INSTANT_FUNDING_SOURCE"
-                                // },
                                 "item_list": {
                                   "items": [
                                     {
@@ -78,7 +76,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                     }
                                   ],
 
-                                  // shipping address is not required though
                                 }
                               }
                             ],
@@ -98,7 +95,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     )
                   },
-              child: const Text("Make Payment")),
-        ));
+              child: const Text("Realizar pago"))),
+          ],
+          )
+        );
   }
 }

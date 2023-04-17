@@ -131,6 +131,40 @@ class ProfileDetailsView extends StatelessWidget {
                   indent: 20,
                   endIndent: 20,
                 ),
+                const Text(
+                  "Suscripción",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
+                ),
+                CustomTextDetail(
+                  hintText: getSuscriptionType(currentUser.subscription.type),
+                  initialValue: getSuscriptionType(currentUser.subscription.type),
+                  enabled: false,
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                const Text(
+                  "Válido hasta",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
+                ),
+                CustomTextDetail(
+                  hintText: currentUser.subscription.validUntil.toString(),
+                  initialValue: currentUser.subscription.validUntil.toString(),
+                  enabled: false,
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
                 Visibility(
                   visible:
                       currentUser.subscription.type == SubscriptionType.company,
@@ -277,3 +311,15 @@ class _DeleteProfile extends State<DeleteProfile> {
     );
   }
 }
+
+String getSuscriptionType(SubscriptionType type){
+    String suscription = "";
+    if(type == SubscriptionType.free){
+      suscription = "Gratuita";
+    } else if(type == SubscriptionType.premium){
+      suscription = "Premium";
+    } else if(type == SubscriptionType.company){
+      suscription = "Empresa";
+    } 
+    return suscription;
+  }

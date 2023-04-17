@@ -138,7 +138,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                       models.ImportantNotification(
                           date: DateTime.now(),
                           userId: credential.user!.uid,
-                          info: 'Bienvenido'),
+                          info: 'Bienvenido a FindMyFun, ¡esperamos que pueda conocer gente para hacer planes que le interese y disfrutar de todo lo que nuestra aplicación le ofrece!'),
                     ],
                     subscription: models.Subscription(
                         type: models.SubscriptionType.free,

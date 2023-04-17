@@ -31,9 +31,10 @@ class ProfileEditForm extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          'MODIFICAR PERFIL',
+          'EDITAR PERFIL',
           textAlign: TextAlign.center,
           style: Styles.appBar,
+          
         ),
       ),
       body: Center(
@@ -191,13 +192,13 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
                     subscription: currentUser.subscription);
                 final resp = await userService.updateProfile();
                 if (resp) {
-                  Navigator.pop(context);
+                  print(_nameController.text);
                   Navigator.pop(context);
                   Navigator.pop(context);
                 } else {
                   Navigator.pop(context);
                   _formKey.currentState!.validate();
-                  print('Error al crear el usuario');
+                  print('Error al editar el usuario');
                 }
                 print('Usuario modificado con uid: ${currentUser.id}');
               } on FirebaseAuthException {
