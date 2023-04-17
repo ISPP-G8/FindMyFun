@@ -36,7 +36,7 @@ class _EventSearchViewState extends State<EventSearchView> {
           child: Column(
             children: [
               SizedBox(height: size.height * 0.005),
-              const CustomAd(),
+              const AdPlanLoader(),
               const Center(
                   child: Text(
                 'BUSCAR EVENTOS',

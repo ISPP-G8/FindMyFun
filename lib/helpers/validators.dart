@@ -26,9 +26,9 @@ class Validators {
     }
   }
 
-  static String? validateDateRange(String? value, int advanced) {
-    RegExp regExp =
-        RegExp(r'^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$');
+  static String? validateDateTimeRange(String? value, int advanced) {
+    RegExp regExp = RegExp(
+        r'^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01]) ([0-1]?[0-9]|2[0-3]):[0-5][0-9]$');
 
     DateTime? dateTime;
     DateTime now;

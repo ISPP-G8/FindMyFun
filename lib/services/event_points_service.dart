@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/models.dart';
@@ -21,7 +20,7 @@ class EventPointsService extends ChangeNotifier {
 
   //POST AND UPDATE EVENT POINT
   Future<void> saveEventPoint(EventPoint eventPoint, User currentUser) async {
-    if (currentUser.isCompany == null || currentUser.isCompany == false) return;
+    if (currentUser.subscription.type != SubscriptionType.company) return;
     final url = Uri.https(_baseUrl, 'EventPoints/${eventPoint.id}.json');
     try {
       final resp = await http.put(url, body: jsonEncode(eventPoint.toJson()));

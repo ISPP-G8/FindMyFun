@@ -1,14 +1,11 @@
 // ignore_for_file: depend_on_referenced_packages
-
+import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-
-import '../../models/event.dart';
-import '../../models/user.dart';
 
 class EventDetailsView extends StatelessWidget {
   const EventDetailsView({super.key});
@@ -81,15 +78,18 @@ class _FormsColumn extends StatelessWidget {
 
     //print(asistentes);
     String activeUserId = AuthService().currentUser?.uid ?? "";
+    late User creatorUser;
     bool creatorSameAsCurrentUser = activeUserId == selectedEvent.users.first;
+
     return FutureBuilder<User>(
       future: creator,
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         if (snapshot.hasData) {
+          creatorUser = snapshot.data!;
           return Column(
             children: [
               SizedBox(height: size.height * 0.005),
-              const CustomAd(),
+              const AdPlanLoader(),
               const SizedBox(
                 height: 10,
               ),
@@ -193,7 +193,8 @@ class _FormsColumn extends StatelessWidget {
                 height: 20,
               ),
               if (!selectedEvent.users.contains(activeUserId) &&
-                  !selectedEvent.isFull)
+                  !selectedEvent.isFull &&
+                  creatorUser.subscription.type != SubscriptionType.company)
                 SubmitButton(
                   text: 'Unirse',
                   onTap: () => {

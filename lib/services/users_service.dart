@@ -119,6 +119,21 @@ class UsersService extends ChangeNotifier {
     }
   }
 
+  //UPDATE PROFILE
+  Future<bool> updateUser(User user) async {
+    final url = Uri.https(_baseUrl, 'Users/${currentUser!.id}.json');
+    try {
+      // ignore: unused_local_variable
+      final resp = await http.put(url, body: jsonEncode(user.toJson()));
+
+      if (resp.statusCode != 200) return false;
+      return true;
+    } catch (e) {
+      debugPrint('Error editing profile: $e');
+      return false;
+    }
+  }
+
   //DELETE PROFILE
   Future<void> deleteProfile(User user, BuildContext context) async {
     final url = Uri.https(_baseUrl, 'Users/${user.id}.json');

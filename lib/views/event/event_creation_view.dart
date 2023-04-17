@@ -54,7 +54,7 @@ class _EventCreationView extends State<EventCreationView> {
           body: SingleChildScrollView(
               child: Column(children: [
             SizedBox(height: size.height * 0.005),
-            const CustomAd(),
+            const AdPlanLoader(),
             const Center(
                 child: Text(
               'CREAR EVENTO',
@@ -77,8 +77,16 @@ class _EventCreationView extends State<EventCreationView> {
                       child: _FormsColumn(),
                     );
                   } else {
-                    return const Center(
-                      child: Text('Ya no puedes crear más eventos este mes'),
+                    return SizedBox(
+                      height: size.height * 0.6,
+                      width: size.width * 0.8,
+                      child: const Center(
+                          child: Text('Ya no puedes crear más eventos este mes',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: ProjectColors.tertiary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold))),
                     );
                   }
                 } else {
@@ -231,6 +239,9 @@ class _FormsColumnState extends State<_FormsColumn> {
             onChanged: (selected) {
               _selectedDatetime = selected;
             },
+            validator: (value) => Validators.validateDateTimeRange(
+                _selectedDatetime,
+                loggedUser.subscription.maxTimeInAdvanceToCreateEventsInDays),
           ),
           const Text(
             "Categorías",
@@ -281,12 +292,19 @@ class _FormsColumnState extends State<_FormsColumn> {
                       city: placeMark.locality!,
                       country: placeMark.country!,
                       description: _description.text,
-                      finished: false,
                       image: _image.text,
                       name: _name.text,
                       latitude: selectedMarker.position.latitude,
                       longitude: selectedMarker.position.longitude,
                       startDate: DateTime.parse(_selectedDatetime!),
+                      visibleFrom:
+                          loggedUser.subscription.maxVisiblityOfEventsInDays ==
+                                  -1
+                              ? DateTime.fromMillisecondsSinceEpoch(0)
+                              : DateTime.parse(_selectedDatetime!).subtract(
+                                  Duration(
+                                      days: loggedUser.subscription
+                                          .maxVisiblityOfEventsInDays)),
                       tags: await Future.wait(_selectedValues
                           .map((e) => PreferencesService()
                               .getPreferenceByName(e.toString()))
@@ -295,23 +313,21 @@ class _FormsColumnState extends State<_FormsColumn> {
                       maxUsers: loggedUser.subscription.maxUsersPerEvent,
                       messages: [
                         Messages(
-                            userId: "8AH3CM76DydLFLrAQANT2gTBYlk2",
+                            userId: loggedUser.id,
                             date: DateTime.now(),
                             text: "Bienvenido")
                       ],
                       id: const Uuid().v1());
-                  await eventsService.saveEvent(event);
+                  // ignore: use_build_context_synchronously
+                  await eventsService.saveEvent(context, event);
                   final notificationCreacionEvento = ImportantNotification(
                       userId: event.creator,
                       date: DateTime.now(),
                       info: "Has creado correctamente el evento ${event.name}");
 
-                  await notificationService.saveNotification(
-                      context, notificationCreacionEvento, event.creator);
-
-                  usersService
-                      .currentUser!.subscription.numEventsCreatedThisMonth++;
-                  usersService.updateProfile();
+                  loggedUser.notifications.add(notificationCreacionEvento);
+                  loggedUser.subscription.numEventsCreatedThisMonth++;
+                  await usersService.updateUser(loggedUser);
 
                   _showInterstitialAd();
 

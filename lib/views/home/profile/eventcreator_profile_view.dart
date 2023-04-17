@@ -1,12 +1,9 @@
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/themes/colors.dart';
 import 'package:findmyfun/themes/styles.dart';
-import 'package:findmyfun/widgets/custom_banner_ad.dart';
-import 'package:findmyfun/widgets/custom_text_form.dart';
+import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:findmyfun/services/services.dart';
 
 class EventCreatorProfileDetailsView extends StatelessWidget {
   const EventCreatorProfileDetailsView({super.key});
@@ -42,7 +39,7 @@ class EventCreatorProfileDetailsView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomAd(width: size.width.floor()),
+                const AdPlanLoader(),
                 Container(
                     padding: const EdgeInsets.all(10.0),
                     // child: Image.network(currentUser.image!, fit: BoxFit.cover),
