@@ -1,4 +1,3 @@
-import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +33,7 @@ class _RegisterFormContainer extends StatefulWidget {
 }
 
 class _RegisterFormContainerState extends State<_RegisterFormContainer> {
+  SubscriptionService subscriptionService = SubscriptionService();
   bool isCompany = false;
   @override
   Widget build(BuildContext context) {
@@ -73,9 +73,8 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
             final userService =
                 Provider.of<UsersService>(context, listen: false);
             if (userService.currentUser != null) {
-              userService.currentUser!.subscription.type = SubscriptionType.company;
-              userService.currentUser!.subscription.validUntil = DateTime.now().add(const Duration(days: 30));
-              await userService.addItem(userService.currentUser!);
+              await subscriptionService
+                  .changePlanToCompany(userService.currentUser!);
             }
           }
           // ignore: use_build_context_synchronously
