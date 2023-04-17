@@ -158,10 +158,7 @@ class ProfileDetailsView extends StatelessWidget {
                       child: const CustomButton(
                           text: 'Ajustes de administracion')),
                 ),
-                GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, 'registerPlan'),
-                    child: const CustomButton(text: 'Cambiar plan')),
-                /*Visibility(
+                Visibility(
                   visible:
                       currentUser.subscription.type == SubscriptionType.free,
                   child: GestureDetector(
