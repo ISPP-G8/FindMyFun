@@ -23,6 +23,11 @@ class _CustomAdState extends State<CustomAd> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    _loadAd();
+  }
+
+  void _loadAd() {
     _bannerAd = BannerAd(
       size: AdSize(width: widget.width, height: widget.height),
       adUnitId: AdService.bannerAdUnitId!,

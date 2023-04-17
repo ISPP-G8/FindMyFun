@@ -17,7 +17,7 @@ Future<String> uploadImage(BuildContext context,
     await referenceDir.putFile(File(pickedImage.path));
     photoUrl = await referenceDir.getDownloadURL();
   } catch (e) {
-    print('Error al subir la imagen: $e');
+    debugPrint('Error al subir la imagen: $e');
   }
 
   return photoUrl;

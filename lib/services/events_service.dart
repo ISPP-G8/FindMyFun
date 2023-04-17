@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:findmyfun/models/important_notification.dart';
 import 'package:findmyfun/services/auth_service.dart';
+import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../models/event.dart';
 import '../models/user.dart';
 import 'users_service.dart';
@@ -112,9 +115,12 @@ class EventsService extends ChangeNotifier {
     }
   }
 
-  Future<void> addUserToEvent(Event event) async {
+  Future<void> addUserToEvent(BuildContext context, Event event) async {
     String eventId = event.id;
     String activeUserId = AuthService().currentUser?.uid ?? "";
+    final usersService = Provider.of<UsersService>(context, listen: false);
+    final notificationsService =
+        Provider.of<ImportantNotificationService>(context, listen: false);
     if (activeUserId.isEmpty ||
         eventId.isEmpty ||
         event.finished == true ||
@@ -123,6 +129,19 @@ class EventsService extends ChangeNotifier {
           'Asegúrate de haber iniciado sesión, de que el evento existe y está activo no estás dentro de él');
     } else {
       event.users.add(activeUserId);
+      final currentUser = usersService.currentUser;
+      ImportantNotification notificationUsuarioEntra = ImportantNotification(
+          userId: activeUserId,
+          date: DateTime.now(),
+          info: "Te has unido correctamente al evento ${event.name}");
+      ImportantNotification notificationDuenoEvento = ImportantNotification(
+          userId: event.creator,
+          date: DateTime.now(),
+          info: "${currentUser!.name} se ha unido al evento ${event.name}");
+      notificationsService.saveNotification(
+          context, notificationUsuarioEntra, activeUserId);
+      notificationsService.saveNotification(
+          context, notificationDuenoEvento, event.creator);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');
 
       try {
@@ -284,5 +303,11 @@ class EventsService extends ChangeNotifier {
     } catch (e) {
       throw Exception('Error getting users');
     }
+  }
+
+  Future<User> getEventCreator(BuildContext context, Event event) async {
+    final userService = Provider.of<UsersService>(context, listen: false);
+    User eventCreator = await userService.getUserWithUid(event.users.first);
+    return eventCreator;
   }
 }
