@@ -1,7 +1,5 @@
-import 'package:findmyfun/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:findmyfun/widgets/widgets.dart';
-import 'package:findmyfun/models/event.dart';
 import 'package:provider/provider.dart';
 
 import '../models/models.dart';

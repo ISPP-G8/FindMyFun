@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/services/auth_service.dart';
 import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:findmyfun/themes/colors.dart';
@@ -49,7 +48,7 @@ class _NotificationViewState extends State<NotificationView> {
                 Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.all(20),
-                  child: Text(
+                  child: const Text(
                     'No tienes notificaciones',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),

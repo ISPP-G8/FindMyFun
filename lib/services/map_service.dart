@@ -18,12 +18,18 @@ class MapService extends ChangeNotifier {
     List<EventPoint> eventPoints = await eventPointsService.getEventPoints();
 
     for (var event in events) {
+      if (event.hasFinished || !event.isVisible) continue;
+      if (event.isFull && !event.users.contains(currentUser)) continue;
       markers.add(Point(
           event: event,
           marker: Marker(
             markerId: MarkerId(event.id),
             position: LatLng(event.latitude, event.longitude),
-            icon: event.users.contains(currentUser) ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta) : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+            icon: event.users.contains(currentUser)
+                ? BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueMagenta)
+                : BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueRed),
           )));
     }
 

@@ -1,15 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:findmyfun/models/important_notification.dart';
-import 'package:findmyfun/services/auth_service.dart';
+import 'package:findmyfun/models/models.dart';
+import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import '../models/event.dart';
-import '../models/user.dart';
-import 'users_service.dart';
 
 class EventsService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
@@ -32,8 +29,8 @@ class EventsService extends ChangeNotifier {
   Future<void> deleteEvent(String eventId) async {
     final url = Uri.https(_baseUrl, 'Events/$eventId.json');
     try {
+      // ignore: unused_local_variable
       final resp = await http.delete(url);
-      debugPrint(resp.body);
     } catch (e) {
       debugPrint('Error al eliminar el evento: $e');
     }
@@ -44,6 +41,7 @@ class EventsService extends ChangeNotifier {
     final usersService = Provider.of<UsersService>(context, listen: false);
     if (!usersService.currentUser!.subscription.canCreateEvents) return;
     final url = Uri.https(_baseUrl, 'Events/${event.id}.json');
+
     try {
       // ignore: unused_local_variable
       final resp = await http.put(url, body: jsonEncode(event.toJson()));
@@ -80,7 +78,39 @@ class EventsService extends ChangeNotifier {
     }
   }
 
-  //FIND EVENTS
+  //GET EVENT OF LOGGED USER
+  Future<List<Event>> getEventsOfLoggedUser() async {
+    final url = Uri.https(_baseUrl, 'Events.json');
+    final currentUser = AuthService().currentUser?.uid ?? "";
+
+    try {
+      final resp = await http.get(url);
+
+      if (resp.statusCode != 200) {
+        throw Exception('Error in response');
+      }
+      List<Event> eventsAux = [];
+      Map<String, dynamic> data = jsonDecode(resp.body);
+
+      data.forEach((key, value) {
+        try {
+          final event = Event.fromRawJson(jsonEncode(value));
+          if (event.users.contains(currentUser)) {
+            eventsAux.add(event);
+          }
+        } catch (e) {
+          debugPrint('Error parsing event: $e');
+        }
+      });
+
+      events = eventsAux;
+      return eventsAux;
+    } catch (e) {
+      throw Exception('Error getting events: $e');
+    }
+  }
+
+  //FIND EVENTS THAT SHARE TAGS WITH USER, ARE NOT FULL, ARE VISIBLE, ARE NOT FINISHED AND USER IS NOT IN
   Future<List<Event>> findEvents() async {
     final url = Uri.https(_baseUrl, 'Events.json');
     final UsersService usersService = UsersService();
@@ -103,7 +133,10 @@ class EventsService extends ChangeNotifier {
                   .toSet()
                   .intersection(event.tags.toSet())
                   .isNotEmpty &&
-              !event.hasFinished /* && currentUser.city == event.city*/) {
+              !event.hasFinished &&
+              event.isVisible &&
+              !event.isFull &&
+              !event.users.contains(currentUser.id)) {
             eventsAux.add(event);
           }
         } catch (e) {
@@ -121,16 +154,22 @@ class EventsService extends ChangeNotifier {
     String eventId = event.id;
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final usersService = Provider.of<UsersService>(context, listen: false);
-    if (usersService.currentUser!.isCompany == true) return;
+
+    if (usersService.currentUser!.subscription.type == SubscriptionType.company)
+      return;
+
     final notificationsService =
         Provider.of<ImportantNotificationService>(context, listen: false);
     if (activeUserId.isEmpty ||
         eventId.isEmpty ||
-        event.finished == true ||
+        event.hasFinished == true ||
         event.users.contains(activeUserId)) {
       throw Exception(
           'Asegúrate de haber iniciado sesión, de que el evento existe y está activo no estás dentro de él');
     } else {
+      if (event.isFull) {
+        throw Exception('Error: Event is full');
+      }
       event.users.add(activeUserId);
       final currentUser = usersService.currentUser;
       ImportantNotification notificationUsuarioEntra = ImportantNotification(
@@ -142,9 +181,9 @@ class EventsService extends ChangeNotifier {
           date: DateTime.now(),
           info: "${currentUser!.name} se ha unido al evento ${event.name}");
       notificationsService.saveNotification(
-          context, notificationUsuarioEntra, activeUserId);
-      notificationsService.saveNotification(
           context, notificationDuenoEvento, event.creator);
+      notificationsService.saveNotification(
+          context, notificationUsuarioEntra, activeUserId);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');
 
       try {
@@ -290,14 +329,10 @@ class EventsService extends ChangeNotifier {
   Future<List<String>> getNameFromId(List<String> ids) async {
     try {
       List<String> usersAux = [];
-      // ignore: avoid_print
-      print(ids);
       for (var id in ids) {
         final resp = await http.get(Uri.https(_baseUrl, 'Users/$id.json'));
 
         Map<String, dynamic> data = jsonDecode(resp.body);
-        // ignore: avoid_print
-        print(data["username"]);
         usersAux.add(data["username"]);
       }
       // ignore: avoid_print
