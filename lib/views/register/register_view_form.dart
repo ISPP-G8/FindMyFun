@@ -106,7 +106,13 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
               isChecked = !isChecked;
             });
           },
-          title: Text('He leído y acepto los términos y condiciones de uso'),
+          title: TextButton(
+              onPressed: () => showDialog(
+                    context: context,
+                    builder: _termsDialog,
+                  ),
+              child: const Text(
+                  'He leído y acepto los términos y condiciones de uso')),
         ),
         SubmitButton(
           text: 'CONTINUAR',
@@ -207,5 +213,20 @@ showExceptionDialog(BuildContext context) {
     builder: (_) => const AlertDialog(
       content: Text('Por favor, revisa los datos proporcionados.'),
     ),
+  );
+}
+
+Widget _termsDialog(BuildContext context) {
+  return AlertDialog(
+    content: const SingleChildScrollView(
+      child: Text(
+        'Para el correcto funcionamiento de la aplicación, usted debe comprometerse a permitir que FindMyFun acceda a su galería de fotos según se requiera en la aplicación, por ejemplo, al subir una imagen para su perfil de usuario. Además, se debe permitir a que la aplicación utilice su ubicación, para que los servicios del mapa funcionen correctamente. También se debe permitir la visualización de algunos de sus datos personales al resto de usuarios de la aplicación como pueden ser su foto de perfil o nombre completo. No se le estará permitido en ningún momento el reproducir, copiar, distribuir, poner a disposición de terceros, comunicar públicamente, transformar o modificar la aplicación o sus contenidos salvo que se esté autorizado por el titular de dichos derechos o por la ley. Por último, se deben aceptar también los términos de servicios de paypal, para proceder correctamente con los pagos realizados en la aplicación.',
+        textAlign: TextAlign.center,
+      ),
+    ),
+    actions: [
+      TextButton(
+          onPressed: () => Navigator.pop(context), child: const Text('Cerrar'))
+    ],
   );
 }
