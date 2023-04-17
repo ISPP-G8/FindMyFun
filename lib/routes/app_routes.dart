@@ -1,5 +1,7 @@
 import 'package:findmyfun/views/event/event_map_view.dart';
 import 'package:findmyfun/views/home/profile/profile_credentials_view.dart';
+import 'package:findmyfun/views/home/profile/profile_details_admin.dart';
+import 'package:findmyfun/views/home/profile/profile_edit_admin.dart';
 import 'package:findmyfun/views/home/profile/profile_edit_view.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +14,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'access': (_) => const AccessScreen(),
     'users': (_) => const UsersListViewScreen(),
     'profile': (_) => const ProfileDetailsView(),
+    'profileAdmin': (_) => const ProfileDetailsAdmin(),
     'settings': (_) => const SettingsView(),
     'preferences': (_) => const PreferencesView(),
     'main': (_) => const MainScreen(),
@@ -22,6 +25,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'chat': (_) => const ChatScreen(),
     'searchResulst': (_) => const EventSearchView(),
     'editProfile': (_) => const ProfileEditForm(),
+    'editProfileAdmin': (_) => const ProfileEditAdmin(),
     'editCredentials': (_) => const ProfileCredentialsForm(),
     'eventpointsadmin': (_) => const EventPointsAdminView(),
     'events': (_) => const EventListViewAdmin()
