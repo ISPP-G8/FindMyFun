@@ -35,8 +35,9 @@ class Subscription {
       : type == SubscriptionType.premium
           ? 20
           : -1;
-  
-  bool get canCreateEvents => maxEventsPerMonth == -1 || numEventsCreatedThisMonth < maxEventsPerMonth;
+
+  bool get canCreateEvents =>
+      maxEventsPerMonth == -1 || numEventsCreatedThisMonth < maxEventsPerMonth;
 
   factory Subscription.fromRawJson(String str) =>
       Subscription.fromJson(json.decode(str));
@@ -45,7 +46,9 @@ class Subscription {
 
   factory Subscription.fromJson(Map<String, dynamic> json) => Subscription(
         type: SubscriptionType.values[json['type']],
-        validUntil: json["validUntil"] != null ? DateTime.parse(json["validUntil"]) : null,
+        validUntil: json["validUntil"] != null
+            ? DateTime.parse(json["validUntil"])
+            : null,
         numEventsCreatedThisMonth: json['numEventsCreatedThisMonth'] ?? 0,
       );
 
