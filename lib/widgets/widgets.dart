@@ -1,6 +1,8 @@
 export 'package:findmyfun/widgets/event_container.dart';
 
 export 'package:findmyfun/widgets/custom_button.dart';
+export 'package:findmyfun/widgets/custom_text_details.dart';
+
 export 'package:findmyfun/widgets/custom_text_form.dart';
 export 'package:findmyfun/widgets/custom_navigation_bar.dart';
 export 'package:findmyfun/widgets/image_banner.dart';
@@ -13,3 +15,4 @@ export 'package:findmyfun/widgets/event_creator.dart';
 export 'package:findmyfun/widgets/custom_checkbox.dart';
 export 'package:findmyfun/widgets/category_dropdown.dart';
 export 'package:findmyfun/widgets/custom_banner_ad.dart';
+export 'package:findmyfun/widgets/ad_plan_loader.dart';

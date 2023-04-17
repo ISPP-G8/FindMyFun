@@ -2,14 +2,11 @@
 
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/themes/styles.dart';
-import 'package:findmyfun/widgets/custom_banner_ad.dart';
-import 'package:findmyfun/widgets/custom_text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/services/services.dart';
-
-import '../../../widgets/custom_button.dart';
+import 'package:findmyfun/widgets/widgets.dart';
 
 class ProfileDetailsView extends StatelessWidget {
   const ProfileDetailsView({super.key});
@@ -18,7 +15,6 @@ class ProfileDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     final currentUser = userService.currentUser!;
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +34,7 @@ class ProfileDetailsView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomAd(width: size.width.floor()),
+                const AdPlanLoader(),
                 Container(
                     padding: const EdgeInsets.all(10.0),
                     // child: Image.network(currentUser.image!, fit: BoxFit.cover),
@@ -53,9 +49,9 @@ class ProfileDetailsView extends StatelessWidget {
                 const Text(
                   "Nombre del usuario",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
                 ),
-                CustomTextForm(
+                CustomTextDetail(
                   hintText: currentUser.username,
                   initialValue: currentUser.username,
                   enabled: false,
@@ -70,9 +66,9 @@ class ProfileDetailsView extends StatelessWidget {
                 const Text(
                   "Nombre",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
                 ),
-                CustomTextForm(
+                CustomTextDetail(
                   hintText: currentUser.name,
                   initialValue: currentUser.name,
                   enabled: false,
@@ -87,9 +83,9 @@ class ProfileDetailsView extends StatelessWidget {
                 const Text(
                   "Apellidos",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
                 ),
-                CustomTextForm(
+                CustomTextDetail(
                   hintText: currentUser.surname,
                   initialValue: currentUser.surname,
                   enabled: false,
@@ -104,9 +100,9 @@ class ProfileDetailsView extends StatelessWidget {
                 const Text(
                   "Ciudad",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
                 ),
-                CustomTextForm(
+                CustomTextDetail(
                   hintText: currentUser.city,
                   initialValue: currentUser.city,
                   enabled: false,
@@ -121,9 +117,9 @@ class ProfileDetailsView extends StatelessWidget {
                 const Text(
                   "Email",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
                 ),
-                CustomTextForm(
+                CustomTextDetail(
                   hintText: currentUser.email,
                   initialValue: currentUser.email,
                   enabled: false,
@@ -136,7 +132,8 @@ class ProfileDetailsView extends StatelessWidget {
                   endIndent: 20,
                 ),
                 Visibility(
-                  visible: currentUser.isCompany ?? false,
+                  visible:
+                      currentUser.subscription.type == SubscriptionType.company,
                   child: GestureDetector(
                       onTap: () async {
                         await AuthService().signOut();

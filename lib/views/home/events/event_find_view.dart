@@ -34,7 +34,8 @@ class _EventFindView extends State<EventFindView> {
         resizeToAvoidBottomInset: true,
         body: Column(
           children: [
-              CustomAd(width: size.width.floor()),
+            SizedBox(height: size.height * 0.005),
+            const AdPlanLoader(),
             SizedBox(
               height: size.height * 0.02,
               width: size.width,
@@ -57,11 +58,12 @@ class _EventFindView extends State<EventFindView> {
             SizedBox(
               height: size.height * 0.02,
             ),
-            Divider(
-              thickness: 5,
-              color: ProjectColors.secondary,
-              indent: size.height * 0.05,
-              endIndent: size.height * 0.05,
+            const Divider(
+              color: Colors.grey,
+              thickness: 0.5,
+              height: 20,
+              indent: 20,
+              endIndent: 20,
             ),
             SizedBox(
               height: size.height * 0.02,
@@ -82,17 +84,33 @@ class _EventFindView extends State<EventFindView> {
                     future: eventsFuture,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return ConstrainedBox(
-                          constraints:
-                              BoxConstraints(maxHeight: size.height * 0.3),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (_, index) => EventContainer(
-                              event: snapshot.data![index],
+                        int eventCount = snapshot.data!.length;
+                        if (eventCount == 0) {
+                          return SizedBox(
+                            height: size.height * 0.35,
+                            width: size.width * 0.8,
+                            child: const Center(
+                                child: Text(
+                                    'Ajusta tus preferencias para mostrar eventos recomendados',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: ProjectColors.tertiary,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold))),
+                          );
+                        } else {
+                          return ConstrainedBox(
+                            constraints:
+                                BoxConstraints(maxHeight: size.height * 0.25),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (_, index) => EventContainer(
+                                event: snapshot.data![index],
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       } else {
                         return Column(children: const [
                           SizedBox(height: 100),
@@ -117,7 +135,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-
   late GoogleMapController _googleMapController;
   late Future markersFuture;
   // ignore: prefer_const_constructors
@@ -158,7 +175,7 @@ class _MapScreenState extends State<MapScreen> {
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
-    
+
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     currentPosition = LatLng(position.latitude, position.longitude);
@@ -186,9 +203,10 @@ class _MapScreenState extends State<MapScreen> {
                   markers: Set<Marker>.from(
                       snapshot.data!.map((m) => m.marker).toSet()),
                   initialCameraPosition: CameraPosition(
-                                            target: LatLng(currentPosition.latitude, currentPosition.longitude),
-                                            zoom: 15,
-                                          ),
+                    target: LatLng(
+                        currentPosition.latitude, currentPosition.longitude),
+                    zoom: 15,
+                  ),
                   onMapCreated: (controller) =>
                       _googleMapController = controller,
                   mapType: MapType.normal,

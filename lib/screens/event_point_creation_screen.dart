@@ -1,6 +1,8 @@
+// ignore_for_file: use_build_context_synchronously, unused_field
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
-import 'package:findmyfun/models/event_point.dart';
+import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/ui/ui.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -13,6 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../models/models.dart';
 import '../services/services.dart';
 
 const int maxFailedLoadAttemptsEventPoint = 3;
@@ -61,13 +64,13 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
         request: request,
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: (InterstitialAd ad) {
-            print('$ad loaded');
+            debugPrint('$ad loaded');
             _interstitialAd = ad;
             _numInterstitialLoadAttempts = 0;
             _interstitialAd!.setImmersiveMode(true);
           },
           onAdFailedToLoad: (LoadAdError error) {
-            print('InterstitialAd failed to load: $error.');
+            debugPrint('InterstitialAd failed to load: $error.');
             _numInterstitialLoadAttempts += 1;
             _interstitialAd = null;
             if (_numInterstitialLoadAttempts <
@@ -80,19 +83,19 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
 
   void _showInterstitialAd() {
     if (_interstitialAd == null) {
-      print('Warning: attempt to show interstitial before loaded.');
+      debugPrint('Warning: attempt to show interstitial before loaded.');
       return;
     }
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (InterstitialAd ad) =>
-          print('ad onAdShowedFullScreenContent.'),
+          debugPrint('ad onAdShowedFullScreenContent.'),
       onAdDismissedFullScreenContent: (InterstitialAd ad) {
-        print('$ad onAdDismissedFullScreenContent.');
+        debugPrint('$ad onAdDismissedFullScreenContent.');
         ad.dispose();
         _createInterstitialAd();
       },
       onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-        print('$ad onAdFailedToShowFullScreenContent: $error');
+        debugPrint('$ad onAdFailedToShowFullScreenContent: $error');
         ad.dispose();
         _createInterstitialAd();
       },
@@ -105,6 +108,8 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final eventPointsService = Provider.of<EventPointsService>(context);
+    final notificationService =
+        Provider.of<ImportantNotificationService>(context);
     final usersService = Provider.of<UsersService>(context);
     final eventPointId = const Uuid().v1();
     return Scaffold(
@@ -139,7 +144,6 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const CustomAd(),
                     const Divider(
                       color: Colors.grey,
                       thickness: 0.5,
@@ -156,7 +160,6 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                         imageUrl = await uploadImage(context,
                             imageId: eventPointId, route: 'EventPoints');
 
-                        // ignore: use_build_context_synchronously
                         Navigator.pop(
                             context); // Cierra el circulo de progreso.
 
@@ -177,22 +180,24 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                               ),
                       ),
                     ),
-                    Divider(
-                      thickness: 5,
-                      color: ProjectColors.secondary,
-                      indent: size.height * 0.05,
-                      endIndent: size.height * 0.05,
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 0.5,
+                      height: 20,
+                      indent: 20,
+                      endIndent: 20,
                     ),
                     ConstrainedBox(
                       constraints: BoxConstraints(
                           maxHeight: size.height * 0.5, maxWidth: size.width),
                       child: const MapPlaceSelectorEventPointScreen(),
                     ),
-                    Divider(
-                      thickness: 5,
-                      color: ProjectColors.secondary,
-                      indent: size.height * 0.05,
-                      endIndent: size.height * 0.05,
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 0.5,
+                      height: 20,
+                      indent: 20,
+                      endIndent: 20,
                     ),
                     const Text(
                       "Nombre del punto de evento",
@@ -282,12 +287,19 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                 showCircularProgressDialog(context);
                                 await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);
+                                final notification = ImportantNotification(
+                                    userId: AuthService().currentUser!.uid,
+                                    date: DateTime.now(),
+                                    info:
+                                        "Has creado correctamente el punto de evento ${eventPoint.name}");
+                                notificationService.saveNotification(
+                                    context,
+                                    notification,
+                                    AuthService().currentUser!.uid);
 
                                 _showInterstitialAd();
 
-                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
-                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
                               }
                             },
@@ -377,7 +389,7 @@ class _Button extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: const TextStyle(
-                color: ProjectColors.primary,
+                color: Color(0xffffde59),
                 fontSize: 18,
                 fontWeight: FontWeight.bold),
           )),

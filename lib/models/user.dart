@@ -16,7 +16,7 @@ class User {
     required this.email,
     required this.preferences,
     this.isAdmin = false,
-    this.isCompany = false,
+    this.notifications = const [],
     required this.subscription,
   });
 
@@ -29,7 +29,7 @@ class User {
   String email;
   List<Preferences?> preferences;
   bool? isAdmin;
-  bool? isCompany;
+  List<ImportantNotification?> notifications;
   Subscription subscription;
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
@@ -51,8 +51,11 @@ class User {
               .values
               .toList()
           : [],
+      notifications: json["notifications"] != null
+          ? List<ImportantNotification>.from(json["notifications"]
+              .map((x) => ImportantNotification.fromJson(x)))
+          : [],
       isAdmin: json["isAdmin"] ?? false,
-      isCompany: json["isCompany"] ?? false,
       subscription: Subscription.fromJson(json["subscription"])
       );
 
@@ -67,7 +70,8 @@ class User {
         "preferences": Map.from(preferences.fold({}, (r, p) => r..[p?.id] = p))
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "isAdmin": isAdmin,
-        "isCompany": isCompany,
-        "subscription": subscription.toJson(),
+        "notifications":
+            List<dynamic>.from(notifications.map((x) => x?.toJson())),
+        "subscription": subscription.toJson()
       };
 }
