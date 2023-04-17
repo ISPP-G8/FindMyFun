@@ -189,8 +189,8 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
                   email: selectedUser.email,
                   preferences: selectedUser.preferences,
                   subscription: selectedUser.subscription);
-              final resp =
-                  await userService.updateProfile(userService.selectedUser!);
+              final resp = await userService
+                  .updateProfileAdmin(userService.selectedUser!);
               if (resp) {
                 Navigator.pop(context);
                 Navigator.pop(context);

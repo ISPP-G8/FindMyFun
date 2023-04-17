@@ -1,3 +1,4 @@
+import 'package:findmyfun/views/event/event_details%20admin.dart';
 import 'package:findmyfun/views/event/event_map_view.dart';
 import 'package:findmyfun/views/home/profile/profile_credentials_view.dart';
 import 'package:findmyfun/views/home/profile/profile_details_admin.dart';
@@ -21,6 +22,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'main': (_) => const MainScreen(),
     'middle': (_) => const MiddleScreen(),
     'eventDetails': (_) => const EventDetailsView(),
+    'eventDetailsAdmin': (_) => const EventDetailsAdmin(),
     'eventpointcreation': (_) => const EventPointCreationScreen(),
     'map': (_) => const EventMapView(),
     'chat': (_) => const ChatScreen(),
