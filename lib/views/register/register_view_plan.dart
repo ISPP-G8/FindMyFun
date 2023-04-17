@@ -11,15 +11,17 @@ class RegisterViewPlan extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: const [
-          LoginTitle(text: 'REGISTRO'),
-          ImageLogo(),
-          LoginContainer(
-            child: _RegisterFormContainer(),
-          )
-        ],
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: const [
+            LoginTitle(text: 'REGISTRO'),
+            ImageLogo(),
+            LoginContainer(
+              child: _RegisterFormContainer(),
+            )
+          ],
+        ),
       ),
     );
   }
