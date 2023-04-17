@@ -78,7 +78,13 @@ class _FormsColumn extends StatelessWidget {
 
     //print(asistentes);
     String activeUserId = AuthService().currentUser?.uid ?? "";
+
+
+    bool isCompany = userService.currentUser!.isCompany == true;
+
+
     late User creatorUser;
+
     bool creatorSameAsCurrentUser = activeUserId == selectedEvent.users.first;
 
     return FutureBuilder<User>(
@@ -193,8 +199,8 @@ class _FormsColumn extends StatelessWidget {
                 height: 20,
               ),
               if (!selectedEvent.users.contains(activeUserId) &&
-                  !selectedEvent.isFull &&
-                  creatorUser.subscription.type != SubscriptionType.company)
+                  !selectedEvent.isFull && creatorUser.subscription.type != SubscriptionType.company)
+
                 SubmitButton(
                   text: 'Unirse',
                   onTap: () => {

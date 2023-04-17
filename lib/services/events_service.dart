@@ -165,8 +165,10 @@ class EventsService extends ChangeNotifier {
     String eventId = event.id;
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final usersService = Provider.of<UsersService>(context, listen: false);
+
     if (usersService.currentUser!.subscription.type == SubscriptionType.company)
       return;
+
     final notificationsService =
         Provider.of<ImportantNotificationService>(context, listen: false);
     if (activeUserId.isEmpty ||

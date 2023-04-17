@@ -318,6 +318,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                             text: "Bienvenido")
                       ],
                       id: const Uuid().v1());
+
                   // ignore: use_build_context_synchronously
                   await eventsService.saveEvent(context, event);
                   final notificationCreacionEvento = ImportantNotification(

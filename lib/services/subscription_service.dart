@@ -1,6 +1,7 @@
 import 'dart:convert';
 //import 'dart:html';
 
+import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -27,5 +28,29 @@ class SubscriptionService extends ChangeNotifier {
       debugPrint('Error editing profile: $e');
       return false;
     }
+  }
+
+  Future<void> changePlanToFree(User user) async {
+    user.subscription.type = SubscriptionType.free;
+    user.subscription.numEventsCreatedThisMonth = 0;
+    user.subscription.validUntil = null;
+
+    await usersService.addItem(user);
+  }
+
+  Future<void> changePlanToPremium(User user) async {
+    user.subscription.type = SubscriptionType.premium;
+    user.subscription.numEventsCreatedThisMonth = 0;
+    user.subscription.validUntil = DateTime.now().add(const Duration(days: 30));
+
+    await usersService.addItem(user);
+  }
+
+  Future<void> changePlanToCompany(User user) async {
+    user.subscription.type = SubscriptionType.company;
+    user.subscription.numEventsCreatedThisMonth = 0;
+    user.subscription.validUntil = DateTime.now().add(const Duration(days: 30));
+
+    await usersService.addItem(user);
   }
 }

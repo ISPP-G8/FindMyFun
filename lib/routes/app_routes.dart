@@ -4,6 +4,9 @@ import 'package:findmyfun/views/home/profile/profile_credentials_view.dart';
 import 'package:findmyfun/views/home/profile/profile_details_admin.dart';
 import 'package:findmyfun/views/home/profile/profile_edit_admin.dart';
 import 'package:findmyfun/views/home/profile/profile_edit_view.dart';
+import 'package:findmyfun/views/register/payment_view2.dart';
+import 'package:findmyfun/views/register/register_view_plan.dart';
+import 'package:findmyfun/views/register/register_view_user_plan.dart';
 import 'package:flutter/material.dart';
 
 import '../views/home/profile/eventcreator_profile_view.dart';
@@ -32,8 +35,12 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'editCredentials': (_) => const ProfileCredentialsForm(),
     'eventpointsadmin': (_) => const EventPointsAdminView(),
     'events': (_) => const EventListViewAdmin(),
+    'paymentBusiness': (_) => const PaymentViewBusiness(),
+    'paymentUser': (_) => const PaymentViewUser(),
     'notifications': (_) => const NotificationView(),
-    'creatorProfile': (_) => const EventCreatorProfileDetailsView()
+    'creatorProfile': (_) => const EventCreatorProfileDetailsView(),
+    'registerPlan': (_) => const RegisterViewPlan(),
+    'registerUserPlan': (_) => const RegisterUserPlan()
   };
 
   return routes;
