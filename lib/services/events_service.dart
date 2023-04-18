@@ -46,6 +46,17 @@ class EventsService extends ChangeNotifier {
       debugPrint('Error al eliminar el evento: $e');
     }
   }
+  
+  Future<void> deleteUserFromEvent(String eventId, String userId) async {
+    final url = Uri.https(_baseUrl, 'Events/$eventId/users/$userId.json');
+    try {
+      final resp = await http.delete(url);
+      debugPrint(resp.body);
+    }catch (e){
+      debugPrint('Error al eliminar el usuario del evento: $e');
+    }
+
+  }
 
   //POST AND UPDATE EVENT
   Future<void> saveEvent(BuildContext context, Event event) async {
