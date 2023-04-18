@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, unused_field, library_private_types_in_public_api
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -16,6 +18,7 @@ import 'package:flutter/foundation.dart';
 import '../../helpers/validators.dart';
 import '../../services/services.dart';
 import '../../ui/custom_snackbars.dart';
+import '../../ui/ui.dart';
 
 const int maxFailedLoadAttemptsEvent = 3;
 List<Marker> tappedMarkerEvent = [];
@@ -118,6 +121,8 @@ class _FormsColumnState extends State<_FormsColumn> {
   List<Object> _selectedValues = [];
   String? _selectedDatetime;
 
+  String imagePath = '';
+
   InterstitialAd? _interstitialAd;
   static const AdRequest request = AdRequest(
     nonPersonalizedAds: true,
@@ -179,6 +184,7 @@ class _FormsColumnState extends State<_FormsColumn> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     String? id = AuthService().currentUser?.uid ?? "";
+    String eventId = const Uuid().v1();
     final usersService = Provider.of<UsersService>(context);
     return Form(
       // autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -226,14 +232,41 @@ class _FormsColumnState extends State<_FormsColumn> {
             endIndent: size.height * 0.05,
           ),
           const Text(
-            "Link de la imagen",
+            "Imagen",
             textAlign: TextAlign.center,
           ),
-          CustomTextForm(
-            hintText: 'Link de la imagen',
-            controller: _image,
-            validator: (value) => Validators.validateNotEmpty(value),
+          GestureDetector(
+            onTap: () async {
+              showCircularProgressDialog(context);
+
+              imagePath = await uploadImage(context,
+                  route: 'Events/$eventId', imageId: 'event_image');
+              Navigator.pop(context);
+
+              setState(() {});
+            },
+            child: const CustomTextForm(
+              enabled: false,
+              hintText: 'Pulsa aquí para seleccionar la imagen',
+              maxLines: 2,
+            ),
           ),
+          imagePath.isNotEmpty
+              ? Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  child: CachedNetworkImage(
+                    imageUrl: imagePath,
+                    fit: BoxFit.cover,
+                    width: 400,
+                    height: 250,
+                    progressIndicatorBuilder: (context, url, progress) =>
+                        CircularProgressIndicator(
+                      value: progress.downloaded.toDouble(),
+                    ),
+                  ),
+                )
+              : Container(),
           DateTimePicker(
             selectedDateTime: _selectedDatetime,
             onChanged: (selected) {
@@ -293,7 +326,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                       city: placeMark.locality!,
                       country: placeMark.country!,
                       description: _description.text,
-                      image: _image.text,
+                      image: imagePath,
                       name: _name.text,
                       latitude: selectedMarker.position.latitude,
                       longitude: selectedMarker.position.longitude,
@@ -318,7 +351,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                             date: DateTime.now(),
                             text: "Bienvenido")
                       ],
-                      id: const Uuid().v1());
+                      id: eventId);
 
                   // ignore: use_build_context_synchronously
                   await eventsService.saveEvent(context, event);

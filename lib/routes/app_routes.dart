@@ -35,12 +35,13 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'editCredentials': (_) => const ProfileCredentialsForm(),
     'eventpointsadmin': (_) => const EventPointsAdminView(),
     'events': (_) => const EventListViewAdmin(),
-    'paymentBusiness': (_) => const PaymentViewBusiness(),
-    'paymentUser': (_) => const PaymentViewUser(),
+    'paymentBusiness': (_) => PaymentViewBusiness(),
+    'paymentUser': (_) => PaymentViewUser(),
     'notifications': (_) => const NotificationView(),
     'creatorProfile': (_) => const EventCreatorProfileDetailsView(),
     'registerPlan': (_) => const RegisterViewPlan(),
-    'registerUserPlan': (_) => const RegisterUserPlan()
+    'registerUserPlan': (_) => const RegisterUserPlan(),
+    'eventPointDetailsView': (_) => EventPointDetailsView(),
   };
 
   return routes;

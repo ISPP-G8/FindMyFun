@@ -1,7 +1,9 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/models.dart' as user;
+import 'package:findmyfun/ui/show_circular_progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -71,19 +73,22 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
   final _usernameController = TextEditingController();
   final _cityController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String imagePath = '';
 
   @override
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     final currentUser = userService.currentUser!;
 
+    if (currentUser.image != null && currentUser.image!.isNotEmpty) {
+      imagePath = currentUser.image!;
+    }
+
     return Form(
       key: _formKey,
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
-            padding: const EdgeInsets.all(10.0),
-            // child: Image.network(currentUser.image!, fit: BoxFit.cover),
-            child: userImage(currentUser)),
+            margin: const EdgeInsets.all(10), child: circleImage(imagePath)),
         const Text(
           "Nombre de usuario",
           style: TextStyle(
@@ -133,16 +138,28 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
           controller: _cityController,
         ),
         const Text(
-          "URL de imagen",
+          "Imagen de perfil",
           style: TextStyle(
             color: Color.fromARGB(255, 0, 0, 0),
             fontWeight: FontWeight.bold,
             fontSize: 15,
           ),
         ),
-        CustomTextForm(
-          hintText: currentUser.image!,
-          controller: _imageController,
+        GestureDetector(
+          onTap: () async {
+            showCircularProgressDialog(context);
+            imagePath = await uploadImage(context,
+                route: 'Users/${currentUser.id}',
+                imageId: '${currentUser.id}_profile_image');
+            Navigator.pop(context);
+            currentUser.image = imagePath;
+            setState(() {});
+          },
+          child: CustomTextForm(
+            enabled: false,
+            maxLines: 2,
+            hintText: 'Pulsa aquí para seleccionar la imagen',
+          ),
         ),
         SubmitButton(
           text: 'MODIFICAR',
@@ -179,7 +196,7 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
               }
               userService.currentUser = user.User(
                   id: currentUser.id,
-                  image: _imageController.text,
+                  image: imagePath,
                   name: _nameController.text,
                   surname: _surnameController.text,
                   username: _usernameController.text,
@@ -232,41 +249,4 @@ showExceptionDialog(BuildContext context) {
 
 // impor
 
-Widget userImage(user.User user) {
-  // En chrome puede que de error y se muestre el icono pero en móvil va bien
 
-  if (user.image == null || user.image!.isEmpty) {
-    return const Icon(
-      Icons.account_circle,
-      size: 150,
-    );
-  }
-
-  try {
-    return CircleAvatar(
-        radius: 120,
-        backgroundImage: const AssetImage('assets/placeholder.png'),
-        child: ClipOval(
-          child: CachedNetworkImage(
-            fit: BoxFit.cover,
-            height: 300,
-            placeholder: (context, url) =>
-                Image.asset('assets/placeholder.png'),
-            imageUrl: user.image!,
-            errorWidget: (context, url, error) {
-              print('Error al obtener la imagen: $error');
-
-              return const Icon(
-                Icons.account_circle,
-                size: 150,
-              );
-            },
-          ),
-        ));
-  } catch (e) {
-    return const Icon(
-      Icons.account_circle,
-      size: 150,
-    );
-  }
-}

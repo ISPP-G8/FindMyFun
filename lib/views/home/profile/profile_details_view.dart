@@ -2,6 +2,7 @@
 
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/themes/styles.dart';
+import 'package:findmyfun/views/home/profile/profile_edit_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -21,6 +22,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> {
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     final currentUser = userService.currentUser!;
+    String? imagePath = currentUser.image;
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +46,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> {
                 Container(
                     padding: const EdgeInsets.all(10.0),
                     // child: Image.network(currentUser.image!, fit: BoxFit.cover),
-                    child: userImage(currentUser)),
+                    child: circleImage(currentUser.image ?? '')),
                 const Divider(
                   color: Colors.grey,
                   thickness: 0.5,
@@ -189,7 +191,6 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> {
                       currentUser.subscription.type == SubscriptionType.company,
                   child: GestureDetector(
                       onTap: () async {
-                        await AuthService().signOut();
                         Navigator.pushNamed(context, 'eventpointcreation');
                       },
                       child: const CustomButton(text: 'Crear punto de evento')),
@@ -232,46 +233,6 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> {
           ),
         ),
       ),
-    );
-  }
-}
-
-Widget userImage(User user) {
-  // En chrome puede que de error y se muestre el icono pero en móvil va bien
-
-  if (user.image == null || user.image!.isEmpty) {
-    return const Icon(
-      Icons.account_circle,
-      size: 150,
-    );
-  }
-
-  try {
-    return CircleAvatar(
-        radius: 120,
-        backgroundImage: const AssetImage('assets/placeholder.png'),
-        child: ClipOval(
-          child: CachedNetworkImage(
-            fit: BoxFit.cover,
-            height: 300,
-            placeholder: (context, url) =>
-                Image.asset('assets/placeholder.png'),
-            imageUrl: user.image!,
-            errorWidget: (context, url, error) {
-              // ignore: avoid_print
-              print('Error al obtener la imagen: $error');
-
-              return const Icon(
-                Icons.account_circle,
-                size: 150,
-              );
-            },
-          ),
-        ));
-  } catch (e) {
-    return const Icon(
-      Icons.account_circle,
-      size: 150,
     );
   }
 }
