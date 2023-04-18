@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/widgets/widgets.dart';
+import 'package:intl/intl.dart';
+
 
 class ProfileDetailsView extends StatefulWidget {
   const ProfileDetailsView({super.key});
@@ -165,8 +167,10 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> {
                           style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
                         ),
                         CustomTextDetail(
-                          hintText: currentUser.subscription.validUntil.toString(),
-                          initialValue: currentUser.subscription.validUntil.toString(),
+                          hintText: DateFormat('yyyy-MM-dd HH:mm')
+                                .format(currentUser.subscription.validUntil!),
+                          initialValue: DateFormat('yyyy-MM-dd HH:mm')
+                                .format(currentUser.subscription.validUntil!),
                           enabled: false,
                         ),
                         const Divider(
