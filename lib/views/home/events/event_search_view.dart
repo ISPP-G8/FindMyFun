@@ -21,7 +21,12 @@ class _EventSearchViewState extends State<EventSearchView> {
   Widget build(BuildContext context) {
     final eventsService = Provider.of<EventsService>(context);
     final size = MediaQuery.of(context).size;
-    eventsService.searchForEvents(_searchedText);
+    try {
+      eventsService.searchForEvents(_searchedText);
+    } on Exception catch (e) {
+      showErrorDialog(context, e.toString());
+    }
+
     final events = eventsService.eventsFound;
 
     return Scaffold(
@@ -30,6 +35,8 @@ class _EventSearchViewState extends State<EventSearchView> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(height: size.height * 0.005),
+              const AdPlanLoader(),
               const Center(
                   child: Text(
                 'BUSCAR EVENTOS',
@@ -85,4 +92,23 @@ class _EventSearchViewState extends State<EventSearchView> {
   //   // TODO: implement createState
   //   throw UnimplementedError();
   // }
+  Future<void> showErrorDialog(BuildContext context, String exception) async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Algo ha ido mal...'),
+          content: Text(exception),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

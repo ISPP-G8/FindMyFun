@@ -14,6 +14,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageViewController =
         Provider.of<PageViewService>(context).pageController;
+    final size = MediaQuery.of(context).size;
 
     return SafeArea(
       child: Scaffold(
@@ -23,8 +24,7 @@ class LoginView extends StatelessWidget {
             leading: GestureDetector(
                 onTap: () => pageViewController.animateToPage(0,
                     duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut
-                  ),
+                    curve: Curves.easeInOut),
                 child: const Icon(
                   Icons.chevron_left,
                   size: 45,
@@ -45,9 +45,16 @@ class LoginView extends StatelessWidget {
               children: [
                 //  LoginTitle(text: 'INICIO DE SESIÓN'),
                 const ImageLogo(),
-                const SizedBox(
-                  height: 100,
+                SizedBox(
+                  height: size.height * 0.05,
                 ),
+                SizedBox(
+                    height: size.height * 0.1,
+                    child: const Text('¡Bienvenido a FindMyFun!',
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20))),
 
                 const LoginContainer(
                   child: _FormsColumn(),

@@ -5,4 +5,6 @@ export 'package:findmyfun/services/map_service.dart';
 export 'package:findmyfun/services/messages_service.dart';
 export 'package:findmyfun/services/page_view_service.dart';
 export 'package:findmyfun/services/preferences_service.dart';
+export 'package:findmyfun/services/subscription_service.dart';
 export 'package:findmyfun/services/users_service.dart';
+export 'package:findmyfun/services/ad_service.dart';

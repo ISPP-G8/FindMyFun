@@ -61,7 +61,6 @@ class PreferencesService extends ChangeNotifier {
     }
   }
 
-  // TODO: De momento no se usa, la dejo por si hace falta
   Future<Preferences> getPreferenceByName(String name) async {
     final url = Uri.https(_baseUrl, 'Preferences.json');
     try {
