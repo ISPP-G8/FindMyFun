@@ -8,9 +8,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 
-class ProfileDetailsView extends StatelessWidget {
+class ProfileDetailsView extends StatefulWidget {
   const ProfileDetailsView({super.key});
 
+  @override
+  State<ProfileDetailsView> createState() => _ProfileDetailsViewState();
+}
+
+class _ProfileDetailsViewState extends State<ProfileDetailsView> {
   @override
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
@@ -138,7 +143,8 @@ class ProfileDetailsView extends StatelessWidget {
                 ),
                 CustomTextDetail(
                   hintText: getSuscriptionType(currentUser.subscription.type),
-                  initialValue: getSuscriptionType(currentUser.subscription.type),
+                  initialValue:
+                      getSuscriptionType(currentUser.subscription.type),
                   enabled: false,
                 ),
                 const Divider(
@@ -312,14 +318,14 @@ class _DeleteProfile extends State<DeleteProfile> {
   }
 }
 
-String getSuscriptionType(SubscriptionType type){
-    String suscription = "";
-    if(type == SubscriptionType.free){
-      suscription = "Gratuita";
-    } else if(type == SubscriptionType.premium){
-      suscription = "Premium";
-    } else if(type == SubscriptionType.company){
-      suscription = "Empresa";
-    } 
-    return suscription;
+String getSuscriptionType(SubscriptionType type) {
+  String suscription = "";
+  if (type == SubscriptionType.free) {
+    suscription = "Gratuita";
+  } else if (type == SubscriptionType.premium) {
+    suscription = "Premium";
+  } else if (type == SubscriptionType.company) {
+    suscription = "Empresa";
   }
+  return suscription;
+}

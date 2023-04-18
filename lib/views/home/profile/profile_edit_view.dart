@@ -2,7 +2,6 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/models/models.dart' as user;
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +9,6 @@ import '../../../services/services.dart';
 import '../../../themes/colors.dart';
 import '../../../themes/styles.dart';
 import '../../../widgets/widgets.dart';
-import '../../views.dart';
 
 class ProfileEditForm extends StatelessWidget {
   const ProfileEditForm({
@@ -35,7 +33,6 @@ class ProfileEditForm extends StatelessWidget {
           'EDITAR PERFIL',
           textAlign: TextAlign.center,
           style: Styles.appBar,
-          
         ),
       ),
       body: Center(
@@ -152,60 +149,60 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
           onTap: () async {
             if (_formKey.currentState!.validate()) {
               // try {
-                showDialog(
-                  context: context,
-                  builder: (context) => Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: CircularProgressIndicator()),
-                      ]),
-                );
+              showDialog(
+                context: context,
+                builder: (context) => Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: CircularProgressIndicator()),
+                    ]),
+              );
 
-                if (_usernameController.text == "") {
-                  _usernameController.text = currentUser.username;
-                }
-                if (_nameController.text == "") {
-                  _nameController.text = currentUser.name;
-                }
-                if (_surnameController.text == "") {
-                  _surnameController.text = currentUser.surname;
-                }
-                if (_cityController.text == "") {
-                  _cityController.text = currentUser.city;
-                }
-                if (_imageController.text == "") {
-                  _imageController.text = currentUser.image!;
-                }
-                userService.currentUser = user.User(
-                    id: currentUser.id,
-                    image: _imageController.text,
-                    name: _nameController.text,
-                    surname: _surnameController.text,
-                    username: _usernameController.text,
-                    city: _cityController.text,
-                    email: currentUser.email,
-                    preferences: currentUser.preferences,
-                    notifications: currentUser.notifications,
-                    subscription: currentUser.subscription);
-                final resp = await userService.updateProfileAdmin(userService.currentUser!);
-                if (resp) {
-                  print(_nameController.text);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  // Navigator.pushReplacement(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => ProfileDetailsView()),
-                  //   );
-                } else {
-                  Navigator.pop(context);
-                  _formKey.currentState!.validate();
-                  print('Error al editar el usuario');
-                }
-                print('Usuario modificado con uid: ${currentUser.id}');
+              if (_usernameController.text == "") {
+                _usernameController.text = currentUser.username;
+              }
+              if (_nameController.text == "") {
+                _nameController.text = currentUser.name;
+              }
+              if (_surnameController.text == "") {
+                _surnameController.text = currentUser.surname;
+              }
+              if (_cityController.text == "") {
+                _cityController.text = currentUser.city;
+              }
+              if (_imageController.text == "") {
+                _imageController.text = currentUser.image!;
+              }
+              userService.currentUser = user.User(
+                  id: currentUser.id,
+                  image: _imageController.text,
+                  name: _nameController.text,
+                  surname: _surnameController.text,
+                  username: _usernameController.text,
+                  city: _cityController.text,
+                  email: currentUser.email,
+                  preferences: currentUser.preferences,
+                  notifications: currentUser.notifications,
+                  subscription: currentUser.subscription);
+              final resp = await userService
+                  .updateProfileAdmin(userService.currentUser!);
+              if (resp) {
+                print(_nameController.text);
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Provider.of<PageViewService>(context, listen: false)
+                    .mainPageController
+                    .jumpToPage(0);
+              } else {
+                Navigator.pop(context);
+                _formKey.currentState!.validate();
+                print('Error al editar el usuario');
+              }
+              print('Usuario modificado con uid: ${currentUser.id}');
               // } on FirebaseAuthException {
               //   Navigator.pop(context);
               //   showExceptionDialog(context);
