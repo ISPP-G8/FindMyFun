@@ -87,7 +87,7 @@ class _EventFindView extends State<EventFindView> {
                         int eventCount = snapshot.data!.length;
                         if (eventCount == 0) {
                           return SizedBox(
-                            height: size.height * 0.35,
+                            height: size.height * 0.29,
                             width: size.width * 0.8,
                             child: const Center(
                                 child: Text(
@@ -101,7 +101,7 @@ class _EventFindView extends State<EventFindView> {
                         } else {
                           return ConstrainedBox(
                             constraints:
-                                BoxConstraints(maxHeight: size.height * 0.35),
+                                BoxConstraints(maxHeight: size.height * 0.30),
                             child: ListView.builder(
                               shrinkWrap: true,
                               itemCount: snapshot.data!.length,

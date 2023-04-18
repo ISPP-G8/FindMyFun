@@ -7,14 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class EventDetailsView extends StatefulWidget {
+class EventDetailsView extends StatelessWidget {
   const EventDetailsView({super.key});
 
-  @override
-  State<EventDetailsView> createState() => _EventDetailsViewState();
-}
-
-class _EventDetailsViewState extends State<EventDetailsView> {
   @override
   Widget build(BuildContext context) {
     final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
@@ -62,14 +57,9 @@ class _EventDetailsViewState extends State<EventDetailsView> {
   }
 }
 
-class _FormsColumn extends StatefulWidget {
+class _FormsColumn extends StatelessWidget {
   const _FormsColumn();
 
-  @override
-  State<_FormsColumn> createState() => _FormsColumnState();
-}
-
-class _FormsColumnState extends State<_FormsColumn> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -88,13 +78,7 @@ class _FormsColumnState extends State<_FormsColumn> {
 
     //print(asistentes);
     String activeUserId = AuthService().currentUser?.uid ?? "";
-
-
-    bool isCompany = userService.currentUser!.isCompany == true;
-
-
     late User creatorUser;
-
     bool creatorSameAsCurrentUser = activeUserId == selectedEvent.users.first;
 
     return FutureBuilder<User>(
@@ -209,8 +193,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                 height: 20,
               ),
               if (!selectedEvent.users.contains(activeUserId) &&
-                  !selectedEvent.isFull && creatorUser.subscription.type != SubscriptionType.company)
-
+                  !selectedEvent.isFull)
                 SubmitButton(
                   text: 'Unirse',
                   onTap: () => {
@@ -231,50 +214,28 @@ class _FormsColumnState extends State<_FormsColumn> {
                   },
                 ),
               FutureBuilder<List<String>>(
-  future: asistentes,
-  builder: (context, snapshot) {
-    if (snapshot.hasData) {
-      final asistentesList = snapshot.data!;
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: asistentesList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return FutureBuilder<User>(
-            future: userService.getUserWithUid(selectedEvent.creator),
-            builder: (context, snapshot) {
-            final isCreator = snapshot.hasData && snapshot.data!.id == activeUserId;
-            return Row(
-            children: [
-              Expanded(
-                child: Text(asistentesList[index]),
+                future: asistentes,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final asistentesList = snapshot.data!;
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: asistentesList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          leading: const Icon(Icons.person),
+                          title: Text(asistentesList[index]),
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
               ),
-              if (isCreator)
-                ElevatedButton(
-                onPressed: () {
-                 
-                  if(asistentesList.length > 1){
-                    
-                      eventService.deleteUserFromEvent(selectedEvent.id, index.toString());
-                      setState(() {
-                        asistentesList.removeAt(index);
-                      });  
-              }
-              },
-                child: Text('Eliminar asistente'),
-              ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  } else {
-      return CircularProgressIndicator();
-    }
-  },
-)
-,
             ],
           );
         } else {
