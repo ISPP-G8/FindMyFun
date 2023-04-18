@@ -188,7 +188,6 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> {
                       currentUser.subscription.type == SubscriptionType.company,
                   child: GestureDetector(
                       onTap: () async {
-                        await AuthService().signOut();
                         Navigator.pushNamed(context, 'eventpointcreation');
                       },
                       child: const CustomButton(text: 'Crear punto de evento')),

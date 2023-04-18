@@ -233,14 +233,12 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                 await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);
                                 final notification = ImportantNotification(
-                                    userId: AuthService().currentUser!.uid,
+                                    userId: usersService.currentUser!.id,
                                     date: DateTime.now(),
                                     info:
                                         "Has creado correctamente el punto de evento ${eventPoint.name}");
-                                notificationService.saveNotification(
-                                    context,
-                                    notification,
-                                    AuthService().currentUser!.uid);
+                                notificationService.saveNotification(context,
+                                    notification, usersService.currentUser!.id);
 
                                 Navigator.pop(context);
                                 Navigator.pop(context);
