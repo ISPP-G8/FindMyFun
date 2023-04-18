@@ -154,22 +154,30 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> {
                   indent: 20,
                   endIndent: 20,
                 ),
-                const Text(
-                  "Válido hasta",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
-                ),
-                CustomTextDetail(
-                  hintText: currentUser.subscription.validUntil.toString(),
-                  initialValue: currentUser.subscription.validUntil.toString(),
-                  enabled: false,
-                ),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 0.5,
-                  height: 20,
-                  indent: 20,
-                  endIndent: 20,
+                Visibility(
+                  visible: currentUser.subscription.type != SubscriptionType.free,
+                  child: 
+                    Column(
+                      children: [
+                        const Text(
+                          "Válido hasta",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
+                        ),
+                        CustomTextDetail(
+                          hintText: currentUser.subscription.validUntil.toString(),
+                          initialValue: currentUser.subscription.validUntil.toString(),
+                          enabled: false,
+                        ),
+                        const Divider(
+                          color: Colors.grey,
+                          thickness: 0.5,
+                          height: 20,
+                          indent: 20,
+                          endIndent: 20,
+                        ),
+                      ],
+                    )
                 ),
                 Visibility(
                   visible:
