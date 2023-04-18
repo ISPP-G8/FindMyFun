@@ -330,7 +330,9 @@ class _FormsColumnState extends State<_FormsColumn> {
                   loggedUser.subscription.numEventsCreatedThisMonth++;
                   await usersService.updateUser(loggedUser);
 
-                  _showInterstitialAd();
+                  if (loggedUser.subscription.type == SubscriptionType.free) {
+                    _showInterstitialAd();
+                  }
 
                   // ignore: use_build_context_synchronously
                   Navigator.pop(context);
