@@ -1,3 +1,5 @@
+export 'package:findmyfun/views/register/payment_view.dart';
+
 export 'package:findmyfun/screens/screens.dart';
 export 'package:findmyfun/views/access/access_view.dart';
 export 'package:findmyfun/views/access/login_view.dart';

@@ -44,11 +44,11 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
         // backgroundColor: ProjectColors.primary,
         bottomNavigationBar: const CustomNavigationBar(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, 'eventpointsadmin');
-          },
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     Navigator.pushNamed(context, 'paymentBusiness');
+        //   },
+        // ),
         appBar: AppBar(
           backgroundColor: ProjectColors.tertiary,
           elevation: 0,

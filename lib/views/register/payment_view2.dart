@@ -2,41 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_paypal/flutter_paypal.dart';
 
 import '../../services/services.dart';
+import '../../themes/colors.dart';
 
-void main() {
-  runApp(const PaymentViewBusiness());
-}
-
-class PaymentViewBusiness extends StatelessWidget {
-  const PaymentViewBusiness({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
+class PaymentViewBusiness extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Paypal',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Paypal'),
-    );
-  }
+  State<PaymentViewBusiness> createState() => _PaymentViewBusinessState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _PaymentViewBusinessState extends State<PaymentViewBusiness> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          backgroundColor: ProjectColors.tertiary,
+          title: Text(
+            'Pago por PayPal',
+          ),
+          actions: [
+            Container(
+              margin: EdgeInsets.only(right: 15),
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, 'main');
+                  },
+                  icon: Icon(
+                    Icons.home,
+                    size: 44,
+                    color: Colors.white,
+                  )),
+            )
+          ],
         ),
         body: Center(
           child: TextButton(
