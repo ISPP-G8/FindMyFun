@@ -9,7 +9,6 @@ import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -18,7 +17,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/models.dart';
 import '../services/services.dart';
 
-const int maxFailedLoadAttemptsEventPoint = 3;
 List<Marker> tappedMarkerEventPoint = [];
 
 class EventPointCreationScreen extends StatefulWidget {
@@ -33,12 +31,6 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-  InterstitialAd? _interstitialAd;
-  static const AdRequest request = AdRequest(
-    nonPersonalizedAds: true,
-  );
-  int _numInterstitialLoadAttempts = 0;
 
   Widget placeholder = Container(
     alignment: Alignment.center,
@@ -55,53 +47,6 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   @override
   void initState() {
     super.initState();
-    _createInterstitialAd();
-  }
-
-  void _createInterstitialAd() {
-    InterstitialAd.load(
-        adUnitId: AdService.interstitialAdUnitId!,
-        request: request,
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (InterstitialAd ad) {
-            debugPrint('$ad loaded');
-            _interstitialAd = ad;
-            _numInterstitialLoadAttempts = 0;
-            _interstitialAd!.setImmersiveMode(true);
-          },
-          onAdFailedToLoad: (LoadAdError error) {
-            debugPrint('InterstitialAd failed to load: $error.');
-            _numInterstitialLoadAttempts += 1;
-            _interstitialAd = null;
-            if (_numInterstitialLoadAttempts <
-                maxFailedLoadAttemptsEventPoint) {
-              _createInterstitialAd();
-            }
-          },
-        ));
-  }
-
-  void _showInterstitialAd() {
-    if (_interstitialAd == null) {
-      debugPrint('Warning: attempt to show interstitial before loaded.');
-      return;
-    }
-    _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-      onAdShowedFullScreenContent: (InterstitialAd ad) =>
-          debugPrint('ad onAdShowedFullScreenContent.'),
-      onAdDismissedFullScreenContent: (InterstitialAd ad) {
-        debugPrint('$ad onAdDismissedFullScreenContent.');
-        ad.dispose();
-        _createInterstitialAd();
-      },
-      onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-        debugPrint('$ad onAdFailedToShowFullScreenContent: $error');
-        ad.dispose();
-        _createInterstitialAd();
-      },
-    );
-    _interstitialAd!.show();
-    _interstitialAd = null;
   }
 
   @override
@@ -296,8 +241,6 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                     context,
                                     notification,
                                     AuthService().currentUser!.uid);
-
-                                _showInterstitialAd();
 
                                 Navigator.pop(context);
                                 Navigator.pop(context);
