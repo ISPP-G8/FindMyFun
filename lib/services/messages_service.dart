@@ -2,14 +2,9 @@ import 'dart:convert';
 //import 'dart:html';
 
 import 'package:findmyfun/models/event.dart';
-import 'package:findmyfun/models/important_notification.dart';
 import 'package:findmyfun/models/messages.dart';
-import 'package:findmyfun/services/auth_service.dart';
-import 'package:findmyfun/services/important_notification_service.dart';
-import 'package:findmyfun/services/users_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import '../models/user.dart';
 
 class MessagesService extends ChangeNotifier {
@@ -24,6 +19,7 @@ class MessagesService extends ChangeNotifier {
     _messages = inputMessages;
     notifyListeners();
   }
+  // TODO: Hacer el updateItem pasando el uid del AuthService()
 
   //READ MESSAGES
   Future<List<Messages>> getMessages(String eventId) async {
@@ -54,25 +50,9 @@ class MessagesService extends ChangeNotifier {
     }
   }
 
-  Future<void> saveMessage(
-      BuildContext context, Messages message, Event event) async {
-    String? activeUserId = AuthService().currentUser?.uid;
-    // String? activeUserName = AuthService().currentUser?.displayName;
-    final usersService = Provider.of<UsersService>(context, listen: false);
-
+  Future<void> saveMessage(Messages message, Event event) async {
     final url = Uri.https(_baseUrl, 'Events/${event.id}/messages.json');
     event.messages.add(message);
-    for (var user in event.users) {
-      if (user != activeUserId) {
-        ImportantNotification notificationChatEvento = ImportantNotification(
-            userId: user,
-            date: DateTime.now(),
-            info:
-                "${usersService.currentUser!.name} ha enviado un mensaje en ${event.name}");
-        ImportantNotificationService()
-            .saveNotification(context, notificationChatEvento, user);
-      }
-    }
     try {
       // ignore: unused_local_variable
       final resp = await http.post(url, body: jsonEncode(message.toJson()));

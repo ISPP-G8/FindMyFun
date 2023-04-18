@@ -1,7 +1,11 @@
 import 'package:findmyfun/helpers/validators.dart';
-import 'package:findmyfun/models/models.dart';
+import 'package:findmyfun/models/event.dart';
+import 'package:findmyfun/models/messages.dart';
+import 'package:findmyfun/models/user.dart';
+import 'package:findmyfun/services/auth_service.dart';
+import 'package:findmyfun/services/messages_service.dart';
 import 'package:findmyfun/services/services.dart';
-import 'package:findmyfun/widgets/widgets.dart';
+import 'package:findmyfun/widgets/custom_text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,11 +29,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
     messages = selectedEvent.messages;
     final messagesService = Provider.of<MessagesService>(context);
-    final userService = UsersService();
+    final userService = Provider.of<UsersService>(context, listen: false);
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final messageToSend = TextEditingController();
 
@@ -46,8 +49,6 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
-          SizedBox(height: size.height * 0.005),
-          const AdPlanLoader(),
           Expanded(
             child: ListView.builder(
               itemCount: messages.length,
@@ -55,12 +56,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 messages.sort((a, b) => a.date.compareTo(b.date));
                 final message = messages[index];
                 final bool isMe = message.userId == activeUserId;
-                Future<String> getUserName() async {
-                  final User user =
-                      await userService.getUserWithUid(message.userId);
-                  return user.username;
-                }
-
                 return Container(
                   margin: EdgeInsets.only(
                     top: 8.0,
@@ -71,8 +66,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     color: isMe
-                        ? const Color.fromARGB(255, 46, 84, 252)
-                        : const Color.fromARGB(255, 104, 102, 102),
+                        ? Color.fromARGB(255, 46, 84, 252)
+                        : Color.fromARGB(255, 104, 102, 102),
                     borderRadius: isMe
                         ? const BorderRadius.only(
                             topLeft: Radius.circular(15.0),
@@ -88,39 +83,16 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: FutureBuilder<String>(
-                              future: getUserName()
-                                  .timeout(const Duration(seconds: 1)),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<String> snapshot) {
-                                if (snapshot.hasData) {
-                                  return Text(
-                                    snapshot.data!,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12.0,
-                                    ),
-                                  );
-                                } else {
-                                  return const CircularProgressIndicator();
-                                }
-                              },
-                            ),
-                          ),
-                          Text(
-                            message.date.toString().substring(
-                                0, (message.date.toString().length - 7)),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.0,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        message.userId,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12.0,
+                        ),
                       ),
-                      const SizedBox(height: 8.0),
+                      const SizedBox(
+                          height:
+                              8.0), // Agrega un espacio vertical de 8.0 píxeles
                       Text(
                         message.text,
                         style: const TextStyle(
@@ -135,7 +107,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Container(
@@ -154,15 +126,14 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     IconButton(
                       color: Colors.white,
-                      icon: const Icon(Icons.send),
+                      icon: Icon(Icons.send),
                       onPressed: () {
                         Messages m = Messages(
                             userId: activeUserId,
                             date: DateTime.now(),
                             text: messageToSend.text);
                         if (m.text.isNotEmpty) {
-                          messagesService.saveMessage(
-                              context, m, selectedEvent);
+                          messagesService.saveMessage(m, selectedEvent);
                           Navigator.popAndPushNamed(context, "chat",
                               arguments: selectedEvent);
                         }

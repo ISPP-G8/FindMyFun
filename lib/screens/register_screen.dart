@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../services/services.dart';
-import '../views/register/register_view_plan.dart';
 import '../views/views.dart';
 
 class RegisterScreen extends StatelessWidget {

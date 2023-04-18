@@ -29,13 +29,8 @@ class CustomTextForm extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       padding: padding,
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 160, 156, 156),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: const Color.fromARGB(96, 247, 247, 247),
-          width: 2,
-        ),
+      decoration: const BoxDecoration(
+        color: Colors.white,
       ),
       child: TextFormField(
         keyboardType: type,
@@ -44,16 +39,12 @@ class CustomTextForm extends StatelessWidget {
         maxLines: maxLines,
         enabled: enabled,
         textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 26, color: Colors.black),
         validator: validator,
         initialValue: initialValue,
         decoration: InputDecoration(
           enabledBorder: InputBorder.none,
           hintText: hintText,
-          hintStyle: const TextStyle(
-              color: Color.fromARGB(221, 90, 87, 87), fontSize: 26),
           border: InputBorder.none,
-          errorStyle: const TextStyle(color: Color.fromARGB(255, 243, 37, 22)),
         ),
       ),
     );

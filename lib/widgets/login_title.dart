@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class LoginTitle extends StatelessWidget {
   final String text;
   const LoginTitle({
-    super.key,
-    required this.text,
+    super.key, required this.text,
   });
 
   @override
@@ -13,11 +12,11 @@ class LoginTitle extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 30),
       width: double.infinity,
       alignment: Alignment.center,
-      child: Text(
+      child:  Text(
         text,
         textAlign: TextAlign.center,
         style: const TextStyle(
-            color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 35),
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 35),
       ),
     );
   }

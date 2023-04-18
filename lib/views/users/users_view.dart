@@ -74,10 +74,9 @@ class _UsersColumn extends StatelessWidget {
               itemBuilder: (context, index) {
                 final user = users[index];
                 return ListTile(
-                    title: Text('${user.name} ${user.surname}'),
-                    subtitle: Text('${user.username} \n${user.email}'),
-                    onTap: () => Navigator.pushNamed(context, 'profileAdmin',
-                        arguments: user));
+                  title: Text('${user.name} ${user.surname}'),
+                  subtitle: Text('${user.username} \n${user.email}'),
+                );
               },
               separatorBuilder: (context, index) => const Divider(),
             )),

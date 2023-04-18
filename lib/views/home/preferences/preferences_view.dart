@@ -12,6 +12,7 @@ class PreferencesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -43,7 +44,7 @@ class PreferencesView extends StatelessWidget {
 
 class PreferencesColumn extends StatefulWidget {
   const PreferencesColumn({super.key});
-
+  
   @override
   State<StatefulWidget> createState() => _PreferencesColumnState();
 }
@@ -57,9 +58,9 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
     preferencesFuture = _getPreferences();
   }
 
-  _getPreferences() async {
+  _getPreferences() async{
     PreferencesService preferencesService = PreferencesService();
-
+    
     return await preferencesService.getPreferencesByUserId();
   }
 
@@ -75,110 +76,111 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
       future: preferencesFuture,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          selectedPreferences = snapshot.data;
 
-          return Column(children: [
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-                child: ListView(
-              children: [
-                SizedBox(
-                  height: 480,
-                  child: CustomScrollView(
-                    slivers: <Widget>[
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          childCount:
-                              preferences.length, //Número de preferencias
-                          (BuildContext context, int index) {
-                            return Container(
-                              alignment: Alignment.center,
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 10.0),
-                                child: SizedBox(
-                                  height: 80,
-                                  width: 325,
-                                  child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                            color: selectedPreferences.contains(
-                                                    preferences[index])
-                                                ? Colors.black
-                                                : Colors
-                                                    .white, //Si la preferencia se encuentra en la lista se señala con un borde negro
-                                            width: 4,
-                                          ))),
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.white)),
-                                      onPressed: () {
-                                        setState(() {
-                                          if (selectedPreferences
-                                              .contains(preferences[index])) {
-                                            //Si una preferencia seleccionada se presiona, es eliminada de la lista
-                                            selectedPreferences
-                                                .remove(preferences[index]);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Se ha deseleccionado la preferencia ${preferences[index].name}')));
-                                          } else {
-                                            //Si una preferencia sin seleccionar se presiona, es añadida a la lista
-                                            selectedPreferences
-                                                .add(preferences[index]);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Se ha seleccionado la preferencia ${preferences[index].name}')));
-                                          }
-                                        });
-                                      },
-                                      child: Text(preferencesNames[index],
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                          )) //Nombre de la preferencia
-                                      ),
-                                ),
+          selectedPreferences = snapshot.data;
+          
+          return Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: 480,
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        childCount: preferences.length, //Número de preferencias
+                        (BuildContext context, int index) {
+                          return Container(
+                            alignment: Alignment.center,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 10.0),
+                              child: SizedBox(
+                                height: 80,
+                                width: 325,
+                                child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                                side: BorderSide(
+                                          color: selectedPreferences
+                                                  .contains(preferences[index])
+                                              ? Colors.black
+                                              : Colors
+                                                  .white, //Si la preferencia se encuentra en la lista se señala con un borde negro
+                                          width: 4,
+                                        ))),
+                                        backgroundColor:
+                                            MaterialStateProperty.all(Colors.white)),
+                                    onPressed: () {
+                                      setState(() {
+                                        if (selectedPreferences
+                                            .contains(preferences[index])) {
+                                          //Si una preferencia seleccionada se presiona, es eliminada de la lista
+                                          selectedPreferences
+                                              .remove(preferences[index]);
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                  content: Text(
+                                                      'Se ha deseleccionado la preferencia ${preferences[index].name}')));
+                                        } else {
+                                          //Si una preferencia sin seleccionar se presiona, es añadida a la lista
+                                          selectedPreferences.add(preferences[index]);
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                  content: Text(
+                                                      'Se ha seleccionado la preferencia ${preferences[index].name}')));
+                                        }
+                                      });
+                                    },
+                                    child: Text(preferencesNames[index],
+                                        style: const TextStyle(
+                                            color: Colors
+                                                .black)) //Nombre de la preferencia
+                                    ),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                FloatingActionButton(
-                  onPressed: () {
-                    // When merge, change first option by current user id
-                    if (selectedPreferences.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text(
-                              'Debes seleccionar al menos una preferencia')));
-                    } else {
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              FloatingActionButton(
+                onPressed: () {
+                  // When merge, change first option by current user id
+                  if(selectedPreferences.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Debes seleccionar al menos una preferencia')));
+
+                  } else {
                       preferencesService.savePreferences(
-                          activeUserId, selectedPreferences);
+                      activeUserId, selectedPreferences);
                       Navigator.pop(context, "main");
-                    }
-                  },
-                  child: const Icon(Icons.save),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text('Recuerda guardar para que se actualize tu perfil',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
+                  }
+                },
+                child: const Icon(Icons.save),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text('Recuerda guardar para que se actualize tu perfil',
+                      
+                      textAlign: TextAlign.center, style: TextStyle( 
                         color: ProjectColors.primary,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20))
-              ],
-            ))
-          ]);
+                        fontSize: 15)
+                      ) 
+            ],
+          );
         } else {
           return Column(children: const [
             SizedBox(height: 100),

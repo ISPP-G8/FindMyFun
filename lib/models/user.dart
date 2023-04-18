@@ -2,7 +2,7 @@
 //
 //     final user = userFromJson(jsonString);
 
-import 'package:findmyfun/models/models.dart';
+import 'package:findmyfun/models/preferences.dart';
 import 'dart:convert';
 
 class User {
@@ -17,9 +17,6 @@ class User {
     required this.preferences,
     this.isAdmin = false,
     this.isCompany = false,
-    this.isPremium = false,
-    this.notifications = const [],
-    required this.subscription,
   });
 
   String id;
@@ -32,9 +29,6 @@ class User {
   List<Preferences?> preferences;
   bool? isAdmin;
   bool? isCompany;
-  bool? isPremium;
-  List<ImportantNotification?> notifications;
-  Subscription subscription;
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
@@ -55,14 +49,8 @@ class User {
               .values
               .toList()
           : [],
-      notifications: json["notifications"] != null
-          ? List<ImportantNotification>.from(json["notifications"]
-              .map((x) => ImportantNotification.fromJson(x)))
-          : [],
       isAdmin: json["isAdmin"] ?? false,
-      isCompany: json["isCompany"] ?? false,
-      isPremium: json["isPremium"] ?? false,
-      subscription: Subscription.fromJson(json["subscription"]));
+      isCompany: json["isCompany"] ?? false);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -75,9 +63,6 @@ class User {
         "preferences": Map.from(preferences.fold({}, (r, p) => r..[p?.id] = p))
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "isAdmin": isAdmin,
-        "notifications":
-            List<dynamic>.from(notifications.map((x) => x?.toJson())),
-        "subscription": subscription.toJson(),
-        "isPremium": isPremium
+        "isCompany": isCompany,
       };
 }
