@@ -11,7 +11,6 @@ class UsersService extends ChangeNotifier {
   List<User> _users = [];
 
   User? currentUser;
-  User? selectedUser;
 
   List<User> get users => _users;
 
@@ -103,39 +102,8 @@ class UsersService extends ChangeNotifier {
   }
 
   //UPDATE PROFILE
-  Future<bool> updateProfile() async {
-    if (currentUser == null) return false;
-    await getCurrentUserWithUid();
-    final url = Uri.https(_baseUrl, 'Users/${currentUser!.id}.json');
-    try {
-      // ignore: unused_local_variable
-      final resp = await http.put(url, body: jsonEncode(currentUser!.toJson()));
-
-      if (resp.statusCode != 200) return false;
-      return true;
-    } catch (e) {
-      debugPrint('Error editing profile: $e');
-      return false;
-    }
-  }
-
-  Future<bool> updateProfileAdmin(User user) async {
+  Future<bool> updateProfile(User user) async {
     final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
-    try {
-      // ignore: unused_local_variable
-      final resp = await http.put(url, body: jsonEncode(user.toJson()));
-
-      if (resp.statusCode != 200) return false;
-      return true;
-    } catch (e) {
-      debugPrint('Error editing profile: $e');
-      return false;
-    }
-  }
-
-  //UPDATE PROFILE
-  Future<bool> updateUser(User user) async {
-    final url = Uri.https(_baseUrl, 'Users/${currentUser!.id}.json');
     try {
       // ignore: unused_local_variable
       final resp = await http.put(url, body: jsonEncode(user.toJson()));
@@ -151,18 +119,12 @@ class UsersService extends ChangeNotifier {
   //DELETE PROFILE
   Future<void> deleteProfile(User user, BuildContext context) async {
     final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
-    String? correo = AuthService().currentUser!.email;
     try {
-      if (user.email == correo) {
-        // ignore: unused_local_variable
-        final resp = await http.delete(url);
-        AuthService().signOut;
-        // ignore: use_build_context_synchronously
-        await Navigator.pushNamed(context, 'access');
-      } else {
-        final resp = await http.delete(url);
-        await Navigator.pushNamed(context, 'users');
-      }
+      // ignore: unused_local_variable
+      final resp = await http.delete(url);
+      AuthService().signOut;
+      // ignore: use_build_context_synchronously
+      await Navigator.pushNamed(context, 'access');
     } catch (e) {
       debugPrint('Error deleting profile: $e');
     }

@@ -11,17 +11,15 @@ class RegisterViewPlan extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: const [
-            LoginTitle(text: 'REGISTRO'),
-            ImageLogo(),
-            LoginContainer(
-              child: _RegisterFormContainer(),
-            )
-          ],
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        children: const [
+          LoginTitle(text: 'REGISTRO'),
+          ImageLogo(),
+          LoginContainer(
+            child: _RegisterFormContainer(),
+          )
+        ],
       ),
     );
   }
@@ -35,7 +33,6 @@ class _RegisterFormContainer extends StatefulWidget {
 }
 
 class _RegisterFormContainerState extends State<_RegisterFormContainer> {
-  SubscriptionService subscriptionService = SubscriptionService();
   bool isCompany = false;
   @override
   Widget build(BuildContext context) {
@@ -51,7 +48,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
           subtitle:
               'Crea y únete a eventos creados por empresas u otros usuarios',
           firstPrice: '0€ al mes',
-          secondPrice: '6,99€ al mes',
+          secondPrice: '3,99€ al mes',
           selected: !isCompany,
         ),
       ),
@@ -62,8 +59,8 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
         child: _PlanContainer(
           title: 'Soy una empresa',
           subtitle:
-              'Crea eventos como empresa sin ningún límite y registra tu establecimiento como punto de evento',
-          firstPrice: '19,99,€ al mes',
+              'Crea eventos como empresa sin ningún límite y registra tu establecimiento como punto de interés',
+          firstPrice: '29,99,€ al mes',
           secondPrice: '',
           selected: isCompany,
         ),
@@ -72,12 +69,15 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
         text: 'CONTINUAR',
         onTap: () async {
           if (isCompany) {
-            // ignore: use_build_context_synchronously
-            Navigator.pushReplacementNamed(context, 'paymentBusiness');
-          } else {
-            // ignore: use_build_context_synchronously
-            Navigator.pushReplacementNamed(context, 'registerUserPlan');
+            final userService =
+                Provider.of<UsersService>(context, listen: false);
+            if (userService.currentUser != null) {
+              userService.currentUser!.isCompany = true;
+              await userService.addItem(userService.currentUser!);
+            }
           }
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacementNamed(context, 'main');
         },
       )
     ]);

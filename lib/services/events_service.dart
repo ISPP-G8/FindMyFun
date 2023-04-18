@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:findmyfun/models/models.dart';
-import 'package:findmyfun/services/services.dart';
-import 'package:findmyfun/services/important_notification_service.dart';
+import 'package:findmyfun/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
+import '../models/event.dart';
+import '../models/user.dart';
+import 'users_service.dart';
 
 class EventsService extends ChangeNotifier {
   final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
@@ -29,30 +29,16 @@ class EventsService extends ChangeNotifier {
   Future<void> deleteEvent(String eventId) async {
     final url = Uri.https(_baseUrl, 'Events/$eventId.json');
     try {
-      // ignore: unused_local_variable
       final resp = await http.delete(url);
-    } catch (e) {
-      debugPrint('Error al eliminar el evento: $e');
-    }
-  }
-
-  Future<void> deleteEventAdmin(String eventId, BuildContext context) async {
-    final url = Uri.https(_baseUrl, 'Events/$eventId.json');
-    try {
-      // ignore: unused_local_variable
-      final resp = await http.delete(url);
-      Navigator.pushNamed(context, 'events');
+      debugPrint(resp.body);
     } catch (e) {
       debugPrint('Error al eliminar el evento: $e');
     }
   }
 
   //POST AND UPDATE EVENT
-  Future<void> saveEvent(BuildContext context, Event event) async {
-    final usersService = Provider.of<UsersService>(context, listen: false);
-    if (!usersService.currentUser!.subscription.canCreateEvents) return;
+  Future<void> saveEvent(Event event) async {
     final url = Uri.https(_baseUrl, 'Events/${event.id}.json');
-
     try {
       // ignore: unused_local_variable
       final resp = await http.put(url, body: jsonEncode(event.toJson()));
@@ -89,39 +75,7 @@ class EventsService extends ChangeNotifier {
     }
   }
 
-  //GET EVENT OF LOGGED USER
-  Future<List<Event>> getEventsOfLoggedUser() async {
-    final url = Uri.https(_baseUrl, 'Events.json');
-    final currentUser = AuthService().currentUser?.uid ?? "";
-
-    try {
-      final resp = await http.get(url);
-
-      if (resp.statusCode != 200) {
-        throw Exception('Error in response');
-      }
-      List<Event> eventsAux = [];
-      Map<String, dynamic> data = jsonDecode(resp.body);
-
-      data.forEach((key, value) {
-        try {
-          final event = Event.fromRawJson(jsonEncode(value));
-          if (event.users.contains(currentUser)) {
-            eventsAux.add(event);
-          }
-        } catch (e) {
-          debugPrint('Error parsing event: $e');
-        }
-      });
-
-      events = eventsAux;
-      return eventsAux;
-    } catch (e) {
-      throw Exception('Error getting events: $e');
-    }
-  }
-
-  //FIND EVENTS THAT SHARE TAGS WITH USER, ARE NOT FULL, ARE VISIBLE, ARE NOT FINISHED AND USER IS NOT IN
+  //FIND EVENTS
   Future<List<Event>> findEvents() async {
     final url = Uri.https(_baseUrl, 'Events.json');
     final UsersService usersService = UsersService();
@@ -144,10 +98,7 @@ class EventsService extends ChangeNotifier {
                   .toSet()
                   .intersection(event.tags.toSet())
                   .isNotEmpty &&
-              !event.hasFinished &&
-              event.isVisible &&
-              !event.isFull &&
-              !event.users.contains(currentUser.id)) {
+              !event.hasFinished /* && currentUser.city == event.city*/) {
             eventsAux.add(event);
           }
         } catch (e) {
@@ -161,40 +112,17 @@ class EventsService extends ChangeNotifier {
     }
   }
 
-  Future<void> addUserToEvent(BuildContext context, Event event) async {
+  Future<void> addUserToEvent(Event event) async {
     String eventId = event.id;
     String activeUserId = AuthService().currentUser?.uid ?? "";
-    final usersService = Provider.of<UsersService>(context, listen: false);
-
-    if (usersService.currentUser!.subscription.type == SubscriptionType.company)
-      return;
-
-    final notificationsService =
-        Provider.of<ImportantNotificationService>(context, listen: false);
     if (activeUserId.isEmpty ||
         eventId.isEmpty ||
-        event.hasFinished == true ||
+        event.finished == true ||
         event.users.contains(activeUserId)) {
       throw Exception(
           'Asegúrate de haber iniciado sesión, de que el evento existe y está activo no estás dentro de él');
     } else {
-      if (event.isFull) {
-        throw Exception('Error: Event is full');
-      }
       event.users.add(activeUserId);
-      final currentUser = usersService.currentUser;
-      ImportantNotification notificationUsuarioEntra = ImportantNotification(
-          userId: activeUserId,
-          date: DateTime.now(),
-          info: "Te has unido correctamente al evento ${event.name}");
-      ImportantNotification notificationDuenoEvento = ImportantNotification(
-          userId: event.creator,
-          date: DateTime.now(),
-          info: "${currentUser!.name} se ha unido al evento ${event.name}");
-      notificationsService.saveNotification(
-          context, notificationDuenoEvento, event.creator);
-      notificationsService.saveNotification(
-          context, notificationUsuarioEntra, activeUserId);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');
 
       try {
@@ -262,20 +190,11 @@ class EventsService extends ChangeNotifier {
             if (!event.hasFinished) {
               int i = 0;
               for (String word in words) {
-                word = removeDiacritics(word).toLowerCase();
-                if ((removeDiacritics(event.address)
-                            .toLowerCase()
-                            .contains(word) ||
-                        removeDiacritics(event.city)
-                            .toLowerCase()
-                            .contains(word) ||
-                        removeDiacritics(event.description)
-                            .toLowerCase()
-                            .contains(word) ||
-                        removeDiacritics(event.name)
-                            .toLowerCase()
-                            .contains(word)) &&
-                    !event.isFull) {
+                word = word.toLowerCase();
+                if (event.address.toLowerCase().contains(word) ||
+                    event.city.toLowerCase().contains(word) ||
+                    event.description.toLowerCase().contains(word) ||
+                    event.name.toLowerCase().contains(word)) {
                   i = i + 1;
                 }
                 if (i == words.length) {
@@ -284,7 +203,7 @@ class EventsService extends ChangeNotifier {
               }
             }
           } catch (e) {
-            //Exception('Se ha producido un error buscando eventos: $e');
+            debugPrint('Error parsing event: $e');
           }
         });
         if (eventsAux.isNotEmpty) {
@@ -297,23 +216,11 @@ class EventsService extends ChangeNotifier {
         }
       } catch (e) {
         eventsFound = [];
-        throw Exception('Se ha producido un error al obtener eventos: $e');
+        throw Exception('Error getting events: $e');
       }
     }
   }
 
-  String removeDiacritics(String str) {
-    var withDia =
-        'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
-    var withoutDia =
-        'AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz';
-
-    for (int i = 0; i < withDia.length; i++) {
-      str = str.replaceAll(withDia[i], withoutDia[i]);
-    }
-
-    return str;
-  }
   //READ USERS EVENTS
 
   Future<List<String>> getUsersFromEvent(Event event) async {
@@ -340,10 +247,14 @@ class EventsService extends ChangeNotifier {
   Future<List<String>> getNameFromId(List<String> ids) async {
     try {
       List<String> usersAux = [];
+      // ignore: avoid_print
+      print(ids);
       for (var id in ids) {
         final resp = await http.get(Uri.https(_baseUrl, 'Users/$id.json'));
 
         Map<String, dynamic> data = jsonDecode(resp.body);
+        // ignore: avoid_print
+        print(data["username"]);
         usersAux.add(data["username"]);
       }
       // ignore: avoid_print
@@ -352,11 +263,5 @@ class EventsService extends ChangeNotifier {
     } catch (e) {
       throw Exception('Error getting users');
     }
-  }
-
-  Future<User> getEventCreator(BuildContext context, Event event) async {
-    final userService = Provider.of<UsersService>(context, listen: false);
-    User eventCreator = await userService.getUserWithUid(event.users.first);
-    return eventCreator;
   }
 }

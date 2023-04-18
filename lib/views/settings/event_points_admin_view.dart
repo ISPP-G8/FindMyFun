@@ -71,10 +71,10 @@ class EventPointContainer extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       width: double.infinity,
-      padding: const EdgeInsets.all(8),
+      padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
           color: ProjectColors.secondary,
-          boxShadow: const [BoxShadow(blurRadius: 10, spreadRadius: 0.5)],
+          boxShadow: [BoxShadow(blurRadius: 10, spreadRadius: 0.5)],
           borderRadius: BorderRadius.circular(20)),
       child: Column(
         children: [
@@ -89,7 +89,7 @@ class EventPointContainer extends StatelessWidget {
                     },
                   ))
               : Container(),
-          const SizedBox(
+          SizedBox(
             height: 10,
           ),
           Column(

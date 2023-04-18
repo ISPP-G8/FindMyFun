@@ -1,5 +1,5 @@
 import 'package:findmyfun/themes/themes.dart';
-import 'package:findmyfun/widgets/widgets.dart';
+import 'package:findmyfun/widgets/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,28 +55,11 @@ class _MainScreenState extends State<MainScreen> {
           title: SizedBox(
               height: 50, child: Image.asset('assets/logo-banner.png')),
           actions: [
-            GestureDetector(
-              onTap: () => Navigator.pushNamed(context, 'notifications'),
-              child: Container(
-                margin: const EdgeInsets.only(right: 10),
-                child: const Icon(
-                  Icons.chat_bubble,
-                  size: 50,
-                ),
-              )
-            ),
             Container(
               margin: const EdgeInsets.only(right: 10),
-              child: IconButton(
-                icon: const Icon(
-                  Icons.exit_to_app,
-                  size: 50,
-                ),
-                onPressed: () async {
-                  await AuthService().signOut();
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushReplacementNamed(context, 'access');
-                },
+              child: const Icon(
+                Icons.chat_bubble,
+                size: 50,
               ),
             )
           ],
@@ -87,11 +70,13 @@ class _MainScreenState extends State<MainScreen> {
               controller: pageControllerService.mainPageController,
               physics: const NeverScrollableScrollPhysics(),
               children: const [
+                // TODO: Vista de inicio
+                // TODO: Vista de busqueda
                 EventListView(),
                 EventFindView(),
                 EventCreationView(),
                 EventSearchView(),
-                ProfileDetailsView(),
+                // TODO: Vista de notificaciones
                 SettingsView()
               ]),
         ));

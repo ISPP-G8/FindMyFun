@@ -74,11 +74,9 @@ class _EventsColumn extends StatelessWidget {
               itemBuilder: (context, index) {
                 final event = events[index];
                 return ListTile(
-                    title: Text(event.name),
-                    subtitle: Text('${event.address} \n${event.city}'),
-                    onTap: () => Navigator.pushNamed(
-                        context, 'eventDetailsAdmin',
-                        arguments: event));
+                  title: Text(event.name),
+                  subtitle: Text('${event.address} \n${event.city}'),
+                );
               },
               separatorBuilder: (context, index) => const Divider(),
             )),

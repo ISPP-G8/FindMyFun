@@ -47,7 +47,3 @@ app.*.map.json
 pubspec.lock
 /linux
 /macos
-.flutter-plugins 3
-.flutter-plugins-dependencies 3
-ios/Flutter/flutter_export_environment 3.sh
-ios/Flutter/Generated 3.xcconfig
