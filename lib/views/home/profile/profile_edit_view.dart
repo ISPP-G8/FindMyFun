@@ -10,6 +10,7 @@ import '../../../services/services.dart';
 import '../../../themes/colors.dart';
 import '../../../themes/styles.dart';
 import '../../../widgets/widgets.dart';
+import '../../views.dart';
 
 class ProfileEditForm extends StatelessWidget {
   const ProfileEditForm({
@@ -150,7 +151,7 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
           text: 'MODIFICAR',
           onTap: () async {
             if (_formKey.currentState!.validate()) {
-              try {
+              // try {
                 showDialog(
                   context: context,
                   builder: (context) => Column(
@@ -190,27 +191,31 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
                     preferences: currentUser.preferences,
                     notifications: currentUser.notifications,
                     subscription: currentUser.subscription);
-                final resp = await userService.updateProfile();
+                final resp = await userService.updateProfileAdmin(userService.currentUser!);
                 if (resp) {
                   print(_nameController.text);
                   Navigator.pop(context);
                   Navigator.pop(context);
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => ProfileDetailsView()),
+                  //   );
                 } else {
                   Navigator.pop(context);
                   _formKey.currentState!.validate();
                   print('Error al editar el usuario');
                 }
                 print('Usuario modificado con uid: ${currentUser.id}');
-              } on FirebaseAuthException {
-                Navigator.pop(context);
-                showExceptionDialog(context);
-              } on FirebaseException {
-                Navigator.pop(context);
-                showExceptionDialog(context);
-              } catch (e) {
-                Navigator.pop(context);
-                showExceptionDialog(context);
-              }
+              // } on FirebaseAuthException {
+              //   Navigator.pop(context);
+              //   showExceptionDialog(context);
+              // } on FirebaseException {
+              //   Navigator.pop(context);
+              //   showExceptionDialog(context);
+              // } catch (e) {
+              //   Navigator.pop(context);
+              //   showExceptionDialog(context);
+              // }
             }
           },
         )
