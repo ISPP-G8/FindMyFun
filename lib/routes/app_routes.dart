@@ -40,7 +40,8 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'notifications': (_) => const NotificationView(),
     'creatorProfile': (_) => const EventCreatorProfileDetailsView(),
     'registerPlan': (_) => const RegisterViewPlan(),
-    'registerUserPlan': (_) => const RegisterUserPlan()
+    'registerUserPlan': (_) => const RegisterUserPlan(),
+    'eventPointDetailsView': (_) => EventPointDetailsView(),
   };
 
   return routes;

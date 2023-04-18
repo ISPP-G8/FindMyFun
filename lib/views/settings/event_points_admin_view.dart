@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
+import 'package:findmyfun/ui/show_circular_progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +37,19 @@ class _EventPointsAdminViewState extends State<EventPointsAdminView> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
+            actions: [
+              IconButton(
+                  onPressed: () async {
+                    showCircularProgressDialog(context);
+                    await eventPointsService.getEventPoints();
+                    Navigator.pop(context);
+                    setState(() {});
+                  },
+                  icon: Icon(
+                    Icons.refresh_outlined,
+                    color: ProjectColors.secondary,
+                  ))
+            ],
             leading: GestureDetector(
                 onTap: () => Navigator.pop(context),
                 child: const Icon(
@@ -89,6 +103,15 @@ class EventPointContainer extends StatelessWidget {
                     },
                   ))
               : Container(),
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'eventPointDetailsView',
+                    arguments: eventPoint);
+              },
+              icon: const Icon(
+                Icons.info,
+                size: 44,
+              )),
           const SizedBox(
             height: 10,
           ),

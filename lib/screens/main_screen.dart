@@ -44,9 +44,11 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
         // backgroundColor: ProjectColors.primary,
         bottomNavigationBar: const CustomNavigationBar(),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {},
-        // ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, 'eventpointsadmin');
+          },
+        ),
         appBar: AppBar(
           backgroundColor: ProjectColors.tertiary,
           elevation: 0,
@@ -56,15 +58,14 @@ class _MainScreenState extends State<MainScreen> {
               height: 50, child: Image.asset('assets/logo-banner.png')),
           actions: [
             GestureDetector(
-              onTap: () => Navigator.pushNamed(context, 'notifications'),
-              child: Container(
-                margin: const EdgeInsets.only(right: 10),
-                child: const Icon(
-                  Icons.chat_bubble,
-                  size: 50,
-                ),
-              )
-            ),
+                onTap: () => Navigator.pushNamed(context, 'notifications'),
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  child: const Icon(
+                    Icons.chat_bubble,
+                    size: 50,
+                  ),
+                )),
             Container(
               margin: const EdgeInsets.only(right: 10),
               child: IconButton(
