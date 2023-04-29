@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/models.dart' as user;
@@ -31,8 +32,9 @@ class ProfileEditForm extends StatelessWidget {
             )),
         elevation: 0,
         centerTitle: true,
-        title: Text(
+        title: AutoSizeText(
           'EDITAR PERFIL',
+          maxLines: 1,
           textAlign: TextAlign.center,
           style: Styles.appBar,
         ),
@@ -155,7 +157,7 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
             currentUser.image = imagePath;
             setState(() {});
           },
-          child: CustomTextForm(
+          child: const CustomTextForm(
             enabled: false,
             maxLines: 2,
             hintText: 'Pulsa aquí para seleccionar la imagen',

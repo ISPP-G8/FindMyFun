@@ -68,8 +68,8 @@ class _FormsColumn extends StatelessWidget {
     final creator = userService.getUserWithUid(selectedEvent.creator);
 
     return FutureBuilder<User>(
-      future: creator,
-      builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+        future: creator,
+        builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
           return Column(
             children: [
               const SizedBox(
@@ -147,7 +147,6 @@ class _FormsColumn extends StatelessWidget {
                   child: const CustomButton(text: 'Borrar evento')),
             ],
           );
-        }
-    );
+        });
   }
 }

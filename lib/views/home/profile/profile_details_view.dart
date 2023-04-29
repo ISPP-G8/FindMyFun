@@ -1,11 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/themes/styles.dart';
-import 'package:findmyfun/views/home/profile/profile_edit_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:intl/intl.dart';
@@ -28,8 +27,9 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text(
+        title: AutoSizeText(
           'MI PERFIL',
+          maxLines: 1,
           textAlign: TextAlign.center,
           style: Styles.appBar,
         ),

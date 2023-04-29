@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/themes/colors.dart';
 import 'package:findmyfun/themes/styles.dart';
@@ -25,8 +26,9 @@ class EventCreatorProfileDetailsView extends StatelessWidget {
             color: ProjectColors.secondary,
           ),
         ),
-        title: Text(
+        title: AutoSizeText(
           'MI PERFIL',
+          maxLines: 1,
           textAlign: TextAlign.center,
           style: Styles.appBar,
         ),
