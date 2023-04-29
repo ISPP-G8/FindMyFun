@@ -258,7 +258,10 @@ class _DeleteProfile extends State<DeleteProfile> {
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(
               const Color.fromARGB(255, 128, 13, 5))),
-      child: const Text('Eliminar cuenta'),
+      child: const AutoSizeText(
+        'Eliminar cuenta',
+        maxLines: 1,
+      ),
       onPressed: () {
         // Muestra el pop-up al pulsar el botón
         showDialog(

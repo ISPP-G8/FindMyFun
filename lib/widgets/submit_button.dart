@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class SubmitButton extends StatelessWidget {
   final String text;
@@ -21,8 +22,9 @@ class SubmitButton extends StatelessWidget {
             margin ?? const EdgeInsets.symmetric(horizontal: 110, vertical: 10),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         decoration: const BoxDecoration(color: Color(0xff004aad)),
-        child: Text(
+        child: AutoSizeText(
           text,
+          maxLines: 1,
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: Color(

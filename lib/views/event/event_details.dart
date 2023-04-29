@@ -1,4 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
@@ -207,7 +208,10 @@ class _FormsColumn extends StatelessWidget {
                 ),
               if (selectedEvent.users.contains(activeUserId))
                 ElevatedButton(
-                  child: const Text('Abrir chat'),
+                  child: const AutoSizeText(
+                    'Abrir chat',
+                    maxLines: 1,
+                  ),
                   onPressed: () {
                     Navigator.pushNamed(context, 'chat',
                         arguments: selectedEvent);
@@ -329,7 +333,10 @@ class _FormsColumn extends StatelessWidget {
                   },
                 ),
               ElevatedButton(
-                child: const Text('Abrir chat'),
+                child: const AutoSizeText(
+                  'Abrir chat',
+                  maxLines: 1,
+                ),
                 onPressed: () {
                   Navigator.popAndPushNamed(context, 'chat',
                       arguments: selectedEvent, result: selectedEvent.messages);
