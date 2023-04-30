@@ -19,7 +19,6 @@ class AccessScreen extends StatelessWidget {
           controller: pageControllerService.pageController,
           physics: const NeverScrollableScrollPhysics(),
           children: const [
-            AccessView(),
             LoginView(),
           ]),
     ));

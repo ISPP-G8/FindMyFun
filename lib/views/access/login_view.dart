@@ -21,16 +21,6 @@ class LoginView extends StatelessWidget {
           // Lo dejo comentado por si se quiere usar en el futuro para probar funcionalidades
 
           appBar: AppBar(
-            leading: GestureDetector(
-                onTap: () => pageViewController.animateToPage(0,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut),
-                child: const Icon(
-                  Icons.chevron_left,
-                  size: 45,
-                  color: ProjectColors.secondary,
-                )),
-            // backgroundColor: ProjectColors.primary,
             elevation: 0,
             centerTitle: true,
             title: Text(
