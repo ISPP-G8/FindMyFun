@@ -168,11 +168,13 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                       models.ImportantNotification(
                           date: DateTime.now(),
                           userId: credential.user!.uid,
-                          info: 'Bienvenido a FindMyFun, ¡esperamos que pueda conocer gente para hacer planes que le interese y disfrutar de todo lo que nuestra aplicación le ofrece!'),
+                          info:
+                              'Bienvenido a FindMyFun, ¡esperamos que pueda conocer gente para hacer planes que le interese y disfrutar de todo lo que nuestra aplicación le ofrece!'),
                     ],
                     subscription: models.Subscription(
                         type: models.SubscriptionType.free,
-                        numEventsCreatedThisMonth: 0));
+                        numEventsCreatedThisMonth: 0,
+                        lastReset: DateTime.now()));
                 final resp =
                     await userService.addItem(userService.currentUser!);
                 if (resp) {

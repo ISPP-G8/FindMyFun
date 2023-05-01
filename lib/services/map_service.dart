@@ -34,6 +34,7 @@ class MapService extends ChangeNotifier {
     }
 
     for (var eventPoint in eventPoints) {
+      if (!eventPoint.visible) continue;
       markers.add(Point(
           event: eventPoint,
           marker: Marker(

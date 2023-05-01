@@ -73,8 +73,10 @@ void main() {
     preferencesTest.add(preferenceTest);
     List<String> usersTest = [];
     usersTest.add("idtest");
-    Subscription subscriptionTest =
-        Subscription(numEventsCreatedThisMonth: 0, type: SubscriptionType.free);
+    Subscription subscriptionTest = Subscription(
+        numEventsCreatedThisMonth: 0,
+        type: SubscriptionType.free,
+        lastReset: DateTime.now());
     User user = User(
         name: nameTest,
         surname: surnameTest,
@@ -114,7 +116,9 @@ void main() {
     List<String> usersTest = [];
     usersTest.add("idtest");
     Subscription subscriptionTest = Subscription(
-        numEventsCreatedThisMonth: 0, type: SubscriptionType.company);
+        numEventsCreatedThisMonth: 0,
+        type: SubscriptionType.company,
+        lastReset: DateTime.now());
     User user = User(
         name: nameTest,
         surname: surnameTest,
@@ -156,7 +160,9 @@ void main() {
     List<String> usersTest = [];
     usersTest.add("idtest");
     Subscription subscriptionTest = Subscription(
-        numEventsCreatedThisMonth: 0, type: SubscriptionType.premium);
+        numEventsCreatedThisMonth: 0,
+        type: SubscriptionType.premium,
+        lastReset: DateTime.now());
     User user = User(
         name: nameTest,
         surname: surnameTest,
@@ -196,8 +202,10 @@ void main() {
     preferencesTest.add(preferenceTest);
     List<String> usersTest = [];
     usersTest.add("idtest");
-    Subscription subscriptionTest =
-        Subscription(numEventsCreatedThisMonth: 0, type: SubscriptionType.free);
+    Subscription subscriptionTest = Subscription(
+        numEventsCreatedThisMonth: 0,
+        type: SubscriptionType.free,
+        lastReset: DateTime.now());
     List<ImportantNotification> notificationsTest = [];
     ImportantNotification firstNotification = ImportantNotification(
         userId: "usertestnotification",
@@ -248,6 +256,8 @@ void main() {
         "https://www.freecodecamp.org/espanol/news/content/images/2022/02/5f9c9a4c740569d1a4ca24c2.jpg";
     double latitudeTest = 0;
     double longitudeTest = 0;
+    bool visibleTest = true;
+    String creatorIdTest = "idtest";
     EventPoint eventPoint = EventPoint(
         address: addressTest,
         city: cityTest,
@@ -257,7 +267,9 @@ void main() {
         name: nameTest,
         latitude: latitudeTest,
         longitude: longitudeTest,
-        id: idTest);
+        id: idTest,
+        visible: visibleTest,
+        creatorId: creatorIdTest);
     assert(eventPoint.address == addressTest);
     assert(eventPoint.city == cityTest);
     assert(eventPoint.country == countryTest);
@@ -267,5 +279,7 @@ void main() {
     assert(eventPoint.latitude == latitudeTest);
     assert(eventPoint.longitude == longitudeTest);
     assert(eventPoint.id == idTest);
+    assert(eventPoint.visible == visibleTest);
+    assert(eventPoint.creatorId == creatorIdTest);
   });
 }
