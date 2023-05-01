@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/themes/styles.dart';
 import 'package:findmyfun/widgets/custom_banner_ad.dart';
@@ -25,8 +26,9 @@ class ProfileDetailsAdmin extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text(
+        title: AutoSizeText(
           'MI PERFIL',
+          maxLines: 1,
           textAlign: TextAlign.center,
           style: Styles.appBar,
         ),

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/helpers/validators.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
@@ -42,7 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
               size: 45,
               color: ProjectColors.secondary,
             )),
-        title: const Text('Chat'),
+        title: const AutoSizeText('Chat', maxLines: 1),
       ),
       body: Column(
         children: [

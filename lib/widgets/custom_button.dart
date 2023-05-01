@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -22,8 +23,9 @@ class CustomButton extends StatelessWidget {
         decoration: BoxDecoration(
             color: const Color(0xff004aad),
             borderRadius: BorderRadius.circular(15)),
-        child: Text(
+        child: AutoSizeText(
           text,
+          maxLines: 1,
           textAlign: TextAlign.center,
           style: const TextStyle(
               color: Color(0xffffde59),

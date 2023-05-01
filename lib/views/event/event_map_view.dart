@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,8 @@ class EventMapView extends StatelessWidget {
             )),
         elevation: 0,
         centerTitle: true,
-        title: Text('MAPA', textAlign: TextAlign.center, style: Styles.appBar),
+        title: AutoSizeText('MAPA',
+            maxLines: 1, textAlign: TextAlign.center, style: Styles.appBar),
       ),
       body: const MapScreen(),
     );
@@ -38,7 +40,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-
   late GoogleMapController _googleMapController;
   late Future markersFuture;
   // ignore: prefer_const_constructors
@@ -58,7 +59,7 @@ class _MapScreenState extends State<MapScreen> {
     MapService mapService = MapService();
     return await mapService.getMarkers();
   }
-  
+
   _getUserCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -135,10 +136,11 @@ class _MapScreenState extends State<MapScreen> {
                                         : null;
                               })))
                       .toSet()),
-                  initialCameraPosition:  CameraPosition(
-                                            target: LatLng(currentPosition.latitude, currentPosition.longitude),
-                                            zoom: 15,
-                                          ),
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                        currentPosition.latitude, currentPosition.longitude),
+                    zoom: 15,
+                  ),
                   myLocationEnabled: true,
                   compassEnabled: true,
                   onMapCreated: (controller) =>
@@ -166,7 +168,9 @@ class _MapScreenState extends State<MapScreen> {
                                 height: 10,
                                 width: 10,
                               ),
-                              const Text(" Eventos a los que estás apuntado",
+                              const AutoSizeText(
+                                  " Eventos a los que estás apuntado",
+                                  maxLines: 1,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12,
@@ -182,7 +186,8 @@ class _MapScreenState extends State<MapScreen> {
                                 height: 10,
                                 width: 10,
                               ),
-                              const Text(" Eventos disponibles",
+                              const AutoSizeText(" Eventos disponibles",
+                                  maxLines: 1,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12,
@@ -198,7 +203,9 @@ class _MapScreenState extends State<MapScreen> {
                                 height: 10,
                                 width: 10,
                               ),
-                              const Text(" Puntos de evento disponibles",
+                              const AutoSizeText(
+                                  " Puntos de evento disponibles",
+                                  maxLines: 1,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 12,
@@ -222,14 +229,15 @@ class _MapScreenState extends State<MapScreen> {
                         LatLng tempPosition = currentPosition;
                         _getUserCurrentLocation.call();
                         while (tempPosition == currentPosition) {
-                          await Future.delayed(const Duration(milliseconds: 50));
+                          await Future.delayed(
+                              const Duration(milliseconds: 50));
                         }
                         _googleMapController.animateCamera(
-                          CameraUpdate.newCameraPosition(CameraPosition(
-                              target: LatLng(currentPosition.latitude,
-                                  currentPosition.longitude),
-                              zoom: 15)));
-                        },
+                            CameraUpdate.newCameraPosition(CameraPosition(
+                                target: LatLng(currentPosition.latitude,
+                                    currentPosition.longitude),
+                                zoom: 15)));
+                      },
                       child: const Icon(Icons.my_location),
                     ),
                   ),
@@ -271,7 +279,7 @@ class _MapScreenState extends State<MapScreen> {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      Text(
+                                      AutoSizeText(
                                         selectedEvent != null
                                             ? selectedEvent.name
                                             : '',
@@ -284,7 +292,7 @@ class _MapScreenState extends State<MapScreen> {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      Text(
+                                      AutoSizeText(
                                           selectedEvent is Event
                                               ? selectedEvent.startDate
                                                   .toString()
@@ -297,7 +305,7 @@ class _MapScreenState extends State<MapScreen> {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      Text(
+                                      AutoSizeText(
                                           selectedEvent != null
                                               ? selectedEvent.address
                                               : '',
@@ -309,7 +317,7 @@ class _MapScreenState extends State<MapScreen> {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      Text(
+                                      AutoSizeText(
                                           selectedEvent is Event
                                               ? '${selectedEvent.users.length.toString()} asistente/s'
                                               : '',
@@ -362,19 +370,4 @@ class _MapScreenState extends State<MapScreen> {
       },
     );
   }
-
-  // Usado para formularios para conseguir lat,long,city,address
-  // _handleTap(LatLng tappedPos) {
-  //   setState(() {
-  //     markers = [];
-  //     markers.add(Marker(
-  //       markerId: MarkerId('${markers.length}'),
-  //       position: tappedPos,
-  //       // onTap: () => Navigator.pop(context, 'main'),
-  //       infoWindow: const InfoWindow(
-  //           title: 'Partido de fútbol', snippet: 'Partido de aficionados'),
-  //       draggable: true,
-  //     ));
-  //   });
-  // }
 }

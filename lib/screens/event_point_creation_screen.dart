@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, unused_field
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/services/important_notification_service.dart';
@@ -67,14 +68,13 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                 color: ProjectColors.secondary,
               )),
           elevation: 0,
-          title: const FittedBox(
-            child: Text(
-              'ESTABLECER PUNTO DE EVENTO',
-              style: TextStyle(
-                  fontSize: 25,
-                  color: ProjectColors.secondary,
-                  fontWeight: FontWeight.bold),
-            ),
+          title: const AutoSizeText(
+            'ESTABLECER PUNTO DE EVENTO',
+            maxLines: 1,
+            style: TextStyle(
+                fontSize: 25,
+                color: ProjectColors.secondary,
+                fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -326,8 +326,9 @@ class _Button extends StatelessWidget {
           width: size.width * 0.4,
           height: 80,
           padding: const EdgeInsets.all(10),
-          child: Text(
+          child: AutoSizeText(
             title,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: const TextStyle(
                 color: Color(0xffffde59),

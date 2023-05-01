@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, unused_field, library_private_types_in_public_api
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/models.dart';
@@ -15,9 +16,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../helpers/validators.dart';
 import '../../services/services.dart';
-import '../../ui/custom_snackbars.dart';
 import '../../ui/ui.dart';
 
 const int maxFailedLoadAttemptsEvent = 3;
@@ -59,8 +58,9 @@ class _EventCreationView extends State<EventCreationView> {
             SizedBox(height: size.height * 0.005),
             const AdPlanLoader(),
             const Center(
-                child: Text(
+                child: AutoSizeText(
               'CREAR EVENTO',
+              maxLines: 1,
               style: TextStyle(
                   color: Colors.black38,
                   fontSize: 30,
@@ -81,16 +81,19 @@ class _EventCreationView extends State<EventCreationView> {
                     );
                   } else {
                     return SizedBox(
-                      height: size.height * 0.6,
-                      width: size.width * 0.8,
-                      child: const Center(
-                          child: Text('Ya no puedes crear más eventos este mes',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: ProjectColors.tertiary,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold))),
-                    );
+                        height: size.height * 0.6,
+                        width: size.width * 0.8,
+                        child: const Center(
+                          child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                  'Ya no puedes crear más eventos este mes',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: ProjectColors.tertiary,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold))),
+                        ));
                   }
                 } else {
                   return Column(children: const [
@@ -287,7 +290,7 @@ class _FormsColumnState extends State<_FormsColumn> {
             },
           ),
           SubmitButton(
-            margin: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
             text: 'Crear',
             onTap: () async {
               if (_formKey.currentState!.validate() &&

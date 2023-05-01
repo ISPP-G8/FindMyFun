@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
@@ -23,8 +24,9 @@ class LoginView extends StatelessWidget {
           appBar: AppBar(
             elevation: 0,
             centerTitle: true,
-            title: Text(
+            title: AutoSizeText(
               'INICIO DE SESIÓN',
+              maxLines: 1,
               textAlign: TextAlign.center,
               style: Styles.appBar,
             ),
@@ -40,7 +42,8 @@ class LoginView extends StatelessWidget {
                 ),
                 SizedBox(
                     height: size.height * 0.1,
-                    child: const Text('¡Bienvenido a FindMyFun!',
+                    child: const AutoSizeText('¡Bienvenido a FindMyFun!',
+                        maxLines: 1,
                         style: TextStyle(
                             color: Colors.black87,
                             fontWeight: FontWeight.bold,
@@ -96,8 +99,6 @@ class _FormsColumnState extends State<_FormsColumn> {
                 text: 'CONTINUAR',
                 onTap: () async {
                   if (_formKey.currentState!.validate()) {
-                    // TODO: Iniciar sesión y mandar al home page
-
                     showDialog(
                       context: context,
                       builder: (context) => Column(
