@@ -48,6 +48,9 @@ class SubscriptionService extends ChangeNotifier {
   }
 
   Future<User> changePlanToFree(User user, {bool expired = false}) async {
+    // Set all the event points to invisible
+    await eventPointsService.setUsersEventPointsToInvisible(user);
+
     user.subscription.type = SubscriptionType.free;
     user.subscription.numEventsCreatedThisMonth = 0;
     user.subscription.validUntil = null;
@@ -70,15 +73,15 @@ class SubscriptionService extends ChangeNotifier {
       user.notifications.add(notification);
     }
 
-    // Set all the event points to invisible
-    eventPointsService.setUsersEventPointsToInvisible(user);
-
     await usersService.addItem(user);
 
     return user;
   }
 
   Future<User> changePlanToPremium(User user) async {
+    // Set all the event points to invisible
+    await eventPointsService.setUsersEventPointsToInvisible(user);
+
     user.subscription.type = SubscriptionType.premium;
     user.subscription.numEventsCreatedThisMonth = 0;
     user.subscription.validUntil = DateTime.now().add(const Duration(days: 30));
@@ -90,9 +93,6 @@ class SubscriptionService extends ChangeNotifier {
         date: DateTime.now(),
         info: "Su subcripción se acaba de cambiar al plan premium.");
     user.notifications.add(notification);
-
-    // Set all the event points to invisible
-    eventPointsService.setUsersEventPointsToInvisible(user);
 
     await usersService.addItem(user);
 
@@ -113,7 +113,7 @@ class SubscriptionService extends ChangeNotifier {
     user.notifications.add(notification);
 
     // Set all the event points to visible
-    eventPointsService.setUsersEventPointsToVisible(user);
+    await eventPointsService.setUsersEventPointsToVisible(user);
 
     await usersService.addItem(user);
 

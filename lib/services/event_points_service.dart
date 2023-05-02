@@ -130,6 +130,7 @@ class EventPointsService extends ChangeNotifier {
     List<EventPoint> eventPoints = await getEventPointsFromUser(user);
 
     for (EventPoint eventPoint in eventPoints) {
+      if (eventPoint.visible == false) continue;
       eventPoint.visible = false;
       await saveEventPoint(eventPoint, user);
     }
@@ -140,6 +141,7 @@ class EventPointsService extends ChangeNotifier {
     List<EventPoint> eventPoints = await getEventPointsFromUser(user);
 
     for (EventPoint eventPoint in eventPoints) {
+      if (eventPoint.visible == true) continue;
       eventPoint.visible = true;
       await saveEventPoint(eventPoint, user);
     }
