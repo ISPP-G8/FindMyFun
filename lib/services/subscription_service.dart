@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class SubscriptionService extends ChangeNotifier {
-  final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
+  final String _baseUrl = 'findmyfun-dev-default-rtdb.firebaseio.com';
   final UsersService usersService = UsersService();
   final EventPointsService eventPointsService = EventPointsService();
   final currentAuthUser = AuthService().currentUser;

@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class EventsService extends ChangeNotifier {
-  final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
+  final String _baseUrl = 'findmyfun-dev-default-rtdb.firebaseio.com';
   List<Event> _events = [];
   List<Event> _eventsFound = [];
 

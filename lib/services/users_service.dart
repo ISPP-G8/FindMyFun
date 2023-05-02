@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import '../models/user.dart';
 
 class UsersService extends ChangeNotifier {
-  final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
+  final String _baseUrl = 'findmyfun-dev-default-rtdb.firebaseio.com';
   List<User> _users = [];
 
   User? currentUser;

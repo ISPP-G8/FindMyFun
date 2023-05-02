@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../models/user.dart';
 
 class ImportantNotificationService extends ChangeNotifier {
-  final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
+  final String _baseUrl = 'findmyfun-dev-default-rtdb.firebaseio.com';
   List<ImportantNotification?> _notifications = [];
 
   User? currentUser;
