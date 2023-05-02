@@ -228,7 +228,9 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                     city: placeMark.locality!,
                                     country: placeMark.country!,
                                     image: imageUrl,
-                                    id: eventPointId);
+                                    id: eventPointId,
+                                    visible: true,
+                                    creatorId: usersService.currentUser!.id);
                                 showCircularProgressDialog(context);
                                 await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);

@@ -6,11 +6,13 @@ class Subscription {
   Subscription(
       {required this.type,
       this.validUntil,
-      required this.numEventsCreatedThisMonth});
+      required this.numEventsCreatedThisMonth,
+      required this.lastReset});
 
   SubscriptionType type;
   DateTime? validUntil;
   int numEventsCreatedThisMonth = 0;
+  DateTime lastReset;
 
   int get maxEventsPerMonth => type == SubscriptionType.free
       ? 5
@@ -39,6 +41,12 @@ class Subscription {
   bool get canCreateEvents =>
       maxEventsPerMonth == -1 || numEventsCreatedThisMonth < maxEventsPerMonth;
 
+  bool get isExpired =>
+      validUntil != null && validUntil!.isBefore(DateTime.now());
+
+  bool get needsReset =>
+      lastReset.isBefore(DateTime.now().subtract(const Duration(days: 30)));
+
   factory Subscription.fromRawJson(String str) =>
       Subscription.fromJson(json.decode(str));
 
@@ -50,21 +58,28 @@ class Subscription {
             ? DateTime.parse(json["validUntil"])
             : null,
         numEventsCreatedThisMonth: json['numEventsCreatedThisMonth'] ?? 0,
+        lastReset: json["lastReset"] != null
+            ? DateTime.parse(json["lastReset"])
+            : DateTime.fromMillisecondsSinceEpoch(0),
       );
 
   Map<String, dynamic> toJson() => {
         "type": type.index,
         "validUntil": validUntil?.toIso8601String(),
         "numEventsCreatedThisMonth": numEventsCreatedThisMonth,
+        "lastReset": lastReset.toIso8601String(),
       };
 
   @override
   String toString() =>
-      'type: $type, validUntil: $validUntil?, numEventsCreatedThisMonth: $numEventsCreatedThisMonth';
+      'type: $type, validUntil: $validUntil?, numEventsCreatedThisMonth: $numEventsCreatedThisMonth, lastReset: $lastReset';
 
   @override
   int get hashCode =>
-      type.hashCode ^ validUntil.hashCode ^ numEventsCreatedThisMonth.hashCode;
+      type.hashCode ^
+      validUntil.hashCode ^
+      numEventsCreatedThisMonth.hashCode ^
+      lastReset.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -73,5 +88,6 @@ class Subscription {
           runtimeType == other.runtimeType &&
           type == other.type &&
           validUntil == other.validUntil &&
-          numEventsCreatedThisMonth == other.numEventsCreatedThisMonth;
+          numEventsCreatedThisMonth == other.numEventsCreatedThisMonth &&
+          lastReset == other.lastReset;
 }

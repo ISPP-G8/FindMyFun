@@ -95,4 +95,55 @@ class EventPointsService extends ChangeNotifier {
       throw Exception('Error getting event points: $e');
     }
   }
+
+  // GET EVENT POINTS FROM USER
+  Future<List<EventPoint>> getEventPointsFromUser(User user) async {
+    final url = Uri.https(_baseUrl, 'EventPoints.json');
+    try {
+      final resp = await http.get(url);
+      if (resp.statusCode != 200) {
+        throw Exception('Error in response');
+      }
+
+      final Map<String, dynamic> data = jsonDecode(resp.body);
+
+      final List<EventPoint> eventPoints = [];
+      data.forEach((key, value) {
+        try {
+          final eventPoint = EventPoint.fromJson(value);
+          if (eventPoint.creatorId == user.id) {
+            eventPoints.add(eventPoint);
+          }
+        } catch (e) {
+          debugPrint('Error parsing event point: $e');
+        }
+      });
+
+      return eventPoints;
+    } catch (e) {
+      throw Exception('Error getting event points: $e');
+    }
+  }
+
+  // SET USER'S EVENTO POINTS TO INVISIBLE
+  Future<void> setUsersEventPointsToInvisible(User user) async {
+    List<EventPoint> eventPoints = await getEventPointsFromUser(user);
+
+    for (EventPoint eventPoint in eventPoints) {
+      if (eventPoint.visible == false) continue;
+      eventPoint.visible = false;
+      await saveEventPoint(eventPoint, user);
+    }
+  }
+
+  // SET USER'S EVENTO POINTS TO VISIBLE
+  Future<void> setUsersEventPointsToVisible(User user) async {
+    List<EventPoint> eventPoints = await getEventPointsFromUser(user);
+
+    for (EventPoint eventPoint in eventPoints) {
+      if (eventPoint.visible == true) continue;
+      eventPoint.visible = true;
+      await saveEventPoint(eventPoint, user);
+    }
+  }
 }

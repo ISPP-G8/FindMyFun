@@ -1,7 +1,7 @@
 import 'dart:convert';
 //import 'dart:html';
 
-import 'package:findmyfun/services/auth_service.dart';
+import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/user.dart';
@@ -29,7 +29,9 @@ class UsersService extends ChangeNotifier {
       if (resp.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(resp.body);
         user = User.fromJson(data);
-        return user;
+        User newUser =
+            await SubscriptionService().checkSubscriptionValidity(user);
+        return newUser;
       } else {
         throw Exception(
             'Errors ocurred while trying to get the user with Uid $userUid');
@@ -48,7 +50,9 @@ class UsersService extends ChangeNotifier {
       if (resp.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(resp.body);
         user = User.fromJson(data);
-        currentUser = user;
+        User newUser =
+            await SubscriptionService().checkSubscriptionValidity(user);
+        currentUser = newUser;
       } else {
         throw Exception(
             'Errors ocurred while trying to get the current user with Uid $activeUserId');
