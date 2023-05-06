@@ -121,9 +121,24 @@ class SubscriptionService extends ChangeNotifier {
   }
 
   Future<User> checkSubscriptionValidity(User user) async {
+    Duration diff = user.subscription.validUntil!.difference(DateTime.now());
     if (user.subscription.isExpired) {
       User newUser = await changePlanToFree(user, expired: true);
       return newUser;
+    } else if (diff.inDays <= 5) {
+      bool yaExiste = false;
+      for (var i in user.notifications){
+        if (i!.info == "Le quedan 5 días o menos de suscripción") {
+          yaExiste = true;
+        }
+      }
+      if (yaExiste==false) {
+        ImportantNotification notification = ImportantNotification(
+        userId: user.id,
+        date: DateTime.now(),
+        info: "Le quedan 5 días o menos de suscripción");
+        user.notifications.add(notification);
+      }
     } else if (user.subscription.needsReset) {
       User newUser = await resetSubscription(user);
       return newUser;
