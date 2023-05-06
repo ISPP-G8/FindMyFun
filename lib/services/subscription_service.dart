@@ -48,8 +48,10 @@ class SubscriptionService extends ChangeNotifier {
   }
 
   Future<User> changePlanToFree(User user, {bool expired = false}) async {
-    // Set all the event points to invisible
-    await eventPointsService.setUsersEventPointsToInvisible(user);
+    if (user.subscription.type == SubscriptionType.company){
+      // Set all the event points to invisible
+      await eventPointsService.setUsersEventPointsToInvisible(user);
+    }
 
     user.subscription.type = SubscriptionType.free;
     user.subscription.numEventsCreatedThisMonth = 0;
@@ -79,8 +81,10 @@ class SubscriptionService extends ChangeNotifier {
   }
 
   Future<User> changePlanToPremium(User user) async {
-    // Set all the event points to invisible
-    await eventPointsService.setUsersEventPointsToInvisible(user);
+    if (user.subscription.type == SubscriptionType.company){
+      // Set all the event points to invisible
+      await eventPointsService.setUsersEventPointsToInvisible(user);
+    }
 
     user.subscription.type = SubscriptionType.premium;
     user.subscription.numEventsCreatedThisMonth = 0;
@@ -112,8 +116,10 @@ class SubscriptionService extends ChangeNotifier {
         info: "Su subcripción se acaba de cambiar al plan empresa.");
     user.notifications.add(notification);
 
-    // Set all the event points to visible
-    await eventPointsService.setUsersEventPointsToVisible(user);
+    if (user.subscription.type == SubscriptionType.company){
+      // Set all the event points to visible
+      await eventPointsService.setUsersEventPointsToVisible(user);
+    }
 
     await usersService.addItem(user);
 
@@ -138,6 +144,7 @@ class SubscriptionService extends ChangeNotifier {
         date: DateTime.now(),
         info: "Le quedan 5 días o menos de suscripción");
         user.notifications.add(notification);
+        await usersService.addItem(user);
       }
     } else if (user.subscription.needsReset) {
       User newUser = await resetSubscription(user);
