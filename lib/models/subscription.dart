@@ -47,6 +47,9 @@ class Subscription {
   bool get needsReset =>
       lastReset.isBefore(DateTime.now().subtract(const Duration(days: 30)));
 
+  bool get isAboutToExpire =>
+      validUntil != null && validUntil!.difference(DateTime.now()).inDays <= 5;
+
   factory Subscription.fromRawJson(String str) =>
       Subscription.fromJson(json.decode(str));
 
