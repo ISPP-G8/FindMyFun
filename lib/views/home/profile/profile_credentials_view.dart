@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/models/models.dart' as user;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,8 +33,9 @@ class ProfileCredentialsForm extends StatelessWidget {
             )),
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: const AutoSizeText(
           'CAMBIAR CONTRASEÑA',
+          maxLines: 1,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Color(0xff828a92),

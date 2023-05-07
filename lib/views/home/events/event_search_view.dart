@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -38,8 +39,9 @@ class _EventSearchViewState extends State<EventSearchView> {
               SizedBox(height: size.height * 0.005),
               const AdPlanLoader(),
               const Center(
-                  child: Text(
+                  child: AutoSizeText(
                 'BUSCAR EVENTOS',
+                maxLines: 1,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,

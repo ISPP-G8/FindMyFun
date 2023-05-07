@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -37,8 +38,8 @@ class _EventListViewAdmin extends State<EventListViewAdmin> {
             backgroundColor: ProjectColors.primary,
             elevation: 0,
             centerTitle: true,
-            title: Text('EVENTOS',
-                textAlign: TextAlign.center, style: Styles.appBar),
+            title: AutoSizeText('EVENTOS',
+                maxLines: 1, textAlign: TextAlign.center, style: Styles.appBar),
           ),
           backgroundColor: ProjectColors.primary,
           body: Column(children: [
@@ -74,9 +75,11 @@ class _EventsColumn extends StatelessWidget {
               itemBuilder: (context, index) {
                 final event = events[index];
                 return ListTile(
-                  title: Text(event.name),
-                  subtitle: Text('${event.address} \n${event.city}'),
-                );
+                    title: Text(event.name),
+                    subtitle: Text('${event.address} \n${event.city}'),
+                    onTap: () => Navigator.pushNamed(
+                        context, 'eventDetailsAdmin',
+                        arguments: event));
               },
               separatorBuilder: (context, index) => const Divider(),
             )),

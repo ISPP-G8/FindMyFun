@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, unused_field
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/services/important_notification_service.dart';
@@ -9,7 +10,6 @@ import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -18,7 +18,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/models.dart';
 import '../services/services.dart';
 
-const int maxFailedLoadAttemptsEventPoint = 3;
 List<Marker> tappedMarkerEventPoint = [];
 
 class EventPointCreationScreen extends StatefulWidget {
@@ -33,12 +32,6 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-  InterstitialAd? _interstitialAd;
-  static const AdRequest request = AdRequest(
-    nonPersonalizedAds: true,
-  );
-  int _numInterstitialLoadAttempts = 0;
 
   Widget placeholder = Container(
     alignment: Alignment.center,
@@ -55,53 +48,6 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
   @override
   void initState() {
     super.initState();
-    _createInterstitialAd();
-  }
-
-  void _createInterstitialAd() {
-    InterstitialAd.load(
-        adUnitId: AdService.interstitialAdUnitId!,
-        request: request,
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (InterstitialAd ad) {
-            debugPrint('$ad loaded');
-            _interstitialAd = ad;
-            _numInterstitialLoadAttempts = 0;
-            _interstitialAd!.setImmersiveMode(true);
-          },
-          onAdFailedToLoad: (LoadAdError error) {
-            debugPrint('InterstitialAd failed to load: $error.');
-            _numInterstitialLoadAttempts += 1;
-            _interstitialAd = null;
-            if (_numInterstitialLoadAttempts <
-                maxFailedLoadAttemptsEventPoint) {
-              _createInterstitialAd();
-            }
-          },
-        ));
-  }
-
-  void _showInterstitialAd() {
-    if (_interstitialAd == null) {
-      debugPrint('Warning: attempt to show interstitial before loaded.');
-      return;
-    }
-    _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-      onAdShowedFullScreenContent: (InterstitialAd ad) =>
-          debugPrint('ad onAdShowedFullScreenContent.'),
-      onAdDismissedFullScreenContent: (InterstitialAd ad) {
-        debugPrint('$ad onAdDismissedFullScreenContent.');
-        ad.dispose();
-        _createInterstitialAd();
-      },
-      onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-        debugPrint('$ad onAdFailedToShowFullScreenContent: $error');
-        ad.dispose();
-        _createInterstitialAd();
-      },
-    );
-    _interstitialAd!.show();
-    _interstitialAd = null;
   }
 
   @override
@@ -122,14 +68,13 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                 color: ProjectColors.secondary,
               )),
           elevation: 0,
-          title: const FittedBox(
-            child: Text(
-              'ESTABLECER PUNTO DE INTERÉS',
-              style: TextStyle(
-                  fontSize: 25,
-                  color: ProjectColors.secondary,
-                  fontWeight: FontWeight.bold),
-            ),
+          title: const AutoSizeText(
+            'ESTABLECER PUNTO DE EVENTO',
+            maxLines: 1,
+            style: TextStyle(
+                fontSize: 25,
+                color: ProjectColors.secondary,
+                fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -283,21 +228,19 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                                     city: placeMark.locality!,
                                     country: placeMark.country!,
                                     image: imageUrl,
-                                    id: eventPointId);
+                                    id: eventPointId,
+                                    visible: true,
+                                    creatorId: usersService.currentUser!.id);
                                 showCircularProgressDialog(context);
                                 await eventPointsService.saveEventPoint(
                                     eventPoint, usersService.currentUser!);
                                 final notification = ImportantNotification(
-                                    userId: AuthService().currentUser!.uid,
+                                    userId: usersService.currentUser!.id,
                                     date: DateTime.now(),
                                     info:
                                         "Has creado correctamente el punto de evento ${eventPoint.name}");
-                                notificationService.saveNotification(
-                                    context,
-                                    notification,
-                                    AuthService().currentUser!.uid);
-
-                                _showInterstitialAd();
+                                notificationService.saveNotification(context,
+                                    notification, usersService.currentUser!.id);
 
                                 Navigator.pop(context);
                                 Navigator.pop(context);
@@ -385,8 +328,9 @@ class _Button extends StatelessWidget {
           width: size.width * 0.4,
           height: 80,
           padding: const EdgeInsets.all(10),
-          child: Text(
+          child: AutoSizeText(
             title,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: const TextStyle(
                 color: Color(0xffffde59),

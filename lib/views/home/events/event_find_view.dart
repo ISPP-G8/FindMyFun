@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -41,13 +42,15 @@ class _EventFindView extends State<EventFindView> {
               width: size.width,
             ),
             const Center(
-                child: Text(
-              'MAPA DE EVENTOS',
-              style: TextStyle(
-                  color: ProjectColors.tertiary,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            )),
+              child: AutoSizeText(
+                'MAPA DE EVENTOS',
+                maxLines: 1,
+                style: TextStyle(
+                    color: ProjectColors.tertiary,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
             SizedBox(
               height: size.height * 0.02,
             ),
@@ -72,8 +75,9 @@ class _EventFindView extends State<EventFindView> {
               child: Column(
                 children: [
                   const Center(
-                    child: Text(
+                    child: AutoSizeText(
                       'EVENTOS RECOMENDADOS',
+                      maxLines: 1,
                       style: TextStyle(
                           color: ProjectColors.tertiary,
                           fontSize: 20,
@@ -87,10 +91,10 @@ class _EventFindView extends State<EventFindView> {
                         int eventCount = snapshot.data!.length;
                         if (eventCount == 0) {
                           return SizedBox(
-                            height: size.height * 0.35,
+                            height: size.height * 0.29,
                             width: size.width * 0.8,
                             child: const Center(
-                                child: Text(
+                                child: AutoSizeText(
                                     'Ajusta tus preferencias para mostrar eventos recomendados',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -101,7 +105,7 @@ class _EventFindView extends State<EventFindView> {
                         } else {
                           return ConstrainedBox(
                             constraints:
-                                BoxConstraints(maxHeight: size.height * 0.25),
+                                BoxConstraints(maxHeight: size.height * 0.30),
                             child: ListView.builder(
                               shrinkWrap: true,
                               itemCount: snapshot.data!.length,
@@ -231,50 +235,3 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 }
-// class _EventContainer extends StatelessWidget {
-//   final Event event;
-//   const _EventContainer({super.key, required this.event});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-//       padding: const EdgeInsets.symmetric(horizontal: 20),
-//       decoration: BoxDecoration(
-//           color: Colors.white, borderRadius: BorderRadius.circular(25)),
-//       child: Column(
-//         children: [
-//           Row(
-//             children: [
-//               Column(
-//                 children: [
-//                   Text(
-//                     event.name,
-//                     style: TextStyle(fontWeight: FontWeight.bold),
-//                   ),
-//                   Text(event.startDate.toString()),
-//                   const SizedBox(
-//                     height: 10,
-//                   ),
-//                   Text(event.address),
-//                   const SizedBox(
-//                     height: 10,
-//                   ),
-//                   Text('${event.users.length} asistente/s'),
-//                 ],
-//               ),
-//               Spacer(),
-//               Container(
-//                   width: 150, height: 150, child: Image.network(event.image))
-//             ],
-//           ),
-//           CustomButton(
-//             text: 'Detalles',
-//             onTap: () =>
-//                 Navigator.pushNamed(context, 'eventDetails', arguments: event),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

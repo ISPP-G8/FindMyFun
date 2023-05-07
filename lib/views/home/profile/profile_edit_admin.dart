@@ -1,10 +1,8 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:findmyfun/helpers/helpers.dart';
-import 'package:findmyfun/models/models.dart' as user;
-import 'package:findmyfun/ui/show_circular_progress_dialog.dart';
+import 'package:findmyfun/models/models.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,13 +11,14 @@ import '../../../themes/colors.dart';
 import '../../../themes/styles.dart';
 import '../../../widgets/widgets.dart';
 
-class ProfileEditForm extends StatelessWidget {
-  const ProfileEditForm({
+class ProfileEditAdmin extends StatelessWidget {
+  const ProfileEditAdmin({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final selectedUser = ModalRoute.of(context)!.settings.arguments as User;
     return Scaffold(
       backgroundColor: ProjectColors.primary,
       appBar: AppBar(
@@ -32,9 +31,8 @@ class ProfileEditForm extends StatelessWidget {
             )),
         elevation: 0,
         centerTitle: true,
-        title: AutoSizeText(
-          'EDITAR PERFIL',
-          maxLines: 1,
+        title: Text(
+          'MODIFICAR PERFIL',
           textAlign: TextAlign.center,
           style: Styles.appBar,
         ),
@@ -75,22 +73,19 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
   final _usernameController = TextEditingController();
   final _cityController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String imagePath = '';
 
   @override
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
-    final currentUser = userService.currentUser!;
-
-    if (currentUser.image != null && currentUser.image!.isNotEmpty) {
-      imagePath = currentUser.image!;
-    }
+    final selectedUser = ModalRoute.of(context)!.settings.arguments as User;
 
     return Form(
       key: _formKey,
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
-            margin: const EdgeInsets.all(10), child: circleImage(imagePath)),
+            padding: const EdgeInsets.all(10.0),
+            // child: Image.network(selectedUser.image!, fit: BoxFit.cover),
+            child: userImage(selectedUser)),
         const Text(
           "Nombre de usuario",
           style: TextStyle(
@@ -100,7 +95,7 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
           ),
         ),
         CustomTextForm(
-          hintText: currentUser.username,
+          hintText: selectedUser.username,
           controller: _usernameController,
         ),
         const Text(
@@ -112,7 +107,7 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
           ),
         ),
         CustomTextForm(
-          hintText: currentUser.name,
+          hintText: selectedUser.name,
           controller: _nameController,
         ),
         const Text(
@@ -124,7 +119,7 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
           ),
         ),
         CustomTextForm(
-          hintText: currentUser.surname,
+          hintText: selectedUser.surname,
           controller: _surnameController,
         ),
         const Text(
@@ -136,32 +131,20 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
           ),
         ),
         CustomTextForm(
-          hintText: currentUser.city,
+          hintText: selectedUser.city,
           controller: _cityController,
         ),
         const Text(
-          "Imagen de perfil",
+          "URL de imagen",
           style: TextStyle(
             color: Color.fromARGB(255, 0, 0, 0),
             fontWeight: FontWeight.bold,
             fontSize: 15,
           ),
         ),
-        GestureDetector(
-          onTap: () async {
-            showCircularProgressDialog(context);
-            imagePath = await uploadImage(context,
-                route: 'Users/${currentUser.id}',
-                imageId: '${currentUser.id}_profile_image');
-            Navigator.pop(context);
-            currentUser.image = imagePath;
-            setState(() {});
-          },
-          child: const CustomTextForm(
-            enabled: false,
-            maxLines: 2,
-            hintText: 'Pulsa aquí para seleccionar la imagen',
-          ),
+        CustomTextForm(
+          hintText: selectedUser.image!,
+          controller: _imageController,
         ),
         SubmitButton(
           text: 'MODIFICAR',
@@ -182,46 +165,43 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
               );
 
               if (_usernameController.text == "") {
-                _usernameController.text = currentUser.username;
+                _usernameController.text = selectedUser.username;
               }
               if (_nameController.text == "") {
-                _nameController.text = currentUser.name;
+                _nameController.text = selectedUser.name;
               }
               if (_surnameController.text == "") {
-                _surnameController.text = currentUser.surname;
+                _surnameController.text = selectedUser.surname;
               }
               if (_cityController.text == "") {
-                _cityController.text = currentUser.city;
+                _cityController.text = selectedUser.city;
               }
               if (_imageController.text == "") {
-                _imageController.text = currentUser.image!;
+                _imageController.text = selectedUser.image!;
               }
-              userService.currentUser = user.User(
-                  id: currentUser.id,
-                  image: imagePath,
+              userService.selectedUser = User(
+                  id: selectedUser.id,
+                  image: _imageController.text,
                   name: _nameController.text,
                   surname: _surnameController.text,
                   username: _usernameController.text,
                   city: _cityController.text,
-                  email: currentUser.email,
-                  preferences: currentUser.preferences,
-                  notifications: currentUser.notifications,
-                  subscription: currentUser.subscription);
+                  email: selectedUser.email,
+                  preferences: selectedUser.preferences,
+                  subscription: selectedUser.subscription);
               final resp = await userService
-                  .updateProfileAdmin(userService.currentUser!);
+                  .updateProfileAdmin(userService.selectedUser!);
               if (resp) {
-                print(_nameController.text);
                 Navigator.pop(context);
                 Navigator.pop(context);
-                Provider.of<PageViewService>(context, listen: false)
-                    .mainPageController
-                    .jumpToPage(0);
+                Navigator.pop(context);
+                Navigator.pop(context);
               } else {
                 Navigator.pop(context);
                 _formKey.currentState!.validate();
-                print('Error al editar el usuario');
+                print('Error al crear el usuario');
               }
-              print('Usuario modificado con uid: ${currentUser.id}');
+              print('Usuario modificado con uid: ${selectedUser.id}');
               // } on FirebaseAuthException {
               //   Navigator.pop(context);
               //   showExceptionDialog(context);
@@ -251,4 +231,41 @@ showExceptionDialog(BuildContext context) {
 
 // impor
 
+Widget userImage(User user) {
+  // En chrome puede que de error y se muestre el icono pero en móvil va bien
 
+  if (user.image == null || user.image!.isEmpty) {
+    return const Icon(
+      Icons.account_circle,
+      size: 150,
+    );
+  }
+
+  try {
+    return CircleAvatar(
+        radius: 120,
+        backgroundImage: const AssetImage('assets/placeholder.png'),
+        child: ClipOval(
+          child: CachedNetworkImage(
+            fit: BoxFit.cover,
+            height: 300,
+            placeholder: (context, url) =>
+                Image.asset('assets/placeholder.png'),
+            imageUrl: user.image!,
+            errorWidget: (context, url, error) {
+              print('Error al obtener la imagen: $error');
+
+              return const Icon(
+                Icons.account_circle,
+                size: 150,
+              );
+            },
+          ),
+        ));
+  } catch (e) {
+    return const Icon(
+      Icons.account_circle,
+      size: 150,
+    );
+  }
+}

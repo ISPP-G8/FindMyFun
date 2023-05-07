@@ -1,16 +1,17 @@
 import 'dart:convert';
 //import 'dart:html';
 
-import 'package:findmyfun/services/auth_service.dart';
+import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/user.dart';
 
 class UsersService extends ChangeNotifier {
-  final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
+  final String _baseUrl = 'findmyfun-dev-default-rtdb.firebaseio.com';
   List<User> _users = [];
 
   User? currentUser;
+  User? selectedUser;
 
   List<User> get users => _users;
 
@@ -28,7 +29,9 @@ class UsersService extends ChangeNotifier {
       if (resp.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(resp.body);
         user = User.fromJson(data);
-        return user;
+        User newUser =
+            await SubscriptionService().checkSubscriptionValidity(user);
+        return newUser;
       } else {
         throw Exception(
             'Errors ocurred while trying to get the user with Uid $userUid');
@@ -47,7 +50,9 @@ class UsersService extends ChangeNotifier {
       if (resp.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(resp.body);
         user = User.fromJson(data);
-        currentUser = user;
+        User newUser =
+            await SubscriptionService().checkSubscriptionValidity(user);
+        currentUser = newUser;
       } else {
         throw Exception(
             'Errors ocurred while trying to get the current user with Uid $activeUserId');
@@ -118,6 +123,20 @@ class UsersService extends ChangeNotifier {
     }
   }
 
+  Future<bool> updateProfileAdmin(User user) async {
+    final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
+    try {
+      // ignore: unused_local_variable
+      final resp = await http.put(url, body: jsonEncode(user.toJson()));
+
+      if (resp.statusCode != 200) return false;
+      return true;
+    } catch (e) {
+      debugPrint('Error editing profile: $e');
+      return false;
+    }
+  }
+
   //UPDATE PROFILE
   Future<bool> updateUser(User user) async {
     final url = Uri.https(_baseUrl, 'Users/${currentUser!.id}.json');
@@ -136,12 +155,18 @@ class UsersService extends ChangeNotifier {
   //DELETE PROFILE
   Future<void> deleteProfile(User user, BuildContext context) async {
     final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
+    String? correo = AuthService().currentUser!.email;
     try {
-      // ignore: unused_local_variable
-      final resp = await http.delete(url);
-      AuthService().signOut;
-      // ignore: use_build_context_synchronously
-      await Navigator.pushNamed(context, 'access');
+      if (user.email == correo) {
+        // ignore: unused_local_variable
+        final resp = await http.delete(url);
+        AuthService().signOut;
+        // ignore: use_build_context_synchronously
+        await Navigator.pushNamed(context, 'access');
+      } else {
+        final resp = await http.delete(url);
+        await Navigator.pushNamed(context, 'users');
+      }
     } catch (e) {
       debugPrint('Error deleting profile: $e');
     }

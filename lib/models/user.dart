@@ -16,6 +16,8 @@ class User {
     required this.email,
     required this.preferences,
     this.isAdmin = false,
+    this.isCompany = false,
+    this.isPremium = false,
     this.notifications = const [],
     required this.subscription,
   });
@@ -29,6 +31,8 @@ class User {
   String email;
   List<Preferences?> preferences;
   bool? isAdmin;
+  bool? isCompany;
+  bool? isPremium;
   List<ImportantNotification?> notifications;
   Subscription subscription;
 
@@ -56,8 +60,9 @@ class User {
               .map((x) => ImportantNotification.fromJson(x)))
           : [],
       isAdmin: json["isAdmin"] ?? false,
-      subscription: Subscription.fromJson(json["subscription"])
-      );
+      isCompany: json["isCompany"] ?? false,
+      isPremium: json["isPremium"] ?? false,
+      subscription: Subscription.fromJson(json["subscription"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -72,6 +77,7 @@ class User {
         "isAdmin": isAdmin,
         "notifications":
             List<dynamic>.from(notifications.map((x) => x?.toJson())),
-        "subscription": subscription.toJson()
+        "subscription": subscription.toJson(),
+        "isPremium": isPremium
       };
 }

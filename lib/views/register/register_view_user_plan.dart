@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../../widgets/widgets.dart';
 
-class RegisterViewPlan extends StatelessWidget {
-  const RegisterViewPlan({
+class RegisterUserPlan extends StatelessWidget {
+  const RegisterUserPlan({
     super.key,
   });
 
@@ -47,11 +47,11 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
           isCompany = false;
         }),
         child: _PlanContainer(
-          title: 'Soy un usuario',
+          title: 'Soy un usuario premium',
           subtitle:
-              'Crea y únete a eventos creados por empresas u otros usuarios',
-          firstPrice: '0€ al mes',
-          secondPrice: '6,99€ al mes',
+              'Crea y únete a eventos creados por empresas u otros usuarios con total libertad',
+          firstPrice: '6.99€ al mes',
+          secondPrice: '',
           selected: !isCompany,
         ),
       ),
@@ -60,10 +60,10 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
           isCompany = true;
         }),
         child: _PlanContainer(
-          title: 'Soy una empresa',
+          title: 'Soy una usuario normal',
           subtitle:
-              'Crea eventos como empresa sin ningún límite y registra tu establecimiento como punto de evento',
-          firstPrice: '19,99,€ al mes',
+              'Crea y únete a eventos creados por empresas u otros usuarios con limitaciones',
+          firstPrice: '0€ al mes',
           secondPrice: '',
           selected: isCompany,
         ),
@@ -73,10 +73,10 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
         onTap: () async {
           if (isCompany) {
             // ignore: use_build_context_synchronously
-            Navigator.pushReplacementNamed(context, 'paymentBusiness');
+            Navigator.pushReplacementNamed(context, 'middle');
           } else {
             // ignore: use_build_context_synchronously
-            Navigator.pushReplacementNamed(context, 'registerUserPlan');
+            Navigator.pushReplacementNamed(context, 'paymentUser');
           }
         },
       )

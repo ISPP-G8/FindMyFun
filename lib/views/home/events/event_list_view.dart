@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -37,8 +38,9 @@ class _EventListView extends State<EventListView> {
               SizedBox(height: size.height * 0.005),
               const AdPlanLoader(),
               const Center(
-                  child: Text(
+                  child: AutoSizeText(
                 'TUS EVENTOS',
+                maxLines: 1,
                 style: TextStyle(
                     color: ProjectColors.secondary,
                     fontSize: 30,
@@ -54,7 +56,7 @@ class _EventListView extends State<EventListView> {
                         height: size.height * 0.6,
                         width: size.width * 0.8,
                         child: const Center(
-                            child: Text(
+                            child: AutoSizeText(
                                 'No estás en ningún evento, crea o únete a uno',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -87,54 +89,3 @@ class _EventListView extends State<EventListView> {
         ));
   }
 }
-
-// class _EventContainer extends StatelessWidget {
-//   final Event event;
-//   const _EventContainer({super.key, required this.event});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-//       padding: const EdgeInsets.symmetric(horizontal: 20),
-//       decoration: const BoxDecoration(
-//           color: ProjectColors.secondary,
-//           boxShadow: [
-//             BoxShadow(color: Colors.black54, spreadRadius: 1, blurRadius: 7)
-//           ]),
-//       child: Column(
-//         children: [
-//           Row(
-//             children: [
-//               Column(
-//                 children: [
-//                   Text(
-//                     event.name,
-//                     style: const TextStyle(fontWeight: FontWeight.bold),
-//                   ),
-//                   Text(event.startDate.toString()),
-//                   const SizedBox(
-//                     height: 10,
-//                   ),
-//                   Text(event.address),
-//                   const SizedBox(
-//                     height: 10,
-//                   ),
-//                   Text('${event.users.length} asistente/s'),
-//                 ],
-//               ),
-//               Spacer(),
-//               Container(
-//                   width: 150, height: 150, child: Image.network(event.image))
-//             ],
-//           ),
-//           CustomButton(
-//             text: 'Detalles',
-//             onTap: () =>
-//                 Navigator.pushNamed(context, 'eventDetails', arguments: event),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

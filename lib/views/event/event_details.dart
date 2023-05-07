@@ -1,4 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
@@ -67,6 +68,8 @@ class _FormsColumn extends StatelessWidget {
     final eventService = Provider.of<EventsService>(context, listen: false);
     final userService = Provider.of<UsersService>(context, listen: false);
     final creator = userService.getUserWithUid(selectedEvent.creator);
+    String activeUserId = AuthService().currentUser?.uid ?? "";
+    final activeUserFuture = userService.getUserWithUid(activeUserId);
 
     //List<String> asistentesList = [];
     Future<List<String>> asistentes = Future.delayed(Duration.zero, () async {
@@ -77,7 +80,6 @@ class _FormsColumn extends StatelessWidget {
     });
 
     //print(asistentes);
-    String activeUserId = AuthService().currentUser?.uid ?? "";
     late User creatorUser;
     bool creatorSameAsCurrentUser = activeUserId == selectedEvent.users.first;
 
@@ -192,23 +194,39 @@ class _FormsColumn extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              if (!selectedEvent.users.contains(activeUserId) &&
-                  !selectedEvent.isFull &&
-                  creatorUser.subscription.type != SubscriptionType.company)
-                SubmitButton(
-                  text: 'Unirse',
-                  onTap: () => {
-                    eventService.addUserToEvent(context, selectedEvent),
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const EventDetailsView(),
-                            settings: RouteSettings(arguments: selectedEvent)))
-                  },
-                ),
+              FutureBuilder<User>(
+                future: activeUserFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData &&
+                      !selectedEvent.users.contains(activeUserId) &&
+                      !selectedEvent.isFull &&
+                      snapshot.data!.subscription.type !=
+                          SubscriptionType.company) {
+                    return SubmitButton(
+                      text: 'Unirse',
+                      onTap: () => {
+                        eventService.addUserToEvent(context, selectedEvent),
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const EventDetailsView(),
+                                settings:
+                                    RouteSettings(arguments: selectedEvent)))
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  } else {
+                    return const SizedBox();
+                  }
+                },
+              ),
               if (selectedEvent.users.contains(activeUserId))
                 ElevatedButton(
-                  child: const Text('Abrir chat'),
+                  child: const AutoSizeText(
+                    'Abrir chat',
+                    maxLines: 1,
+                  ),
                   onPressed: () {
                     Navigator.pushNamed(context, 'chat',
                         arguments: selectedEvent);
@@ -330,7 +348,10 @@ class _FormsColumn extends StatelessWidget {
                   },
                 ),
               ElevatedButton(
-                child: const Text('Abrir chat'),
+                child: const AutoSizeText(
+                  'Abrir chat',
+                  maxLines: 1,
+                ),
                 onPressed: () {
                   Navigator.popAndPushNamed(context, 'chat',
                       arguments: selectedEvent, result: selectedEvent.messages);

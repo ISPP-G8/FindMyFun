@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/services/auth_service.dart';
 import 'package:findmyfun/services/important_notification_service.dart';
 import 'package:findmyfun/themes/colors.dart';
@@ -27,8 +28,9 @@ class _NotificationViewState extends State<NotificationView> {
         Provider.of<ImportantNotificationService>(context);
     return Scaffold(
         appBar: AppBar(
-          title: const Text(
+          title: const AutoSizeText(
             'NOTIFICACIONES',
+            maxLines: 1,
             style: TextStyle(fontSize: 25),
           ),
           centerTitle: true,
@@ -48,8 +50,9 @@ class _NotificationViewState extends State<NotificationView> {
                 Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.all(20),
-                  child: const Text(
+                  child: const AutoSizeText(
                     'No tienes notificaciones',
+                    maxLines: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),

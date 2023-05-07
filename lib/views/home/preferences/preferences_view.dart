@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/services/auth_service.dart';
 import 'package:findmyfun/services/preferences_service.dart';
 import 'package:findmyfun/themes/themes.dart';
@@ -25,8 +26,8 @@ class PreferencesView extends StatelessWidget {
             // backgroundColor: ProjectColors.primary,
             elevation: 0,
             centerTitle: true,
-            title: Text('PREFERENCIAS',
-                textAlign: TextAlign.center, style: Styles.appBar),
+            title: AutoSizeText('PREFERENCIAS',
+                maxLines: 1, textAlign: TextAlign.center, style: Styles.appBar),
           ),
           // backgroundColor: ProjectColors.primary,
           body: Column(children: const [
@@ -170,7 +171,8 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text('Recuerda guardar para que se actualize tu perfil',
+                const AutoSizeText(
+                    'Recuerda guardar para que se actualize tu perfil',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: ProjectColors.primary,

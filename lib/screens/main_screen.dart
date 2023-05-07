@@ -45,7 +45,9 @@ class _MainScreenState extends State<MainScreen> {
         // backgroundColor: ProjectColors.primary,
         bottomNavigationBar: const CustomNavigationBar(),
         // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {},
+        //   onPressed: () {
+        //     Navigator.pushNamed(context, 'paymentBusiness');
+        //   },
         // ),
         appBar: AppBar(
           backgroundColor: ProjectColors.tertiary,
@@ -56,15 +58,14 @@ class _MainScreenState extends State<MainScreen> {
               height: 50, child: Image.asset('assets/logo-banner.png')),
           actions: [
             GestureDetector(
-              onTap: () => Navigator.pushNamed(context, 'notifications'),
-              child: Container(
-                margin: const EdgeInsets.only(right: 10),
-                child: const Icon(
-                  Icons.chat_bubble,
-                  size: 50,
-                ),
-              )
-            ),
+                onTap: () => Navigator.pushNamed(context, 'notifications'),
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  child: const Icon(
+                    Icons.chat_bubble,
+                    size: 50,
+                  ),
+                )),
             Container(
               margin: const EdgeInsets.only(right: 10),
               child: IconButton(

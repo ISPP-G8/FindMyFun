@@ -1,27 +1,35 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/themes/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/widgets/widgets.dart';
+import 'package:intl/intl.dart';
 
-class ProfileDetailsView extends StatelessWidget {
+class ProfileDetailsView extends StatefulWidget {
   const ProfileDetailsView({super.key});
 
+  @override
+  State<ProfileDetailsView> createState() => _ProfileDetailsViewState();
+}
+
+class _ProfileDetailsViewState extends State<ProfileDetailsView> {
   @override
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     final currentUser = userService.currentUser!;
+    String? imagePath = currentUser.image;
 
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text(
+        title: AutoSizeText(
           'MI PERFIL',
+          maxLines: 1,
           textAlign: TextAlign.center,
           style: Styles.appBar,
         ),
@@ -38,7 +46,7 @@ class ProfileDetailsView extends StatelessWidget {
                 Container(
                     padding: const EdgeInsets.all(10.0),
                     // child: Image.network(currentUser.image!, fit: BoxFit.cover),
-                    child: userImage(currentUser)),
+                    child: circleImage(currentUser.image ?? '')),
                 const Divider(
                   color: Colors.grey,
                   thickness: 0.5,
@@ -131,12 +139,58 @@ class ProfileDetailsView extends StatelessWidget {
                   indent: 20,
                   endIndent: 20,
                 ),
+                const Text(
+                  "Suscripción",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
+                ),
+                CustomTextDetail(
+                  hintText: getSuscriptionType(currentUser.subscription.type),
+                  initialValue:
+                      getSuscriptionType(currentUser.subscription.type),
+                  enabled: false,
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Visibility(
+                    visible:
+                        currentUser.subscription.type != SubscriptionType.free,
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Válido hasta",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w800),
+                        ),
+                        CustomTextDetail(
+                          hintText: '',
+                          initialValue: currentUser.subscription.validUntil ==
+                                  null
+                              ? null
+                              : DateFormat('yyyy-MM-dd HH:mm')
+                                  .format(currentUser.subscription.validUntil!),
+                          enabled: false,
+                        ),
+                        const Divider(
+                          color: Colors.grey,
+                          thickness: 0.5,
+                          height: 20,
+                          indent: 20,
+                          endIndent: 20,
+                        ),
+                      ],
+                    )),
                 Visibility(
                   visible:
                       currentUser.subscription.type == SubscriptionType.company,
                   child: GestureDetector(
                       onTap: () async {
-                        await AuthService().signOut();
                         Navigator.pushNamed(context, 'eventpointcreation');
                       },
                       child: const CustomButton(text: 'Crear punto de evento')),
@@ -151,9 +205,22 @@ class ProfileDetailsView extends StatelessWidget {
                     onTap: () =>
                         Navigator.pushNamed(context, 'editCredentials'),
                     child: const CustomButton(text: 'Cambiar contraseña')),
-                // GestureDetector(
-                //     onTap: () => Navigator.pushNamed(context, 'settings'),
-                //     child: const CustomButton(text: 'Ajustes')),
+                Visibility(
+                  visible: currentUser.isAdmin ?? false,
+                  child: GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, 'settings'),
+                      child: const CustomButton(
+                          text: 'Ajustes de administracion')),
+                ),
+                Visibility(
+                  visible:
+                      currentUser.subscription.type == SubscriptionType.free,
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, 'registerPlan');
+                      },
+                      child: const CustomButton(text: 'Cambiar plan')),
+                ),
                 GestureDetector(
                     onTap: () async {
                       await AuthService().signOut();
@@ -166,46 +233,6 @@ class ProfileDetailsView extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-Widget userImage(User user) {
-  // En chrome puede que de error y se muestre el icono pero en móvil va bien
-
-  if (user.image == null || user.image!.isEmpty) {
-    return const Icon(
-      Icons.account_circle,
-      size: 150,
-    );
-  }
-
-  try {
-    return CircleAvatar(
-        radius: 120,
-        backgroundImage: const AssetImage('assets/placeholder.png'),
-        child: ClipOval(
-          child: CachedNetworkImage(
-            fit: BoxFit.cover,
-            height: 300,
-            placeholder: (context, url) =>
-                Image.asset('assets/placeholder.png'),
-            imageUrl: user.image!,
-            errorWidget: (context, url, error) {
-              // ignore: avoid_print
-              print('Error al obtener la imagen: $error');
-
-              return const Icon(
-                Icons.account_circle,
-                size: 150,
-              );
-            },
-          ),
-        ));
-  } catch (e) {
-    return const Icon(
-      Icons.account_circle,
-      size: 150,
     );
   }
 }
@@ -231,7 +258,10 @@ class _DeleteProfile extends State<DeleteProfile> {
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(
               const Color.fromARGB(255, 128, 13, 5))),
-      child: const Text('Eliminar cuenta'),
+      child: const AutoSizeText(
+        'Eliminar cuenta',
+        maxLines: 1,
+      ),
       onPressed: () {
         // Muestra el pop-up al pulsar el botón
         showDialog(
@@ -263,4 +293,16 @@ class _DeleteProfile extends State<DeleteProfile> {
       },
     );
   }
+}
+
+String getSuscriptionType(SubscriptionType type) {
+  String suscription = "";
+  if (type == SubscriptionType.free) {
+    suscription = "Gratuita";
+  } else if (type == SubscriptionType.premium) {
+    suscription = "Premium";
+  } else if (type == SubscriptionType.company) {
+    suscription = "Empresa";
+  }
+  return suscription;
 }

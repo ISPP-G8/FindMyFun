@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class EventsService extends ChangeNotifier {
-  final String _baseUrl = 'findmyfun-c0acc-default-rtdb.firebaseio.com';
+  final String _baseUrl = 'findmyfun-dev-default-rtdb.firebaseio.com';
   List<Event> _events = [];
   List<Event> _eventsFound = [];
 
@@ -33,6 +33,27 @@ class EventsService extends ChangeNotifier {
       final resp = await http.delete(url);
     } catch (e) {
       debugPrint('Error al eliminar el evento: $e');
+    }
+  }
+
+  Future<void> deleteEventAdmin(String eventId, BuildContext context) async {
+    final url = Uri.https(_baseUrl, 'Events/$eventId.json');
+    try {
+      // ignore: unused_local_variable
+      final resp = await http.delete(url);
+      Navigator.pushNamed(context, 'events');
+    } catch (e) {
+      debugPrint('Error al eliminar el evento: $e');
+    }
+  }
+
+  Future<void> deleteUserFromEvent(String eventId, String userId) async {
+    final url = Uri.https(_baseUrl, 'Events/$eventId/users/$userId.json');
+    try {
+      final resp = await http.delete(url);
+      debugPrint(resp.body);
+    } catch (e) {
+      debugPrint('Error al eliminar el usuario del evento: $e');
     }
   }
 
@@ -154,20 +175,27 @@ class EventsService extends ChangeNotifier {
     String eventId = event.id;
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final usersService = Provider.of<UsersService>(context, listen: false);
-    if (usersService.currentUser!.subscription.type == SubscriptionType.company)
-      return;
+    User activeUser = await usersService.getUserWithUid(activeUserId);
+
+    if (event.isFull) {
+      throw Exception('Error: Event is full');
+    }
+    if (event.users.contains(activeUserId)) {
+      throw Exception('Error: User is already in event');
+    }
+    if (activeUser.subscription.type == SubscriptionType.company) {
+      throw Exception('Error: Company users cannot join events');
+    }
+
     final notificationsService =
         Provider.of<ImportantNotificationService>(context, listen: false);
     if (activeUserId.isEmpty ||
         eventId.isEmpty ||
-        event.hasFinished == true ||
+        event.hasFinished ||
         event.users.contains(activeUserId)) {
       throw Exception(
           'Asegúrate de haber iniciado sesión, de que el evento existe y está activo no estás dentro de él');
     } else {
-      if (event.isFull) {
-        throw Exception('Error: Event is full');
-      }
       event.users.add(activeUserId);
       final currentUser = usersService.currentUser;
       ImportantNotification notificationUsuarioEntra = ImportantNotification(
