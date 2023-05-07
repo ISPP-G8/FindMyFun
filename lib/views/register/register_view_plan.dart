@@ -1,3 +1,4 @@
+import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +49,7 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
           subtitle:
               'Crea y únete a eventos creados por empresas u otros usuarios',
           firstPrice: '0€ al mes',
-          secondPrice: '3,99€ al mes',
+          secondPrice: '6,99€ al mes',
           selected: !isCompany,
         ),
       ),
@@ -72,7 +73,8 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
             final userService =
                 Provider.of<UsersService>(context, listen: false);
             if (userService.currentUser != null) {
-              userService.currentUser!.isCompany = true;
+              userService.currentUser!.subscription.type = SubscriptionType.company;
+              userService.currentUser!.subscription.validUntil = DateTime.now().add(const Duration(days: 30));
               await userService.addItem(userService.currentUser!);
             }
           }

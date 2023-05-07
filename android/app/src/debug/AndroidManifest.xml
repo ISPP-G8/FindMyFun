@@ -4,5 +4,13 @@
          the Flutter tool needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
+
+    <application>
+        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8269759683506975~4500501066"/>
+    </application>
+
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

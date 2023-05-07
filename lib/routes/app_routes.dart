@@ -4,6 +4,7 @@ import 'package:findmyfun/views/home/profile/profile_edit_view.dart';
 import 'package:flutter/material.dart';
 import '../views/home/profile/payment_plan_view.dart';
 
+import '../views/home/profile/eventcreator_profile_view.dart';
 import '../views/views.dart';
 
 Map<String, Widget Function(BuildContext)> exportRoutes() {
@@ -13,6 +14,7 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'access': (_) => const AccessScreen(),
     'users': (_) => const UsersListViewScreen(),
     'profile': (_) => const ProfileDetailsView(),
+    'settings': (_) => const SettingsView(),
     'preferences': (_) => const PreferencesView(),
     'main': (_) => const MainScreen(),
     'middle': (_) => const MiddleScreen(),
@@ -25,7 +27,9 @@ Map<String, Widget Function(BuildContext)> exportRoutes() {
     'payment': (_) => const PaymentPlanView(),
     'editCredentials': (_) => const ProfileCredentialsForm(),
     'eventpointsadmin': (_) => const EventPointsAdminView(),
-    'events': (_) => const EventListViewAdmin()
+    'events': (_) => const EventListViewAdmin(),
+    'notifications': (_) => const NotificationView(),
+    'creatorProfile': (_) => const EventCreatorProfileDetailsView()
   };
 
   return routes;

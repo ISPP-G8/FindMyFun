@@ -2,6 +2,7 @@ import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class EventFindView extends StatefulWidget {
@@ -33,8 +34,11 @@ class _EventFindView extends State<EventFindView> {
         resizeToAvoidBottomInset: true,
         body: Column(
           children: [
+            SizedBox(height: size.height * 0.005),
+            const AdPlanLoader(),
             SizedBox(
               height: size.height * 0.02,
+              width: size.width,
             ),
             const Center(
                 child: Text(
@@ -54,11 +58,12 @@ class _EventFindView extends State<EventFindView> {
             SizedBox(
               height: size.height * 0.02,
             ),
-            Divider(
-              thickness: 5,
-              color: ProjectColors.secondary,
-              indent: size.height * 0.05,
-              endIndent: size.height * 0.05,
+            const Divider(
+              color: Colors.grey,
+              thickness: 0.5,
+              height: 20,
+              indent: 20,
+              endIndent: 20,
             ),
             SizedBox(
               height: size.height * 0.02,
@@ -79,16 +84,33 @@ class _EventFindView extends State<EventFindView> {
                     future: eventsFuture,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return ConstrainedBox(
-                          constraints:
-                              BoxConstraints(maxHeight: size.height * 0.37),
-                          child: ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (_, index) => EventContainer(
-                              event: snapshot.data![index],
+                        int eventCount = snapshot.data!.length;
+                        if (eventCount == 0) {
+                          return SizedBox(
+                            height: size.height * 0.35,
+                            width: size.width * 0.8,
+                            child: const Center(
+                                child: Text(
+                                    'Ajusta tus preferencias para mostrar eventos recomendados',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: ProjectColors.tertiary,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold))),
+                          );
+                        } else {
+                          return ConstrainedBox(
+                            constraints:
+                                BoxConstraints(maxHeight: size.height * 0.25),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (_, index) => EventContainer(
+                                event: snapshot.data![index],
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       } else {
                         return Column(children: const [
                           SizedBox(height: 100),
@@ -113,24 +135,51 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  static const _initialCameraPosition = CameraPosition(
-    target: LatLng(37.356342, -5.984759),
-    zoom: 13,
-  );
-
   late GoogleMapController _googleMapController;
   late Future markersFuture;
+  // ignore: prefer_const_constructors
+  LatLng currentPosition = LatLng(37.356342, -5.984759);
 
   @override
   void initState() {
     super.initState();
 
     markersFuture = _getMarkers();
+
+    _getUserCurrentLocation();
   }
 
   _getMarkers() async {
     MapService mapService = MapService();
     return await mapService.getMarkers();
+  }
+
+  _getUserCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    currentPosition = LatLng(position.latitude, position.longitude);
+    setState(() {});
   }
 
   @override
@@ -153,7 +202,11 @@ class _MapScreenState extends State<MapScreen> {
                 GoogleMap(
                   markers: Set<Marker>.from(
                       snapshot.data!.map((m) => m.marker).toSet()),
-                  initialCameraPosition: _initialCameraPosition,
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                        currentPosition.latitude, currentPosition.longitude),
+                    zoom: 15,
+                  ),
                   onMapCreated: (controller) =>
                       _googleMapController = controller,
                   mapType: MapType.normal,
