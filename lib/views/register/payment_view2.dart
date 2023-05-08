@@ -95,7 +95,7 @@ class _PaymentViewBusinessState extends State<PaymentViewBusiness> {
                       ),
                     )
                   },
-              child: const Text("Make Payment")),
+              child: const Text("Realizar pago")),
         ));
   }
 }
