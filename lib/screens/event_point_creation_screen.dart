@@ -187,7 +187,7 @@ class _EventPointCreationScreenState extends State<EventPointCreationScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           _Button(
-                            title: 'CREAR EVENTO EN ESTE LUGAR',
+                            title: 'CREAR PUNTO DE EVENTO',
                             onTap: () async {
                               if (_formKey.currentState!.validate()) {
                                 if (imageUrl.isEmpty) {

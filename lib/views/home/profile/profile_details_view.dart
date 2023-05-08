@@ -9,6 +9,8 @@ import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 
+import '../../../themes/colors.dart';
+
 class ProfileDetailsView extends StatefulWidget {
   const ProfileDetailsView({super.key});
 
@@ -32,6 +34,14 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> {
           maxLines: 1,
           textAlign: TextAlign.center,
           style: Styles.appBar,
+        ),
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: const Icon(
+            Icons.chevron_left,
+            size: 45,
+            color: ProjectColors.secondary,
+          ),
         ),
       ),
       body: Center(
