@@ -3,6 +3,7 @@ import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EventListView extends StatefulWidget {
   const EventListView({super.key});
@@ -12,22 +13,23 @@ class EventListView extends StatefulWidget {
 }
 
 class _EventListView extends State<EventListView> {
-  late Future eventsFuture;
+  // late Future eventsFuture;
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    eventsFuture = _getEvents();
-  }
+  //   eventsFuture = _getEvents();
+  // }
 
-  _getEvents() async {
-    EventsService eventsService = EventsService();
-    return await eventsService.getEventsOfLoggedUser();
-  }
+  // _getEvents() async {
+  //   EventsService eventsService = EventsService();
+  //   return await eventsService.getEventsOfLoggedUser();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final eventsService = Provider.of<EventsService>(context);
     final size = MediaQuery.of(context).size;
     return Scaffold(
         resizeToAvoidBottomInset: true,
@@ -47,7 +49,7 @@ class _EventListView extends State<EventListView> {
                     fontWeight: FontWeight.bold),
               )),
               FutureBuilder<dynamic>(
-                future: eventsFuture,
+                future: eventsService.getEventsOfLoggedUser(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     int eventCount = snapshot.data!.length;
