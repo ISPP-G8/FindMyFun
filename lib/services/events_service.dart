@@ -187,7 +187,8 @@ class EventsService extends ChangeNotifier {
       throw Exception('Error: Company users cannot join events');
     }
 
-    final notificationsService = ImportantNotificationService();
+    /*final notificationsService =
+        Provider.of<ImportantNotificationService>(context, listen: true);*/
     if (activeUserId.isEmpty ||
         eventId.isEmpty ||
         event.hasFinished ||
@@ -205,10 +206,10 @@ class EventsService extends ChangeNotifier {
           userId: event.creator,
           date: DateTime.now(),
           info: "${currentUser!.name} se ha unido al evento ${event.name}");
-      notificationsService.saveNotification(
-          context, notificationDuenoEvento, event.creator);
-      notificationsService.saveNotification(
-          context, notificationUsuarioEntra, activeUserId);
+      ImportantNotificationService()
+          .saveNotification(context, notificationDuenoEvento, event.creator);
+      ImportantNotificationService()
+          .saveNotification(context, notificationUsuarioEntra, activeUserId);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');
 
       try {
