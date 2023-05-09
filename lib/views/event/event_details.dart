@@ -112,7 +112,7 @@ class _FormsColumnState extends State<_FormsColumn> {
     final userService = Provider.of<UsersService>(context, listen: false);
     final creator = userService.getUserWithUid(selectedEvent.creator);
     String activeUserId = AuthService().currentUser?.uid ?? "";
-    final activeUserFuture = userService.getUserWithUid(activeUserId);
+    final activeUserFuture = userService.getCurrentUserWithUid();
 
     _description.text = selectedEvent.description;
     _startDateTime.text = selectedEvent.startDate.toIso8601String();
@@ -129,7 +129,7 @@ class _FormsColumnState extends State<_FormsColumn> {
 
     //print(asistentes);
     late User creatorUser;
-    bool creatorSameAsCurrentUser = activeUserId == selectedEvent.users.first;
+    bool creatorSameAsCurrentUser = activeUserId == selectedEvent.creator;
 
     return FutureBuilder<User>(
       future: creator,
@@ -250,8 +250,7 @@ class _FormsColumnState extends State<_FormsColumn> {
                 SubmitButton(
                   text: 'Guardar cambios',
                   onTap: () async {
-                    User user = await UsersService()
-                        .getUserWithUid(AuthService().currentUser?.uid ?? "");
+                    User user = await UsersService().getCurrentUserWithUid();
                     final event = Event(
                         address: _locationController.text,
                         city: _cityController.text,

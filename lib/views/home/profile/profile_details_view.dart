@@ -15,16 +15,13 @@ class ProfileDetailsView extends StatefulWidget {
   const ProfileDetailsView({super.key});
 
   @override
-  State<ProfileDetailsView> createState() => _ProfileDetailsViewState();
+  State<StatefulWidget> createState() => _ProfileDetailsViewState();
 }
 
 class _ProfileDetailsViewState extends State<ProfileDetailsView> {
   @override
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
-    final currentUser = userService.currentUser!;
-    String? imagePath = currentUser.image;
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -45,191 +42,226 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const AdPlanLoader(),
-                Container(
-                    padding: const EdgeInsets.all(10.0),
-                    // child: Image.network(currentUser.image!, fit: BoxFit.cover),
-                    child: circleImage(currentUser.image ?? '')),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 0.5,
-                  height: 20,
-                  indent: 20,
-                  endIndent: 20,
+                FutureBuilder<dynamic>(
+                  future: userService.getCurrentUserWithUid(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      User user = snapshot.data!;
+                      return Column(
+                        children: [
+                          Container(
+                              padding: const EdgeInsets.all(10.0),
+                              // child: Image.network(currentUser.image!, fit: BoxFit.cover),
+                              child: circleImage(user.image ?? '')),
+                          const Divider(
+                            color: Colors.grey,
+                            thickness: 0.5,
+                            height: 20,
+                            indent: 20,
+                            endIndent: 20,
+                          ),
+                          const Text(
+                            "Nombre del usuario",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.w800),
+                          ),
+                          CustomTextDetail(
+                            hintText: user.username,
+                            initialValue: user.username,
+                            enabled: false,
+                          ),
+                          const Divider(
+                            color: Colors.grey,
+                            thickness: 0.5,
+                            height: 20,
+                            indent: 20,
+                            endIndent: 20,
+                          ),
+                          const Text(
+                            "Nombre",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.w800),
+                          ),
+                          CustomTextDetail(
+                            hintText: user.name,
+                            initialValue: user.name,
+                            enabled: false,
+                          ),
+                          const Divider(
+                            color: Colors.grey,
+                            thickness: 0.5,
+                            height: 20,
+                            indent: 20,
+                            endIndent: 20,
+                          ),
+                          const Text(
+                            "Apellidos",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.w800),
+                          ),
+                          CustomTextDetail(
+                            hintText: user.surname,
+                            initialValue: user.surname,
+                            enabled: false,
+                          ),
+                          const Divider(
+                            color: Colors.grey,
+                            thickness: 0.5,
+                            height: 20,
+                            indent: 20,
+                            endIndent: 20,
+                          ),
+                          const Text(
+                            "Ciudad",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.w800),
+                          ),
+                          CustomTextDetail(
+                            hintText: user.city,
+                            initialValue: user.city,
+                            enabled: false,
+                          ),
+                          const Divider(
+                            color: Colors.grey,
+                            thickness: 0.5,
+                            height: 20,
+                            indent: 20,
+                            endIndent: 20,
+                          ),
+                          const Text(
+                            "Email",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.w800),
+                          ),
+                          CustomTextDetail(
+                            hintText: user.email,
+                            initialValue: user.email,
+                            enabled: false,
+                          ),
+                          const Divider(
+                            color: Colors.grey,
+                            thickness: 0.5,
+                            height: 20,
+                            indent: 20,
+                            endIndent: 20,
+                          ),
+                          const Text(
+                            "Suscripción",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.w800),
+                          ),
+                          CustomTextDetail(
+                            hintText:
+                                getSuscriptionType(user.subscription.type),
+                            initialValue:
+                                getSuscriptionType(user.subscription.type),
+                            enabled: false,
+                          ),
+                          const Divider(
+                            color: Colors.grey,
+                            thickness: 0.5,
+                            height: 20,
+                            indent: 20,
+                            endIndent: 20,
+                          ),
+                          Visibility(
+                              visible: user.subscription.type !=
+                                  SubscriptionType.free,
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    "Válido hasta",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w800),
+                                  ),
+                                  CustomTextDetail(
+                                    hintText: '',
+                                    initialValue: user
+                                                .subscription.validUntil ==
+                                            null
+                                        ? null
+                                        : DateFormat('yyyy-MM-dd HH:mm').format(
+                                            user.subscription.validUntil!),
+                                    enabled: false,
+                                  ),
+                                  const Divider(
+                                    color: Colors.grey,
+                                    thickness: 0.5,
+                                    height: 20,
+                                    indent: 20,
+                                    endIndent: 20,
+                                  ),
+                                ],
+                              )),
+                          Visibility(
+                            visible: user.subscription.type ==
+                                SubscriptionType.company,
+                            child: GestureDetector(
+                                onTap: () async {
+                                  Navigator.pushNamed(
+                                      context, 'eventpointcreation');
+                                },
+                                child: const CustomButton(
+                                    text: 'Crear punto de evento')),
+                          ),
+                          GestureDetector(
+                              onTap: () =>
+                                  Navigator.pushNamed(context, 'preferences'),
+                              child:
+                                  const CustomButton(text: 'Tus preferencias')),
+                          GestureDetector(
+                              onTap: () =>
+                                  Navigator.pushNamed(context, 'editProfile'),
+                              child: const CustomButton(text: 'Editar perfil')),
+                          GestureDetector(
+                              onTap: () => Navigator.pushNamed(
+                                  context, 'editCredentials'),
+                              child: const CustomButton(
+                                  text: 'Cambiar contraseña')),
+                          Visibility(
+                            visible: user.isAdmin ?? false,
+                            child: GestureDetector(
+                                onTap: () =>
+                                    Navigator.pushNamed(context, 'settings'),
+                                child: const CustomButton(
+                                    text: 'Ajustes de administracion')),
+                          ),
+                          Visibility(
+                            visible:
+                                user.subscription.type == SubscriptionType.free,
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, 'registerPlan');
+                                },
+                                child:
+                                    const CustomButton(text: 'Cambiar plan')),
+                          ),
+                          GestureDetector(
+                              onTap: () async {
+                                await AuthService().signOut();
+                                Navigator.pushReplacementNamed(
+                                    context, 'access');
+                              },
+                              child: const CustomButton(text: 'Cerrar sesión')),
+                          const DeleteProfile(),
+                        ],
+                      );
+                    } else {
+                      return Column(children: const [
+                        SizedBox(height: 100),
+                        Center(child: CircularProgressIndicator())
+                      ]);
+                    }
+                  },
                 ),
-                const Text(
-                  "Nombre del usuario",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
-                ),
-                CustomTextDetail(
-                  hintText: currentUser.username,
-                  initialValue: currentUser.username,
-                  enabled: false,
-                ),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 0.5,
-                  height: 20,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                const Text(
-                  "Nombre",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
-                ),
-                CustomTextDetail(
-                  hintText: currentUser.name,
-                  initialValue: currentUser.name,
-                  enabled: false,
-                ),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 0.5,
-                  height: 20,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                const Text(
-                  "Apellidos",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
-                ),
-                CustomTextDetail(
-                  hintText: currentUser.surname,
-                  initialValue: currentUser.surname,
-                  enabled: false,
-                ),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 0.5,
-                  height: 20,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                const Text(
-                  "Ciudad",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
-                ),
-                CustomTextDetail(
-                  hintText: currentUser.city,
-                  initialValue: currentUser.city,
-                  enabled: false,
-                ),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 0.5,
-                  height: 20,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                const Text(
-                  "Email",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
-                ),
-                CustomTextDetail(
-                  hintText: currentUser.email,
-                  initialValue: currentUser.email,
-                  enabled: false,
-                ),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 0.5,
-                  height: 20,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                const Text(
-                  "Suscripción",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
-                ),
-                CustomTextDetail(
-                  hintText: getSuscriptionType(currentUser.subscription.type),
-                  initialValue:
-                      getSuscriptionType(currentUser.subscription.type),
-                  enabled: false,
-                ),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 0.5,
-                  height: 20,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                Visibility(
-                    visible:
-                        currentUser.subscription.type != SubscriptionType.free,
-                    child: Column(
-                      children: [
-                        const Text(
-                          "Válido hasta",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w800),
-                        ),
-                        CustomTextDetail(
-                          hintText: '',
-                          initialValue: currentUser.subscription.validUntil ==
-                                  null
-                              ? null
-                              : DateFormat('yyyy-MM-dd HH:mm')
-                                  .format(currentUser.subscription.validUntil!),
-                          enabled: false,
-                        ),
-                        const Divider(
-                          color: Colors.grey,
-                          thickness: 0.5,
-                          height: 20,
-                          indent: 20,
-                          endIndent: 20,
-                        ),
-                      ],
-                    )),
-                Visibility(
-                  visible:
-                      currentUser.subscription.type == SubscriptionType.company,
-                  child: GestureDetector(
-                      onTap: () async {
-                        Navigator.pushNamed(context, 'eventpointcreation');
-                      },
-                      child: const CustomButton(text: 'Crear punto de evento')),
-                ),
-                GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, 'preferences'),
-                    child: const CustomButton(text: 'Tus preferencias')),
-                GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, 'editProfile'),
-                    child: const CustomButton(text: 'Editar perfil')),
-                GestureDetector(
-                    onTap: () =>
-                        Navigator.pushNamed(context, 'editCredentials'),
-                    child: const CustomButton(text: 'Cambiar contraseña')),
-                Visibility(
-                  visible: currentUser.isAdmin ?? false,
-                  child: GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, 'settings'),
-                      child: const CustomButton(
-                          text: 'Ajustes de administracion')),
-                ),
-                Visibility(
-                  visible:
-                      currentUser.subscription.type == SubscriptionType.free,
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, 'registerPlan');
-                      },
-                      child: const CustomButton(text: 'Cambiar plan')),
-                ),
-                GestureDetector(
-                    onTap: () async {
-                      await AuthService().signOut();
-                      Navigator.pushReplacementNamed(context, 'access');
-                    },
-                    child: const CustomButton(text: 'Cerrar sesión')),
-                const DeleteProfile(),
               ],
             ),
           ),

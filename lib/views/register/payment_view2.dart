@@ -81,8 +81,7 @@ class _PaymentViewBusinessState extends State<PaymentViewBusiness> {
                             onSuccess: (Map params) async {
                               print("onSuccess: $params");
                               await SubscriptionService().changePlanToCompany(
-                                  await UsersService().getUserWithUid(
-                                      AuthService().currentUser!.uid));
+                                  await UsersService().getCurrentUserWithUid());
                             },
                             onError: (error) {
                               print("onError: $error");

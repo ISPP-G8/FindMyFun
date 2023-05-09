@@ -41,7 +41,7 @@ class UsersService extends ChangeNotifier {
     }
   }
 
-  Future<void> getCurrentUserWithUid() async {
+  Future<User> getCurrentUserWithUid() async {
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final url = Uri.https(_baseUrl, 'Users/$activeUserId.json');
     User user;
@@ -53,6 +53,7 @@ class UsersService extends ChangeNotifier {
         User newUser =
             await SubscriptionService().checkSubscriptionValidity(user);
         currentUser = newUser;
+        return newUser;
       } else {
         throw Exception(
             'Errors ocurred while trying to get the current user with Uid $activeUserId');

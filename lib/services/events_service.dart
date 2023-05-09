@@ -116,7 +116,8 @@ class EventsService extends ChangeNotifier {
       data.forEach((key, value) {
         try {
           final event = Event.fromRawJson(jsonEncode(value));
-          if (event.users.contains(currentUser) && DateTime.now().isBefore(event.startDate)) {
+          if (event.users.contains(currentUser) &&
+              DateTime.now().isBefore(event.startDate)) {
             eventsAux.add(event);
           }
         } catch (e) {
@@ -136,8 +137,7 @@ class EventsService extends ChangeNotifier {
     final url = Uri.https(_baseUrl, 'Events.json');
     final UsersService usersService = UsersService();
 
-    User currentUser =
-        await usersService.getUserWithUid(AuthService().currentUser?.uid ?? "");
+    User currentUser = await usersService.getCurrentUserWithUid();
 
     try {
       final resp = await http.get(url);
@@ -175,7 +175,7 @@ class EventsService extends ChangeNotifier {
     String eventId = event.id;
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final usersService = Provider.of<UsersService>(context, listen: false);
-    User activeUser = await usersService.getUserWithUid(activeUserId);
+    User activeUser = await usersService.getCurrentUserWithUid();
 
     if (event.isFull) {
       throw Exception('Error: Event is full');
@@ -187,8 +187,7 @@ class EventsService extends ChangeNotifier {
       throw Exception('Error: Company users cannot join events');
     }
 
-    final notificationsService =
-        Provider.of<ImportantNotificationService>(context, listen: false);
+    final notificationsService = ImportantNotificationService();
     if (activeUserId.isEmpty ||
         eventId.isEmpty ||
         event.hasFinished ||
@@ -371,7 +370,7 @@ class EventsService extends ChangeNotifier {
 
   Future<User> getEventCreator(BuildContext context, Event event) async {
     final userService = Provider.of<UsersService>(context, listen: false);
-    User eventCreator = await userService.getUserWithUid(event.users.first);
+    User eventCreator = await userService.getUserWithUid(event.creator);
     return eventCreator;
   }
 }
