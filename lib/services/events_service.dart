@@ -116,7 +116,7 @@ class EventsService extends ChangeNotifier {
       data.forEach((key, value) {
         try {
           final event = Event.fromRawJson(jsonEncode(value));
-          if (event.users.contains(currentUser)) {
+          if (event.users.contains(currentUser) && DateTime.now().isBefore(event.startDate)) {
             eventsAux.add(event);
           }
         } catch (e) {

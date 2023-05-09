@@ -35,14 +35,6 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> {
           textAlign: TextAlign.center,
           style: Styles.appBar,
         ),
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: const Icon(
-            Icons.chevron_left,
-            size: 45,
-            color: ProjectColors.secondary,
-          ),
-        ),
       ),
       body: Center(
         child: SizedBox(
