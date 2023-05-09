@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
@@ -136,217 +137,228 @@ class _FormsColumnState extends State<_FormsColumn> {
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         if (snapshot.hasData) {
           creatorUser = snapshot.data!;
-          return Column(
-            children: [
-              SizedBox(height: size.height * 0.005),
-              const AdPlanLoader(),
-              const SizedBox(
-                height: 10,
-              ),
-              Image.network(
-                selectedEvent.image,
-                fit: BoxFit.cover,
-              ),
-              const Divider(
-                color: Colors.grey,
-                thickness: 0.5,
-                height: 20,
-                indent: 20,
-                endIndent: 20,
-              ),
-              const Text(
-                'Dirección:',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              CustomTextDetail(
-                hintText: selectedEvent.address,
-                enabled: widget.canEdit,
-                controller: _locationController,
-              ),
-              const Divider(
-                color: Colors.grey,
-                thickness: 0.5,
-                height: 20,
-                indent: 20,
-                endIndent: 20,
-              ),
-              const Text(
-                'Ciudad:',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              CustomTextDetail(
-                hintText: selectedEvent.city,
-                enabled: widget.canEdit,
-                controller: _cityController,
-              ),
-              const Divider(
-                color: Colors.grey,
-                thickness: 0.5,
-                height: 20,
-                indent: 20,
-                endIndent: 20,
-              ),
-              const Text(
-                'Fecha:',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              CustomTextDetail(
-                hintText: DateFormat('yyyy-MM-dd HH:mm')
-                    .format(selectedEvent.startDate),
-                enabled: widget.canEdit,
-                maxLines: 3,
-                controller: _startDateTime,
-              ),
-              const Divider(
-                color: Colors.grey,
-                thickness: 0.5,
-                height: 20,
-                indent: 20,
-                endIndent: 20,
-              ),
-              const Text(
-                'Descripción:',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              CustomTextDetail(
-                hintText: selectedEvent.description,
-                enabled: widget.canEdit,
-                maxLines: 5,
-                type: TextInputType.multiline,
-                controller: _description,
-              ),
-              const Divider(
-                color: Colors.grey,
-                thickness: 0.5,
-                height: 20,
-                indent: 20,
-                endIndent: 20,
-              ),
-              if (!creatorSameAsCurrentUser)
-                EventCreator(
-                  creatorUsername: snapshot.data?.username ?? 'username',
-                  event: selectedEvent,
+          return Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                SizedBox(height: size.height * 0.005),
+                const AdPlanLoader(),
+                const SizedBox(
+                  height: 10,
                 ),
-              if (creatorSameAsCurrentUser && !widget.canEdit)
-                GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, 'profile'),
-                    child: const CustomButton(text: 'Mi perfil')),
-              const SizedBox(
-                height: 20,
-              ),
-              if (widget.canEdit)
-                SubmitButton(
-                  text: 'Guardar cambios',
-                  onTap: () async {
-                    User user = await UsersService().getCurrentUserWithUid();
-                    final event = Event(
-                        address: _locationController.text,
-                        city: _cityController.text,
-                        country: selectedEvent.country,
-                        description: selectedEvent.description,
-                        visibleFrom:
-                            user.subscription.maxVisiblityOfEventsInDays == -1
-                                ? DateTime.fromMillisecondsSinceEpoch(0)
-                                : DateTime.parse(_startDateTime.text)
-                                    .subtract(
-                                        Duration(
-                                            days: user.subscription
-                                                .maxVisiblityOfEventsInDays)),
-                        id: selectedEvent.id,
-                        image: selectedEvent.image,
-                        name: selectedEvent.name,
-                        latitude: selectedEvent.latitude,
-                        longitude: selectedEvent.longitude,
-                        startDate: DateTime.parse(_startDateTime.text),
-                        tags: selectedEvent.tags,
-                        users: selectedEvent.users,
-                        maxUsers: selectedEvent.maxUsers,
-                        messages: selectedEvent.messages);
-                    showCircularProgressDialog(context);
-                    final eventService =
-                        Provider.of<EventsService>(context, listen: false);
-                    await eventService.saveEvent(context, event);
-                    // await eventService.getEventsOfLoggedUser();
-
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
+                Image.network(
+                  selectedEvent.image,
+                  fit: BoxFit.cover,
                 ),
-              FutureBuilder<User>(
-                future: activeUserFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData &&
-                      !selectedEvent.users.contains(activeUserId) &&
-                      !selectedEvent.isFull &&
-                      snapshot.data!.subscription.type !=
-                          SubscriptionType.company) {
-                    return SubmitButton(
-                      text: 'Unirse',
-                      onTap: () => {
-                        eventService.addUserToEvent(context, selectedEvent),
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const EventDetailsView(),
-                                settings:
-                                    RouteSettings(arguments: selectedEvent)))
-                      },
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  } else {
-                    return const SizedBox();
-                  }
-                },
-              ),
-              if (selectedEvent.users.contains(activeUserId) && !widget.canEdit)
-                ElevatedButton(
-                  child: const AutoSizeText(
-                    'Abrir chat',
-                    maxLines: 1,
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                const Text(
+                  'Dirección:',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CustomTextDetail(
+                  hintText: selectedEvent.address,
+                  enabled: widget.canEdit,
+                  controller: _locationController,
+                  validator: (val) => Validators.validateNotEmpty(val),
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                const Text(
+                  'Ciudad:',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CustomTextDetail(
+                  hintText: selectedEvent.city,
+                  enabled: widget.canEdit,
+                  controller: _cityController,
+                  validator: (val) => Validators.validateNotEmpty(val),
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                const Text(
+                  'Fecha:',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CustomTextDetail(
+                  hintText: DateFormat('yyyy-MM-dd HH:mm')
+                      .format(selectedEvent.startDate),
+                  enabled: widget.canEdit,
+                  maxLines: 3,
+                  controller: _startDateTime,
+                  validator: (val) => Validators.validateNotEmpty(
+                    val,
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'chat',
-                        arguments: selectedEvent);
-                  },
                 ),
-              if (!widget.canEdit)
-                FutureBuilder<List<String>>(
-                  future: asistentes,
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                const Text(
+                  'Descripción:',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CustomTextDetail(
+                  hintText: selectedEvent.description,
+                  enabled: widget.canEdit,
+                  maxLines: 5,
+                  type: TextInputType.multiline,
+                  controller: _description,
+                  validator: (val) => Validators.validateNotEmpty(val),
+                ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                  height: 20,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                if (!creatorSameAsCurrentUser)
+                  EventCreator(
+                    creatorUsername: snapshot.data?.username ?? 'username',
+                    event: selectedEvent,
+                  ),
+                if (creatorSameAsCurrentUser && !widget.canEdit)
+                  GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, 'profile'),
+                      child: const CustomButton(text: 'Mi perfil')),
+                const SizedBox(
+                  height: 20,
+                ),
+                if (widget.canEdit)
+                  SubmitButton(
+                    text: 'Guardar cambios',
+                    onTap: () async {
+                      if (!_formKey.currentState!.validate()) return;
+                      User user = await UsersService().getCurrentUserWithUid();
+                      final event = Event(
+                          address: _locationController.text,
+                          city: _cityController.text,
+                          country: _locationController.text,
+                          description: _description.text,
+                          visibleFrom:
+                              user.subscription.maxVisiblityOfEventsInDays == -1
+                                  ? DateTime.fromMillisecondsSinceEpoch(0)
+                                  : DateTime.parse(_startDateTime.text)
+                                      .subtract(Duration(
+                                          days: user.subscription
+                                              .maxVisiblityOfEventsInDays)),
+                          id: selectedEvent.id,
+                          image: selectedEvent.image,
+                          name: selectedEvent.name,
+                          latitude: selectedEvent.latitude,
+                          longitude: selectedEvent.longitude,
+                          startDate: DateTime.parse(_startDateTime.text),
+                          tags: selectedEvent.tags,
+                          users: selectedEvent.users,
+                          maxUsers: selectedEvent.maxUsers,
+                          messages: selectedEvent.messages);
+                      showCircularProgressDialog(context);
+                      final eventService =
+                          Provider.of<EventsService>(context, listen: false);
+                      await eventService.saveEvent(context, event);
+                      // await eventService.getEventsOfLoggedUser();
+
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                  ),
+                FutureBuilder<User>(
+                  future: activeUserFuture,
                   builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final asistentesList = snapshot.data!;
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: asistentesList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ListTile(
-                            leading: const Icon(Icons.person),
-                            title: Text(asistentesList[index]),
-                          );
+                    if (snapshot.hasData &&
+                        !selectedEvent.users.contains(activeUserId) &&
+                        !selectedEvent.isFull &&
+                        snapshot.data!.subscription.type !=
+                            SubscriptionType.company) {
+                      return SubmitButton(
+                        text: 'Unirse',
+                        onTap: () => {
+                          eventService.addUserToEvent(context, selectedEvent),
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const EventDetailsView(),
+                                  settings:
+                                      RouteSettings(arguments: selectedEvent)))
                         },
                       );
                     } else if (snapshot.hasError) {
                       return Text('${snapshot.error}');
                     } else {
-                      return const CircularProgressIndicator();
+                      return const SizedBox();
                     }
                   },
                 ),
-            ],
+                if (selectedEvent.users.contains(activeUserId) &&
+                    !widget.canEdit)
+                  ElevatedButton(
+                    child: const AutoSizeText(
+                      'Abrir chat',
+                      maxLines: 1,
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'chat',
+                          arguments: selectedEvent);
+                    },
+                  ),
+                if (!widget.canEdit)
+                  FutureBuilder<List<String>>(
+                    future: asistentes,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final asistentesList = snapshot.data!;
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: asistentesList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ListTile(
+                              leading: const Icon(Icons.person),
+                              title: Text(asistentesList[index]),
+                            );
+                          },
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    },
+                  ),
+              ],
+            ),
           );
         } else {
           return Column(
