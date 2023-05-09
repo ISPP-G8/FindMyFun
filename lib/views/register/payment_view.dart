@@ -78,8 +78,8 @@ class _PaymentViewUserState extends State<PaymentViewUser> {
                                   onSuccess: (Map params) async {
                                     print("onSuccess: $params");
                                     SubscriptionService().changePlanToPremium(
-                                        await UsersService().getUserWithUid(
-                                            AuthService().currentUser!.uid));
+                                        await UsersService()
+                                            .getCurrentUserWithUid());
                                   },
                                   onError: (error) {
                                     print("onError: $error");

@@ -8,6 +8,7 @@ import 'package:findmyfun/views/register/payment_view2.dart';
 import 'package:findmyfun/views/register/register_view_plan.dart';
 import 'package:findmyfun/views/register/register_view_user_plan.dart';
 import 'package:flutter/material.dart';
+import '../views/home/profile/payment_plan_view.dart';
 
 import '../views/home/profile/eventcreator_profile_view.dart';
 import '../views/views.dart';

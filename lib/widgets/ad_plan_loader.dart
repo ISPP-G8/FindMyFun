@@ -15,8 +15,7 @@ class _AdPlanLoaderState extends State<AdPlanLoader> {
   late Future<User> loggedUserFuture;
 
   Future<User> getLoggedUser() async {
-    User user = await UsersService()
-        .getUserWithUid(AuthService().currentUser?.uid ?? "");
+    User user = await UsersService().getCurrentUserWithUid();
     return user;
   }
 

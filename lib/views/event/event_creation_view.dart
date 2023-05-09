@@ -41,8 +41,7 @@ class _EventCreationView extends State<EventCreationView> {
   }
 
   Future<User> getLoggedUser() async {
-    User user = await UsersService()
-        .getUserWithUid(AuthService().currentUser?.uid ?? "");
+    User user = await UsersService().getCurrentUserWithUid();
     return user;
   }
 

@@ -58,7 +58,7 @@ class ImportantNotificationService extends ChangeNotifier {
   //SAVE NOTIFICATION
   Future<void> saveNotification(BuildContext context,
       ImportantNotification notification, String userId) async {
-    final usersService = Provider.of<UsersService>(context, listen: false);
+    final usersService = UsersService();
     final currentUser = await usersService.getUserWithUid(userId);
     currentUser.notifications.add(notification);
     final url = Uri.https(_baseUrl, 'Users/$userId.json');
