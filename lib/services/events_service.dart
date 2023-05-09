@@ -62,7 +62,7 @@ class EventsService extends ChangeNotifier {
     final usersService = Provider.of<UsersService>(context, listen: false);
     if (!usersService.currentUser!.subscription.canCreateEvents) return;
     final url = Uri.https(_baseUrl, 'Events/${event.id}.json');
-
+    print('id del evento: ${event.id}');
     try {
       // ignore: unused_local_variable
       final resp = await http.put(url, body: jsonEncode(event.toJson()));

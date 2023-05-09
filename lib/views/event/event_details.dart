@@ -8,8 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class EventDetailsView extends StatelessWidget {
+import '../../ui/ui.dart';
+
+class EventDetailsView extends StatefulWidget {
   const EventDetailsView({super.key});
+
+  @override
+  State<EventDetailsView> createState() => _EventDetailsViewState();
+}
+
+class _EventDetailsViewState extends State<EventDetailsView> {
+  bool canEdit = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +54,35 @@ class EventDetailsView extends StatelessWidget {
             // backgroundColor: ProjectColors.primary,
             elevation: 0,
             centerTitle: true,
+            actions: [
+              Visibility(
+                visible:
+                    selectedEvent.creator == AuthService().currentUser!.uid,
+                child: GestureDetector(
+                  onTap: () => setState(() {
+                    canEdit = !canEdit;
+                  }),
+                  child: Container(
+                    margin: EdgeInsets.only(right: 10),
+                    child: Icon(
+                      Icons.edit,
+                      size: 25,
+                      color: canEdit
+                          ? ProjectColors.tertiary
+                          : ProjectColors.secondary,
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
         // backgroundColor: ProjectColors.primary,
-        body: const SingleChildScrollView(
+        body: SingleChildScrollView(
           child: LoginContainer(
-            child: _FormsColumn(),
+            child: _FormsColumn(
+              canEdit: canEdit,
+            ),
           ),
         ),
       ),
@@ -58,9 +90,20 @@ class EventDetailsView extends StatelessWidget {
   }
 }
 
-class _FormsColumn extends StatelessWidget {
-  const _FormsColumn();
+class _FormsColumn extends StatefulWidget {
+  final bool canEdit;
+  const _FormsColumn({this.canEdit = false});
 
+  @override
+  State<_FormsColumn> createState() => _FormsColumnState();
+}
+
+class _FormsColumnState extends State<_FormsColumn> {
+  final _formKey = GlobalKey<FormState>();
+  final _description = TextEditingController();
+  final _startDateTime = TextEditingController();
+  final _locationController = TextEditingController();
+  final _cityController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -70,6 +113,11 @@ class _FormsColumn extends StatelessWidget {
     final creator = userService.getUserWithUid(selectedEvent.creator);
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final activeUserFuture = userService.getUserWithUid(activeUserId);
+
+    _description.text = selectedEvent.description;
+    _startDateTime.text = selectedEvent.startDate.toIso8601String();
+    _locationController.text = selectedEvent.address;
+    _cityController.text = selectedEvent.city;
 
     //List<String> asistentesList = [];
     Future<List<String>> asistentes = Future.delayed(Duration.zero, () async {
@@ -115,7 +163,8 @@ class _FormsColumn extends StatelessWidget {
               ),
               CustomTextDetail(
                 hintText: selectedEvent.address,
-                enabled: false,
+                enabled: widget.canEdit,
+                controller: _locationController,
               ),
               const Divider(
                 color: Colors.grey,
@@ -133,7 +182,8 @@ class _FormsColumn extends StatelessWidget {
               ),
               CustomTextDetail(
                 hintText: selectedEvent.city,
-                enabled: false,
+                enabled: widget.canEdit,
+                controller: _cityController,
               ),
               const Divider(
                 color: Colors.grey,
@@ -152,8 +202,9 @@ class _FormsColumn extends StatelessWidget {
               CustomTextDetail(
                 hintText: DateFormat('yyyy-MM-dd HH:mm')
                     .format(selectedEvent.startDate),
-                enabled: false,
+                enabled: widget.canEdit,
                 maxLines: 3,
+                controller: _startDateTime,
               ),
               const Divider(
                 color: Colors.grey,
@@ -171,9 +222,10 @@ class _FormsColumn extends StatelessWidget {
               ),
               CustomTextDetail(
                 hintText: selectedEvent.description,
-                enabled: false,
+                enabled: widget.canEdit,
                 maxLines: 5,
                 type: TextInputType.multiline,
+                controller: _description,
               ),
               const Divider(
                 color: Colors.grey,
@@ -187,13 +239,52 @@ class _FormsColumn extends StatelessWidget {
                   creatorUsername: snapshot.data?.username ?? 'username',
                   event: selectedEvent,
                 ),
-              if (creatorSameAsCurrentUser)
+              if (creatorSameAsCurrentUser && !widget.canEdit)
                 GestureDetector(
                     onTap: () => Navigator.pushNamed(context, 'profile'),
                     child: const CustomButton(text: 'Mi perfil')),
               const SizedBox(
                 height: 20,
               ),
+              if (widget.canEdit)
+                SubmitButton(
+                  text: 'Guardar cambios',
+                  onTap: () async {
+                    User user = await UsersService()
+                        .getUserWithUid(AuthService().currentUser?.uid ?? "");
+                    final event = Event(
+                        address: _locationController.text,
+                        city: _cityController.text,
+                        country: selectedEvent.country,
+                        description: selectedEvent.description,
+                        visibleFrom:
+                            user.subscription.maxVisiblityOfEventsInDays == -1
+                                ? DateTime.fromMillisecondsSinceEpoch(0)
+                                : DateTime.parse(_startDateTime.text)
+                                    .subtract(
+                                        Duration(
+                                            days: user.subscription
+                                                .maxVisiblityOfEventsInDays)),
+                        id: selectedEvent.id,
+                        image: selectedEvent.image,
+                        name: selectedEvent.name,
+                        latitude: selectedEvent.latitude,
+                        longitude: selectedEvent.longitude,
+                        startDate: DateTime.parse(_startDateTime.text),
+                        tags: selectedEvent.tags,
+                        users: selectedEvent.users,
+                        maxUsers: selectedEvent.maxUsers,
+                        messages: selectedEvent.messages);
+                    showCircularProgressDialog(context);
+                    final eventService =
+                        Provider.of<EventsService>(context, listen: false);
+                    await eventService.saveEvent(context, event);
+                    // await eventService.getEventsOfLoggedUser();
+
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                ),
               FutureBuilder<User>(
                 future: activeUserFuture,
                 builder: (context, snapshot) {
@@ -221,7 +312,7 @@ class _FormsColumn extends StatelessWidget {
                   }
                 },
               ),
-              if (selectedEvent.users.contains(activeUserId))
+              if (selectedEvent.users.contains(activeUserId) && !widget.canEdit)
                 ElevatedButton(
                   child: const AutoSizeText(
                     'Abrir chat',
@@ -232,29 +323,30 @@ class _FormsColumn extends StatelessWidget {
                         arguments: selectedEvent);
                   },
                 ),
-              FutureBuilder<List<String>>(
-                future: asistentes,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final asistentesList = snapshot.data!;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: asistentesList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                          leading: const Icon(Icons.person),
-                          title: Text(asistentesList[index]),
-                        );
-                      },
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
-              ),
+              if (!widget.canEdit)
+                FutureBuilder<List<String>>(
+                  future: asistentes,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final asistentesList = snapshot.data!;
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: asistentesList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            leading: const Icon(Icons.person),
+                            title: Text(asistentesList[index]),
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
+                ),
             ],
           );
         } else {
