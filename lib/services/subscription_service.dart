@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import 'package:findmyfun/helpers/helpers.dart';
+
 class SubscriptionService extends ChangeNotifier {
-  final String _baseUrl = 'findmyfun-dev-default-rtdb.firebaseio.com';
+  final String _baseUrl = Globals.getBaseUrl();
   final UsersService usersService = UsersService();
   final EventPointsService eventPointsService = EventPointsService();
   final currentAuthUser = AuthService().currentUser;

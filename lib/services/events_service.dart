@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/services/important_notification_service.dart';
@@ -9,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class EventsService extends ChangeNotifier {
-  final String _baseUrl = 'findmyfun-dev-default-rtdb.firebaseio.com';
+  final String _baseUrl = Globals.getBaseUrl();
   List<Event> _events = [];
   List<Event> _eventsFound = [];
 

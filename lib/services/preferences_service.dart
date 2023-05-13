@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:findmyfun/models/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:findmyfun/helpers/helpers.dart';
 import '../models/user.dart';
 import 'auth_service.dart';
 
 class PreferencesService extends ChangeNotifier {
-  final String _baseUrl = 'findmyfun-dev-default-rtdb.firebaseio.com';
+  final String _baseUrl = Globals.getBaseUrl();
   List<Preferences> _preferences = [];
   Preferences? _preference;
   List<Preferences> _preferencesByUserId = [];
