@@ -43,7 +43,7 @@ class _EventSearchViewState extends State<EventSearchView> {
                 'BUSCAR EVENTOS',
                 maxLines: 1,
                 style: TextStyle(
-                    color: Colors.white,
+                    color: ProjectColors.tertiary,
                     fontSize: 30,
                     fontWeight: FontWeight.bold),
               )),
@@ -89,11 +89,6 @@ class _EventSearchViewState extends State<EventSearchView> {
         ));
   }
 
-  // @override
-  // State<StatefulWidget> createState() {
-  //   // TODO: implement createState
-  //   throw UnimplementedError();
-  // }
   Future<void> showErrorDialog(BuildContext context, String exception) async {
     return showDialog(
       context: context,
