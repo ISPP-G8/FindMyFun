@@ -9,9 +9,10 @@ class PreferencesContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
-      height: 600,
+      height: size.height*0.8,
       margin: const EdgeInsets.symmetric(horizontal: 15),
       decoration: const BoxDecoration(color: Color(0xff828a92)),
       child: child,

@@ -13,6 +13,7 @@ class PreferencesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -30,11 +31,11 @@ class PreferencesView extends StatelessWidget {
                 maxLines: 1, textAlign: TextAlign.center, style: Styles.appBar),
           ),
           // backgroundColor: ProjectColors.primary,
-          body: Column(children: const [
+          body: Column(children:  [
             SizedBox(
-              height: 20,
+              height: size.height*0.02,
             ),
-            PreferencesContainer(
+            const PreferencesContainer(
               child: PreferencesColumn(),
             )
           ])),
@@ -66,6 +67,7 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final preferencesService = Provider.of<PreferencesService>(context);
     final preferences = preferencesService.preferences;
     final preferencesNames = preferences.map((e) => e.name).toList();
@@ -79,14 +81,14 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
           selectedPreferences = snapshot.data;
 
           return Column(children: [
-            const SizedBox(
-              height: 10,
+            SizedBox(
+              height: size.height*0.02,
             ),
             Expanded(
                 child: ListView(
               children: [
                 SizedBox(
-                  height: 480,
+                  height: size.height*0.6,
                   child: CustomScrollView(
                     slivers: <Widget>[
                       SliverList(
@@ -99,8 +101,8 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                               child: Padding(
                                 padding: const EdgeInsets.only(bottom: 10.0),
                                 child: SizedBox(
-                                  height: 80,
-                                  width: 325,
+                                  height: size.height*0.1,
+                                  width: size.height*0.42,
                                   child: ElevatedButton(
                                       style: ButtonStyle(
                                           shape: MaterialStateProperty.all<
@@ -124,18 +126,10 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                                             //Si una preferencia seleccionada se presiona, es eliminada de la lista
                                             selectedPreferences
                                                 .remove(preferences[index]);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Se ha deseleccionado la preferencia ${preferences[index].name}')));
                                           } else {
                                             //Si una preferencia sin seleccionar se presiona, es añadida a la lista
                                             selectedPreferences
                                                 .add(preferences[index]);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Se ha seleccionado la preferencia ${preferences[index].name}')));
                                           }
                                         });
                                       },
@@ -153,6 +147,9 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: size.height*0.01,
+                ),
                 FloatingActionButton(
                   onPressed: () {
                     // When merge, change first option by current user id
@@ -168,8 +165,8 @@ class _PreferencesColumnState extends State<PreferencesColumn> {
                   },
                   child: const Icon(Icons.save),
                 ),
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: size.height*0.01,
                 ),
                 const AutoSizeText(
                     'Recuerda guardar para que se actualize tu perfil',
