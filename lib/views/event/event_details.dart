@@ -114,9 +114,11 @@ class _FormsColumnState extends State<_FormsColumn> {
     final creator = userService.getUserWithUid(selectedEvent.creator);
     String activeUserId = AuthService().currentUser?.uid ?? "";
     final activeUserFuture = userService.getCurrentUserWithUid();
+    final formattedDate =
+        DateFormat('yyyy-MM-dd HH:mm').format(selectedEvent.startDate);
 
     _description.text = selectedEvent.description;
-    _startDateTime.text = selectedEvent.startDate.toIso8601String();
+    _startDateTime.text = formattedDate;
     _locationController.text = selectedEvent.address;
     _cityController.text = selectedEvent.city;
 
@@ -166,6 +168,10 @@ class _FormsColumnState extends State<_FormsColumn> {
                 ),
                 CustomTextDetail(
                   hintText: selectedEvent.address,
+                  hintStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16.0,
+                  ),
                   enabled: widget.canEdit,
                   controller: _locationController,
                   validator: (val) => Validators.validateNotEmpty(val),
@@ -186,6 +192,10 @@ class _FormsColumnState extends State<_FormsColumn> {
                 ),
                 CustomTextDetail(
                   hintText: selectedEvent.city,
+                  hintStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16.0,
+                  ),
                   enabled: widget.canEdit,
                   controller: _cityController,
                   validator: (val) => Validators.validateNotEmpty(val),
@@ -207,6 +217,10 @@ class _FormsColumnState extends State<_FormsColumn> {
                 CustomTextDetail(
                   hintText: DateFormat('yyyy-MM-dd HH:mm')
                       .format(selectedEvent.startDate),
+                  hintStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16.0,
+                  ),
                   enabled: widget.canEdit,
                   maxLines: 3,
                   controller: _startDateTime,
@@ -230,6 +244,10 @@ class _FormsColumnState extends State<_FormsColumn> {
                 ),
                 CustomTextDetail(
                   hintText: selectedEvent.description,
+                  hintStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16.0,
+                  ),
                   enabled: widget.canEdit,
                   maxLines: 5,
                   type: TextInputType.multiline,
@@ -382,6 +400,10 @@ class _FormsColumnState extends State<_FormsColumn> {
               ),
               CustomTextDetail(
                 hintText: selectedEvent.address,
+                hintStyle: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16.0,
+                ),
                 enabled: false,
               ),
               const SizedBox(
@@ -396,6 +418,10 @@ class _FormsColumnState extends State<_FormsColumn> {
               ),
               CustomTextDetail(
                 hintText: selectedEvent.city,
+                hintStyle: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16.0,
+                ),
                 enabled: false,
               ),
               const SizedBox(
@@ -410,6 +436,10 @@ class _FormsColumnState extends State<_FormsColumn> {
               ),
               CustomTextDetail(
                 hintText: selectedEvent.startDate.toString(),
+                hintStyle: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16.0,
+                ),
                 enabled: false,
               ),
               const SizedBox(
@@ -424,6 +454,10 @@ class _FormsColumnState extends State<_FormsColumn> {
               ),
               CustomTextDetail(
                 hintText: selectedEvent.description,
+                hintStyle: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16.0,
+                ),
                 enabled: false,
                 maxLines: 4,
                 type: TextInputType.multiline,
