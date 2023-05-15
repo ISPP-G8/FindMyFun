@@ -15,23 +15,9 @@ class _PaymentViewBusinessState extends State<PaymentViewBusiness> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: ProjectColors.tertiary,
-          title: Text(
+          title: const Text(
             'Pago por PayPal',
           ),
-          actions: [
-            Container(
-              margin: EdgeInsets.only(right: 15),
-              child: IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, 'main');
-                  },
-                  icon: Icon(
-                    Icons.home,
-                    size: 44,
-                    color: Colors.white,
-                  )),
-            )
-          ],
         ),
         body: Center(
           child: TextButton(
