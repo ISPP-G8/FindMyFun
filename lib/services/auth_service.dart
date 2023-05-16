@@ -26,6 +26,11 @@ class AuthService {
     await _firebaseAuth.signOut();
   }
 
+  Future<void> deleteAccount() async {
+    // await _firebaseAuth.signOut();
+    await currentUser!.delete();
+  }
+
   //UPDATE PASSWORD
   Future<bool> updatePassword(
       String email, String currentPassword, String newPassword) async {

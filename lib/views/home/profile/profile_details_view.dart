@@ -314,9 +314,10 @@ class _DeleteProfile extends State<DeleteProfile> {
                 ),
                 TextButton(
                   child: const Text('Si, estoy seguro'),
-                  onPressed: () {
-                    UsersService().deleteProfile(currentUser,
-                        context); // Agrega aquí el código que se ejecutará al confirmar
+                  onPressed: () async {
+                    await userService.deleteProfile(currentUser, context);
+
+                    // Agrega aquí el código que se ejecutará al confirmar
                     // Navigator.of(context).pop();
                   },
                 ),

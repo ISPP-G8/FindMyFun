@@ -162,9 +162,9 @@ class UsersService extends ChangeNotifier {
       if (user.email == correo) {
         // ignore: unused_local_variable
         final resp = await http.delete(url);
-        AuthService().signOut;
+        AuthService().deleteAccount();
         // ignore: use_build_context_synchronously
-        await Navigator.pushNamed(context, 'access');
+        await Navigator.pushReplacementNamed(context, 'access');
       } else {
         final resp = await http.delete(url);
         await Navigator.pushNamed(context, 'users');
