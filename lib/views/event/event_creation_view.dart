@@ -227,25 +227,12 @@ class _FormsColumnState extends State<_FormsColumn> {
             textAlign: TextAlign.center,
           ),
           SizedBox(
-            height: size.height*0.01,
+            height: size.height * 0.01,
           ),
           ConstrainedBox(
             constraints: BoxConstraints(
-                maxHeight: size.height * 0.5, maxWidth: size.width),
+                maxHeight: size.height * 0.6, maxWidth: size.width),
             child: const MapPlaceSelectorEventScreen(),
-          ),
-          SizedBox(
-            height: size.height*0.01,
-          ),
-          const Text(
-            "...O un punto de evento",
-            textAlign: TextAlign.center,
-          ),
-          EventPointsDropdown(
-            selectedValues: _selectedValues,
-            onSelectionChanged: (selected) {
-              _selectedValues = selected;
-            },
           ),
           Divider(
             thickness: 5,
@@ -429,6 +416,7 @@ class MapPlaceSelectorEventScreen extends StatefulWidget {
 
 class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
   late GoogleMapController _googleMapController;
+  String? selectedEventPointPosition;
 
   late Future eventsAndEventsPoints;
 
@@ -454,102 +442,142 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return Stack(
-      alignment: Alignment.center,
+    return Column(
       children: [
-        FutureBuilder<dynamic>(
-          future: eventsAndEventsPoints,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<Point> points = snapshot.data!;
-              return GoogleMap(
-                
-                initialCameraPosition: _initialCameraPosition,
-                onMapCreated: (controller) => _googleMapController = controller,
-                markers: Set.from(
-                    tappedMarkerEvent + points.map((p) => p.marker).toList()),
-                onTap: _handleTapMarker,
-                mapType: MapType.normal,
-                gestureRecognizers: {
-                  Factory<OneSequenceGestureRecognizer>(
-                    () => EagerGestureRecognizer(),
-                  ),
-                },
-              );
-            } else {
-              return Column(children: const [
-                SizedBox(height: 100),
-                Center(child: CircularProgressIndicator())
-              ]);
-            }
-          },
-        ),
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              color: ProjectColors.primary.withOpacity(0.7),
-              padding: EdgeInsets.symmetric(
-                  vertical: size.height * 0.001, horizontal: size.width * 0.01),
-              height: size.height * 0.08,
-              width: size.width * 0.35,
-              child: Column(
-                children: [
-                  SizedBox(height: size.height * 0.01),
-                  Row(
-                    children: [
-                      Container(
-                        color: Colors.orange,
-                        height: 10,
-                        width: 10,
-                      ),
-                      const AutoSizeText(" Tu evento",
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            decoration: TextDecoration.none,
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        color: Colors.red,
-                        height: 10,
-                        width: 10,
-                      ),
-                      const AutoSizeText(" Otros eventos",
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            decoration: TextDecoration.none,
-                          )),
-                    ],
-                  ),
-                  SizedBox(height: size.height * 0.001),
-                  Row(
-                    children: [
-                      Container(
-                        color: Colors.purple,
-                        height: 10,
-                        width: 10,
-                      ),
-                      const AutoSizeText(" Puntos de evento",
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            decoration: TextDecoration.none,
-                          )),
-                    ],
-                  )
-                ],
+          height: size.height * 0.49,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              FutureBuilder<dynamic>(
+                future: eventsAndEventsPoints,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<Point> points = snapshot.data!;
+                    return GoogleMap(
+                      initialCameraPosition: _initialCameraPosition,
+                      onMapCreated: (controller) =>
+                          _googleMapController = controller,
+                      markers: Set.from(tappedMarkerEvent +
+                          points.map((p) => p.marker).toList()),
+                      onTap: _handleTapMarker,
+                      mapType: MapType.normal,
+                      gestureRecognizers: {
+                        Factory<OneSequenceGestureRecognizer>(
+                          () => EagerGestureRecognizer(),
+                        ),
+                      },
+                    );
+                  } else {
+                    return Column(children: const [
+                      SizedBox(height: 100),
+                      Center(child: CircularProgressIndicator())
+                    ]);
+                  }
+                },
               ),
-            ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    color: ProjectColors.primary.withOpacity(0.7),
+                    padding: EdgeInsets.symmetric(
+                        vertical: size.height * 0.001,
+                        horizontal: size.width * 0.01),
+                    height: size.height * 0.1,
+                    width: size.width * 0.35,
+                    child: Column(
+                      children: [
+                        SizedBox(height: size.height * 0.01),
+                        Row(
+                          children: [
+                            Container(
+                              color: Colors.orange,
+                              height: 10,
+                              width: 10,
+                            ),
+                            const AutoSizeText(" Tu evento",
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  decoration: TextDecoration.none,
+                                )),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              color: Colors.pink,
+                              height: 10,
+                              width: 10,
+                            ),
+                            const AutoSizeText(" Tus eventos",
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  decoration: TextDecoration.none,
+                                )),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              color: Colors.red,
+                              height: 10,
+                              width: 10,
+                            ),
+                            const AutoSizeText(" Otros eventos",
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  decoration: TextDecoration.none,
+                                )),
+                          ],
+                        ),
+                        SizedBox(height: size.height * 0.001),
+                        Row(
+                          children: [
+                            Container(
+                              color: Colors.purple,
+                              height: 10,
+                              width: 10,
+                            ),
+                            const AutoSizeText(" Puntos de evento",
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  decoration: TextDecoration.none,
+                                )),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
+        ),
+        SizedBox(
+          height: size.height * 0.01,
+        ),
+        const Text(
+          "...O un punto de evento",
+          textAlign: TextAlign.center,
+        ),
+        EventPointsDropdown(
+          selectedValue: selectedEventPointPosition,
+          onSelectionChanged: (selected) {
+            double latitude = double.parse(selected.split(",")[0]);
+            double longitude = double.parse(selected.split(",")[1]);
+            LatLng position = LatLng(latitude, longitude);
+            _handleTapMarker(position);
+          },
         ),
       ],
     );
@@ -559,8 +587,10 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
     setState(() {
       tappedMarkerEvent.clear();
       tappedMarkerEvent.add(Marker(
-          markerId: MarkerId(tappedPoint.toString()), position: tappedPoint, icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueOrange)));
+          markerId: MarkerId(tappedPoint.toString()),
+          position: tappedPoint,
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueOrange)));
     });
   }
 }

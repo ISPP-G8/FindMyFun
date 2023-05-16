@@ -1,14 +1,13 @@
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class EventPointsDropdown extends StatefulWidget {
-  final List<Object>? selectedValues;
-  final Function(List<Object>) onSelectionChanged;
+  final Object? selectedValue;
+  final Function(String) onSelectionChanged;
   const EventPointsDropdown({
     Key? key,
-    this.selectedValues,
+    this.selectedValue,
     required this.onSelectionChanged,
   }) : super(key: key);
 
@@ -19,29 +18,50 @@ class EventPointsDropdown extends StatefulWidget {
 class _EventPointsDropdown extends State<EventPointsDropdown> {
   List<Object> selectedEventPoints = [];
 
+  late Future eventsPoints;
+
+  EventPointsService eventsPointService = EventPointsService();
+
+  @override
+  void initState() {
+    super.initState();
+    eventsPoints = eventsPointService.getEventPoints();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final eventPointService = Provider.of<EventPointsService>(context);
-    eventPointService.getEventPoints();
-    List<EventPoint> eventPoints =
-        eventPointService.eventPoints;
-
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: const BoxDecoration(color: Colors.white),
-      child: DropdownButton(
-        items: eventPoints.map<DropdownMenuItem<String>>((EventPoint value) {
-        return DropdownMenuItem<String>(
-          value: "[${value.latitude},${value.longitude}]",
-          child: Text(value.name),
-        );
-      }).toList(), 
-        onChanged: (String? value) {
-          setState(() {
-            value = value!;
-        });
-        },
-      ),
+    return FutureBuilder<dynamic>(
+      future: eventsPoints,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: const BoxDecoration(color: Colors.white),
+            child: DropdownButton<String?>(
+              value:
+                  "${snapshot.data.first.latitude},${snapshot.data.first.longitude}",
+              items: snapshot.data
+                  .map<DropdownMenuItem<String?>>((EventPoint value) {
+                return DropdownMenuItem<String?>(
+                  value: "${value.latitude},${value.longitude}",
+                  child: Text(value.name),
+                );
+              }).toList(),
+              onChanged: (String? value) {
+                setState(() {
+                  value = value!;
+                  widget.onSelectionChanged(value!);
+                });
+              },
+            ),
+          );
+        } else {
+          return Column(children: const [
+            SizedBox(height: 100),
+            Center(child: CircularProgressIndicator())
+          ]);
+        }
+      },
     );
   }
 }
