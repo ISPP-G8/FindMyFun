@@ -10,7 +10,7 @@ class MapService extends ChangeNotifier {
   AuthService authService = AuthService();
 
   // GET ALL MARKERS
-  Future<List<Point>> getMarkers() async {
+  Future<List<Point>> getMarkers(bool isEventCreation) async {
     List<Point> markers = [];
 
     String currentUser = AuthService().currentUser?.uid ?? "";
@@ -30,6 +30,7 @@ class MapService extends ChangeNotifier {
                     BitmapDescriptor.hueMagenta)
                 : BitmapDescriptor.defaultMarkerWithHue(
                     BitmapDescriptor.hueRed),
+            consumeTapEvents: isEventCreation,
           )));
     }
 
@@ -42,6 +43,7 @@ class MapService extends ChangeNotifier {
             position: LatLng(eventPoint.latitude, eventPoint.longitude),
             icon: BitmapDescriptor.defaultMarkerWithHue(
                 BitmapDescriptor.hueViolet),
+            consumeTapEvents: isEventCreation,
           )));
     }
 

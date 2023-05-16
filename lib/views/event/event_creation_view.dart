@@ -410,6 +410,21 @@ class MapPlaceSelectorEventScreen extends StatefulWidget {
 class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
   late GoogleMapController _googleMapController;
 
+  late Future eventsAndEventsPoints;
+
+  @override
+  void initState() {
+    super.initState();
+
+    eventsAndEventsPoints = _getMarkers();
+  }
+
+  _getMarkers() async {
+    MapService mapService = MapService();
+    bool isEventCreation = false;
+    return await mapService.getMarkers(isEventCreation);
+  }
+
   static const _initialCameraPosition = CameraPosition(
     target: LatLng(37.356342, -5.984759),
     zoom: 13,
@@ -417,20 +432,104 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Stack(
       alignment: Alignment.center,
       children: [
-        GoogleMap(
-          initialCameraPosition: _initialCameraPosition,
-          onMapCreated: (controller) => _googleMapController = controller,
-          markers: Set.from(tappedMarkerEvent),
-          onTap: _handleTapMarker,
-          mapType: MapType.normal,
-          gestureRecognizers: {
-            Factory<OneSequenceGestureRecognizer>(
-              () => EagerGestureRecognizer(),
-            ),
+        FutureBuilder<dynamic>(
+          future: eventsAndEventsPoints,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<Point> points = snapshot.data!;
+              return GoogleMap(
+                
+                initialCameraPosition: _initialCameraPosition,
+                onMapCreated: (controller) => _googleMapController = controller,
+                markers: Set.from(
+                    tappedMarkerEvent + points.map((p) => p.marker).toList()),
+                onTap: _handleTapMarker,
+                mapType: MapType.normal,
+                gestureRecognizers: {
+                  Factory<OneSequenceGestureRecognizer>(
+                    () => EagerGestureRecognizer(),
+                  ),
+                },
+              );
+            } else {
+              return Column(children: const [
+                SizedBox(height: 100),
+                Center(child: CircularProgressIndicator())
+              ]);
+            }
           },
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+              color: ProjectColors.primary.withOpacity(0.7),
+              padding: EdgeInsets.symmetric(
+                  vertical: size.height * 0.001, horizontal: size.width * 0.01),
+              height: size.height * 0.08,
+              width: size.width * 0.35,
+              child: Column(
+                children: [
+                  SizedBox(height: size.height * 0.01),
+                  Row(
+                    children: [
+                      Container(
+                        color: Colors.orange,
+                        height: 10,
+                        width: 10,
+                      ),
+                      const AutoSizeText(" Tu evento",
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            decoration: TextDecoration.none,
+                          )),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        color: Colors.red,
+                        height: 10,
+                        width: 10,
+                      ),
+                      const AutoSizeText(" Otros eventos",
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            decoration: TextDecoration.none,
+                          )),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.001),
+                  Row(
+                    children: [
+                      Container(
+                        color: Colors.purple,
+                        height: 10,
+                        width: 10,
+                      ),
+                      const AutoSizeText(" Puntos de evento",
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            decoration: TextDecoration.none,
+                          )),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
       ],
     );
@@ -440,7 +539,8 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
     setState(() {
       tappedMarkerEvent.clear();
       tappedMarkerEvent.add(Marker(
-          markerId: MarkerId(tappedPoint.toString()), position: tappedPoint));
+          markerId: MarkerId(tappedPoint.toString()), position: tappedPoint, icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueOrange)));
     });
   }
 }
