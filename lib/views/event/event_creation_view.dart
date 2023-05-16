@@ -222,10 +222,30 @@ class _FormsColumnState extends State<_FormsColumn> {
             indent: size.height * 0.05,
             endIndent: size.height * 0.05,
           ),
+          const Text(
+            "Selecciona un lugar en el mapa...",
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: size.height*0.01,
+          ),
           ConstrainedBox(
             constraints: BoxConstraints(
                 maxHeight: size.height * 0.5, maxWidth: size.width),
             child: const MapPlaceSelectorEventScreen(),
+          ),
+          SizedBox(
+            height: size.height*0.01,
+          ),
+          const Text(
+            "...O un punto de evento",
+            textAlign: TextAlign.center,
+          ),
+          EventPointsDropdown(
+            selectedValues: _selectedValues,
+            onSelectionChanged: (selected) {
+              _selectedValues = selected;
+            },
           ),
           Divider(
             thickness: 5,
@@ -421,7 +441,7 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
 
   _getMarkers() async {
     MapService mapService = MapService();
-    bool isEventCreation = false;
+    bool isEventCreation = true;
     return await mapService.getMarkers(isEventCreation);
   }
 
