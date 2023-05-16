@@ -40,9 +40,12 @@ class EventsService extends ChangeNotifier {
   Future<void> deleteEventAdmin(String eventId, BuildContext context) async {
     final url = Uri.https(_baseUrl, 'Events/$eventId.json');
     try {
-      // ignore: unused_local_variable
+      final eventToRemove =
+          events.where((element) => element.id == eventId).first;
+      events.remove(eventToRemove);
+      notifyListeners();
       final resp = await http.delete(url);
-      Navigator.pushNamed(context, 'events');
+      // Navigator.pushNamed(context, 'events');
     } catch (e) {
       debugPrint('Error al eliminar el evento: $e');
     }
