@@ -48,10 +48,12 @@ class SettingsView extends StatelessWidget {
                   },
                   child: const CustomButton(text: 'Crear punto de evento')),
             ),
-            GestureDetector(onTap: () async {
-              await AuthService().signOut();
-              Navigator.pushReplacementNamed(context, 'access');
-            }),
+            // GestureDetector(
+            //   onTap: () async {
+            //     await AuthService().signOut();
+            //     Navigator.pushReplacementNamed(context, 'access');
+            //   }
+            // ),
           ],
         ));
   }

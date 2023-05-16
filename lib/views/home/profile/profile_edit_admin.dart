@@ -27,7 +27,7 @@ class ProfileEditAdmin extends StatelessWidget {
             child: const Icon(
               Icons.chevron_left,
               size: 45,
-              color: Color.fromARGB(255, 161, 154, 154),
+              color: ProjectColors.secondary,
             )),
         elevation: 0,
         centerTitle: true,
@@ -78,6 +78,12 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
   Widget build(BuildContext context) {
     final userService = Provider.of<UsersService>(context);
     final selectedUser = ModalRoute.of(context)!.settings.arguments as User;
+
+    _imageController.text = selectedUser.image ?? '';
+    _nameController.text = selectedUser.name;
+    _surnameController.text = selectedUser.surname;
+    _usernameController.text = selectedUser.username;
+    _cityController.text = selectedUser.city;
 
     return Form(
       key: _formKey,
@@ -164,22 +170,22 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
                     ]),
               );
 
-              if (_usernameController.text == "") {
-                _usernameController.text = selectedUser.username;
-              }
-              if (_nameController.text == "") {
-                _nameController.text = selectedUser.name;
-              }
-              if (_surnameController.text == "") {
-                _surnameController.text = selectedUser.surname;
-              }
-              if (_cityController.text == "") {
-                _cityController.text = selectedUser.city;
-              }
-              if (_imageController.text == "") {
-                _imageController.text = selectedUser.image!;
-              }
-              userService.selectedUser = User(
+              // if (_usernameController.text == "") {
+              //   _usernameController.text = selectedUser.username;
+              // }
+              // if (_nameController.text == "") {
+              //   _nameController.text = selectedUser.name;
+              // }
+              // if (_surnameController.text == "") {
+              //   _surnameController.text = selectedUser.surname;
+              // }
+              // if (_cityController.text == "") {
+              //   _cityController.text = selectedUser.city;
+              // }
+              // if (_imageController.text == "") {
+              //   _imageController.text = selectedUser.image!;
+              // }
+              User userToChange = User(
                   id: selectedUser.id,
                   image: _imageController.text,
                   name: _nameController.text,
@@ -189,13 +195,12 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
                   email: selectedUser.email,
                   preferences: selectedUser.preferences,
                   subscription: selectedUser.subscription);
-              final resp = await userService
-                  .updateProfileAdmin(userService.selectedUser!);
+              final resp = await userService.updateProfileAdmin(userToChange);
               if (resp) {
                 Navigator.pop(context);
                 Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
+                // Navigator.pop(context);
+                // Navigator.pop(context);
               } else {
                 Navigator.pop(context);
                 _formKey.currentState!.validate();

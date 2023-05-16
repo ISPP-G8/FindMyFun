@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/services/services.dart';
 
+import '../../../themes/colors.dart';
 import '../../../widgets/custom_button.dart';
 
 class ProfileDetailsAdmin extends StatelessWidget {
@@ -32,6 +33,13 @@ class ProfileDetailsAdmin extends StatelessWidget {
           textAlign: TextAlign.center,
           style: Styles.appBar,
         ),
+        leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(
+              Icons.chevron_left,
+              size: 45,
+              color: ProjectColors.secondary,
+            )),
       ),
       body: Center(
         child: SizedBox(
