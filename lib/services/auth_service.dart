@@ -8,18 +8,21 @@ class AuthService {
 
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
+  UserCredential? credential;
+
   Future<UserCredential> signInWithEmailAndPassword(
       {required String email, required String password}) async {
-    UserCredential credential = await _firebaseAuth.signInWithEmailAndPassword(
+    credential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    return credential;
+
+    return credential!;
   }
 
   Future<UserCredential> createUserWithEmailAndPassword(
       {required String email, required String password}) async {
-    UserCredential credential = await _firebaseAuth
-        .createUserWithEmailAndPassword(email: email, password: password);
-    return credential;
+    credential = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    return credential!;
   }
 
   Future<void> signOut() async {
@@ -28,7 +31,13 @@ class AuthService {
 
   Future<void> deleteAccount() async {
     // await _firebaseAuth.signOut();
-    await currentUser!.delete();
+    try {
+      await currentUser!.delete();
+    } catch (e) {
+      await currentUser!.reauthenticateWithCredential(credential!.credential!);
+      await currentUser!.delete();
+      await signOut();
+    }
   }
 
   //UPDATE PASSWORD

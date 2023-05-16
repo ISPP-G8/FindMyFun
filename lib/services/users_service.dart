@@ -159,6 +159,7 @@ class UsersService extends ChangeNotifier {
     final url = Uri.https(_baseUrl, 'Users/${user.id}.json');
     String? correo = AuthService().currentUser!.email;
     try {
+      print('uid:' + user.id);
       if (user.email == correo) {
         // ignore: unused_local_variable
         final resp = await http.delete(url);
