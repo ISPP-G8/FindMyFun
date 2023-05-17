@@ -4,6 +4,7 @@ import 'package:findmyfun/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:findmyfun/services/services.dart';
 import '../../themes/colors.dart';
 import '../../themes/styles.dart';
@@ -44,6 +45,7 @@ class _MapScreenState extends State<MapScreen> {
   late Future markersFuture;
   // ignore: prefer_const_constructors
   LatLng currentPosition = LatLng(37.356342, -5.984759);
+  bool hasCurrentPositionBeenUpdated = false;
   String? isEventDetailsVisible;
 
   @override
@@ -63,28 +65,59 @@ class _MapScreenState extends State<MapScreen> {
   _getUserCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
+    LatLng defaultPosition = const LatLng(37.356342, -5.984759);
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return Future.error('Location services are disabled');
+      Fluttertoast.showToast(
+          msg: "Location services are disabled",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      currentPosition = defaultPosition;
+      hasCurrentPositionBeenUpdated = true;
+      return null;
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
+        Fluttertoast.showToast(
+            msg: "Location permissions are denied",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        currentPosition = defaultPosition;
+        hasCurrentPositionBeenUpdated = true;
+        return null;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      Fluttertoast.showToast(
+          msg: "Location permissions are permanently denied",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      currentPosition = defaultPosition;
+      hasCurrentPositionBeenUpdated = true;
+      return null;
     }
 
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     currentPosition = LatLng(position.latitude, position.longitude);
+    hasCurrentPositionBeenUpdated = true;
     setState(() {});
   }
 
@@ -157,28 +190,10 @@ class _MapScreenState extends State<MapScreen> {
                       padding: EdgeInsets.symmetric(
                           vertical: size.height * 0.025,
                           horizontal: size.width * 0.01),
-                      height: size.height * 0.13,
+                      height: size.height * 0.1,
                       width: size.width * 0.7,
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Container(
-                                color: Colors.pink,
-                                height: 10,
-                                width: 10,
-                              ),
-                              const AutoSizeText(
-                                  " Eventos a los que estás apuntado",
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    decoration: TextDecoration.none,
-                                  )),
-                            ],
-                          ),
-                          SizedBox(height: size.height * 0.01),
                           Row(
                             children: [
                               Container(
@@ -226,12 +241,12 @@ class _MapScreenState extends State<MapScreen> {
                     child: FloatingActionButton(
                       backgroundColor: ProjectColors.tertiary.withOpacity(0.7),
                       onPressed: () async {
-                        LatLng tempPosition = currentPosition;
                         _getUserCurrentLocation.call();
-                        while (tempPosition == currentPosition) {
+                        while (!hasCurrentPositionBeenUpdated) {
                           await Future.delayed(
                               const Duration(milliseconds: 50));
                         }
+                        hasCurrentPositionBeenUpdated = false;
                         _googleMapController.animateCamera(
                             CameraUpdate.newCameraPosition(CameraPosition(
                                 target: LatLng(currentPosition.latitude,
