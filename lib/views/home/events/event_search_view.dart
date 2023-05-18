@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -21,6 +22,10 @@ class _EventSearchViewState extends State<EventSearchView> {
   @override
   Widget build(BuildContext context) {
     final eventsService = Provider.of<EventsService>(context);
+    final usersService = Provider.of<UsersService>(context);
+    final comp =
+        usersService.currentUser!.subscription.type == SubscriptionType.company;
+    debugPrint('WWWWWWWWWWWWW: ${comp}');
     final size = MediaQuery.of(context).size;
     try {
       eventsService.searchForEvents(_searchedText);
@@ -57,10 +62,16 @@ class _EventSearchViewState extends State<EventSearchView> {
                   fontSize: 18,
                 ),
               ),
-              const Text(
-                'Si ningún evento incluye el texto que buscas, se mostrarán todos los eventos a los que puedes unirte.',
-                textAlign: TextAlign.center,
-              ),
+              if (comp == true)
+                const Text(
+                  'Si ningún evento incluye el texto que buscas, se mostrarán todos los eventos a los que puedes unirte.\n (Las cuentas de empresa no pueden unirse a ningún evento).',
+                  textAlign: TextAlign.center,
+                ),
+              if (comp != true)
+                const Text(
+                  'Si ningún evento incluye el texto que buscas, se mostrarán todos los eventos a los que puedes unirte.',
+                  textAlign: TextAlign.center,
+                ),
               Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
