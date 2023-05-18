@@ -225,41 +225,6 @@ class EventsService extends ChangeNotifier {
   }
 
   Future<List<Event>> searchForEvents(String text) async {
-    if (text.contains(",") ||
-        text.contains(";") ||
-        text.contains(".") ||
-        text.contains("[") ||
-        text.contains("]") ||
-        text.contains("!") ||
-        text.contains("?") ||
-        text.contains("/") ||
-        text.contains("{") ||
-        text.contains("}") ||
-        text.contains("'") ||
-        text.contains("¡") ||
-        text.contains('"') ||
-        text.contains("+") ||
-        text.contains("-") ||
-        text.contains("(") ||
-        text.contains(")") ||
-        text.contains("=") ||
-        text.contains("<") ||
-        text.contains(">") ||
-        text.contains("*") ||
-        text.contains("%") ||
-        text.contains("_") ||
-        text.contains("^") ||
-        text.contains("¬") ||
-        text.contains("€") ||
-        text.contains("~") ||
-        text.contains("|") ||
-        text.contains("@") ||
-        text.contains("#")) {
-      text = "";
-      // throw Exception(
-      //     'Asegúrate de introducir palabras separadas solo por espacios en blanco');
-    }
-    // else {
     try {
       final url = Uri.https(_baseUrl, 'Events.json');
       final resp = await http.get(url);
@@ -303,11 +268,15 @@ class EventsService extends ChangeNotifier {
       });
       if (eventsAux.isNotEmpty) {
         eventsFound = eventsAux;
-        return eventsAux;
+        return eventsFound;
       } else {
         eventsFound = [];
-        throw Exception(
-            "No se han encontrado eventos con los parámetros de búsqueda introducidos, recuerda que deben coincidir todas las palabras por separado para que el evento sea válido.");
+        for (Event e in events) {
+          if (!e.hasFinished && !e.isFull) {
+            eventsFound.add(e);
+          }
+        }
+        return eventsFound;
       }
     } catch (e) {
       eventsFound = [];
