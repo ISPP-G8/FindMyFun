@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
@@ -21,6 +22,10 @@ class _EventSearchViewState extends State<EventSearchView> {
   @override
   Widget build(BuildContext context) {
     final eventsService = Provider.of<EventsService>(context);
+    final usersService = Provider.of<UsersService>(context);
+    final comp =
+        usersService.currentUser!.subscription.type == SubscriptionType.company;
+    debugPrint('WWWWWWWWWWWWW: ${comp}');
     final size = MediaQuery.of(context).size;
     try {
       eventsService.searchForEvents(_searchedText);
@@ -39,14 +44,34 @@ class _EventSearchViewState extends State<EventSearchView> {
               SizedBox(height: size.height * 0.005),
               const AdPlanLoader(),
               const Center(
-                  child: AutoSizeText(
-                'BUSCAR EVENTOS',
-                maxLines: 1,
+                child: AutoSizeText(
+                  'BUSCAR EVENTOS',
+                  maxLines: 1,
+                  style: TextStyle(
+                      color: ProjectColors.tertiary,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(height: 5),
+              const Text(
+                'RECUERDA',
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
-              )),
+                  color: Color.fromARGB(255, 158, 13, 13),
+                  fontSize: 18,
+                ),
+              ),
+              if (comp == true)
+                const Text(
+                  'Si ningún evento incluye el texto que buscas, se mostrarán todos los eventos a los que puedes unirte.\n (Las cuentas de empresa no pueden unirse a ningún evento).',
+                  textAlign: TextAlign.center,
+                ),
+              if (comp != true)
+                const Text(
+                  'Si ningún evento incluye el texto que buscas, se mostrarán todos los eventos a los que puedes unirte.',
+                  textAlign: TextAlign.center,
+                ),
               Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -73,7 +98,7 @@ class _EventSearchViewState extends State<EventSearchView> {
                     ],
                   )),
               ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: size.height),
+                constraints: BoxConstraints(maxHeight: size.height * 0.4),
                 child: RefreshIndicator(
                   onRefresh: () async => await eventsService.getEvents(),
                   child: ListView.builder(
@@ -83,17 +108,12 @@ class _EventSearchViewState extends State<EventSearchView> {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ));
   }
 
-  // @override
-  // State<StatefulWidget> createState() {
-  //   // TODO: implement createState
-  //   throw UnimplementedError();
-  // }
   Future<void> showErrorDialog(BuildContext context, String exception) async {
     return showDialog(
       context: context,

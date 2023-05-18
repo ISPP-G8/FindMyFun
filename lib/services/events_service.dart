@@ -226,96 +226,64 @@ class EventsService extends ChangeNotifier {
   }
 
   Future<List<Event>> searchForEvents(String text) async {
-    if (text.contains(",") ||
-        text.contains(";") ||
-        text.contains(".") ||
-        text.contains("[") ||
-        text.contains("]") ||
-        text.contains("!") ||
-        text.contains("?") ||
-        text.contains("/") ||
-        text.contains("{") ||
-        text.contains("}") ||
-        text.contains("'") ||
-        text.contains("¡") ||
-        text.contains('"') ||
-        text.contains("+") ||
-        text.contains("-") ||
-        text.contains("(") ||
-        text.contains(")") ||
-        text.contains("=") ||
-        text.contains("<") ||
-        text.contains(">") ||
-        text.contains("*") ||
-        text.contains("%") ||
-        text.contains("_") ||
-        text.contains("^") ||
-        text.contains("¬") ||
-        text.contains("€") ||
-        text.contains("~") ||
-        text.contains("|") ||
-        text.contains("@") ||
-        text.contains("#") ||
-        text == "" ||
-        text.isEmpty) {
-      eventsFound = [];
-      throw Exception(
-          'Asegúrate de introducir palabras separadas solo por espacios en blanco');
-    } else {
-      try {
-        final url = Uri.https(_baseUrl, 'Events.json');
-        final resp = await http.get(url);
-        if (resp.statusCode != 200) {
-          throw Exception('Error in response');
-        }
-        List<String> words = text.split(" ");
-        List<Event> eventsAux = [];
-        Map<String, dynamic> data = jsonDecode(resp.body);
+    try {
+      final url = Uri.https(_baseUrl, 'Events.json');
+      final resp = await http.get(url);
+      if (resp.statusCode != 200) {
+        throw Exception('Error in response');
+      }
+      List<String> words = text.split(" ");
+      List<Event> eventsAux = [];
+      Map<String, dynamic> data = jsonDecode(resp.body);
 
-        data.forEach((key, value) {
-          try {
-            final event = Event.fromRawJson(jsonEncode(value));
-            if (!event.hasFinished) {
-              int i = 0;
-              for (String word in words) {
-                word = removeDiacritics(word).toLowerCase();
-                if ((removeDiacritics(event.address)
-                            .toLowerCase()
-                            .contains(word) ||
-                        removeDiacritics(event.city)
-                            .toLowerCase()
-                            .contains(word) ||
-                        removeDiacritics(event.description)
-                            .toLowerCase()
-                            .contains(word) ||
-                        removeDiacritics(event.name)
-                            .toLowerCase()
-                            .contains(word)) &&
-                    !event.isFull) {
-                  i = i + 1;
-                }
-                if (i == words.length) {
-                  eventsAux.add(event);
-                }
+      data.forEach((key, value) {
+        try {
+          final event = Event.fromRawJson(jsonEncode(value));
+          if (!event.hasFinished) {
+            int i = 0;
+            for (String word in words) {
+              word = removeDiacritics(word).toLowerCase();
+              if ((removeDiacritics(event.address)
+                          .toLowerCase()
+                          .contains(word) ||
+                      removeDiacritics(event.city)
+                          .toLowerCase()
+                          .contains(word) ||
+                      removeDiacritics(event.description)
+                          .toLowerCase()
+                          .contains(word) ||
+                      removeDiacritics(event.name)
+                          .toLowerCase()
+                          .contains(word)) &&
+                  !event.isFull) {
+                i = i + 1;
+              }
+              if (i == words.length) {
+                eventsAux.add(event);
               }
             }
-          } catch (e) {
-            //Exception('Se ha producido un error buscando eventos: $e');
           }
-        });
-        if (eventsAux.isNotEmpty) {
-          eventsFound = eventsAux;
-          return eventsAux;
-        } else {
-          eventsFound = [];
-          throw Exception(
-              "No se han encontrado eventos con los parámetros de búsqueda introducidos, recuerda que deben coincidir todas las palabras por separado para que el evento sea válido.");
+        } catch (e) {
+          //Exception('Se ha producido un error buscando eventos: $e');
         }
-      } catch (e) {
+      });
+      if (eventsAux.isNotEmpty) {
+        eventsFound = eventsAux;
+        return eventsFound;
+      } else {
         eventsFound = [];
-        throw Exception('Se ha producido un error al obtener eventos: $e');
+        for (Event e in events) {
+          if (!e.hasFinished && !e.isFull) {
+            eventsFound.add(e);
+          }
+        }
+        return eventsFound;
       }
+    } catch (e) {
+      eventsFound = [];
+      throw Exception('Se ha producido un error al obtener eventos: $e');
     }
+    // }
   }
 
   String removeDiacritics(String str) {
