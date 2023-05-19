@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/models.dart';
-import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/services/important_notification_service.dart';
+import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -42,6 +42,7 @@ class EventsService extends ChangeNotifier {
     try {
       // ignore: unused_local_variable
       final resp = await http.delete(url);
+      // ignore: use_build_context_synchronously
       Navigator.pushNamed(context, 'events');
     } catch (e) {
       debugPrint('Error al eliminar el evento: $e');
@@ -63,6 +64,7 @@ class EventsService extends ChangeNotifier {
     final usersService = Provider.of<UsersService>(context, listen: false);
     if (!usersService.currentUser!.subscription.canCreateEvents) return;
     final url = Uri.https(_baseUrl, 'Events/${event.id}.json');
+    // ignore: avoid_print
     print('id del evento: ${event.id}');
     try {
       // ignore: unused_local_variable
@@ -237,8 +239,10 @@ class EventsService extends ChangeNotifier {
           userId: event.creator,
           date: DateTime.now(),
           info: "${currentUser!.name} se ha unido al evento ${event.name}");
+      // ignore: use_build_context_synchronously
       ImportantNotificationService()
           .saveNotification(context, notificationDuenoEvento, event.creator);
+      // ignore: use_build_context_synchronously
       ImportantNotificationService()
           .saveNotification(context, notificationUsuarioEntra, activeUserId);
       final url = Uri.https(_baseUrl, 'Events/$eventId.json');

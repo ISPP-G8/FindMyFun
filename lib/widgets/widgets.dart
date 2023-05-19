@@ -17,3 +17,4 @@ export 'package:findmyfun/widgets/category_dropdown.dart';
 export 'package:findmyfun/widgets/custom_banner_ad.dart';
 export 'package:findmyfun/widgets/ad_plan_loader.dart';
 export 'package:findmyfun/widgets/circle_image.dart';
+export 'package:findmyfun/widgets/event_points_dropdown.dart';

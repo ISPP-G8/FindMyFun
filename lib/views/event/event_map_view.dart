@@ -59,7 +59,8 @@ class _MapScreenState extends State<MapScreen> {
 
   _getMarkers() async {
     MapService mapService = MapService();
-    return await mapService.getMarkers();
+    bool isEventCreation = false;
+    return await mapService.getMarkers(isEventCreation);
   }
 
   _getUserCurrentLocation() async {

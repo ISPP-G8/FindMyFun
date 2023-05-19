@@ -1,10 +1,12 @@
 import 'dart:convert';
+
+import 'package:findmyfun/helpers/helpers.dart';
 //import 'dart:html';
 
 import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:findmyfun/helpers/helpers.dart';
+
 import '../models/user.dart';
 
 class UsersService extends ChangeNotifier {
@@ -166,7 +168,7 @@ class UsersService extends ChangeNotifier {
         // ignore: use_build_context_synchronously
         await Navigator.pushNamed(context, 'access');
       } else {
-        final resp = await http.delete(url);
+        // ignore: use_build_context_synchronously
         await Navigator.pushNamed(context, 'users');
       }
     } catch (e) {

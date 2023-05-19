@@ -1,14 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/models/models.dart';
+import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/styles.dart';
 import 'package:findmyfun/widgets/custom_banner_ad.dart';
 import 'package:findmyfun/widgets/custom_text_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:findmyfun/services/services.dart';
 
 import '../../../widgets/custom_button.dart';
 
@@ -211,8 +211,6 @@ class _DeleteProfile extends State<DeleteProfile> {
   @override
   Widget build(BuildContext context) {
     final selectedUser = ModalRoute.of(context)!.settings.arguments as User;
-
-    final userService = Provider.of<UsersService>(context);
 
     return ElevatedButton(
       style: ButtonStyle(

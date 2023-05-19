@@ -18,7 +18,6 @@ class ProfileEditAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedUser = ModalRoute.of(context)!.settings.arguments as User;
     return Scaffold(
       backgroundColor: ProjectColors.primary,
       appBar: AppBar(

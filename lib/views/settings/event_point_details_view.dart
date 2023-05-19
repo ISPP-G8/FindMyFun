@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 import '../../services/services.dart';
 
 class EventPointDetailsView extends StatefulWidget {
+  const EventPointDetailsView({super.key});
+
   @override
   State<EventPointDetailsView> createState() => _EventPointDetailsViewState();
 }
@@ -21,7 +23,6 @@ class _EventPointDetailsViewState extends State<EventPointDetailsView> {
   final _addressController = TextEditingController();
   final _cityController = TextEditingController();
   final _countryController = TextEditingController();
-  final _imageController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,9 @@ class _EventPointDetailsViewState extends State<EventPointDetailsView> {
                 onPressed: () async {
                   showCircularProgressDialog(context);
                   await eventPointsService.deleteEventPoint(eventPoint.id);
+                  // ignore: use_build_context_synchronously
                   Navigator.pop(context);
+                  // ignore: use_build_context_synchronously
                   Navigator.pop(context);
                 },
                 icon: const Icon(
@@ -103,6 +106,7 @@ class _EventPointDetailsViewState extends State<EventPointDetailsView> {
                     showCircularProgressDialog(context);
                     eventPoint.image = await uploadImage(context,
                         imageId: eventPoint.id, route: 'EventPoints');
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   },
                   child: const CustomTextForm(
@@ -125,7 +129,9 @@ class _EventPointDetailsViewState extends State<EventPointDetailsView> {
                       await eventPointsService.saveEventPoint(
                           eventPoint, usersService.currentUser!);
 
+                      // ignore: use_build_context_synchronously
                       Navigator.pop(context);
+                      // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     }
                   },

@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
-import '../models/models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../models/models.dart';
 
 class MapService extends ChangeNotifier {
   EventsService eventsService = EventsService();
@@ -10,7 +12,7 @@ class MapService extends ChangeNotifier {
   AuthService authService = AuthService();
 
   // GET ALL MARKERS
-  Future<List<Point>> getMarkers() async {
+  Future<List<Point>> getMarkers(bool isEventCreation) async {
     List<Point> markers = [];
 
     String currentUser = AuthService().currentUser?.uid ?? "";
@@ -37,6 +39,7 @@ class MapService extends ChangeNotifier {
             position: LatLng(eventPoint.latitude, eventPoint.longitude),
             icon: BitmapDescriptor.defaultMarkerWithHue(
                 BitmapDescriptor.hueViolet),
+            consumeTapEvents: isEventCreation,
           )));
     }
 

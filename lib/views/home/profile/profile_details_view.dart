@@ -2,14 +2,12 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:findmyfun/models/models.dart';
-import 'package:findmyfun/themes/styles.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:findmyfun/services/services.dart';
+import 'package:findmyfun/themes/styles.dart';
 import 'package:findmyfun/widgets/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import '../../../themes/colors.dart';
+import 'package:provider/provider.dart';
 
 class ProfileDetailsView extends StatefulWidget {
   const ProfileDetailsView({super.key});

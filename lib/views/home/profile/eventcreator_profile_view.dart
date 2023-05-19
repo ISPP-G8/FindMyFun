@@ -1,10 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/themes/colors.dart';
 import 'package:findmyfun/themes/styles.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class EventCreatorProfileDetailsView extends StatelessWidget {
   const EventCreatorProfileDetailsView({super.key});
@@ -12,7 +12,6 @@ class EventCreatorProfileDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final eventCreator = ModalRoute.of(context)!.settings.arguments as User;
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
