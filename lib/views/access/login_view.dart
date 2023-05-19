@@ -13,8 +13,6 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pageViewController =
-        Provider.of<PageViewService>(context).pageController;
     final size = MediaQuery.of(context).size;
 
     return SafeArea(

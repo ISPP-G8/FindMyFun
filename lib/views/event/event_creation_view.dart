@@ -4,17 +4,16 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/models.dart';
-import 'package:findmyfun/services/important_notification_service.dart';
-import 'package:findmyfun/widgets/widgets.dart';
 import 'package:findmyfun/themes/themes.dart';
+import 'package:findmyfun/widgets/widgets.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/foundation.dart';
 
 import '../../services/services.dart';
 import '../../ui/ui.dart';
@@ -250,6 +249,7 @@ class _FormsColumnState extends State<_FormsColumn> {
 
               imagePath = await uploadImage(context,
                   route: 'Events/$eventId', imageId: 'event_image');
+              // ignore: use_build_context_synchronously
               Navigator.pop(context);
 
               setState(() {});
@@ -316,9 +316,6 @@ class _FormsColumnState extends State<_FormsColumn> {
                 );
                 final eventsService =
                     Provider.of<EventsService>(context, listen: false);
-                final notificationService =
-                    Provider.of<ImportantNotificationService>(context,
-                        listen: false);
 
                 Marker selectedMarker = tappedMarkerEvent[0];
 
@@ -444,6 +441,7 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
 
     return Column(
       children: [
+        // ignore: sized_box_for_whitespace
         Container(
           height: size.height * 0.49,
           child: Stack(

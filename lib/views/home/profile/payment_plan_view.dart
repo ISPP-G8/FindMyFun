@@ -4,6 +4,7 @@ class PaymentPlanView extends StatefulWidget {
   const PaymentPlanView({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _PaymentPlanViewState createState() => _PaymentPlanViewState();
 }
 
@@ -26,16 +27,16 @@ class _PaymentPlanViewState extends State<PaymentPlanView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Introducir credenciales',
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 35.0),
+              const SizedBox(height: 35.0),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Número de tarjeta',
                 ),
                 validator: (value) {
@@ -53,7 +54,7 @@ class _PaymentPlanViewState extends State<PaymentPlanView> {
               Row(children: [
                 Expanded(
                     child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Fecha de expiración',
                   ),
                   validator: (value) {
@@ -68,10 +69,10 @@ class _PaymentPlanViewState extends State<PaymentPlanView> {
                     });
                   },
                 )),
-                SizedBox(width: 12.0),
+                const SizedBox(width: 12.0),
                 Expanded(
                     child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'CVV',
                   ),
                   validator: (value) {
@@ -93,12 +94,15 @@ class _PaymentPlanViewState extends State<PaymentPlanView> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       // Validación pasada, hacer algo con los datos
+                      // ignore: avoid_print
                       print('Número de tarjeta: $_cardNumber');
+                      // ignore: avoid_print
                       print('Fecha de expiración: $_expirationDate');
+                      // ignore: avoid_print
                       print('CVV: $_cvv');
                     }
                   },
-                  child: Text('Procesar Pago'),
+                  child: const Text('Procesar Pago'),
                 ),
               ),
             ],

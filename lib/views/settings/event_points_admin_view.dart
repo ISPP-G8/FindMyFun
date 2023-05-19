@@ -42,10 +42,11 @@ class _EventPointsAdminViewState extends State<EventPointsAdminView> {
                   onPressed: () async {
                     showCircularProgressDialog(context);
                     await eventPointsService.getEventPoints();
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                     setState(() {});
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.refresh_outlined,
                     color: ProjectColors.secondary,
                   ))

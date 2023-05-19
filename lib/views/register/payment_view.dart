@@ -5,6 +5,8 @@ import 'package:flutter_paypal/flutter_paypal.dart';
 import '../../services/services.dart';
 
 class PaymentViewUser extends StatefulWidget {
+  const PaymentViewUser({super.key});
+
   @override
   State<PaymentViewUser> createState() => _PaymentViewUserState();
 }
@@ -15,7 +17,7 @@ class _PaymentViewUserState extends State<PaymentViewUser> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: ProjectColors.tertiary,
-          title: Text(
+          title: const Text(
             'Pago por PayPal',
           ),
         ),
@@ -62,15 +64,18 @@ class _PaymentViewUserState extends State<PaymentViewUser> {
                                   note:
                                       "Contact us for any questions on your order.",
                                   onSuccess: (Map params) async {
+                                    // ignore: avoid_print
                                     print("onSuccess: $params");
                                     SubscriptionService().changePlanToPremium(
                                         await UsersService()
                                             .getCurrentUserWithUid());
                                   },
                                   onError: (error) {
+                                    // ignore: avoid_print
                                     print("onError: $error");
                                   },
                                   onCancel: (params) {
+                                    // ignore: avoid_print
                                     print('cancelled: $params');
                                   }),
                             ),
