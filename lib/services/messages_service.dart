@@ -1,6 +1,7 @@
 import 'dart:convert';
 //import 'dart:html';
 
+import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/event.dart';
 import 'package:findmyfun/models/important_notification.dart';
 import 'package:findmyfun/models/messages.dart';
@@ -13,7 +14,7 @@ import 'package:provider/provider.dart';
 import '../models/user.dart';
 
 class MessagesService extends ChangeNotifier {
-  final String _baseUrl = 'findmyfun-dev-default-rtdb.firebaseio.com';
+  final String _baseUrl = Globals.getBaseUrl();
   List<Messages> _messages = [];
 
   User? currentUser;

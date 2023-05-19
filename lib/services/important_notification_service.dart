@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/important_notification.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:http/http.dart' as http;
 import '../models/user.dart';
 
 class ImportantNotificationService extends ChangeNotifier {
-  final String _baseUrl = 'findmyfun-dev-default-rtdb.firebaseio.com';
+  final String _baseUrl = Globals.getBaseUrl();
   List<ImportantNotification?> _notifications = [];
 
   User? currentUser;

@@ -62,7 +62,7 @@ class _MainScreenState extends State<MainScreen> {
                 child: Container(
                   margin: const EdgeInsets.only(right: 10),
                   child: const Icon(
-                    Icons.chat_bubble,
+                    Icons.notifications,
                     size: 50,
                   ),
                 )),

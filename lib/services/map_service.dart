@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:findmyfun/services/services.dart';
 import 'package:flutter/material.dart';
-import '../models/models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../models/models.dart';
 
 class MapService extends ChangeNotifier {
   EventsService eventsService = EventsService();
@@ -14,23 +16,17 @@ class MapService extends ChangeNotifier {
     List<Point> markers = [];
 
     String currentUser = AuthService().currentUser?.uid ?? "";
-    List<Event> events = await eventsService.getEvents();
+    List<Event> events = await eventsService.findEvents();
     List<EventPoint> eventPoints = await eventPointsService.getEventPoints();
 
     for (var event in events) {
-      if (event.hasFinished || !event.isVisible) continue;
-      if (event.isFull && !event.users.contains(currentUser)) continue;
       markers.add(Point(
           event: event,
           marker: Marker(
             markerId: MarkerId(event.id),
             position: LatLng(event.latitude, event.longitude),
-            icon: event.users.contains(currentUser)
-                ? BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueMagenta)
-                : BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueRed),
-            consumeTapEvents: isEventCreation,
+            icon:
+                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           )));
     }
 

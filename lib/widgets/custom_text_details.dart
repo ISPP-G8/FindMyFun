@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomTextDetail extends StatelessWidget {
   final String hintText;
+  final TextStyle hintStyle;
   final bool obscure;
   final EdgeInsets? padding;
   final int? maxLines;
@@ -14,6 +15,7 @@ class CustomTextDetail extends StatelessWidget {
   const CustomTextDetail({
     super.key,
     required this.hintText,
+    this.hintStyle = const TextStyle(color: Colors.black87, fontSize: 26),
     this.obscure = false,
     this.padding = const EdgeInsets.all(10),
     this.maxLines = 1,
@@ -46,7 +48,7 @@ class CustomTextDetail extends StatelessWidget {
         decoration: InputDecoration(
           enabledBorder: InputBorder.none,
           hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.black87, fontSize: 26),
+          hintStyle: hintStyle,
           border: InputBorder.none,
         ),
       ),
