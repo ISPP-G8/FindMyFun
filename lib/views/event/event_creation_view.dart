@@ -215,11 +215,12 @@ class _FormsColumnState extends State<_FormsColumn> {
             controller: _description,
             validator: (value) => Validators.validateNotEmpty(value),
           ),
-          Divider(
-            thickness: 5,
-            color: ProjectColors.secondary,
-            indent: size.height * 0.05,
-            endIndent: size.height * 0.05,
+          const Divider(
+            color: Colors.grey,
+            thickness: 0.5,
+            height: 20,
+            indent: 20,
+            endIndent: 20,
           ),
           const Text(
             "Selecciona un lugar en el mapa...",
@@ -233,11 +234,12 @@ class _FormsColumnState extends State<_FormsColumn> {
                 maxHeight: size.height * 0.6, maxWidth: size.width),
             child: const MapPlaceSelectorEventScreen(),
           ),
-          Divider(
-            thickness: 5,
-            color: ProjectColors.secondary,
-            indent: size.height * 0.05,
-            endIndent: size.height * 0.05,
+          const Divider(
+            color: Colors.grey,
+            thickness: 0.5,
+            height: 20,
+            indent: 20,
+            endIndent: 20,
           ),
           const Text(
             "Imagen",
