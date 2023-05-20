@@ -6,8 +6,8 @@ import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../ui/ui.dart';
 
@@ -64,7 +64,7 @@ class _EventDetailsViewState extends State<EventDetailsView> {
                     canEdit = !canEdit;
                   }),
                   child: Container(
-                    margin: EdgeInsets.only(right: 10),
+                    margin: const EdgeInsets.only(right: 10),
                     child: Icon(
                       Icons.edit,
                       size: 25,
@@ -131,14 +131,12 @@ class _FormsColumnState extends State<_FormsColumn> {
     });
 
     //print(asistentes);
-    late User creatorUser;
     bool creatorSameAsCurrentUser = activeUserId == selectedEvent.creator;
 
     return FutureBuilder<User>(
       future: creator,
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
         if (snapshot.hasData) {
-          creatorUser = snapshot.data!;
           return Form(
             key: _formKey,
             child: Column(
@@ -301,13 +299,18 @@ class _FormsColumnState extends State<_FormsColumn> {
                           users: selectedEvent.users,
                           maxUsers: selectedEvent.maxUsers,
                           messages: selectedEvent.messages);
+                      // ignore: use_build_context_synchronously
                       showCircularProgressDialog(context);
                       final eventService =
+                          // ignore: use_build_context_synchronously
                           Provider.of<EventsService>(context, listen: false);
+                      // ignore: use_build_context_synchronously
                       await eventService.saveEvent(context, event);
                       // await eventService.getEventsOfLoggedUser();
 
+                      // ignore: use_build_context_synchronously
                       Navigator.pop(context);
+                      // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     },
                   ),

@@ -59,7 +59,54 @@ class _EventListView extends State<EventListView> {
                         width: size.width * 0.8,
                         child: const Center(
                             child: AutoSizeText(
-                                'No estás en ningún evento, crea o únete a uno',
+                                'No estás en ningún evento, crea o únete a uno.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ProjectColors.tertiary,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold))),
+                      );
+                    } else {
+                      return ConstrainedBox(
+                        constraints:
+                            BoxConstraints(maxHeight: size.height * 0.68),
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (_, index) => EventContainer(
+                            event: snapshot.data![index],
+                          ),
+                        ),
+                      );
+                    }
+                  } else {
+                    return Column(children: const [
+                      SizedBox(height: 100),
+                      Center(child: CircularProgressIndicator())
+                    ]);
+                  }
+                },
+              ),
+              const Center(
+                  child: AutoSizeText(
+                'TUS EVENTOS FINALIZADOS',
+                maxLines: 1,
+                style: TextStyle(
+                    color: ProjectColors.secondary,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold),
+              )),
+              FutureBuilder<dynamic>(
+                future: eventsService.getFinishedEventsOfLoggedUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    int eventCount = snapshot.data!.length;
+                    if (eventCount == 0) {
+                      return SizedBox(
+                        height: size.height * 0.6,
+                        width: size.width * 0.8,
+                        child: const Center(
+                            child: AutoSizeText(
+                                'Aún no ha finalizado ningún evento en el que hayas participado.',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: ProjectColors.tertiary,

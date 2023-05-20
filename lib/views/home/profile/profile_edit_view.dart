@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:findmyfun/helpers/helpers.dart';
 import 'package:findmyfun/models/models.dart' as user;
 import 'package:findmyfun/ui/show_circular_progress_dialog.dart';

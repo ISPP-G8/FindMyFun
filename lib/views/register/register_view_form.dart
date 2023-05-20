@@ -127,8 +127,8 @@ class _RegisterFormContainerState extends State<_RegisterFormContainer> {
                           onPressed: () => Navigator.pop(context),
                           child: const Text('Cerrar'))
                     ],
-                    content:
-                        Text('Debes aceptar los términos y condiciones de uso'),
+                    content: const Text(
+                        'Debes aceptar los términos y condiciones de uso'),
                   ),
                 );
                 return;

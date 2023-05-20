@@ -5,6 +5,8 @@ import '../../services/services.dart';
 import '../../themes/colors.dart';
 
 class PaymentViewBusiness extends StatefulWidget {
+  const PaymentViewBusiness({super.key});
+
   @override
   State<PaymentViewBusiness> createState() => _PaymentViewBusinessState();
 }
@@ -65,15 +67,18 @@ class _PaymentViewBusinessState extends State<PaymentViewBusiness> {
                             ],
                             note: "Contact us for any questions on your order.",
                             onSuccess: (Map params) async {
+                              // ignore: avoid_print
                               print("onSuccess: $params");
                               await SubscriptionService().changePlanToCompany(
                                   await UsersService().getCurrentUserWithUid());
                             },
                             onError: (error) {
+                              // ignore: avoid_print
                               print("onError: $error");
                               Navigator.pushNamed(context, 'middle');
                             },
                             onCancel: (params) {
+                              // ignore: avoid_print
                               print('cancelled: $params');
                               Navigator.pushNamed(context, 'middle');
                             }),

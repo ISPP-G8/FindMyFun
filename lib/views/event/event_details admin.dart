@@ -1,4 +1,5 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: file_names
+
 import 'package:findmyfun/models/models.dart';
 import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
@@ -95,9 +96,7 @@ class _FormsColumnState extends State<_FormsColumn> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final selectedEvent = ModalRoute.of(context)!.settings.arguments as Event;
-    final eventService = Provider.of<EventsService>(context, listen: false);
     final userService = Provider.of<UsersService>(context, listen: false);
     final creator = userService.getUserWithUid(selectedEvent.creator);
 

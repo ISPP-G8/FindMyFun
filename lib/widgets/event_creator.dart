@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:findmyfun/widgets/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/models.dart';
@@ -40,6 +40,7 @@ class _EventCreator extends State<EventCreator> {
             User eventCreator =
                 await eventsService.getEventCreator(context, widget.event);
 
+            // ignore: use_build_context_synchronously
             Navigator.pushNamed(context, 'creatorProfile',
                 arguments: eventCreator);
           },

@@ -135,46 +135,47 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: Container(
-                color: Colors.lightBlue,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: CustomTextForm(
-                        hintText: 'Escribe tu mensaje aquí...',
-                        //maxLines: 5,
-                        type: TextInputType.multiline,
-                        controller: messageToSend,
-                        validator: (value) =>
-                            Validators.validateNotEmpty(value),
+          if (!selectedEvent.hasFinished)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Container(
+                  color: Colors.lightBlue,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextForm(
+                          hintText: 'Escribe tu mensaje aquí...',
+                          //maxLines: 5,
+                          type: TextInputType.multiline,
+                          controller: messageToSend,
+                          validator: (value) =>
+                              Validators.validateNotEmpty(value),
+                        ),
                       ),
-                    ),
-                    IconButton(
-                      color: Colors.white,
-                      icon: const Icon(Icons.send),
-                      onPressed: () {
-                        Messages m = Messages(
-                            userId: activeUserId,
-                            date: DateTime.now(),
-                            text: messageToSend.text);
-                        if (m.text.isNotEmpty) {
-                          messagesService.saveMessage(
-                              context, m, selectedEvent);
-                          Navigator.popAndPushNamed(context, "chat",
-                              arguments: selectedEvent);
-                        }
-                        messageToSend.clear();
-                      },
-                    ),
-                  ],
+                      IconButton(
+                        color: Colors.white,
+                        icon: const Icon(Icons.send),
+                        onPressed: () {
+                          Messages m = Messages(
+                              userId: activeUserId,
+                              date: DateTime.now(),
+                              text: messageToSend.text);
+                          if (m.text.isNotEmpty) {
+                            messagesService.saveMessage(
+                                context, m, selectedEvent);
+                            Navigator.popAndPushNamed(context, "chat",
+                                arguments: selectedEvent);
+                          }
+                          messageToSend.clear();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
