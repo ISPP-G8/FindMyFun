@@ -196,11 +196,10 @@ class _ProfileEditFormState extends State<_ProfileEditForm> {
                   preferences: selectedUser.preferences,
                   subscription: selectedUser.subscription);
               final resp = await userService.updateProfileAdmin(userToChange);
+
               if (resp) {
-                Navigator.pop(context);
-                Navigator.pop(context);
-                // Navigator.pop(context);
-                // Navigator.pop(context);
+                await userService.getUsers();
+                Navigator.pushReplacementNamed(context, 'users');
               } else {
                 Navigator.pop(context);
                 _formKey.currentState!.validate();

@@ -28,7 +28,8 @@ class _UsersListViewScreenState extends State<UsersListViewScreen> {
       child: Scaffold(
           appBar: AppBar(
             leading: GestureDetector(
-                onTap: () => Navigator.pop(context),
+                onTap: () =>
+                    Navigator.pushReplacementNamed(context, 'settings'),
                 child: const Icon(
                   Icons.chevron_left,
                   size: 45,
