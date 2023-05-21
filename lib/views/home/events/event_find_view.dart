@@ -3,6 +3,7 @@ import 'package:findmyfun/services/services.dart';
 import 'package:findmyfun/themes/themes.dart';
 import 'package:findmyfun/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -143,6 +144,7 @@ class _MapScreenState extends State<MapScreen> {
   late Future markersFuture;
   // ignore: prefer_const_constructors
   LatLng currentPosition = LatLng(37.356342, -5.984759);
+  bool hasCurrentPositionBeenUpdated = false;
 
   @override
   void initState() {
@@ -162,28 +164,39 @@ class _MapScreenState extends State<MapScreen> {
   _getUserCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
+    LatLng defaultPosition = const LatLng(37.356342, -5.984759);
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return Future.error('Location services are disabled');
+      Fluttertoast.showToast(msg: "Servicios de localización desactivados");
+      currentPosition = defaultPosition;
+      hasCurrentPositionBeenUpdated = true;
+      return null;
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
+        Fluttertoast.showToast(msg: "Permisos de localización rechazados");
+        currentPosition = defaultPosition;
+        hasCurrentPositionBeenUpdated = true;
+        return null;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      Fluttertoast.showToast(
+          msg: "Permisos de localización rechazados de forma permanente");
+      currentPosition = defaultPosition;
+      hasCurrentPositionBeenUpdated = true;
+      return null;
     }
 
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     currentPosition = LatLng(position.latitude, position.longitude);
+    hasCurrentPositionBeenUpdated = true;
     setState(() {});
   }
 
