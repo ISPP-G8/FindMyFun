@@ -106,7 +106,7 @@ class _EventFindView extends State<EventFindView> {
                         } else {
                           return ConstrainedBox(
                             constraints:
-                                BoxConstraints(maxHeight: size.height * 0.30),
+                                BoxConstraints(maxHeight: size.height * 0.29),
                             child: ListView.builder(
                               shrinkWrap: true,
                               itemCount: snapshot.data!.length,
