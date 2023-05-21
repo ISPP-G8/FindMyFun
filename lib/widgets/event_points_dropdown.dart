@@ -38,8 +38,6 @@ class _EventPointsDropdown extends State<EventPointsDropdown> {
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: const BoxDecoration(color: Colors.white),
             child: DropdownButton<String?>(
-              value:
-                  "${snapshot.data.first.latitude},${snapshot.data.first.longitude}",
               items: snapshot.data
                   .map<DropdownMenuItem<String?>>((EventPoint value) {
                 return DropdownMenuItem<String?>(
