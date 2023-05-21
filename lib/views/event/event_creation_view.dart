@@ -485,7 +485,7 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
                     padding: EdgeInsets.symmetric(
                         vertical: size.height * 0.001,
                         horizontal: size.width * 0.01),
-                    height: size.height * 0.1,
+                    height: size.height * 0.06,
                     width: size.width * 0.35,
                     child: Column(
                       children: [
@@ -493,7 +493,7 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
                         Row(
                           children: [
                             Container(
-                              color: Colors.orange,
+                              color: Colors.red,
                               height: 10,
                               width: 10,
                             ),
@@ -506,39 +506,38 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
                                 )),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Container(
-                              color: Colors.pink,
-                              height: 10,
-                              width: 10,
-                            ),
-                            const AutoSizeText(" Tus eventos",
-                                maxLines: 1,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  decoration: TextDecoration.none,
-                                )),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              color: Colors.red,
-                              height: 10,
-                              width: 10,
-                            ),
-                            const AutoSizeText(" Otros eventos",
-                                maxLines: 1,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  decoration: TextDecoration.none,
-                                )),
-                          ],
-                        ),
-                        SizedBox(height: size.height * 0.001),
+                        // Row(
+                        //   children: [
+                        //     Container(
+                        //       color: Colors.pink,
+                        //       height: 10,
+                        //       width: 10,
+                        //     ),
+                        //     const AutoSizeText(" Tus eventos",
+                        //         maxLines: 1,
+                        //         style: TextStyle(
+                        //           color: Colors.black,
+                        //           fontSize: 14,
+                        //           decoration: TextDecoration.none,
+                        //         )),
+                        //   ],
+                        // ),
+                        // Row(
+                        //   children: [
+                        //     Container(
+                        //       color: Colors.red,
+                        //       height: 10,
+                        //       width: 10,
+                        //     ),
+                        //     const AutoSizeText(" Otros eventos",
+                        //         maxLines: 1,
+                        //         style: TextStyle(
+                        //           color: Colors.black,
+                        //           fontSize: 14,
+                        //           decoration: TextDecoration.none,
+                        //         )),
+                        //   ],
+                        // ),
                         Row(
                           children: [
                             Container(
@@ -554,7 +553,8 @@ class _MapPlaceSelectorEventScreen extends State<MapPlaceSelectorEventScreen> {
                                   decoration: TextDecoration.none,
                                 )),
                           ],
-                        )
+                        ),
+                        SizedBox(height: size.height * 0.001),
                       ],
                     ),
                   ),

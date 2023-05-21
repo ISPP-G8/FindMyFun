@@ -25,6 +25,7 @@ class MapService extends ChangeNotifier {
           marker: Marker(
             markerId: MarkerId(event.id),
             position: LatLng(event.latitude, event.longitude),
+            zIndex: 1,
             icon:
                 BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           )));
@@ -37,6 +38,7 @@ class MapService extends ChangeNotifier {
           marker: Marker(
             markerId: MarkerId(eventPoint.id),
             position: LatLng(eventPoint.latitude, eventPoint.longitude),
+            zIndex: 0.5,
             icon: BitmapDescriptor.defaultMarkerWithHue(
                 BitmapDescriptor.hueViolet),
             consumeTapEvents: isEventCreation,
