@@ -1,7 +1,6 @@
 class Globals {
-  static bool _isDevelop = false;
-  static bool _isProduction = false;
-  static bool _isWpl = true;
+  static const bool _isDevelop = false;
+  static const bool _isProduction = false;
 
   static String getBaseUrl() {
     if (_isProduction) {

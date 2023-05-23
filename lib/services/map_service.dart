@@ -15,7 +15,6 @@ class MapService extends ChangeNotifier {
   Future<List<Point>> getMarkers(bool isEventCreation) async {
     List<Point> markers = [];
 
-    String currentUser = AuthService().currentUser?.uid ?? "";
     List<Event> events = await eventsService.findEvents();
     List<EventPoint> eventPoints = await eventPointsService.getEventPoints();
 

@@ -25,7 +25,6 @@ class _EventSearchViewState extends State<EventSearchView> {
     final usersService = Provider.of<UsersService>(context);
     final comp =
         usersService.currentUser!.subscription.type == SubscriptionType.company;
-    debugPrint('WWWWWWWWWWWWW: ${comp}');
     final size = MediaQuery.of(context).size;
     try {
       eventsService.searchForEvents(_searchedText);
@@ -53,7 +52,7 @@ class _EventSearchViewState extends State<EventSearchView> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               const Text(
                 'RECUERDA',
                 textAlign: TextAlign.center,

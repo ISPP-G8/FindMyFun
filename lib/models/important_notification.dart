@@ -1,3 +1,5 @@
+// ignore_for_file: hash_and_equals
+
 import 'dart:convert';
 
 class ImportantNotification {
